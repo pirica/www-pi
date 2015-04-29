@@ -4,6 +4,7 @@ $mysql_dbn = 'router';
 $mysql_dbn_users = 'users';
 $mysql_user = 'root';
 $mysql_pw = '';
+require '/etc/mysql/conf.php';
 
 $main_dir = '/media/usbdrive2/motion/';
 $archive_dir = '/media/usbdrive2/motion_archive/';

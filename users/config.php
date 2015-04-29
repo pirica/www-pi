@@ -28,9 +28,10 @@
 /**
  * These are the database login details
  */
+require '/etc/mysql/conf.php';
 define("HOST", "localhost"); 			// The host you want to connect to. 
 define("USER", "root"); 			// The database username. 
-define("PASSWORD", ""); 	// The database password. 
+define("PASSWORD", $mysql_pw); 	// The database password. 
 define("DATABASE", "users");             // The database name.
 
 /**
