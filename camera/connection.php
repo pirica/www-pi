@@ -3,7 +3,7 @@ $mysql_host = 'localhost';
 $mysql_dbn = 'router';
 $mysql_dbn_users = 'users';
 $mysql_user = 'root';
-$mysql_pw = 'raspi123++';
+$mysql_pw = '';
 
 $main_dir = '/media/usbdrive2/motion/';
 $archive_dir = '/media/usbdrive2/motion_archive/';

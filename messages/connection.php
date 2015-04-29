@@ -8,7 +8,7 @@ $mysql_host = 'localhost';
 $mysql_dbn = 'router';
 $mysql_dbn_users = 'router';
 $mysql_user = 'root';
-$mysql_pw = 'raspi123++';
+$mysql_pw = '';
 
 //$mysql_failed_inserts = "/media/usbdrive2/mysql/".$mysql_dbn . "_" . date('Ymd', time()) . ".sql";
 $mysql_failed_inserts = "/var/www/messagelogs/".$mysql_dbn . "_" . date('Ymd', time()) . ".sql";

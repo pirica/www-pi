@@ -30,7 +30,7 @@
  */
 define("HOST", "localhost"); 			// The host you want to connect to. 
 define("USER", "root"); 			// The database username. 
-define("PASSWORD", "raspi123++"); 	// The database password. 
+define("PASSWORD", ""); 	// The database password. 
 define("DATABASE", "users");             // The database name.
 
 /**
