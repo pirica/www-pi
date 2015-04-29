@@ -1,0 +1,40 @@
+
+/* global stylings */
+.greyed {
+	text-decoration: italic;
+	color: #999;
+}
+
+.hidden {
+	display: none;
+}
+
+/* form validation */
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(assets/img/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+
+
+/* detail screen - files table */
+#files-grid {
+	font-size: 80%;
+}
+#files-grid th {
+	white-space: nowrap;
+	min-width: 60px;
+	cursor: pointer;
+}
+#files-grid td {
+	padding: 2px;
+}

@@ -1,0 +1,89 @@
+html,body {
+	height:100%;
+}
+
+#wrap {
+	min-height: 100%;
+}
+
+.container {
+	overflow: auto;
+	padding-bottom: 50px; /* this needs to be bigger than footer height*/
+}
+
+
+.topmenu {
+	background-color: #2f2f2f;
+}
+.topmenu .nav-tabs > li > a,
+.topmenu .navbar > .navbar-nav > a {
+	color: #fff;
+}
+.topmenu .nav > li.disabled > a ,
+.topmenu .navbar > .navbar-nav.disabled > a{
+    color: #666;
+}
+
+.topmenu .nav-tabs > li.active > a,
+.topmenu .nav-tabs > li.active > a:hover,
+.topmenu .nav-tabs > li.active > a:focus,
+
+.topmenu .navbar > .navbar-nav.active > a,
+.topmenu .navbar > .navbar-nav.active > a:hover,
+.topmenu .navbar > .navbar-nav.active > a:focus  {
+    background-color: #FFFFFF;
+    border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
+    color: #000;
+}
+
+.topmenu .navbar .navbar-text {
+    float: left;
+}
+
+
+/* desktop */
+@media (min-width: 1000px)
+{
+	
+}
+
+/* handy */
+@media (min-device-width: 601px) and (max-width: 999px)
+{
+	
+}
+
+
+@media (max-width:767px) {
+	.topmenu .navbar-collapse .navbar-nav > li {padding-left:15px!important;}
+
+	.topmenu .user-dropdown > .dropdown-menu > li {padding-left:5px!important;}
+
+}
+
+/* mobile */
+/*
+@media (max-width: 600px)
+{
+	.topmenu .dd-button {
+		display: block;
+	}
+	.topmenu .user {
+		display: none;
+	}
+	.topmenu .normal-menu {
+		display: none;
+	}
+}
+*/
+
+.bottombar {
+	background-color: #2f2f2f;
+	
+	position: relative;
+	margin-top: -50px; /* negative value of footer height */
+	height: 50px;
+	clear: both;
+	padding: 10px;
+	color: #fff;
+}

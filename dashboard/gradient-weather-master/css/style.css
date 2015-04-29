@@ -1,0 +1,45 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+div {
+	position:relative;
+}
+
+canvas {
+	position:absolute;
+}
+
+.temperature {
+	margin-top: 37%;
+	margin-left: 80%;
+	font-size: 110px;
+	color: white;
+	font-family: "proxima-nova",sans-serif;
+	font-weight: 100;
+}
+
+.weather {
+	font-size: 28px;
+	color: white;
+	margin-left: 80.5%;
+	margin-top:-1%;
+	font-family: "proxima-nova",sans-serif;
+	font-weight: 300;
+	text-transform: capitalize;
+}
+
+.city {
+	font-size: 14px;
+	color: white;
+	margin-top: 8px;
+	margin-left: 80.5%;
+	font-family: "proxima-nova",sans-serif;
+	font-weight: 300;
+	text-transform: capitalize;
+}

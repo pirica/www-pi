@@ -1,0 +1,182 @@
+<?php
+include 'connections.php';
+include 'functions.php';
+
+require '../_core/appinit.php';
+
+$id_grab = saneInput('id_grab', 'int', -1);
+
+$app->setHeaderScripts('<script type="text/javascript">var id_grab = ' . $id_grab . ';</script>' . "\n");
+
+
+switch($action->getCode()){
+	
+	case 'login':
+		$app->setTitle('Log in');
+		
+		include '../_core/dsp_header.php';
+		include '../users/dsp_loginform.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	// actions on grab
+	
+	case 'start':
+		$grab_enabled = 1;
+		include 'queries/pr_grab_startstop.php';
+		goto_action('main');
+		break;
+	
+	case 'stop':
+		$grab_enabled = 0;
+		include 'queries/pr_grab_startstop.php';
+		goto_action('main');
+		break;
+		
+		
+	
+	case 'setgrab':
+		$app->setTitle('Create/Edit');
+		
+		include 'queries/pr_grabs.php';
+		include 'queries/pr_grab_counts.php';
+		
+		include 'act_init_grab.php';
+		
+		$error = 0;
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_edit.php';
+		include '../_core/dsp_footer.php';
+		
+		break;
+	
+	case 'do_setgrab':
+		include 'act_set_grab.php';
+		goto_action('main', false, 'id_grab=' . $id_grab);
+		break;
+	
+	
+	
+	
+	case 'delgrab':
+		$app->setTitle('Delete');
+		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
+		
+		include 'queries/pr_grabs.php';
+		
+		include 'act_init_grab.php';
+		
+		if($ajaxcall === false){
+			include '../_core/dsp_header.php';
+		}
+		include 'dsp_delete.php';
+		if($ajaxcall === false){
+			include '../_core/dsp_footer.php';
+		}
+		break;
+	
+	case 'do_delgrab':
+		include 'act_del_grab.php';
+		goto_action('setgrab', false, 'id_grab=' . $id_grab);
+		break;
+	
+	
+	case 'setgrabcounter':
+		$app->setTitle('Create/Edit');
+		
+		include 'queries/pr_grabs.php';
+		include 'queries/pr_grab_counts.php';
+		
+		include 'act_init_grab.php';
+		include 'act_init_grab_counter.php';
+		
+		$error = 0;
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_edit_counter.php';
+		include '../_core/dsp_footer.php';
+		
+		break;
+	
+	case 'do_setgrabcounter':
+		include 'act_set_grab_counter.php';
+		goto_action('setgrab', false, 'id_grab=' . $id_grab);
+		break;
+	
+	
+	
+	case 'delgrabcounter':
+		$app->setTitle('Delete');
+		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
+		
+		include 'queries/pr_grabs.php';
+		include 'queries/pr_grab_counts.php';
+		
+		include 'act_init_grab.php';
+		include 'act_init_grab_counter.php';
+		
+		if($ajaxcall === false){
+			include '../_core/dsp_header.php';
+		}
+		include 'dsp_delete_counter.php';
+		if($ajaxcall === false){
+			include '../_core/dsp_footer.php';
+		}
+		break;
+	
+	case 'do_delgrabcounter':
+		include 'act_del_grab_counter.php';
+		goto_action('setgrab', false, 'id_grab=' . $id_grab);
+		break;
+	
+	
+	
+	// grab overviews + details
+	
+	case 'details':
+		
+		$app->setTitle('Details');
+		
+		include 'queries/pr_grabs.php';
+		include 'act_init_grab.php';
+		
+		include 'act_init_grab_detail.php';
+		
+		include 'queries/pr_grab_files.php';
+        
+		$app->setHeaderScripts('<script type="text/javascript">var sort = "' . $sort . '", sortorder = "' . $sortorder . '", perpage = ' . $perpage . ', page = ' . $page . ', status = "' . $status . '", search = "' . $search . '";</script>' . "\n");
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_detail.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	
+	case 'detailsgrid':
+		$app->setTitle('Details');
+		
+		include 'queries/pr_grabs.php';
+		include 'act_init_grab.php';
+		
+		include 'act_init_grab_detail.php';
+		
+		include 'queries/pr_grab_files.php';
+		
+		include 'dsp_detail_grid.php';
+		
+		break;
+	
+	
+	// main: overview
+	default:
+		$app->setTitle('Overview');
+		include 'queries/pr_grabs.php';
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_main.php';
+		include '../_core/dsp_footer.php';
+	
+	
+}
+?>

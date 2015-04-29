@@ -1,0 +1,34 @@
+
+
+truncate table t_file_icon;
+
+insert into t_file_icon (extension) values ('mp3'), ('wma'), ('ogg'), ('mid'), ('wav');
+insert into t_file_icon (extension) values ('wmv'), ('mp4'), ('flv'), ('avi'), ('mov'), ('mpg'), ('mpeg'), ('asf');
+insert into t_file_icon (extension) values ('jpg'), ('jpeg'), ('png'), ('gif'), ('bmp'), ('ico'), ('tif'), ('tiff'), ('raw');
+insert into t_file_icon (extension) values ('pdf'), ('doc'), ('docx'), ('txt');
+insert into t_file_icon (extension) values ('xls'), ('csv'), ('xlsx');
+insert into t_file_icon (extension) values ('pps'), ('ppt'), ('pptx'), ('ppsx');
+insert into t_file_icon (extension) values ('pdf');
+insert into t_file_icon (extension) values ('zip'), ('rar'), ('7z'), ('gz'), ('tar'), ('cab');
+insert into t_file_icon (extension) values ('txt');
+insert into t_file_icon (extension) values ('html'), ('htm'), ('js'), ('php'), ('css'), ('cfm'), ('cfc'), ('java'), ('less'), ('as'), ('mxml'), ('c'), ('h'), ('cpp'), ('py');
+
+#update t_file_icon set glyphicon = '' where extension in ()
+update t_file_icon set glyphicon = 'glyphicon-music' where extension in ('mp3','wma','ogg','mid','wav');
+update t_file_icon set glyphicon = 'glyphicon-film' where extension in ('wmv','mp4','flv','avi', ('mov'), ('mpg'), ('mpeg'));
+update t_file_icon set glyphicon = 'glyphicon-picture' where extension in ('jpg', 'jpeg', 'png', 'gif', 'bmp', 'ico', 'tif', 'tiff', 'raw');
+update t_file_icon set glyphicon = 'glyphicon-book' where extension in (('pdf'), ('doc'), ('docx'), ('txt'));
+
+#update t_file_icon set fontawesome = '' where extension in ()
+update t_file_icon set fontawesome = 'fa-file-excel-o' where extension in (('xls'), ('csv'), ('xlsx'));
+update t_file_icon set fontawesome = 'fa-file-word-o' where extension in (('doc'), ('docx'), ('dot'));
+update t_file_icon set fontawesome = 'fa-file-powerpoint-o' where extension in (('pps'), ('ppt'), ('pptx'), ('ppsx'));
+update t_file_icon set fontawesome = 'fa-file-pdf-o' where extension in (('pdf'));
+update t_file_icon set fontawesome = 'fa-file-audio-o' where extension in (('mp3'), ('wma'), ('ogg'), ('mid'), ('wav'));
+update t_file_icon set fontawesome = 'fa-file-archive-o' where extension in (('zip'), ('rar'), ('7z'), ('gz'), ('tar'), ('cab'));
+update t_file_icon set fontawesome = 'fa-file-image-o' where extension in ('jpg', 'jpeg', 'png', 'gif', 'bmp', 'ico', 'tif', 'tiff', 'raw');
+update t_file_icon set fontawesome = 'fa-file-video-o' where extension in ('wmv','mp4','flv','avi', ('mov'), ('mpg'), ('mpeg'), 'asf');
+update t_file_icon set fontawesome = 'fa-file-text-o' where extension in ('txt');
+update t_file_icon set fontawesome = 'fa-file-code-o' where extension in ('html', 'htm', 'js', 'php', 'css', 'cfm', 'cfc', 'java', 'less', 'as', 'mxml', ('c'), ('h'), ('cpp'), ('py'));
+
+

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GPS Tracking</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+	html { height:100% }
+	body { height:100%; margin:0; padding:0; position:relative; }
+	#map_canvas { height:100%; z-index:1; }
+	#info { background-color:#FFFFFF; left:80px; position:absolute; top:5px; z-index:2; padding:3px; border: 1px solid #000;}
+</style>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+var map,geocoder,zoom=13;
+var marker = null;
+var precisionCircle = null;
+var prevTime = 0;
+var nextTime = 750;
+	
+$().ready(function(){
+	initialize();
+	focusTarget('winkelomheide',zoom);
+	
+	//setTimeout('getData()', 5000);
+	getData();
+});
+
+function initialize() {
+	var myOptions = {
+		zoom: 13,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	map= new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	var rendererOptions = {
+		map: map
+	}
+	geocoder = new google.maps.Geocoder();
+	
+}
+
+function focusTarget(address,zoom)
+{ 
+	geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			map.setCenter(results[0].geometry.location);
+			map.setZoom(zoom);
+			
+		} else {
+			alert("Geocode was not successful for the following reason: " + status);
+		}
+	});
+}
+
+function getData()
+{
+	setTimeout('getData()', 500);
+	
+	$.ajax({
+		url: "hist.php",
+		type: 'get',
+		data: {time: nextTime},
+		dataType: 'text',
+		async: false,
+		success: function(data){
+			
+			var pos = $.parseJSON(data);
+			var newPoint = new google.maps.LatLng(pos.lat, pos.lon);
+			var r = parseInt(pos.accuracy); // meter
+			var h = parseInt(pos.heading); // degrees/N
+			var v = parseInt(pos.speed); // meter/sec
+			var t = parseInt(pos.time);
+			nextTime = parseInt(pos.nexttime) + 1;
+			
+			if(t >= prevTime){
+				
+				if (marker) {
+					// Marker already created - Move it
+					marker.setPosition(newPoint);
+					precisionCircle.setCenter(newPoint);
+					precisionCircle.setRadius(r);
+				}
+				else {
+					// Marker does not exist - Create it
+					marker = new google.maps.Marker({
+						position: newPoint,
+						map: map
+					});
+					
+					var precisionOptions = {
+						strokeColor: '#FF0000',
+						strokeOpacity: 0.7,
+						strokeWeight: 1,
+						fillColor: '#FF0000',
+						fillOpacity: 0.2,
+						map: map,
+						center: newPoint,
+						radius: r
+					};
+					precisionCircle = new google.maps.Circle(precisionOptions);
+				}
+				
+				precisionCircle.setVisible(r >= 50);
+				
+				marker.setIcon({path: google.maps.SymbolPath.FORWARD_OPEN_ARROW, rotation: h, zoom:3});
+				
+				//map.setZoom(zoom);
+				
+				// Center the map on the new position
+				
+				var b = map.getBounds();
+				
+				if(b){
+					var sw = b.getSouthWest();
+					var ne = b.getNorthEast();
+					
+					if(
+						newPoint.lat() > ne.lat() - ((ne.lat() - sw.lat()) / 3) 
+						||
+						newPoint.lng() > ne.lng() - ((ne.lng() - sw.lng()) / 3) 
+						||
+						newPoint.lat() < sw.lat() + ((ne.lat() - sw.lat()) / 3) 
+						||
+						newPoint.lng() < sw.lng() + ((ne.lng() - sw.lng()) / 3) 
+					){
+						map.panTo(newPoint);
+					}
+				}
+				
+				var currentZoom = zoom;
+				
+				if(currentZoom != zoom){
+					map.setZoom(zoom);
+				}
+				
+				$('#speed').html('' + (v * 3.6) + ' km/h');
+				
+				// https://developers.google.com/maps/documentation/javascript/reference
+				
+			}
+		}
+	});
+	
+}
+
+</script>
+</head>
+<body>
+	<div id="map_canvas" style="height:100%;"></div>
+	<div id="info">Speed: <span id="speed">-</span></div>
+</body>
+</html>

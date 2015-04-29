@@ -1,0 +1,40 @@
+
+/* global stylings */
+.greyed {
+	text-decoration: italic;
+	color: #999;
+}
+
+.closed {
+	display: none;
+}
+
+/* form validation */
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(assets/img/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+
+.title-entries {
+	color: #999999;
+	float: right;
+	font-size: 90%;
+}
+.item-pubdate {
+	color: #999999;
+	float: right;
+	font-size: 90%;
+}
+.btn-mark-as-read {
+	float: right;
+}

@@ -1,0 +1,15 @@
+/*
+background-color: -webkit-linear-gradient(#2876b2, #549ad0);
+	background-color: -moz-linear-gradient(#2876b2, #549ad0);
+	background-color: -o-linear-gradient(#2876b2, #549ad0);
+	background-color: linear-gradient(#2876b2, #549ad0);
+*/
+
+.dashboard-mode {
+	background: white linear-gradient(left, rgb(112, 0, 112) 0%, rgba(112, 0, 112, 0) 50%, rgba(0, 112, 0, 0) 50%, rgb(0, 112, 0) 100%);
+	background-size: 200% 100%;
+	transition: all 2s linear;
+}
+.dashboard-mode:hover {
+	background-position: 100%; 
+}

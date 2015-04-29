@@ -1,0 +1,255 @@
+/*
+html, body {
+	width: 960px;
+}
+
+html,body,p,table{
+	font-family:Arial, sans-serif;
+	font-size:12px;
+	color:#333333;
+	margin:0px;
+	padding:1px;
+}
+
+table,tr,td,th{
+	font-family:Arial, sans-serif;
+	font-size:12px;
+	color:#333333;
+}
+
+h1 {
+	font-size: 18px;
+}
+h2 {
+	font-size: 16px;
+}
+*/
+
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(assets/img/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+
+#date-last-update {
+    font-size: 0.8em;
+}
+
+.changed {
+	color: #ff0000;
+}
+
+.downloaded  {
+	padding-left: 10px;
+}
+.downloaded  i {
+	color: #999;
+}
+
+.uploaded  {
+	padding-right: 10px;
+}
+.uploaded  i {
+	color: #999;
+}
+
+.green {
+	color: #00cc00;
+}
+.red {
+	color: #cc0000;
+}
+
+
+/* TIMELINE CHARTS */
+
+.section { 
+	float: left;
+	clear: left;
+	padding: 1em 2em;
+}
+.section-label {
+	width: 100px;
+	float: left;
+    height: 100px;
+    padding: 60px 0 0;
+}
+
+.timeline { 
+	font-size: 0.75em; 
+    float: left;
+}
+.timeline li { 
+	position: relative;
+	float: left;
+	width: 16px; 
+	margin: 0 1px 20px;
+	height: 100px; 
+    list-style: outside none none;
+}
+.timeline li a { 
+	display: block;
+	height: 100%;  
+}
+.timeline li .label { 
+	display: block; 
+	position: absolute; 
+	bottom: -2em; 
+	left: 0; 
+	color: #666;
+	font-size: 80%;
+	background: #fff; 
+	width: 100%; 
+	height: 2em; 
+	line-height: 2em; 
+	text-align: center;
+	padding: 0.1em 0.2em 0.2em;
+}
+.timeline li a .count { 
+	display: block; 
+	position: absolute; 
+	bottom: 0; 
+	left: 0; 
+	height: 0; 
+	width: 100%; 
+	background: #AAA; 
+	text-indent: -9999px; 
+	overflow: hidden; 
+
+}
+.timeline li:hover { 
+	background: #EFEFEF; 
+}
+.timeline li a:hover .count { 
+	background: #2D7BB2; 
+}
+
+.timeline .sm {
+	width: 8px;
+}
+
+
+.timeline .usage-total {
+	background-color: #ffff00;
+}
+.timeline .usage-down {
+	
+}
+.timeline .usage-up{
+	
+}
+
+/* percentages / 10 */
+.timeline .total-1 {
+	background-color: #ffffff;
+}
+.timeline .total0  li a .count {
+	background-color: #ffff00;
+}
+.timeline .total1 li a .count {
+	background-color: #eeee00;
+}
+.timeline .total2 li a .count {
+	background-color: #dddd00;
+}
+.timeline .total3 li a .count {
+	background-color: #cccc00;
+}
+.timeline .total4 li a .count {
+	background-color: #bbbb00;
+}
+.timeline .total5 li a .count {
+	background-color: #aaaa00;
+}
+.timeline .total6 li a .count {
+	background-color: #999900;
+}
+.timeline .total7 li a .count {
+	background-color: #888800;
+}
+.timeline .total8 li a .count {
+	background-color: #777700;
+}
+.timeline .total9 li a .count {
+	background-color: #666600;
+}
+.timeline .total10 li a .count {
+	background-color: #555500;
+}
+
+.timeline .down0 {
+
+}
+.timeline .down1 {
+
+}
+.timeline .down2 {
+
+}
+.timeline .down3 {
+
+}
+.timeline .down4 {
+
+}
+.timeline .down5 {
+
+}
+.timeline .down6 {
+
+}
+.timeline .down7 {
+
+}
+.timeline .down8 {
+
+}
+.timeline .down9 {
+
+}
+.timeline .down10 {
+
+}
+
+.timeline .up0 {
+
+}
+.timeline .up1 {
+
+}
+.timeline .up2 {
+
+}
+.timeline .up3 {
+
+}
+.timeline .up4 {
+
+}
+.timeline .up5 {
+
+}
+.timeline .up6 {
+
+}
+.timeline .up7 {
+
+}
+.timeline .up8 {
+
+}
+.timeline .up9 {
+
+}
+.timeline .up10 {
+
+}
