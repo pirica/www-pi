@@ -39,7 +39,7 @@
 		
 		//echo '<script type="text/javascript">var id_grab = ' . $id_grab . ';</script>';
 		
-		switch($action){
+		switch($action->getCode()){
 			case 'login':
 				echo '<link rel="stylesheet" href="../users/styles/default.css" />';
 				echo '<script type="text/javascript" src="../users/scripts/sha512.js"></script>';
@@ -72,7 +72,7 @@
 		<li><a href="?action=main">Home</a></li>
 		
 		<?php
-			switch($action){
+			switch($action->getCode()){
 				case 'setgrab':
 					echo '<li class="active">Edit grab</li>';
 					break;

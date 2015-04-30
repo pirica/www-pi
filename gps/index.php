@@ -8,8 +8,6 @@ require '../_core/appinit.php';
 switch($action->getCode()){
 
 	case 'login':
-		$app->setTitle('Log in');
-		
 		require '../_core/dsp_header.php';
 		require '../users/dsp_loginform.php';
 		require '../_core/dsp_footer.php';
@@ -18,8 +16,6 @@ switch($action->getCode()){
 	
 	case 'showtracks':
 		include 'queries/pr_get_tracks.php';
-		
-		$app->setTitle('Tracks');
 		
 		require '../_core/dsp_header.php';
 		require 'dsp_tracks.php';
@@ -30,8 +26,6 @@ switch($action->getCode()){
 	
 	case 'setplaces':
 		include 'queries/pr_get_places.php';
-		
-		$app->setTitle('Locations');
 		
 		require '../_core/dsp_header.php';
 		require 'dsp_places.php';
@@ -61,7 +55,12 @@ switch($action->getCode()){
 			}
 		}
 		
-		$app->setTitle('Locations');
+		if($id_place > 0){
+			$app->setTitle('Location ' . $place_description);
+		}
+		else {
+			$app->setTitle('New location');
+		}
 		$app->setHeaderScripts('<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=drawing"></script>' . "\n");
 		
 		require '../_core/dsp_header.php';
@@ -78,7 +77,6 @@ switch($action->getCode()){
 	
 	case 'delplace':
 		$id_place = saneInput('id_place', 'int', -1);
-		$app->setTitle('Delete place');
 		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
 		
 		include 'queries/pr_get_places.php';
@@ -108,7 +106,6 @@ switch($action->getCode()){
 	
 	
 	case 'track':
-		$app->setTitle('Track user');
 		$app->setHeaderScripts('<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>' . "\n");
 		//$app->setHeaderScripts('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>' . "\n");
 		
@@ -138,9 +135,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	default:
-		$app->setTitle('Overview');
-		//include 'queries/pr_get_log_messages.php';
-		
 		include '../_core/dsp_header.php';
 		//require 'dsp_submenu.php';
 		include 'dsp_main.php';

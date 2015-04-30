@@ -20,7 +20,7 @@ $qry_camera_log_del = mysql_query("
 		
 	from t_camera_log cl
 	where
-		cl.date < date_format(now() - interval 30 day, '%Y%m%d')
+		cl.date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
 	order by
 		cl.name
 		

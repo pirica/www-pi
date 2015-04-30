@@ -39,7 +39,6 @@ switch($action->getCode()){
 	
 	
 	case 'config':
-		$app->setTitle('Configure hosts');
 		include 'queries/pr_get_hosts.php';
 		include 'queries/pr_get_categories.php';
 		
@@ -61,7 +60,6 @@ switch($action->getCode()){
 		
 	// main: overview
 	default:
-		$app->setTitle('Network overview');
 		include 'queries/pr_get_hosts.php';
 		
 		include '../_core/dsp_header.php';

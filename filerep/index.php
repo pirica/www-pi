@@ -14,8 +14,6 @@ $app->setHeaderScripts('<script type="text/javascript">var id_share = ' . $id_sh
 switch($action->getCode()){
 
 	case 'login':
-		$app->setTitle('Log in');
-		
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
@@ -23,7 +21,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	case 'details':
-		$app->setTitle('Share details');
 		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 		
 		include 'queries/pr_get_files.php';
@@ -44,8 +41,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	default:
-		$app->setTitle('Shares overview');
-		
 		include 'queries/pr_get_share_stats.php';
 		
 		include '../_core/dsp_header.php';

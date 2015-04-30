@@ -33,7 +33,7 @@
 
 		echo '<script type="text/javascript">var id_share = ' . $id_share . ', id_host = ' . $id_host . ', id_file = ' . $id_file . ';</script>';
 		
-		switch($action){
+		switch($action->getCode()){
 			case 'login':
 				echo '<link rel="stylesheet" href="../users/styles/main.css" />';
 				echo '<script type="text/javascript" src="../users/scripts/sha512.js"></script>';
@@ -62,7 +62,7 @@
 		
 		<?php
 			
-			switch($action){
+			switch($action->getCode()){
 				case 'details':
 					echo '<li class="active">Edit grab</li>';
 					break;

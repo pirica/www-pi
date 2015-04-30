@@ -7,7 +7,8 @@ while($entry = mysql_fetch_array($qry_feed_entries))
 	<li class="list-group-item">
 		<h4 class="list-group-item-heading"><?=$entry['entry_title']?> <span class="item-pubdate"><?=$entry['pubdate']?></span></h4>
 		<p class="list-group-item-text">
-			<a class="btn btn-danger btn-xs btn-mark-as-read" href="index.php?action=setfeedentry&id_feed_entry=<?=$entry['id_feed_entry']?>&is_read=1" data-entryid="<?=$entry['id_feed_entry']?>">Mark as read</a>
+			<a class="btn btn-danger btn-sm btn-mark-as-read" href="index.php?action=setfeedentry&id_feed_entry=<?=$entry['id_feed_entry']?>&is_read=1" data-entryid="<?=$entry['id_feed_entry']?>">Read</a>
+			<!--<a class="btn btn-danger btn-sm btn-mark-as-read" href="index.php?action=setfeedentry&entries=<?=$entries?>&is_read=1">All read to here</a>-->
 			<?=$entry['entry_description']?>
 			<a href="<?=$entry['entry_link']?>" target="_blank">More...</a>
 		</p>

@@ -2,8 +2,6 @@
 
 $data = [];
 
-$app->setTitle('Status');
-
 $range_start = time();
 $range_end = $range_start - (7 * 24 * 60 * 60);
 

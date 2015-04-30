@@ -12,17 +12,17 @@
 	}*/
 	?>
 	
-	<li class="dropdown pull-right <?= ($action == 'camera' ? 'active' : '') ?>">
+	<li class="dropdown pull-right <?= ($action->getCode() == 'camera' ? 'active' : '') ?>">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			Cameras
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu" role="menu">
 			<?php 
-			echo '<li class="' . ($action == 'camera' && $id_camera == -1 ? 'active' : '') . '"><a href="?action=camera&id_camera=-1">All</a></li>';
+			echo '<li class="' . ($action->getCode() == 'camera' && $id_camera == -1 ? 'active' : '') . '"><a href="?action=camera&id_camera=-1">All</a></li>';
 			echo '<li class="divider"></li>';
             for ($i = 0; $i < $cameracount; $i++) {
-				echo '<li class="' . ($action == 'camera' && $id_camera == $cameras[$i]['id_camera'] ? 'active' : '') . '"><a href="?action=camera&id_camera=' . $cameras[$i]['id_camera'] . '">' . $cameras[$i]['description'] . '</a></li>';
+				echo '<li class="' . ($action->getCode() == 'camera' && $id_camera == $cameras[$i]['id_camera'] ? 'active' : '') . '"><a href="?action=camera&id_camera=' . $cameras[$i]['id_camera'] . '">' . $cameras[$i]['description'] . '</a></li>';
 			}
 			?>
 		</ul>

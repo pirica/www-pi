@@ -2,11 +2,11 @@
 <h1>Data usage (per day)</h1>
 <h2>Period from <?= $range_start ?> to <?= $range_end ?></h2>
 <p>
-	<a href="?action=<?= $action ?>&date=<?= $date_prev ?>" <?= ($date_prev == '' ? 'class="disabled"' : '') ?>><i class="fa fa-arrow-left"></i> Previous</a>
-	<a href="?action=<?= $action ?>&date=<?= $date_next ?>" <?= ($date_next == '' ? 'class="disabled"' : '') ?>>Next <i class="fa fa-arrow-right"></i></a>
+	<a href="?action=<?= $action->getCode() ?>&date=<?= $date_prev ?>" <?= ($date_prev == '' ? 'class="disabled"' : '') ?>><i class="fa fa-arrow-left"></i> Previous</a>
+	<a href="?action=<?= $action->getCode() ?>&date=<?= $date_next ?>" <?= ($date_next == '' ? 'class="disabled"' : '') ?>>Next <i class="fa fa-arrow-right"></i></a>
 </p>
 <p>
-	<form method="get" action="?action=<?= $action ?>&amp;date=<?= date("Y-m-d", $date) ?>">
+	<form method="get" action="?action=<?= $action->getCode() ?>&amp;date=<?= date("Y-m-d", $date) ?>">
 		<label for="filter_show">Show</label>
 		<select id="filter_show" name="show">
 			<option value="total" <?= ($show == 'total' ? 'selected="selected"' : '') ?>>Total</option>
@@ -51,7 +51,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 	
 	if($show == 'total' || $show == 'all'){
 		echo '		<li class="usage-total total' . ($host['total'] == 0 ? -1 : round($host['total'], -1)) . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -62,7 +62,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down down' . round($host['downloaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -73,7 +73,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up up' . round($host['uploaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -111,7 +111,7 @@ while($host = mysql_fetch_array($qry_totals)){
     //echo '<!--' . $host['total'] .'/'. $maxval['total'] . '-->';
 	if($show == 'total' || $show == 'all'){
 		echo '		<li class="usage-total total' . round($host['total'], -1) . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -122,7 +122,7 @@ while($host = mysql_fetch_array($qry_totals)){
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down down' . round($host['downloaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -133,7 +133,7 @@ while($host = mysql_fetch_array($qry_totals)){
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up up' . round($host['uploaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";

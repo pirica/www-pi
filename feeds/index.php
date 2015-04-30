@@ -9,12 +9,6 @@ $id_feed_entry = saneInput('id_feed_entry', 'int', -1);
 $ajaxcall = saneInput('ajaxcall', 'bool', false);
 $feed_entries = saneInput('entries', 'string');
 
-// to replace!
-/*if (!$loggedin && $action != 'main' && $action != 'setfeedentry' && $action != 'entries'){
-	$_SESSION['url_after_login'] = get_url_after_login();
-	$action = 'login';
-}*/
-
 $desktop = 1;
 if(isset($_SESSION['desktop'])){
 	$desktop = $_SESSION['desktop'];
@@ -25,15 +19,12 @@ switch($action->getCode()){
 	
 	
 	case 'login':
-		$app->setTitle('Log in');
-		
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
 	
 	case 'feeds':
-		$app->setTitle('List of feeds');
 		include 'queries/pr_feeds.php';
 		
 		require '../_core/dsp_header.php';
@@ -43,10 +34,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'setfeed':
-		$app->setTitle('Create/Edit');
-		
 		include 'queries/pr_feeds.php';
-		
 		include 'act_init_feed.php';
 		
 		$error = 0;
@@ -67,7 +55,6 @@ switch($action->getCode()){
 	
 	
 	case 'delfeed':
-		$app->setTitle('Delete');
 		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
 		
 		include 'queries/pr_feeds.php';
@@ -114,8 +101,6 @@ switch($action->getCode()){
 	case 'entries':
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		header("Expires: Mon, 1 Sep 2014 00:00:00 GMT"); // Date in the past
-		
-		$app->setTitle('Details');
 		
 		include 'queries/pr_feed_entries.php';
 		
@@ -178,7 +163,6 @@ switch($action->getCode()){
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		header("Expires: Mon, 1 Sep 2014 00:00:00 GMT"); // Date in the past
 		
-		$app->setTitle('Overview');
 		include 'queries/pr_feed_overview.php';
 		
 		require '../_core/dsp_header.php';

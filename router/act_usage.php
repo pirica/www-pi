@@ -39,7 +39,6 @@ $date_next = '';
 
 switch($action->getCode()){
 	case 'usage_now':
-		$app->setTitle('Usage now');
 		$date = time(); // current hour, since this is 'now'
 		
 		$date_period_format = '%Y-%m-%d %H:%i';
@@ -52,8 +51,6 @@ switch($action->getCode()){
 		break;
 	
 	case 'usage_today':
-		$app->setTitle('Usage today');
-		
 		$date_period_format = '%Y-%m-%d %H';
 		$date_label_format = '%H';
 		$date_period = 'hour';
@@ -67,8 +64,6 @@ switch($action->getCode()){
 		break;
 	
 	case 'usage_day':
-		$app->setTitle('Usage per day');
-		
 		$date_period_format = '%Y-%m-%d';
 		$date_label_format = '%d';
 		$date_period = 'day';
@@ -94,8 +89,6 @@ switch($action->getCode()){
 		break;
 	
 	case 'usage_month':
-		$app->setTitle('Usage per month');
-		
 		$date_period_format = '%Y-%m';
 		$date_label_format = '%b';
 		$date_period = 'month';
@@ -127,18 +120,12 @@ $range_end_sql = str_replace(':', '', str_replace('-', '', str_replace(' ', '', 
 $date_range_format = str_replace(':', '', str_replace('-', '', str_replace(' ', '', $date_period_format)));
 
 
-//require 'queries/pr_get_hosts.php';
-//require 'queries/pr_get_hosts_usage.php';
-
-
 switch($action->getCode()){
 	case 'usage_now':
-		//require 'queries/pr_set_hosts_usage_now.php';
 		require 'queries/pr_get_usage_now.php';
 		break;
 	
 	case 'usage_today':
-		//require 'queries/pr_set_hosts_usage_today.php';
 		require 'queries/pr_get_usage_today.php';
 		break;
 	

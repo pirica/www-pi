@@ -12,8 +12,6 @@ $app->setHeaderScripts('<script type="text/javascript">var id_grab = ' . $id_gra
 switch($action->getCode()){
 	
 	case 'login':
-		$app->setTitle('Log in');
-		
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
@@ -36,8 +34,6 @@ switch($action->getCode()){
 		
 	
 	case 'setgrab':
-		$app->setTitle('Create/Edit');
-		
 		include 'queries/pr_grabs.php';
 		include 'queries/pr_grab_counts.php';
 		
@@ -60,7 +56,6 @@ switch($action->getCode()){
 	
 	
 	case 'delgrab':
-		$app->setTitle('Delete');
 		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
 		
 		include 'queries/pr_grabs.php';
@@ -83,8 +78,6 @@ switch($action->getCode()){
 	
 	
 	case 'setgrabcounter':
-		$app->setTitle('Create/Edit');
-		
 		include 'queries/pr_grabs.php';
 		include 'queries/pr_grab_counts.php';
 		
@@ -107,7 +100,6 @@ switch($action->getCode()){
 	
 	
 	case 'delgrabcounter':
-		$app->setTitle('Delete');
 		$ajaxcall = saneInput('ajaxcall', 'boolean', true);
 		
 		include 'queries/pr_grabs.php';
@@ -135,9 +127,6 @@ switch($action->getCode()){
 	// grab overviews + details
 	
 	case 'details':
-		
-		$app->setTitle('Details');
-		
 		include 'queries/pr_grabs.php';
 		include 'act_init_grab.php';
 		
@@ -154,8 +143,6 @@ switch($action->getCode()){
 	
 	
 	case 'detailsgrid':
-		$app->setTitle('Details');
-		
 		include 'queries/pr_grabs.php';
 		include 'act_init_grab.php';
 		
@@ -170,7 +157,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	default:
-		$app->setTitle('Overview');
 		include 'queries/pr_grabs.php';
 		
 		include '../_core/dsp_header.php';
