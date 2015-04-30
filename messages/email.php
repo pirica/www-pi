@@ -41,6 +41,15 @@ for($i=$total-1;$i>=0;$i--) {
 	
 	if($debug == 1) print_r($email);
 	
+	$fromaddress = '- not set -';
+	$subject = '- not set -';
+	
+	if(isset($email['header']->fromaddress)){
+		$fromaddress = $email['header']->fromaddress;
+	}
+	if(isset($email['header']->subject)){
+		$subject = $email['header']->subject;
+	}
 	
 	$qry = mysql_query("
 		select
@@ -53,16 +62,16 @@ for($i=$total-1;$i>=0;$i--) {
 		where
 			enabled = 1
 			and (
-				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($email['header']->fromaddress) . "' like when_from)
+				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($fromaddress) . "' like when_from)
 				or
-				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($email['header']->subject) . "' like when_subject)
+				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($subject) . "' like when_subject)
 			)
 		");
 
 	while($tt = mysql_fetch_array($qry)){
 		$channel = 'Email_' . $tt['description'];
-		$title =  'Email from ' . $email['header']->fromaddress;
-		$msg = 'Sub: ' . $email['header']->subject;
+		$title =  'Email from ' . $fromaddress;
+		$msg = 'Sub: ' . $subject;
 		$priority = 2;
 		
 		$qry_result = mysql_query("
