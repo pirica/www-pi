@@ -31,10 +31,10 @@ if($errors !== false){
 			
 			$message = $lines[$i];
 			$message = explode(':  ', $message, 2)[1];
-			$message = explode('  in ', $message)[0];
+			$message = explode(' in ', $message)[0];
 			
 			$location = $lines[$i];
-			$location = explode('  in ', $location)[1];
+			$location = explode(' in ', $location)[1];
 			$location = explode(' on line ', $location)[0];
 			
 			$linenbr = $lines[$i];
