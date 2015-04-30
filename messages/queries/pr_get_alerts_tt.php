@@ -25,7 +25,7 @@ $qry_alerts_tt = mysql_query("
 		left join t_tracktrace_result tr on tr.id_tracktrace = t.id_tracktrace
 		
 	where
-		DATE_FORMAT(ifnull(tr.date_result,now()), '%Y%m%d') >= DATE_FORMAT(now() - interval 6 month, '%Y%m%d')
+		DATE_FORMAT(ifnull(tr.date_result,now()), '%Y%m%d') >= DATE_FORMAT(now() - interval " . $settings->val('tracktrace_alerts_show_months', 6) . " month, '%Y%m%d')
 	
 	order by
 		t.id_tracktrace desc,

@@ -39,19 +39,6 @@ mysql_query("
 	", $conn);
 	
 
-/*
-// clear all my actions
-mysql_query("
-	update t_file_action
-	set
-		date_executed = now()
-	
-	where
-		id_share = " . $id_share . " 
-		and id_host = " . $id_host . " 
-	", $conn);
-*/
-
 // clear all my actions
 mysql_query("
 	delete from t_file_action

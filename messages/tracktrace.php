@@ -62,7 +62,7 @@ while($tt = mysql_fetch_array($qry)){
 			");
 
 		$channel = $tt['description'];
-		$priority = 1;
+		$priority = $settings->val('tracktrace_alerting_priority', 1);
 		send_msg($channel, $tt['title'], $msg, $priority);
 		
 		

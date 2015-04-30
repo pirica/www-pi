@@ -9,13 +9,13 @@ Range end = excluded
 
 $date = saneInput('date', 'string', '');
 $show = saneInput('show', 'string', '');
-$tm = saneInput('tm', 'int', '0');
+$tm = saneInput('tm', 'int', '-1');
 
 if(!in_array($show, array('total','down','up','both','all'))){
-	$show = 'total';
+	$show = $settings->val('usage_show_default_value', 'total');
 }
 if($tm != 0 || $tm != 1){
-	$tm = 0;
+	$tm = $settings->val('usage_telemeter_default_value', 0);
 }
 
 /*

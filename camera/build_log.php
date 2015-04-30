@@ -40,9 +40,6 @@ if(date("H", $crondate) == 3 && date("i", $crondate) < 10){
 
 $dirs = [];
 
-//$dirsfound = list_dir_shell($dirs, $main_dir, 0, 0, 1, 0);
-//$dirsfound = list_dir($dirs, $main_dir, 0, 1, 0);
-
 $tmpdirs = str_replace($main_dir, '', shell_exec('find "' . $main_dir . '" -mindepth 1 -maxdepth 1'));
 echo '<!--';
 echo $tmpdirs;
@@ -61,7 +58,6 @@ $files = [];
 $tmpfiles = [];
 $filecount = 0;
 
-//if($date != ''){
 for ($d = 0; $d < $dircount; $d++) {
 	if($dirs[$d] != ''){
 		$files[] = array(
@@ -70,8 +66,6 @@ for ($d = 0; $d < $dircount; $d++) {
 			'subcount' => 0
 		);
 		
-		//$filesfound = list_dir_shell($files, $main_dir . $date, 0, 0, 1, 0);
-		//$filesfound = list_dir($tmpfiles, $main_dir . $date, 0, 1, 0);
 		$tmpfilestr = str_replace($main_dir . $dirs[$d], '', shell_exec('find "' . $main_dir . $dirs[$d] . '" -mindepth 1 -maxdepth 1'));
 		$tmpfilestr = str_replace("\r", "\n", $tmpfilestr);
 		$tmpfilestr = str_replace("\n\n", "\n", $tmpfilestr);
@@ -83,7 +77,6 @@ for ($d = 0; $d < $dircount; $d++) {
 		$prev_time_lbl = '';
 		
 		if($tmpfilecount > 0){
-			//array_sort_by_column($tmpfiles, 'name');
 			sort($tmpfiles);
 			
 			for ($i = 0; $i < $tmpfilecount; $i++) {

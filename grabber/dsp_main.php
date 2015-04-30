@@ -38,7 +38,6 @@
 			<td><a href="index.php?action=details&amp;id_grab=<?=$grab['id_grab'] ?>"><?=$grab['description'] ?></a></td>
 			<td><?=$grab['counters_total'] ?></td>
 			<td><?=$grab['files_total'] ?></td>
-			<!--td><?=($files_ok + $files_fx + $files_err) ?></td-->
 			<td><?=$grab['files_todo'] ?></td>
 			<td>
 				<?php
@@ -118,22 +117,11 @@
 					<div style="width: <?=($pb_err_width) ?>%;" class="progress-bar progress-bar-danger" alt="<?=$alttxt ?>" title="<?=$alttxt ?>"></div>
 				</div>
 				
-				<!--
-				<div class="progress">
-					<div class="progress-bar progress-bar-success" style="width: 35%;"><span class="sr-only">35% Complete (success)</span></div>
-					<div class="progress-bar progress-bar-warning" style="width: 20%;"><span class="sr-only">20% Complete (success)</span></div>
-					<div class="progress-bar progress-bar-danger" style="width: 10%;"><span class="sr-only">10% Complete (success)</span></div>
-				</div>
-				-->
 			</td>
 			<td colspan="6" <?php if($grab['files_total'] == $files_ok + $files_fx + $files_err){ ?>class="greyed"<?php } ?>>
 				ETA: <?=$grab['eta_rounded']?>
 			</td>
 		</tr>
-		<!--tr>
-			<td>&nbsp;</td>
-			<td colspan="7">
-		</tr-->
 	<?php 
 	}
 	?>

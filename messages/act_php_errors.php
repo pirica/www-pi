@@ -10,7 +10,7 @@ set_time_limit(0);
 
 $data = [];
 
-$errors = @file_get_contents("/media/usbdrive/log/php_errors.log", "r");
+$errors = @file_get_contents($settings->val('php_errorlog_file', '/var/log/php_errors.log'), "r");
 if($errors !== false){
 	$errors = str_replace("\r", "\n", $errors);
 	//$errors = str_replace("\n\n", "\n", $errors);

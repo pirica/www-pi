@@ -37,11 +37,11 @@ $qry_grabs = mysql_query("
 		ifnull(g.files_error, 0) as files_error,
 		ifnull(g.files_excluded, 0) as files_excluded,
 		
-		now() + interval (files_todo / ifnull(max_grabbers,100) * 5) minute as eta,
+		now() + interval (files_todo / ifnull(max_grabbers," . $settings->val('grabber_maxgrabbers_default', 20) . ") * " . $settings->val('grabber_run_interval', 5) . ") minute as eta,
 		
 		FROM_UNIXTIME(((UNIX_TIMESTAMP(
-			(now() + interval (files_todo / ifnull(max_grabbers,100) * 5) minute)
-		) + 300) DIV 300) * 300)  AS eta_rounded
+			(now() + interval (files_todo / ifnull(max_grabbers," . $settings->val('grabber_maxgrabbers_default', 20) . ") * " . $settings->val('grabber_run_interval', 5) . ") minute)
+		) + (" . $settings->val('grabber_run_interval', 5) . " * 60)) DIV (" . $settings->val('grabber_run_interval', 5) . " * 60)) * (" . $settings->val('grabber_run_interval', 5) . " * 60))  AS eta_rounded
 
 		
 	from t_grab g

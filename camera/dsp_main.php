@@ -44,7 +44,6 @@
 <div class="row">
 	<?php
 	for ($i = 0; $i < $cameracount; $i++) {
-		//echo '<li class="' . ($action->getCode() == 'camera' && $id_camera == $cameras[$i]['id_camera'] ? 'active' : '') . '"><a href="?action=camera&id_camera=' . $cameras[$i]['id_camera'] . '">' . $cameras[$i]['description'] . '</a></li>';
 	?>
 		<div class="col-xs-6 col-md-3">
 			<div class="thumbnail">

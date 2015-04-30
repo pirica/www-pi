@@ -3,25 +3,28 @@
 $sort = strtolower(saneInput('sort'));
 $sortorder = strtolower(saneInput('sortorder'));
 
-$perpage = saneInput('perpage', 'int', 50);
+$perpage = saneInput('perpage', 'int', -1);
 $page = saneInput('page', 'int', 1);
 
 $search = strtolower(saneInput('search'));
-$status = strtolower(saneInput('status', '*'));
+$status = strtolower(saneInput('status'));
 
-$max_pages = 20;
+$max_pages = $settings->val('detailgrid_max_pages', 20);
 
 // invalid values : reset to default
 if(!in_array($sort, array('full_url', 'full_path', 'status', 'date_inserted', 'date_modified'))){
-	$sort = 'date_inserted';
+	$sort = $settings->val('detailgrid_default_sort', 'date_inserted');
 }
 if(!in_array($sortorder, array('asc', 'desc'))){
-	$sortorder = 'desc';
+	$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
+}
+if($status == '' || !in_array($status, array('*', 'N'))){
+	$status = $settings->val('detailgrid_default_status', '*');
 }
 
 // invalid paging, reset
 if($perpage <= 0){
-	$perpage = 100;
+	$perpage = $settings->val('detailgrid_items_perpage', 50);
 }
 if($page <= 0){
 	$page = 1;

@@ -3,11 +3,6 @@
 	
 	<?php 
 	echo '<li class="' . ($action->getCode() == 'main' ? 'active' : '') . '"><a href="?action=main>Overview</a></li>';
-	/*
-	for ($i = 0; $i < $dircount; $i++) {
-		//echo '<li class="' . ($date == $dirs[$i]['name'] ? 'active' : '') . '"><a href="?action=main&date=' . $dirs[$i]['name'] . '">' . $dirs[$i]['name'] . '</a></li>';
-		echo '<li class="' . ($date == $dirs[$i] ? 'active' : '') . '"><a href="?action=main&date=' . $dirs[$i] . '">' . $dirs[$i] . '</a></li>';
-	}*/
 	?>
 	
 	<li class="dropdown pull-right <?= ($action->getCode() == 'camera' ? 'active' : '') ?>">
@@ -38,7 +33,6 @@ if(isset($files) && $filecount > 0){
 	<?php 
 	for ($i = 0; $i < $filecount; $i++) {
 		echo '<li class="' . ($time == $files[$i]['hour_lbl'] ? 'active' : '') . '"><a href="?action=main&date=' . $date . '&time=' . $files[$i]['hour_lbl'] . '">' . $files[$i]['hour_lbl'] . '</a></li>';
-		//echo '<li class="' . ($time == $files[$i] ? 'active' : '') . '"><a href="?action=main&date=' . $date . '&time=' . $files[$i] . '">' . $files[$i] . '</a></li>';
 	}
 	?>
 	

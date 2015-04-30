@@ -17,7 +17,7 @@ $qry_alerts_email = mysql_query("
 		join t_alert_email_result aer on aer.id_alert_email = ae.id_alert_email
 		
 	where
-		DATE_FORMAT(aer.date_result, '%Y%m%d') >= DATE_FORMAT(now() - interval 6 month, '%Y%m%d')
+		DATE_FORMAT(aer.date_result, '%Y%m%d') >= DATE_FORMAT(now() - interval " . $settings->val('email_alerts_show_months', 6) . " month, '%Y%m%d')
 	
 	order by
 		ae.description,

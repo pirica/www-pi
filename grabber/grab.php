@@ -186,13 +186,6 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 			
 			while ($grabfile = mysql_fetch_array($qry_grab_files)) {
 
-				/*
-				$timeout = $grabfile['timeout'];
-				if($timeout == '' || $timeout < 0){
-					$timeout = 30;
-				}
-				*/
-				
 				$status = '';
 				$status_info = '';
 				

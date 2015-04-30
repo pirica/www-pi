@@ -4,11 +4,6 @@ set_time_limit(0);
 // Read the PHP input stream and save the contents to $rawPost.
 $rawPost = file_get_contents('php://input');
 
-//$path = $_GET['path'];
-//$chunk = !empty($_GET['chunk']) ? $_GET['chunk'] : null;
-//$last = isset($_GET['last']) && (strtolower('' . $_GET['last']) == 'true' || '' . $_GET['last'] == '1');
-//$fileId = isset($_GET['id']) ? $_GET['id'] : '';
-//$modified = isset($_GET['modified']) && $_GET['modified'] != '' && $_GET['modified'] > 0 ? $_GET['modified'] : 0;
 $path = saneInput('path');
 $chunk = saneInput('chunk', 'int');
 $last = saneInput('last', 'bit', false);
@@ -62,10 +57,8 @@ if(empty($errors)) {
 			
 			// remove server dir - only first instance
 			$reldir = implode('', explode($dir, $reldir, 2));
-			//$filename = implode('', explode('/', $reldir));
 			
 			$filenamearr = explode('/', $reldir);
-			//$filename = $filenamearr[count($filenamearr) - 1];
 			$filename = array_pop($filenamearr);
 			$reldir = implode('/', $filenamearr);
 			

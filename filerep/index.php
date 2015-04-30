@@ -24,7 +24,6 @@ switch($action->getCode()){
 		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 		
 		include 'queries/pr_get_files.php';
-		//include 'queries/pr_get_files_subdirs.php';
 		
 		// row 1: current directory
 		$currentdir = mysql_fetch_array($qry_files_currentdir);

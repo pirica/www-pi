@@ -9,8 +9,6 @@ $range_end_sql = date("YmdH", strtotime('+1 hour', $date));
 $night_start_sql = '0000';
 $night_end_sql = '1000';
 
-//mysql_query("truncate table t_usage_today");
-
 mysql_query("
 	
 	insert into t_usage_today
@@ -51,12 +49,6 @@ mysql_query("
 			DATE_FORMAT((str_to_date('" . $range_start_sql . "', '%Y%m%d%H')+INTERVAL (H+T+U) hour), '%Y%m%d%H') < '" . $range_end_sql . "'
 	
 	) d
-	#cross join (
-	#	select mac_address from t_host_usage hu 
-	#	where DATE_FORMAT(hu.date_usage, '%Y%m%d%H') >= '" . $range_start_sql . "'
-	#	and DATE_FORMAT(hu.date_usage, '%Y%m%d%H') < '" . $range_end_sql . "'
-	#	group by mac_address
-	#) h
 	cross join (
 		select mac_address from t_host
 		where active = 1

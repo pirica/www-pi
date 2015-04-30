@@ -18,20 +18,7 @@ else {
 		where
 			sh.id_setting_host is null
 		", $conn);
-	/*
-	mysql_query("
-		insert into t_setting_host (code, value, id_host)
-		select s.code, s.value, h.id_host
-		from 
-			t_host h
-			join t_setting s on 1=1
-			left join t_setting_host sh on sh.id_host = h.id_host and sh.code = s.code 
-		where
-			h.id_host = " . $id_host . " 
-			and s.code = '" . $code . "'
-			and sh.id_setting_host is null
-		", $conn);
-	*/
+	
 	$qry = mysql_query("
 		update t_setting_host 
 		set

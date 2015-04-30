@@ -72,7 +72,7 @@ for($i=$total-1;$i>=0;$i--) {
 		$channel = 'Email_' . $tt['description'];
 		$title =  'Email from ' . $fromaddress;
 		$msg = 'Sub: ' . $subject;
-		$priority = 2;
+		$priority = $settings->val('email_alerting_priority', 2);
 		
 		$qry_result = mysql_query("
 			select 

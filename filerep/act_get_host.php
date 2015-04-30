@@ -45,20 +45,6 @@ else {
 			and h.name = '" . $hostname . "'
 		";
 	
-	/*
-	$sql = "
-		select
-			h.id_host,
-			h.name,
-			h.os,
-			h.date_linked_since
-		from t_host h
-		where
-			h.active = 1
-			and h.name = '" . $hostname . "'
-		";
-	*/
-	
 	$qry = mysql_query($sql, $conn);
 		
 	if(mysql_num_rows($qry) == 0){

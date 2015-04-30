@@ -3,7 +3,6 @@ set_time_limit(0);
 
 
 
-//$sharename = mysql_real_escape_string(saneInput('sharename'));
 $sharename = saneInput('sharename');
 $date_last_replicated = saneInput('date_last_replicated', 'unixtime', 0); // seconds since epoch
 //$cached_index = saneInput('cached_index', 'int', 1);
@@ -19,7 +18,6 @@ $qry = mysql_query("
 
 while ($row = mysql_fetch_array($qry)) {
 	$sharename = $row{'server_directory'};
-	//$date_last_replicated = $row{'date_last_replicated'};
 }
 
 $data = [];
