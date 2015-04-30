@@ -10,13 +10,18 @@ class Email_reader {
     private $msg_cnt;
  
     // email login credentials
-    private $server = 'mail.wikke.net';
-    private $user   = 'wikke@wikke.net';
-    private $pass   = '8eNAdruv';
+    private $server = '';
+    private $user   = '';
+    private $pass   = '';
     private $port   = 110; // adjust according to server settings
  
     // connect to the server and get the inbox emails
-    function __construct() {
+    function __construct($server, $username, $password, $port = 110) {
+		$this->server = $server;
+		$this->user = $username;
+		$this->pass = $password;
+		$this->port = $port;
+		
         $this->connect();
         //$this->inbox();
     }

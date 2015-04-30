@@ -1,16 +1,22 @@
 <?php
 $debug = 0;
-require 'connection.php';
+//require 'connection.php';
 require 'functions.php';
+require '../_core/appinit.php';
 
 
 require 'com/Email_Reader.php';
-$emailhandle = New Email_reader();
+$emailhandle = New Email_reader(
+	$settings->val('email_hostname', ''),
+	$settings->val('email_username', ''),
+	$settings->val('email_password', ''),
+	$settings->val('email_port', 110)
+);
 $emails = $emailhandle->inbox();
 
 /*
 include('com/pop3.php');
-$rPOP3handle = new pop3('mail.wikke.net','wikke@wikke.net','8eNAdruv');
+$rPOP3handle = new pop3('mail.wikke.net','wikke@wikke.net','passw');
 //if($debug == 1) print_r($rPOP3handle->retrieveMessage(1));
 
 $list = $rPOP3handle->listMessages();
