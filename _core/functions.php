@@ -331,14 +331,14 @@ function download_limit($local_file){
 	}
 }*/
 
-function formatFileSize($sizeInBytes){
+function formatFileSize($sizeInBytes, $rounding = 2){
 	$index = 0;
     $sizes = array('b', 'kB', 'MB', 'GB', 'TB');
 	while($sizeInBytes > 1024){
 		$sizeInBytes /= 1024;
 		$index++;
 	}
-	return round($sizeInBytes, 2) . ' ' . $sizes[$index];
+	return round($sizeInBytes, $rounding) . ' ' . $sizes[$index];
 }
 
 

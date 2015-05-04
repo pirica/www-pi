@@ -4,7 +4,7 @@ echo "<!--\n";
 
 $sql_max = "
     select
-         max(total) as max_total,
+        max(total) as max_total,
         max(downloaded) as max_down,
         max(uploaded) as max_up,
         max(case when downloaded > uploaded then downloaded else uploaded end) as max_both,
@@ -88,6 +88,7 @@ $sql_hosts = "
 	from t_usage_now hu
 	join t_host h on hu.mac_address = h.mac_address
 		and h.active = 1
+		and h.mac_address in (" . $filter_macs . ")
 	left join t_category c on c.id_category = h.id_category
 	
 	where

@@ -88,6 +88,7 @@ $sql_hosts = "
 	from t_usage_day hu
 	join t_host h on hu.mac_address = h.mac_address
 		and h.active = 1
+		and h.mac_address in (" . $filter_macs . ")
 	left join t_category c on c.id_category = h.id_category
 	
 	where

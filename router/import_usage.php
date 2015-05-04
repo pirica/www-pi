@@ -145,17 +145,17 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				$date_check = date("Y-m-d 00:00:00");
 				$channel = 'router';
 				$title = 'Daily usage exceeded';
-				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s daily usage';
+				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s daily usage of ' . formatFileSize($host['alert_when_traffic_exceeds_daily'], 0);
 				$priority = 1;
 				if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
 					send_msg($channel, $title, $msg, $priority, 'import_usage');
 				}
 			}
 			if($host['alert_when_traffic_exceeds_monthly'] > 0 && ($host['downloaded_month'] + $host['uploaded_month']) > $host['alert_when_traffic_exceeds_monthly']){
-				$date_check = date("Y-m-01 00:00:00");
+				$date_check = date("Y-m-04 00:00:00");
 				$channel = 'router';
 				$title = 'Monthly usage exceeded';
-				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s monthly usage';
+				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s monthly usage of ' . formatFileSize($host['alert_when_traffic_exceeds_monthly'], 0);
 				$priority = 2;
 				if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
 					send_msg($channel, $title, $msg, $priority, 'import_usage');

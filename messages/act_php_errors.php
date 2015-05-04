@@ -4,7 +4,10 @@ set_time_limit(0);
 
 /*
 [16-Feb-2015 06:57:02 Europe/Berlin] PHP Warning:  file_get_contents(http://192.168.1.1/cgi-bin/dhcp.leases): failed to open stream: HTTP request failed!  in /var/www/router/check_network.php on line 29
-[16-Feb-2015 09:44:02 Europe/Berlin] PHP Warning:  file_get_contents(http://192.168.1.1/cgi-bin/dhcp.leases): failed to open stream: HTTP request failed!  in /var/www/router/check_network.php on line 29
+[30-Apr-2015 10:25:59 Europe/Berlin] PHP Notice:  Unknown: Missing parameter (errflg=3) in Unknown on line 0
+[30-Apr-2015 10:26:16 Europe/Berlin] PHP Notice:  Unknown: Unexpected characters at end of address: ; Mon, 27 Apr 2015 09:54:18 -0700 (errflg=3) in Unknown on line 0
+[30-Apr-2015 11:18:44 Europe/Berlin] PHP Warning:  include(): Failed opening 'dsp_status.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/router/index.php on line 35
+[30-Apr-2015 14:49:30 Europe/Berlin] PHP Notice:  Undefined offset: 1 in /var/www/messages/act_php_errors.php on line 37
 
 */
 
