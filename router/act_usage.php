@@ -139,7 +139,7 @@ while($hosts_usage = mysql_fetch_array($qry_hosts_usage)){
 	if($filter_macs != ''){
 		$filter_macs .= ",";
 	}
-	$filter_macs = "'" . $hosts_usage['mac_address'] . "'";
+	$filter_macs = ."'" . $hosts_usage['mac_address'] . "'";
 }
 
 
