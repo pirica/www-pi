@@ -32,8 +32,6 @@ else {
 $date_prev = '';
 $date_next = '';
 
-$filter_macs = '';
-
 
 switch($action->getCode()){
 	case 'usage_now':
@@ -45,8 +43,6 @@ switch($action->getCode()){
 		
 		$range_start = date("Y-m-d H:00", $date - 3600);
 		$range_end = date("Y-m-d H:i", $date + 60);
-		
-		require 'queries/pr_get_hosts_usage_now.php';
 		
 		break;
 	
@@ -60,8 +56,6 @@ switch($action->getCode()){
 
 		$date_prev = date("Y-m-d", strtotime('-1 day', $date));
 		$date_next = date("Y-m-d", strtotime('+1 day', $date));
-		
-		require 'queries/pr_get_hosts_usage_today.php';
 		
 		break;
 	
@@ -87,8 +81,6 @@ switch($action->getCode()){
 			$date_next = date("Y-m-d", strtotime('+1 month', $date));
 		}
 		
-		require 'queries/pr_get_hosts_usage_day.php';
-		
 		break;
 	
 	case 'usage_month':
@@ -101,8 +93,6 @@ switch($action->getCode()){
 		
 		$date_prev = date("Y-m-d", strtotime('-1 year', $date));
 		$date_next = date("Y-m-d", strtotime('+1 year', $date));
-		
-		require 'queries/pr_get_hosts_usage_month.php';
 		
 		break;
 }
@@ -123,6 +113,27 @@ echo date("Y-m-d H:i:s", $range_end);
 $range_start_sql = str_replace(':', '', str_replace('-', '', str_replace(' ', '', $range_start)));
 $range_end_sql = str_replace(':', '', str_replace('-', '', str_replace(' ', '', $range_end)));
 $date_range_format = str_replace(':', '', str_replace('-', '', str_replace(' ', '', $date_period_format)));
+
+
+$filter_macs = '';
+
+switch($action->getCode()){
+	case 'usage_now':
+		require 'queries/pr_get_hosts_usage_now.php';
+		break;
+	
+	case 'usage_today':
+		require 'queries/pr_get_hosts_usage_today.php';
+		break;
+	
+	case 'usage_day':
+		require 'queries/pr_get_hosts_usage_day.php';
+		break;
+	
+	case 'usage_month':
+		require 'queries/pr_get_hosts_usage_month.php';
+		break;
+}
 
 while($hosts_usage = mysql_fetch_array($qry_hosts_usage)){
 	if($filter_macs != ''){
