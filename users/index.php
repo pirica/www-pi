@@ -8,7 +8,48 @@ switch($action->getCode()){
 
 	case 'login':
 		require '../_core/dsp_header.php';
-		require '../users/dsp_loginform.php';
+		require 'dsp_loginform.php';
+		require '../_core/dsp_footer.php';
+		break;
+		
+	case 'do_login':
+		require 'act_login.php';
+		break;
+		
+	case 'loggedin':
+		require '../_core/dsp_header.php';
+		require 'dsp_error.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+		
+	case 'logout':
+		include_once 'act_logout.php';
+		
+		//require '../_core/dsp_header.php';
+		//require 'dsp_register.php';
+		//require '../_core/dsp_footer.php';
+		break;
+	
+	
+	case 'register':
+		include_once 'act_register.php';
+		
+		require '../_core/dsp_header.php';
+		require 'dsp_register.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	case 'register_success':
+		require '../_core/dsp_header.php';
+		require 'dsp_register_success.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	
+	case 'error':
+		require '../_core/dsp_header.php';
+		require 'dsp_error.php';
 		require '../_core/dsp_footer.php';
 		break;
 	

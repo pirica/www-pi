@@ -7,7 +7,7 @@ if (isset($_GET['error'])) {
 
 <h1>Log in</h1>
 
-<form class="form-horizontal login-form" action="../users/act_login.php" method="post" name="login_form"> 		
+<form class="form-horizontal login-form" action="../users/index.php?action=do_login" method="post" name="login_form"> 		
 	
 	<div class="form-group">
 		<label for="email">Email</label>

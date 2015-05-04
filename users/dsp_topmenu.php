@@ -35,13 +35,13 @@ if(isset($_GET['newmenu'])) {
 					<li class="divider"></li>
 					<li class="disabled"><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
 					<li class="divider"></li>
-					<li><a href="../users/act_logout.php"><i class="fa fa-power-off"></i> Log out</a></li>
+					<li><a href="../users/index.php?action=logout"><i class="fa fa-power-off"></i> Log out</a></li>
 				<?php
 				}
 				else {
 					?>
-					<li><a href="../users/dsp_login.php"><i class="fa fa-power-on"></i> Log in</a></li>
-					<li><a href="../users/dsp_register.php">Register</a></li>
+					<li><a href="../users/index.php?action=login"><i class="fa fa-power-on"></i> Log in</a></li>
+					<li><a href="../users/index.php?action=register">Register</a></li>
 				<?php
 				}
 				?>
@@ -155,7 +155,7 @@ if(isset($_GET['newmenu'])) {
 					<li class="divider"></li>
 					<li class="disabled"><a href="#">Settings</a></li>
 					<li class="divider"></li>
-					<li><a href="../users/act_logout.php">Log out</a></li>
+					<li><a href="../users/index.php?action=logout">Log out</a></li>
 				</ul>
 			</li>
 		<?php
@@ -188,8 +188,8 @@ if(isset($_GET['newmenu'])) {
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu pull-right" role="menu">
-					<li><a href="../users/dsp_login.php">Log in</a></li>
-					<li><a href="../users/dsp_register.php">Register</a></li>
+					<li><a href="../users/index.php?action=login">Log in</a></li>
+					<li><a href="../users/index.php?action=register">Register</a></li>
 				</ul>
 			</li>
 			
@@ -239,7 +239,7 @@ if(isset($_GET['newmenu'])) {
 					<li class="divider"></li>
 					<li class="disabled"><a href="#">Settings</a></li>
 					<li class="divider"></li>
-					<li><a href="../users/act_logout.php">Log out</a></li>
+					<li><a href="../users/index.php?action=logout">Log out</a></li>
 				</ul>
 			</li>
 		<?php
@@ -272,8 +272,8 @@ if(isset($_GET['newmenu'])) {
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu pull-right" role="menu">
-					<li><a href="../users/dsp_login.php">Log in</a></li>
-					<li><a href="../users/dsp_register.php">Register</a></li>
+					<li><a href="../users/index.php?action=login">Log in</a></li>
+					<li><a href="../users/index.php?action=register">Register</a></li>
 				</ul>
 			</li>
 			

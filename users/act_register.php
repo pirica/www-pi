@@ -17,9 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-include_once 'connection.php';
-include_once 'config.php';
-
 $error_msg = "";
 
 if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
@@ -77,11 +74,11 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
             $insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
             // Execute the prepared query.
             if (! $insert_stmt->execute()) {
-                header('Location: ../error.php?err=Registration failure: INSERT');
+                header('Location: ../index.php?action=error&err=Registration failure: INSERT');
                 exit();
             }
         }
-        header('Location: ./dsp_register_success.php');
+        header('Location: index.php?action=register_success');
         exit();
     }
 }
