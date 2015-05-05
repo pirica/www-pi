@@ -109,15 +109,12 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 					$_SESSION['loginchecks'] = 1;
 					
 					if($rememberme){
-						// generate lazy login id
-						$lazy_login = hash('sha512', $user_id . '-' . $_SESSION['username_safe'] . '-' . $email);
-						$mysqli->query("update t_user set lazy_login = '" . $lazy_login . "' where id_user = " . $user_id);
 						// set cookie
-						setcookie('lazy_login', $lazy_login, time() + (3600 * 24 * 30));
+						setcookie('sessiontimeout', (3600 * 24 * 30), time() + (3600 * 24 * 30));
 					}
 					else {
 						// clear cookie
-						setcookie('lazy_login', '', 0);
+						setcookie('sessiontimeout', '', 0);
 					}
 					
 					if(isset($_SESSION['url_after_login'])){
@@ -138,97 +135,6 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 
                     return false;
                 }
-            }
-        }
-		else {
-            // No user exists. 
-            return false;
-        }
-    }
-	else {
-        // Could not create a prepared statement
-        header("Location: index.php?action=error&err=Database error: cannot prepare statement");
-        exit();
-    }
-}
-
-
-function login_lazy($lazy_login, $mysqli, $rememberme = false) {
-    // Using prepared statements means that SQL injection is not possible. 
-    if ($stmt = $mysqli->prepare("SELECT id_user, username, password, salt 
-				  FROM t_user 
-                  WHERE lazy_login = ? 
-					and active = 1
-				  LIMIT 1")) {
-        $stmt->bind_param('s', $lazy_login);  // Bind "$lazy_login" to parameter.
-        $stmt->execute();    // Execute the prepared query.
-        $stmt->store_result();
-
-        // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password, $salt);
-        $stmt->fetch();
-
-        if ($stmt->num_rows == 1) {
-            // If the user exists we check if the account is locked
-            // from too many login attempts 
-            if (checkbrute($user_id, $mysqli) == true) {
-                // Account is locked 
-                // Send an email to user saying their account is locked 
-                return false;
-            }
-			else {
-                // Check if the password in the database matches 
-                // the password the user submitted.
-                //if ($db_password == $password) {
-                    // Password is correct!
-                    // Get the user-agent string of the user.
-                    $user_browser = $_SERVER['HTTP_USER_AGENT'];
-
-                    // XSS protection as we might print this value
-                    $user_id = preg_replace("/[^0-9]+/", "", $user_id);
-                    $_SESSION['user_id'] = $user_id;
-
-                    // XSS protection as we might print this value
-                    //$username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username);
-
-                    $_SESSION['username'] = $username;
-                    $_SESSION['username_safe'] = htmlentities(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username));
-                    $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
-					$_SESSION['logintime'] = time();
-					$_SESSION['logintimecheck'] = time();
-					$_SESSION['logins'] = 1;
-					$_SESSION['loginchecks'] = 1;
-					
-					if($rememberme){
-						// generate lazy login id
-						$lazy_login = hash('sha512', $user_id . '-' . $_SESSION['username_safe'] . '-' . $email);
-						$mysqli->query("update t_user set lazy_login = '" . $lazy_login . "' where id_user = " . $user_id);
-						// set cookie
-						setcookie('lazy_login', $lazy_login, time() + (3600 * 24 * 30));
-					}
-					else {
-						// clear cookie
-						setcookie('lazy_login', '', 0);
-					}
-					
-					if(isset($_SESSION['url_after_login'])){
-						header("Location: " . $_SESSION['url_after_login']);
-						exit();
-					}
-                    // Login successful. 
-                    return true;
-                /*}
-				else {
-                    // Password is not correct 
-                    // We record this attempt in the database 
-                    if (!$mysqli->query("INSERT INTO t_log_login(id_user, email, password, ip_address) 
-                                    VALUES ('$user_id', '$email', '$password_plain', '".$_SERVER['REMOTE_ADDR']."')")) {
-                        header("Location: index.php?action=error&err=Database error: login_attempts");
-                        exit();
-                    }
-
-                    return false;
-                }*/
             }
         }
 		else {
@@ -276,18 +182,8 @@ function checkbrute($user_id, $mysqli) {
 
 function login_check($mysqli) {
 
-	$lazy_login = '';
-	
-	// get user cookie
-	if(isset($_COOKIE['lazy_login'])){
-		$lazy_login = $_COOKIE['lazy_login'];
-	}
-	
-	if($lazy_login != '' && login_lazy($lazy_login, $mysqli, true)){
-		return true;
-	}
     // Check if all session variables are set 
-    else if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'], $_SESSION['logintimecheck'])) {
+    if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'], $_SESSION['logintimecheck'])) {
         $user_id = $_SESSION['user_id'];
         $login_string = $_SESSION['login_string'];
         //$username = $_SESSION['username'];
@@ -296,8 +192,14 @@ function login_check($mysqli) {
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
 		
-		if($logintimecheck > time() - (60 * 60)){
-			// Logged In less than 10 minutes ago!!!! 
+		// Logged In less than 10 minutes ago!!!! 
+		$sessiontimeout = 60 * 60;
+		
+		if(isset($_COOKIE['sessiontimeout'])){
+			$sessiontimeout = $_COOKIE['sessiontimeout'];
+		}
+		
+		if($logintimecheck > time() - $sessiontimeout){
 			$_SESSION['logintimecheck'] = time();
 			$_SESSION['loginchecks']++;
             return true;
