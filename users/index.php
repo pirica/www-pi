@@ -1,6 +1,6 @@
 <?php
-require 'connection.php';
-require 'functions.php';
+//require 'connection.php';
+//require 'functions.php';
 
 require '../_core/appinit.php';
 

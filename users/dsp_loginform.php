@@ -1,11 +1,11 @@
 
+<h1>Log in</h1>
+
 <?php
 if (isset($_GET['error'])) {
 	echo '<p class="error">Error Logging In!</p>';
 }
 ?> 
-
-<h1>Log in</h1>
 
 <form class="form-horizontal login-form" action="../users/index.php?action=do_login" method="post" name="login_form"> 		
 	
@@ -17,6 +17,13 @@ if (isset($_GET['error'])) {
 	<div class="form-group">
 		<label for="password">Password</label>
 		<input id="password" name="password" class="form-control" type="password">
+	</div>
+	
+	<div class="checkbox">
+		<label for="rememberme">
+			<input id="rememberme" name="rememberme" value="1" class="form-control" type="checkbox">
+			Remember me
+		</label>
 	</div>
 	
 	<div class="form-group">

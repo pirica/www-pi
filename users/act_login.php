@@ -21,8 +21,13 @@ if (isset($_POST['email'], $_POST['p'])) {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
     $password = $_POST['p']; // The hashed password.
     
-    if (login($email, $password, $mysqli) == true) {
-        // Login success 
+	$rememberme = false;
+	if(isset($_POST['rememberme']) && $_POST['rememberme'] == 1){
+		$rememberme = true;
+	}
+		
+    if (login($email, $password, $mysqli, $rememberme) == true) {
+		// Login success 
         header("Location: index.php?action=loggedin");
         exit();
     }

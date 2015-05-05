@@ -60,7 +60,7 @@ function sec_session_start() {
 	
 }
 
-function login($email, $password_plain, $mysqli) {
+function login($email, $password_plain, $mysqli, $rememberme = false) {
     // Using prepared statements means that SQL injection is not possible. 
     if ($stmt = $mysqli->prepare("SELECT id_user, username, password, salt 
 				  FROM t_user 
@@ -107,6 +107,18 @@ function login($email, $password_plain, $mysqli) {
 					$_SESSION['logintimecheck'] = time();
 					$_SESSION['logins'] = 1;
 					$_SESSION['loginchecks'] = 1;
+					
+					if($rememberme){
+						// generate lazy login id
+						$lazy_login = hash('sha512', $user_id . '-' . $_SESSION['username_safe'] . '-' . $email);
+						$mysqli->query("update t_user set lazy_login = '" . $lazy_login . "' where id_user = " . $user_id);
+						// set cookie
+						setcookie('lazy_login', $lazy_login, (3600 * 24 * 30));
+					}
+					else {
+						// clear cookie
+						setcookie('lazy_login', '', 0);
+					}
 					
 					if(isset($_SESSION['url_after_login'])){
 						header("Location: " . $_SESSION['url_after_login']);
@@ -182,11 +194,48 @@ function login_check($mysqli) {
         // Get the user-agent string of the user.
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
 		
+		$lazy_login = '';
+		
+		// get user cookie
+		if(isset($_COOKIE['lazy_login'])){
+			$lazy_login = $_COOKIE['lazy_login'];
+		}
+		
 		if($logintimecheck < time() - (60 * 60)){
 			// Logged In less than 10 minutes ago!!!! 
 			$_SESSION['logintimecheck'] = time();
 			$_SESSION['loginchecks']++;
             return true;
+		}
+		else if($stmt = $mysqli->prepare("SELECT password FROM t_user WHERE lazy_login = ? LIMIT 1")){
+			// Bind "$user_id" to parameter. 
+            $stmt->bind_param('s', $lazy_login);
+            $stmt->execute();   // Execute the prepared query.
+            $stmt->store_result();
+
+            if ($stmt->num_rows == 1) {
+                // If the user exists get variables from result.
+                $stmt->bind_result($password);
+                $stmt->fetch();
+                $login_check = hash('sha512', $password . $user_browser);
+
+				$_SESSION['logintimecheck'] = time();
+				$_SESSION['logins']++;
+				
+				// re-set cookie
+				setcookie('lazy_login', $lazy_login, (3600 * 24 * 30));
+				
+				// Logged In!!!! 
+				return true;
+                
+            }
+			else {
+				// clear cookie
+				setcookie('lazy_login', '', 0);
+				
+                // Not logged in 
+                return false;
+            }
 		}
         else if ($stmt = $mysqli->prepare("SELECT password FROM t_user WHERE id_user = ? LIMIT 1")) {
             // Bind "$user_id" to parameter. 

@@ -87,3 +87,11 @@ html,body {
 	padding: 10px;
 	color: #fff;
 }
+
+.checkbox {
+	margin-bottom: 15px;
+}
+.checkbox  input[type="checkbox"]{
+	height: 14px;
+	width: auto;
+}
