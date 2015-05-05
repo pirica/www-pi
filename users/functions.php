@@ -218,7 +218,7 @@ function login_lazy($lazy_login, $mysqli, $rememberme = false) {
                     // Login successful. 
                     return true;
                 }
-				else {
+				/*else {
                     // Password is not correct 
                     // We record this attempt in the database 
                     if (!$mysqli->query("INSERT INTO t_log_login(id_user, email, password, ip_address) 
@@ -228,7 +228,7 @@ function login_lazy($lazy_login, $mysqli, $rememberme = false) {
                     }
 
                     return false;
-                }
+                }*/
             }
         }
 		else {
