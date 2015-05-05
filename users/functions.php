@@ -113,7 +113,7 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 						$lazy_login = hash('sha512', $user_id . '-' . $_SESSION['username_safe'] . '-' . $email);
 						$mysqli->query("update t_user set lazy_login = '" . $lazy_login . "' where id_user = " . $user_id);
 						// set cookie
-						setcookie('lazy_login', $lazy_login, (3600 * 24 * 30));
+						setcookie('lazy_login', $lazy_login, time() + (3600 * 24 * 30));
 					}
 					else {
 						// clear cookie
@@ -223,7 +223,7 @@ function login_check($mysqli) {
 				$_SESSION['logins']++;
 				
 				// re-set cookie
-				setcookie('lazy_login', $lazy_login, (3600 * 24 * 30));
+				setcookie('lazy_login', $lazy_login, time() + (3600 * 24 * 30));
 				
 				// Logged In!!!! 
 				return true;

@@ -19,7 +19,7 @@ if (isset($_GET['error'])) {
 		<input id="password" name="password" class="form-control" type="password">
 	</div>
 	
-	<div class="checkbox">
+	<div class="form-group checkbox">
 		<label for="rememberme">
 			<input id="rememberme" name="rememberme" value="1" class="form-control" type="checkbox">
 			Remember me

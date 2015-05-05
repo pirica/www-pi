@@ -29,6 +29,9 @@ $params = session_get_cookie_params();
 // Delete the actual cookie. 
 setcookie(session_name(),'', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
 
+// clear cookie
+setcookie('lazy_login', '', 0);
+
 // Destroy session 
 session_destroy();
 header("Location: index.php");
