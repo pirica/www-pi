@@ -18,7 +18,7 @@ switch($action->getCode()){
 		
 	case 'loggedin':
 		require '../_core/dsp_header.php';
-		require 'dsp_error.php';
+		require 'dsp_loggedin.php';
 		require '../_core/dsp_footer.php';
 		break;
 	
