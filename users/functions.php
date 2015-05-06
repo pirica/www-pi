@@ -41,7 +41,7 @@ function sec_session_start() {
     session_name($session_name);
 
     session_start();            // Start the PHP session 
-    session_regenerate_id(true);    // regenerated the session, delete the old one. 
+    //session_regenerate_id(true);    // regenerated the session, delete the old one. 
 	
 	$_SESSION['desktop'] = 1;
 	if(isset($_SERVER['HTTP_USER_AGENT'])){
