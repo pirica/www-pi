@@ -153,7 +153,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				$channel = 'router';
 				$title = 'Daily usage exceeded';
 				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s daily usage of ' . formatFileSize($host['alert_when_traffic_exceeds_daily'], 0);
-				$priority = 1;
+				$priority = $settings->val('messages_priority_daily_usage_exceeded', 1);
 				if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
 					send_msg($channel, $title, $msg, $priority, 'import_usage');
 				}
@@ -168,14 +168,14 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				$channel = 'router';
 				$title = 'Monthly usage exceeded';
 				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s monthly usage of ' . formatFileSize($host['alert_when_traffic_exceeds_monthly'], 0);
-				$priority = 2;
+				$priority = $settings->val('messages_priority_monthly_usage_exceeded', 2);
 				if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
 					send_msg($channel, $title, $msg, $priority, 'import_usage');
 				}
 			}
 		}
 		
-		if($host['alert_when_total_traffic_exceeds'] > 0 && $total_traffic > $host['alert_when_total_traffic_exceeds']){
+		if($settings->val('alert_when_total_traffic_exceeds', 0) > 0 && $total_traffic > $settings->val('alert_when_total_traffic_exceeds', 0)){
 			if(date("d") < 4 ){
 				$date_check = date("Y-m-04 00:00:00", strtotime('-1 month'));
 			}
@@ -184,8 +184,8 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 			}
 			$channel = 'router';
 			$title = 'Monthly usage exceeded';
-			$msg = 'Total monthly usage of ' . formatFileSize($host['alert_when_traffic_exceeds_monthly'], 0) . ' exceeded!';
-			$priority = 2;
+			$msg = 'Total monthly usage of ' . formatFileSize($settings->val('alert_when_total_traffic_exceeds', 0), 0) . ' exceeded!';
+			$priority = $settings->val('messages_priority_total_usage_exceeded', 2);
 			if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
 				send_msg($channel, $title, $msg, $priority, 'import_usage');
 			}

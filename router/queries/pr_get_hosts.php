@@ -33,9 +33,7 @@ $qry_hosts = mysql_query("
 		c.description as category,
 		
 		ifnull(h.alert_when_traffic_exceeds_daily,-1) as alert_when_traffic_exceeds_daily,
-		ifnull(h.alert_when_traffic_exceeds_monthly,-1) as alert_when_traffic_exceeds_monthly,
-		
-		0 as alert_when_total_traffic_exceeds
+		ifnull(h.alert_when_traffic_exceeds_monthly,-1) as alert_when_traffic_exceeds_monthly
 		
 	from t_host h
 	left join t_category c on c.id_category = h.id_category
