@@ -2,7 +2,7 @@
 set_time_limit(3600);
 include "connection.php";
 require dirname(__FILE__).'/../messages/functions.php';
-//require dirname(__FILE__).'/../_core/functions.php';
+require dirname(__FILE__).'/../_core/appinit.php';
 
 /*
 
@@ -143,7 +143,11 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 		
 		require 'queries/pr_get_hosts.php';
 		
-		while($host = mysql_fetch_array($qry_hosts)){ 
+		$total_traffic = 0;
+		
+		while($host = mysql_fetch_array($qry_hosts)){
+			$total_traffic += ($host['downloaded_month'] + $host['uploaded_month']);
+			
 			if($host['alert_when_traffic_exceeds_daily'] > 0 && ($host['downloaded_today'] + $host['uploaded_today']) > $host['alert_when_traffic_exceeds_daily']){
 				$date_check = date("Y-m-d 00:00:00");
 				$channel = 'router';
@@ -155,7 +159,12 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				}
 			}
 			if($host['alert_when_traffic_exceeds_monthly'] > 0 && ($host['downloaded_month'] + $host['uploaded_month']) > $host['alert_when_traffic_exceeds_monthly']){
-				$date_check = date("Y-m-04 00:00:00");
+				if(date("d") < 4 ){
+					$date_check = date("Y-m-04 00:00:00", strtotime('-1 month'));
+				}
+				else {
+					$date_check = date("Y-m-04 00:00:00");
+				}
 				$channel = 'router';
 				$title = 'Monthly usage exceeded';
 				$msg = 'Host ' . $host['hostname_lbl'] . ' exceeded it\'s monthly usage of ' . formatFileSize($host['alert_when_traffic_exceeds_monthly'], 0);
@@ -166,6 +175,21 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 			}
 		}
 		
+		if($host['alert_when_total_traffic_exceeds'] > 0 && $total_traffic > $host['alert_when_total_traffic_exceeds']){
+			if(date("d") < 4 ){
+				$date_check = date("Y-m-04 00:00:00", strtotime('-1 month'));
+			}
+			else {
+				$date_check = date("Y-m-04 00:00:00");
+			}
+			$channel = 'router';
+			$title = 'Monthly usage exceeded';
+			$msg = 'Total monthly usage of ' . formatFileSize($host['alert_when_traffic_exceeds_monthly'], 0) . ' exceeded!';
+			$priority = 2;
+			if(!check_msg_already_sent($channel, $title, $msg, $date_check)){
+				send_msg($channel, $title, $msg, $priority, 'import_usage');
+			}
+		}
 	}
 	
 	require 'queries/pr_clear_host_usage.php';
