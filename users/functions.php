@@ -222,6 +222,10 @@ function login_check($mysqli) {
 					$_SESSION['logintimecheck'] = time();
 					$_SESSION['logins']++;
                     // Logged In!!!! 
+					
+					$cookieParams = session_get_cookie_params();
+					setcookie('sessiontimeout', $sessiontimeout, time() + (3600 * 24 * 30), $cookieParams["path"], $cookieParams["domain"], SECURE, /*$httponly =*/ true);
+						
                     return true;
                 }
 				else {

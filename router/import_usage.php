@@ -2,6 +2,7 @@
 set_time_limit(3600);
 include "connection.php";
 require dirname(__FILE__).'/../messages/functions.php';
+//require dirname(__FILE__).'/../_core/functions.php';
 
 /*
 
@@ -27,6 +28,8 @@ $lockfile = 'import_usage.lock';
 
 if (!file_exists( $fulldir . '/' . $lockfile)) {
 	file_put_contents($fulldir . '/' . $lockfile, date('Y-m-d H:i:s', time()) );
+	
+//if(countProcesses($scriptName) <= 2){
 	
 	echo "Reading dir " . $fulldir . "<br>\r\n<br>\r\n";
 
