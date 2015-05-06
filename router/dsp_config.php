@@ -91,12 +91,12 @@
 				
 				<td>
 					<?php
-						echo '<input type="text" name="alert_when_traffic_exceeds_daily" value="' . formatFileSize($host['alert_when_traffic_exceeds_daily'],0) . '">';
+						echo '<input type="text" name="alert_when_traffic_exceeds_daily" value="' . str_replace(' ', '', str_replace('B', '', strtoupper(formatFileSize($host['alert_when_traffic_exceeds_daily'],0)))) . '">';
 					?>
 				</td>
 				<td>
 					<?php
-						echo '<input type="text" name="alert_when_traffic_exceeds_monthly" value="' . formatFileSize($host['alert_when_traffic_exceeds_monthly'],0) . '">';
+						echo '<input type="text" name="alert_when_traffic_exceeds_monthly" value="' . str_replace(' ', '', str_replace('B', '', strtoupper(formatFileSize($host['alert_when_traffic_exceeds_monthly'],0)))) . '">';
 					?>
 				</td>
 				
