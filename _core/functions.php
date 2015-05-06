@@ -334,7 +334,7 @@ function download_limit($local_file){
 function formatFileSize($sizeInBytes, $rounding = 2){
 	$index = 0;
     $sizes = array('b', 'kB', 'MB', 'GB', 'TB');
-	while($sizeInBytes > 1024){
+	while($sizeInBytes >= 1024){
 		$sizeInBytes /= 1024;
 		$index++;
 	}
