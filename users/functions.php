@@ -108,13 +108,15 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 					$_SESSION['logins'] = 1;
 					$_SESSION['loginchecks'] = 1;
 					
+					$cookieParams = session_get_cookie_params();
+					
 					if($rememberme){
 						// set cookie
-						setcookie('sessiontimeout', (3600 * 24 * 30), time() + (3600 * 24 * 30));
+						setcookie('sessiontimeout', (3600 * 24 * 30), time() + (3600 * 24 * 30), $cookieParams["path"], $cookieParams["domain"], SECURE, /*$httponly =*/ true);
 					}
 					else {
 						// clear cookie
-						setcookie('sessiontimeout', '', 0);
+						setcookie('sessiontimeout', '', 0, $cookieParams["path"], $cookieParams["domain"], SECURE, /*$httponly =*/ true);
 					}
 					
 					if(isset($_SESSION['url_after_login'])){
@@ -193,7 +195,7 @@ function login_check($mysqli) {
         $user_browser = $_SERVER['HTTP_USER_AGENT'];
 		
 		// Logged In less than 10 minutes ago!!!! 
-		$sessiontimeout = 60 * 60;
+		$sessiontimeout = 10 * 60;
 		
 		if(isset($_COOKIE['sessiontimeout'])){
 			$sessiontimeout = $_COOKIE['sessiontimeout'];
