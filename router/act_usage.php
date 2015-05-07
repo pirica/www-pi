@@ -18,6 +18,9 @@ if($tm != 0 || $tm != 1){
 	$tm = $settings->val('usage_telemeter_default_value', 0);
 }
 
+$tm_start = $settings->val('telemeter_period_startday', 4);
+$tm_start0 = ($tm_start < 10 ? '0' : '') . $tm_start;
+
 //$night_start = $settings->val('telemeter_night_start', '00:00');
 //$night_end = $settings->val('telemeter_night_end', '10:00');
 
@@ -65,17 +68,17 @@ switch($action->getCode()){
 		$date_period = 'day';
 		
 		// if today is before the period start, check last month (which is still current period)
-		if(date("d", $date) < 4 ){
-			$range_start = date("Y-m-", strtotime('-1 month', $date)) . '04';
-			$range_end = date("Y-m-", $date) . '04';
+		if(date("d", $date) < $tm_start ){
+			$range_start = date("Y-m-", strtotime('-1 month', $date)) . $tm_start0;
+			$range_end = date("Y-m-", $date) . $tm_start0;
 			
 			$date_prev = date("Y-m-d", strtotime('-2 month', $date));
 			$date_next = date("Y-m-d", strtotime('+1 month', $date));
 		}
 		// else the current month
 		else {
-			$range_start = date("Y-m-", $date) . '04';
-			$range_end = date("Y-m-", strtotime('+1 month', $date)) . '04';
+			$range_start = date("Y-m-", $date) . $tm_start0;
+			$range_end = date("Y-m-", strtotime('+1 month', $date)) . $tm_start0;
 			
 			$date_prev = date("Y-m-d", strtotime('-1 month', $date));
 			$date_next = date("Y-m-d", strtotime('+1 month', $date));
