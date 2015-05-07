@@ -50,6 +50,7 @@ $settingsdata_count = count($settingsdata);
 												int, integer,
 												float, double,
 												bool, boolean, bit, checkbox, check,
+												select, 
 												
 											extra:
 										*/
@@ -60,6 +61,29 @@ $settingsdata_count = count($settingsdata);
 										}
 										
 										switch($settingsdata[$i][$j]['edittype']){
+										
+											case 'select':
+												?>
+													<div class="form-group">
+														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-6">
+															<select id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" class="form-control" 
+																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
+																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>">
+																<?php
+																	$extra = json_decode($settingsdata[$i][$j]['extra']);
+																	$options_count = count($extra['options']);
+																	for ($o=0; $o<$options_count; $o++) {
+																		echo '<option value="' . $extra['options'][$o]['code'] . '" ' . ($extra['options'][$o]['code'] == $settingsdata[$i][$j]['value'] ? 'selected' : '') . '>' . $extra['options'][$o]['value'] . '</option>';
+																	}
+																?>
+															</select>
+														</div>
+													</div>
+													
+												<?php
+												break;
+											
 											case 'bool':
 											case 'boolean':
 											case 'bit':
@@ -79,6 +103,22 @@ $settingsdata_count = count($settingsdata);
 															</div>
 														</div>
 													</div>
+												<?php
+												break;
+											
+											case 'size':
+											case 'filesize':
+												?>
+													<div class="form-group">
+														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-6">
+															<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="text" class="form-control" 
+																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
+																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
+																value="<?= str_replace(' ', '', str_replace('B', '', strtoupper(formatFileSize($settingsdata[$i][$j]['value'],0)))) ?>">
+														</div>
+													</div>
+													
 												<?php
 												break;
 											

@@ -23,16 +23,16 @@
 				<div class="form-group">
 					<label for="status">Status</label>
 					<select id="status" name="status" class="form-control">
-						<option value="*" <?php echo $status == '*' ? 'selected="selected"' : ''; ?>>All</option>
-						<option value="n" <?php echo $status == 'n' ? 'selected="selected"' : ''; ?>>New, unprocessed</option>
-						<option value="p" <?php echo $status == 'p' ? 'selected="selected"' : ''; ?>>Processing</option>
-						<option value="ok" <?php echo $status == 'ok' ? 'selected="selected"' : ''; ?>>Processed</option>
-						<option value="nf" <?php echo $status == 'nf' ? 'selected="selected"' : ''; ?>>Not found</option>
-						<option value="to" <?php echo $status == 'to' ? 'selected="selected"' : ''; ?>>Time-out</option>
-						<option value="fe" <?php echo $status == 'fe' ? 'selected="selected"' : ''; ?>>File empty</option>
-						<option value="fx" <?php echo $status == 'fx' ? 'selected="selected"' : ''; ?>>File exists</option>
-						<option value="x" <?php echo $status == 'x' ? 'selected="selected"' : ''; ?>>Excluded</option>
-						<option value="e" <?php echo $status == 'e' ? 'selected="selected"' : ''; ?>>In error</option>
+						<option value="*" <?php echo strtolower($status) == '*' ? 'selected="selected"' : ''; ?>>All</option>
+						<option value="n" <?php echo strtolower($status) == 'n' ? 'selected="selected"' : ''; ?>>New, unprocessed</option>
+						<option value="p" <?php echo strtolower($status) == 'p' ? 'selected="selected"' : ''; ?>>Processing</option>
+						<option value="ok" <?php echo strtolower($status) == 'ok' ? 'selected="selected"' : ''; ?>>Processed</option>
+						<option value="nf" <?php echo strtolower($status) == 'nf' ? 'selected="selected"' : ''; ?>>Not found</option>
+						<option value="to" <?php echo strtolower($status) == 'to' ? 'selected="selected"' : ''; ?>>Time-out</option>
+						<option value="fe" <?php echo strtolower($status) == 'fe' ? 'selected="selected"' : ''; ?>>File empty</option>
+						<option value="fx" <?php echo strtolower($status) == 'fx' ? 'selected="selected"' : ''; ?>>File exists</option>
+						<option value="x" <?php echo strtolower($status) == 'x' ? 'selected="selected"' : ''; ?>>Excluded</option>
+						<option value="e" <?php echo strtolower($status) == 'e' ? 'selected="selected"' : ''; ?>>In error</option>
 					</select>
 				</div>
 			</div>

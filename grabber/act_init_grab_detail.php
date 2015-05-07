@@ -7,7 +7,7 @@ $perpage = saneInput('perpage', 'int', -1);
 $page = saneInput('page', 'int', 1);
 
 $search = strtolower(saneInput('search'));
-$status = strtolower(saneInput('status'));
+$status = strtoupper(saneInput('status'));
 
 $max_pages = $settings->val('detailgrid_max_pages', 20);
 
