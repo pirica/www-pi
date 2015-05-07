@@ -71,7 +71,7 @@ $settingsdata_count = count($settingsdata);
 																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>">
 																<?php
-																	$extra = json_decode($settingsdata[$i][$j]['extra']);
+																	$extra = json_decode($settingsdata[$i][$j]['extra'], true);
 																	$options_count = count($extra['options']);
 																	for ($o=0; $o<$options_count; $o++) {
 																		echo '<option value="' . $extra['options'][$o]['code'] . '" ' . ($extra['options'][$o]['code'] == $settingsdata[$i][$j]['value'] ? 'selected' : '') . '>' . $extra['options'][$o]['value'] . '</option>';
