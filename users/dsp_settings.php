@@ -33,7 +33,7 @@ $settingsdata_count = count($settingsdata);
 			$tooltip
 			*/
 			?>
-				<div class="tab-pane <?php if($i == 0){ ?> class="active" <?php } ?>" id="app<?= $settingsdata[$i][0]['id_app'] ?>">
+				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="app<?= $settingsdata[$i][0]['id_app'] ?>">
 					<div class="row clearfix">
 						<div class="col-md-6 column">
 							<form role="form" class="form-horizontal settings-form">

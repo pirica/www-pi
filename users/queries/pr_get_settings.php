@@ -65,10 +65,7 @@ $settingsdata = [];
 $prev_id_app = -1;
 while ($qry_mng_settings->fetch()) {
 	if($prev_id_app != $id_app){
-		$settingsdata[] = array(
-			'id_app' => $id_app,
-			'appname' => $appname
-		);
+		$settingsdata[] = [];
 		$prev_id_app = $id_app;
 	}
 	$settingsdata[count($settingsdata) - 1][] = array(
