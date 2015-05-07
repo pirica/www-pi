@@ -12,12 +12,12 @@ it is based on some parts of:
 body {
 	background: #FFF;
 	color: #333;
-	font: 11px/15px Helvetica, Arial, sans-serif;
+	font: 13px/18px Helvetica, Arial, sans-serif;
 }
 
 /* generic */
 a, a:visited {
-	padding: 2px 3px;
+	padding: 3px 2px;
 	color: #006AEB;
 	text-decoration: none;
 }
@@ -29,58 +29,58 @@ a:hover {
 }
 
 p {
-	margin-bottom: 2px;
-	padding-bottom: 2px;
+	margin-bottom: 4px;
+	padding-bottom: 4px;
 }
 
 h1 {
 	background: none;
 	border: none;
 	color: #666;
-	font-size: 15px;
+	font-size: 18px;
 	font-weight: bold;
-	height: 30px;
-	padding: 0 0 5px;
+	height: 40px;
+	padding: 0 0 8px;
 }
 
 h2 {
 	background: transparent;
 	border: none;
 	color: #333;
-	font: 22px Georgia,serif;
+	font: 32px Georgia,serif;
 	margin: 0;
 	padding: 10px 0 8px;
 }
 
 h3 {
-	font-size: 15px;
+	font-size: 18px;
 	font-weight: bold;
 	margin: 0;
-	padding: 2px 0;
+	padding: 4px 0;
 }
 
 fieldset {
 	border: 1px solid #CCC;
 	float: left;
-	margin-bottom: 4px;
-	margin-right: 2px;
-	min-height: 40px;
-	padding: 0 2px 2px;
+	margin-bottom: 8px;
+	margin-right: 4px;
+	min-height: 48px;
+	padding: 0 4px 4px;
 }
 
 fieldset div {
-	margin-top: 2px;
+	margin-top: 4px;
 }
 
 input, select, textarea {
 	border: 1px solid #CCC;
 	color: #555;
 	font: 13px Helvetica,Arial,sans-serif;
-	padding: 2px;
+	padding: 3px;
 }
 
 select {
-	padding: 1px;
+	padding: 2px;
 }
 
 textarea, .sqlarea {
@@ -92,7 +92,7 @@ input[type=submit] {
 	background: #4890E7;
 	color: white;
 	cursor: pointer;
-	padding: 2px;
+	padding: 3px;
 	border: none;
 }
 
@@ -107,25 +107,25 @@ input[type=image], input[type=checkbox] {
 }
 
 label input[type=checkbox], td input[type=radio], td span select {
-	margin-right: 3px;
+	margin-right: 4px;
 }
 
 fieldset select {
-	margin-right: 3px;
+	margin-right: 4px;
 }
 
 option {
-	padding: 0 3px;
+	padding: 0 5px;
 }
 
 optgroup {
-	font-size: 10px;
+	font-size: 11px;
 }
 
 code {
 	background: #EEE;
 	font-family: Consolas,monospace;
-	padding: 1px 2px;
+	padding: 2px 4px;
 }
 
 code a:hover {
@@ -135,7 +135,7 @@ code a:hover {
 table {
 	border: 1px solid #D0CDC4;
 	font-size: inherit;
-	margin: 2px 0 4px;
+	margin: 4px 0 8px;
 }
 
 tbody tr:hover td, tbody tr:hover th {
@@ -148,7 +148,7 @@ th, td {
 	border-width:0 0 0 1px;
 	font-weight: normal;
 	margin: 0;
-	padding: 2px 3px;
+	padding: 3px 5px;
 	text-align: left;
 	vertical-align: top;
 }
@@ -183,7 +183,7 @@ td[align=right] {
 }
 
 table code {
-	font-size: 11px;
+	font-size: 13px;
 	line-height: 18px;
 }
 
@@ -209,8 +209,8 @@ table code {
 
 #content {
 	height: 100%;
-	margin: 10px 0 0 260px;
-	padding: 10px;
+	margin: 40px 0 0 300px;
+	padding: 20px;
 	background: white;
 	z-index: 1;
 }
@@ -225,16 +225,16 @@ table code {
 	display: block;
 	content: "";
 	color: #FF9;
-	font-size: 11px;
+	font-size: 13px;
 	background: #333;
-	line-height: 30px;
+	line-height: 40px;
 	margin: 0;
-	padding: 0 0 0 10px;
+	padding: 0 0 0 20px;
 	position: fixed;
 	top: 0;
-	left: 200px;
+	left: 300px;
 	width: 100%;
-	height: 30px;
+	height: 40px;
 
 }
 
@@ -249,8 +249,8 @@ table code {
 #lang {
 	background: #333;
 	color: #FFF;
-	height: 30px;
-	line-height: 30px;
+	height: 40px;
+	line-height: 40px;
 	padding: 0 0 0 40px;
 	position: fixed;
 	top: 0;
@@ -270,16 +270,16 @@ table code {
 	bottom: 0;
 	margin: 0;
 	overflow: auto;
-	padding: 6px 8px;
+	padding: 10px 15px;
 	position: fixed;
-	top: 30px;
+	top: 40px;
 	width: 240px;
 }
 
 #menu a {
 	color: #333;
 	border: none;
-	margin-right: 3px;
+	margin-right: 4px;
 }
 
 #tables a {
@@ -292,22 +292,22 @@ table code {
 
 #menu p {
 	border: none;
-	margin: 0 0 3px;
-	padding: 0 0 3px;
+	margin: 0 0 4px;
+	padding: 0 0 4px;
 	white-space: nowrap;
 }
 
 #breadcrumb {
 	background: #333;
 	color: #FFF;
-	line-height: 30px;
+	line-height: 40px;
 	margin: 0;
-	padding: 0 0 0 10px;
+	padding: 0 0 0 20px;
 	position: fixed;
 	top: 0;
 	left: 300px;
 	width: 100%;
-	height: 30px;
+	height: 40px;
 }
 
 #breadcrumb a {
@@ -322,7 +322,7 @@ table code {
 
 #schema .table {
 	background: #F3F3F3;
-	padding: 3px 5px;
+	padding: 4px 8px;
 }
 
 #logins a, #tables a {
@@ -340,8 +340,8 @@ table code {
 }
 
 * html #lang {
-	height: 20px;
-	padding-top: 8px;
+	height: 30px;
+	padding-top: 10px;
 }
 
 * html form#form {
@@ -388,12 +388,12 @@ select[name="db"] {
 }
 
 select[name="db"] option {
-	padding-left: 15px;
+	padding-left: 18px;
 }
 
 #menu p a[href*="&select="] {
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 8px;
 	overflow: hidden;
 	padding-left: 0;
 	text-decoration: none;
