@@ -18,7 +18,7 @@ if(!in_array($sort, array('full_url', 'full_path', 'status', 'date_inserted', 'd
 if(!in_array($sortorder, array('asc', 'desc'))){
 	$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
 }
-if($status == '' || !in_array($status, array('*', 'N'))){
+if($status == '' || !in_array($status, array('*', 'N', 'OK', 'FX', 'P', 'NF', 'TO', 'FE', 'E', 'X'))){
 	$status = $settings->val('detailgrid_default_status', '*');
 }
 
