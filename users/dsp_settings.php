@@ -39,7 +39,14 @@ $settingsdata_count = count($settingsdata);
 							<form role="form" class="form-horizontal settings-form">
 								<?php
 									$settingsdata_app_count = count($settingsdata[$i]);
+									$prev_category = '';
 									for ($j=0; $j<$settingsdata_app_count; $j++) {
+										
+										if($prev_category != $settingsdata[$i][$j]['category']){
+											echo '<h3>' . $settingsdata[$i][$j]['category'] . '</h3>';
+											$prev_category = $settingsdata[$i][$j]['category'];
+										}
+										
 										/*
 											edittype:
 												text, string,
@@ -79,6 +86,11 @@ $settingsdata_count = count($settingsdata);
 																?>
 															</select>
 														</div>
+														<?php
+															if($settingsdata[$i][$j]['tooltip'] != ''){
+																echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $settingsdata[$i][$j]['tooltip'] . '</p>';
+															}
+														?>
 													</div>
 													
 												<?php
@@ -91,17 +103,18 @@ $settingsdata_count = count($settingsdata);
 											case 'check':
 												?>
 													<div class="form-group">
-														<div class="col-sm-offset-2 col-sm-10">
-															<div class="checkbox">
-																<label>
-																	<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="checkbox" 
-																		data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
-																		data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
-																		<?php if($settingsdata[$i][$j]['value'] == 1) { ?>checked<?php } ?>> 
-																	<?= $label ?>
-																</label>
-															</div>
+														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-6">
+															<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="checkbox" 
+																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
+																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
+																<?php if($settingsdata[$i][$j]['value'] == 1) { ?>checked<?php } ?>>
 														</div>
+														<?php
+															if($settingsdata[$i][$j]['tooltip'] != ''){
+																echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $settingsdata[$i][$j]['tooltip'] . '</p>';
+															}
+														?>
 													</div>
 												<?php
 												break;
@@ -117,6 +130,11 @@ $settingsdata_count = count($settingsdata);
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
 																value="<?= str_replace(' ', '', str_replace('B', '', strtoupper(formatFileSize($settingsdata[$i][$j]['value'],0)))) ?>">
 														</div>
+														<?php
+															if($settingsdata[$i][$j]['tooltip'] != ''){
+																echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $settingsdata[$i][$j]['tooltip'] . '</p>';
+															}
+														?>
 													</div>
 													
 												<?php
@@ -135,6 +153,11 @@ $settingsdata_count = count($settingsdata);
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
 																value="<?= $settingsdata[$i][$j]['value'] ?>">
 														</div>
+														<?php
+															if($settingsdata[$i][$j]['tooltip'] != ''){
+																echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $settingsdata[$i][$j]['tooltip'] . '</p>';
+															}
+														?>
 													</div>
 													
 												<?php
