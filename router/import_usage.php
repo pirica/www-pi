@@ -120,6 +120,10 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 	closedir( $handle ); 
 	flush();
 
+	
+	$tm_start = $settings->val('telemeter_period_startday', 4);
+	$tm_start0 = ($tm_start < 10 ? '0' : '') . $tm_start;
+
 	require 'queries/pr_set_host_stats.php';
 	
 	require 'queries/pr_set_hosts_usage_now.php';
@@ -132,7 +136,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 	{
 		require 'queries/pr_set_hosts_usage_day.php';
 		
-		//if(date("d", $crondate) == 4)
+		//if(date("d", $crondate) == $tm_start)
 		{
 			require 'queries/pr_set_hosts_usage_month.php';
 		}
@@ -159,11 +163,11 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				}
 			}
 			if($host['alert_when_traffic_exceeds_monthly'] > 0 && ($host['downloaded_month'] + $host['uploaded_month']) > $host['alert_when_traffic_exceeds_monthly']){
-				if(date("d") < 4 ){
-					$date_check = date("Y-m-04 00:00:00", strtotime('-1 month'));
+				if(date("d") < $tm_start ){
+					$date_check = date("Y-m-" . $tm_start0 . " 00:00:00", strtotime('-1 month'));
 				}
 				else {
-					$date_check = date("Y-m-04 00:00:00");
+					$date_check = date("Y-m-" . $tm_start0 . " 00:00:00");
 				}
 				$channel = 'router';
 				$title = 'Monthly usage exceeded';
@@ -176,11 +180,11 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 		}
 		
 		if($settings->val('alert_when_total_traffic_exceeds', 0) > 0 && $total_traffic > $settings->val('alert_when_total_traffic_exceeds', 0)){
-			if(date("d") < 4 ){
-				$date_check = date("Y-m-04 00:00:00", strtotime('-1 month'));
+			if(date("d") < $tm_start ){
+				$date_check = date("Y-m-" . $tm_start0 . " 00:00:00", strtotime('-1 month'));
 			}
 			else {
-				$date_check = date("Y-m-04 00:00:00");
+				$date_check = date("Y-m-" . $tm_start0 . " 00:00:00");
 			}
 			$channel = 'router';
 			$title = 'Monthly usage exceeded';

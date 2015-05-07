@@ -5,8 +5,8 @@ if(!isset($mysql_host)){
 
 $date = time(); // current hour, since this is 'now'
 
-$range_start_sql = date("Ym04", strtotime('-1 month', $date));
-$range_end_sql = date("Ym04", strtotime('+1 month', $date));
+$range_start_sql = date("Ym" . $tm_start0, strtotime('-1 month', $date));
+$range_end_sql = date("Ym" . $tm_start0, strtotime('+1 month', $date));
 
 $range_month = date("m", $date);
 
@@ -17,10 +17,10 @@ mysql_query("
 	
 	replace into t_usage_month (usagekey, mac_address, date_usage, downloaded, uploaded, downloaded_telemeter, uploaded_telemeter)
 	select
-		concat(hu.mac_address , DATE_FORMAT(hu.date_usage, '%Y-%m-04') ) as usagekey,
+		concat(hu.mac_address , DATE_FORMAT(hu.date_usage, '%Y-%m-" . $tm_start0 . "') ) as usagekey,
 		
 		hu.mac_address,
-		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-04'), '%Y-%m-%d') as date_usage,
+		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-" . $tm_start0 . "'), '%Y-%m-%d') as date_usage,
 		
 		sum(ifnull(hu.downloaded,0)) as downloaded,
 		sum(ifnull(hu.uploaded,0)) as uploaded,
@@ -35,7 +35,7 @@ mysql_query("
 	
 	group by
 		hu.mac_address,
-		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-04'), '%Y-%m-%d')
+		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-" . $tm_start0 . "'), '%Y-%m-%d')
 	
 ", $conn);
 

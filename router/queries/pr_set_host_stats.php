@@ -80,7 +80,7 @@ mysql_query("
 			
 		from t_host h
 		join t_host_usage hum on hum.mac_address = h.mac_address
-			and hum.date_usage >= case when date_format(now(), '%d') < 4 then date_format(now(), '%Y-%m-04') - interval 1 month else date_format(now(), '%Y-%m-04') end
+			and hum.date_usage >= case when date_format(now(), '%d') < " . $tm_start . " then date_format(now(), '%Y-%m-" . $tm_start0 . "') - interval 1 month else date_format(now(), '%Y-%m-" . $tm_start0 . "') end
 		where
 			h.active = 1
 		group by
