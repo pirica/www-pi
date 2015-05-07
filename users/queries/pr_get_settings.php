@@ -13,7 +13,7 @@ $qry_mng_settings = $mysqli->prepare("
 		s.editable,
 		s.edittype,
 		s.extra,
-		s.category,
+		ifnull(s.category,'Main') as category,
 		s.tooltip
 		
 	from t_setting s
@@ -23,6 +23,7 @@ $qry_mng_settings = $mysqli->prepare("
 		
 	order by
 		ifnull(a.sort_order, ifnull(a.id_app, -1)),
+		ifnull(s.category,'Main'),
 		ifnull(s.sort_order, s.id_setting)
 		
 	");
