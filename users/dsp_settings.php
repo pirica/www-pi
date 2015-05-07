@@ -1,11 +1,12 @@
-
+<?php
+$settingsdata_count = count($settingsdata);
+?>
 
 <h1>Settings</h1>
 
 <ul class="nav nav-tabs">
 	<?php
-		$settingsdata_count = count($settingsdata);
-		while ($i=0; $i<$settingsdata_count; $i++) {
+		for ($i=0; $i<$settingsdata_count; $i++) {
 			?>
 				<li <?php if($i == 0){ ?> class="active" <?php } ?>><a href="#app<?= $settingsdata[$i][0]['id_app'] ?>" data-toggle="tab"><?= $settingsdata[$i][0]['appname'] ?></a></li>
 			<?php
@@ -16,8 +17,7 @@
 
 <div class="tab-content">
 	<?php
-		$settingsdata_count = count($settingsdata);
-		while ($i=0; $i<$settingsdata_count; $i++) {
+		for ($i=0; $i<$settingsdata_count; $i++) {
 			/*
 			$id_app,
 			$appname,
@@ -39,7 +39,7 @@
 							<form role="form" class="form-horizontal settings-form">
 								<?php
 									$settingsdata_app_count = count($settingsdata[$i]);
-									while ($j=0; $j<$settingsdata_app_count; $j++) {
+									for ($j=0; $j<$settingsdata_app_count; $j++) {
 										/*
 											edittype:
 												text, string,
