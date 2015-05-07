@@ -53,6 +53,19 @@ switch($action->getCode()){
 		require '../_core/dsp_footer.php';
 		break;
 	
+	
+	
+	case 'settings':
+		require 'queries/pr_get_settings.php';
+		require '../_core/dsp_header.php';
+		require 'dsp_settings.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_setsetting':
+		include 'act_set_setting.php';
+		break;
+		
 		
 	// main: overview
 	default:

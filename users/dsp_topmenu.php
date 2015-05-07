@@ -33,7 +33,7 @@ if(isset($_GET['newmenu'])) {
 					<li class="disabled"><a href="#">My profile</a></li>
 					<li class="disabled"><a href="#">My stats</a></li>
 					<li class="divider"></li>
-					<li class="disabled"><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+					<li><a href="../users/index.php?action=settings"><i class="fa fa-gear"></i> Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="../users/index.php?action=logout"><i class="fa fa-power-off"></i> Log out</a></li>
 				<?php
@@ -153,7 +153,7 @@ if(isset($_GET['newmenu'])) {
 					<li class="disabled"><a href="#">My profile</a></li>
 					<li class="disabled"><a href="#">My stats</a></li>
 					<li class="divider"></li>
-					<li class="disabled"><a href="#">Settings</a></li>
+					<li><a href="../users/index.php?action=settings">Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="../users/index.php?action=logout">Log out</a></li>
 				</ul>
@@ -237,7 +237,7 @@ if(isset($_GET['newmenu'])) {
 					<li class="disabled"><a href="#">My profile</a></li>
 					<li class="disabled"><a href="#">My stats</a></li>
 					<li class="divider"></li>
-					<li class="disabled"><a href="#">Settings</a></li>
+					<li><a href="../users/index.php?action=settings">Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="../users/index.php?action=logout">Log out</a></li>
 				</ul>
