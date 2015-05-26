@@ -25,19 +25,27 @@ $tm_start0 = ($tm_start < 10 ? '0' : '') . $tm_start;
 //$night_end = $settings->val('telemeter_night_end', '10:00');
 
 $date = saneInput('date', 'string', '');
-if($date != ''){
+/*if($date != ''){
 	$date = (new DateTime($date))->getTimestamp();
 }
 else {
 	$date = time();
-}
+}*/
 
 $date_prev = '';
 $date_next = '';
 
+$subaction = '';
+$subdate = '';
 
 switch($action->getCode()){
 	case 'usage_now':
+		if($date != ''){
+			$date = (new DateTime($date))->getTimestamp();
+		}
+		else {
+			$date = time();
+		}
 		$date = time(); // current hour, since this is 'now'
 		
 		$date_period_format = '%Y-%m-%d %H:%i';
@@ -50,6 +58,12 @@ switch($action->getCode()){
 		break;
 	
 	case 'usage_today':
+		if($date != ''){
+			$date = (new DateTime($date . ':00'))->getTimestamp();
+		}
+		else {
+			$date = time();
+		}
 		$date_period_format = '%Y-%m-%d %H';
 		$date_label_format = '%H';
 		$date_period = 'hour';
@@ -63,6 +77,12 @@ switch($action->getCode()){
 		break;
 	
 	case 'usage_day':
+		if($date != ''){
+			$date = (new DateTime($date))->getTimestamp();
+		}
+		else {
+			$date = time();
+		}
 		$date_period_format = '%Y-%m-%d';
 		$date_label_format = '%d';
 		$date_period = 'day';
@@ -84,9 +104,18 @@ switch($action->getCode()){
 			$date_next = date("Y-m-d", strtotime('+1 month', $date));
 		}
 		
+		$subaction = 'usage_today';
+		$subdate = '';
+
 		break;
 	
 	case 'usage_month':
+		if($date != ''){
+			$date = (new DateTime($date . '-' . $tm_start0))->getTimestamp();
+		}
+		else {
+			$date = time();
+		}
 		$date_period_format = '%Y-%m';
 		$date_label_format = '%b';
 		$date_period = 'month';
@@ -94,9 +123,12 @@ switch($action->getCode()){
 		$range_start = date("Y-m", strtotime('-1 year', $date));
 		$range_end = date("Y-m", strtotime('+1 month', $date));
 		
-		$date_prev = date("Y-m-d", strtotime('-1 year', $date));
-		$date_next = date("Y-m-d", strtotime('+1 year', $date));
+		$date_prev = date("Y-m", strtotime('-1 year', $date));
+		$date_next = date("Y-m", strtotime('+1 year', $date));
 		
+		$subaction = 'usage_day';
+		$subdate = '';
+
 		break;
 }
 

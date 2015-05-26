@@ -50,38 +50,44 @@ while($host = mysql_fetch_array($qry_hosts)){
 	
     //echo '<!--' . $host['total'] .'/'. $maxval['max_total'] . '-->';
 	
+	$pct_total	= $host['total'] * 100 / $maxval['max_'.$show];
+	$pct_down	= $host['downloaded'] * 100 / $maxval['max_'.$show];
+	$pct_up		= $host['uploaded'] * 100 / $maxval['max_'.$show];
 	
+	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1));
+	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
 	
 	if($show == 'total' || $show == 'all'){
-		echo '		<li class="usage-total total' . ($host['total'] == 0 ? -1 : round($host['total'], -1)) . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '		<li class="usage-total ' . $class_total . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
-		echo '		<li class="usage-down down' . round($host['downloaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
-		echo '		<li class="usage-up up' . round($host['uploaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_up . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -111,37 +117,45 @@ while($host = mysql_fetch_array($qry_totals)){
 	$total_downloaded_tm += $host['downloaded_telemeter'];
 	$total_uploaded_tm += $host['uploaded_telemeter'];
 	
+	$pct_total	= $host['total'] * 100 / $maxval['max_'.$show];
+	$pct_down	= $host['downloaded'] * 100 / $maxval['max_'.$show];
+	$pct_up		= $host['uploaded'] * 100 / $maxval['max_'.$show];
+	
+	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1));
+	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
+	
     //echo '<!--' . $host['total'] .'/'. $maxval['max_total'] . '-->';
 	if($show == 'total' || $show == 'all'){
-		echo '		<li class="usage-total total' . round($host['total'], -1) . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '		<li class="usage-total ' . $class_total . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
-		echo '		<li class="usage-down down' . round($host['downloaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
-		echo '		<li class="usage-up up' . round($host['uploaded'], -1) . ' ' . ($show == 'all' ? 'sm' : '') . '">' . "\n";
-		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . $pct_up	. '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}

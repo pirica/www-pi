@@ -1,5 +1,5 @@
 
-<h1>Data usage (per day)</h1>
+<h1>Data usage (per <?= $date_period ?>)</h1>
 <h2>Period from <?= $range_start ?> to <?= $range_end ?></h2>
 <p>
 	<a href="?action=<?= $action->getCode() ?>&date=<?= $date_prev ?>" <?= ($date_prev == '' ? 'class="disabled"' : '') ?>><i class="fa fa-arrow-left"></i> Previous</a>
@@ -7,6 +7,9 @@
 </p>
 <p>
 	<form method="get" action="?action=<?= $action->getCode() ?>&amp;date=<?= date("Y-m-d", $date) ?>">
+		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		<input type="hidden" name="date" value="<?= date("Y-m-d", $date) ?>">
+		
 		<label for="filter_show">Show</label>
 		<select id="filter_show" name="show">
 			<option value="total" <?= ($show == 'total' ? 'selected="selected"' : '') ?>>Total</option>
@@ -45,7 +48,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 		echo '	<ul class="timeline">' . "\n";
 	}
 	
-    //echo '<!--' . $host['total'] .'/'. $maxval['total'] . '-->';
+    //echo '<!--' . $host['total'] .'/'. $maxval['max_total'] . '-->';
 	
 	
 	
@@ -56,7 +59,7 @@ while($host = mysql_fetch_array($qry_hosts)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['total']) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -67,7 +70,7 @@ while($host = mysql_fetch_array($qry_hosts)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['downloaded']) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -78,7 +81,7 @@ while($host = mysql_fetch_array($qry_hosts)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['uploaded']) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -108,7 +111,7 @@ while($host = mysql_fetch_array($qry_totals)){
 	$total_downloaded_tm += $host['downloaded_telemeter'];
 	$total_uploaded_tm += $host['uploaded_telemeter'];
 	
-    //echo '<!--' . $host['total'] .'/'. $maxval['total'] . '-->';
+    //echo '<!--' . $host['total'] .'/'. $maxval['max_total'] . '-->';
 	if($show == 'total' || $show == 'all'){
 		echo '		<li class="usage-total total' . round($host['total'], -1) . '">' . "\n";
 		echo '			<a href="?action='.$action->getCode().'&date=' . $host['date_usage'] . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
@@ -116,7 +119,7 @@ while($host = mysql_fetch_array($qry_totals)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['total']) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['total'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -127,7 +130,7 @@ while($host = mysql_fetch_array($qry_totals)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['downloaded']) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['downloaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}
@@ -138,7 +141,7 @@ while($host = mysql_fetch_array($qry_totals)){
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
 		}
-		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['uploaded']) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
+		echo '				<span class="count" style="height: ' . ($host['uploaded'] * 100 / $maxval['max_'.$show]) . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
 	}

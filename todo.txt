@@ -40,16 +40,14 @@ Grabber:
 		- ...
 	
 Users:
-	- move to index.php system
+	- action=error => move err messages to switch statement with codes instead of url variable
 	- list users
 	- show login trials
 	- keep logged in
 
 Router:
-	/- alert when traffic exceeds x per x
 	
 Apps:
-	- migrate hardcoded variables into $app/$settings
 	- make settings manageable
 	\\- support external apps (transmission / adminer, in iframe?)
 	- sub menu's
@@ -95,14 +93,11 @@ Messages:
 	- check emails for tracking code?
 	
 Cameras:
-	/- live view
 	- view video
-	/- view archived
 	- delete files
 	- check status
 		http://www.lavrsen.dk/foswiki/bin/view/Motion/MotionHttpAPI
 	- toggle motion on/off
-	/- auto remove files/folders after x => cameraremove.sh
 	
 global:
 	- when something happening / done / finished: additional scripts executed
@@ -112,7 +107,6 @@ global:
 		- messages
 		- ...
 		- per project a file dbcleanup.php
-	/- show php errorlog => in messages
 	
 	
 

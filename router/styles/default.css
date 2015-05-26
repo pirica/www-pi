@@ -127,7 +127,7 @@ label.error {
 
 }
 .timeline li:hover { 
-	background: #EFEFEF; 
+	background: #f6f6f6; 
 }
 .timeline li a:hover .count { 
 	background: #2D7BB2; 
@@ -139,53 +139,56 @@ label.error {
 
 
 .timeline .usage-total {
-	background-color: #ffff00;
+	background-color: #eee;
 }
 .timeline .usage-down {
-	
+	background-color: #eee;
 }
 .timeline .usage-up{
-	
+	background-color: #eee;
 }
 
 /* percentages / 10 */
 .timeline .total-1 {
 	background-color: #ffffff;
 }
-.timeline .total0  li a .count {
+.timeline .total0 a .count {
 	background-color: #ffff00;
 }
-.timeline .total1 li a .count {
+.timeline .total1 a .count {
 	background-color: #eeee00;
 }
-.timeline .total2 li a .count {
+.timeline .total2 a .count {
 	background-color: #dddd00;
 }
-.timeline .total3 li a .count {
+.timeline .total3 a .count {
 	background-color: #cccc00;
 }
-.timeline .total4 li a .count {
+.timeline .total4 a .count {
 	background-color: #bbbb00;
 }
-.timeline .total5 li a .count {
+.timeline .total5 a .count {
 	background-color: #aaaa00;
 }
-.timeline .total6 li a .count {
+.timeline .total6 a .count {
 	background-color: #999900;
 }
-.timeline .total7 li a .count {
+.timeline .total7 a .count {
 	background-color: #888800;
 }
-.timeline .total8 li a .count {
+.timeline .total8 a .count {
 	background-color: #777700;
 }
-.timeline .total9 li a .count {
+.timeline .total9 a .count {
 	background-color: #666600;
 }
-.timeline .total10 li a .count {
+.timeline .total10 a .count {
 	background-color: #555500;
 }
 
+.timeline .down-1 {
+	background-color: #ffffff;
+}
 .timeline .down0 {
 
 }
@@ -220,6 +223,9 @@ label.error {
 
 }
 
+.timeline .up-1 {
+	background-color: #ffffff;
+}
 .timeline .up0 {
 
 }
