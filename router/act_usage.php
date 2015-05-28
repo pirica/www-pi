@@ -46,7 +46,7 @@ switch($action->getCode()){
 		else {
 			$date = time();
 		}
-		$date = time(); // current hour, since this is 'now'
+		//$date = time(); // current hour, since this is 'now'
 		
 		$date_period_format = '%Y-%m-%d %H:%i';
 		$date_label_format = '%H:%i';
