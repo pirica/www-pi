@@ -41,7 +41,7 @@ $subdate = '';
 switch($action->getCode()){
 	case 'usage_now':
 		if($date != ''){
-			$date = (new DateTime($date))->getTimestamp();
+			$date = (new DateTime($date . ':00'))->getTimestamp();
 		}
 		else {
 			$date = time();
@@ -59,7 +59,7 @@ switch($action->getCode()){
 	
 	case 'usage_today':
 		if($date != ''){
-			$date = (new DateTime($date . ':00'))->getTimestamp();
+			$date = (new DateTime($date . ' 00:00'))->getTimestamp();
 		}
 		else {
 			$date = time();
