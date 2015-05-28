@@ -8,7 +8,7 @@ set_time_limit(0);
 [30-Apr-2015 10:26:16 Europe/Berlin] PHP Notice:  Unknown: Unexpected characters at end of address: ; Mon, 27 Apr 2015 09:54:18 -0700 (errflg=3) in Unknown on line 0
 [30-Apr-2015 11:18:44 Europe/Berlin] PHP Warning:  include(): Failed opening 'dsp_status.php' for inclusion (include_path='.:/usr/share/php:/usr/share/pear') in /var/www/router/index.php on line 35
 [30-Apr-2015 14:49:30 Europe/Berlin] PHP Notice:  Undefined offset: 1 in /var/www/messages/act_php_errors.php on line 37
-
+[28-May-2015 11:31:20 Fatal error	Uncaught exception 'Exception' with message 'DateTime::__construct(): Failed to parse time string (2015-05-28:00) at position 10 (:): Unexpected character' 	/var/www/router/act_usage.php:62]
 */
 
 $data = [];
@@ -41,7 +41,7 @@ if($errors !== false){
 			$location = explode(' on line ', $location)[0];
 			
 			$linenbr = $lines[$i];
-			$linenbr = explode(' on line ', $linenbr)[1];
+			$linenbr = count($linenbr) > 0 ? explode(' on line ', $linenbr)[1] : '';
 			
 			$data[] = array(
 				'date' => $date,

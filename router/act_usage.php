@@ -69,7 +69,8 @@ switch($action->getCode()){
 		$date_period = 'hour';
 		
 		$range_start = date("Y-m-d 00", strtotime('-1 day', $date));
-		$range_end = date("Y-m-d H", strtotime('+1 hour', $date));
+		//$range_end = date("Y-m-d H", strtotime('+1 hour', $date));
+		$range_end = date("Y-m-d H", strtotime('+1 day', $date));
 
 		$date_prev = date("Y-m-d", strtotime('-1 day', $date));
 		$date_next = date("Y-m-d", strtotime('+1 day', $date));
@@ -108,7 +109,7 @@ switch($action->getCode()){
 		}
 		
 		$subaction = 'usage_today';
-		$subdate = ' 00:00';
+		$subdate = '';
 
 		break;
 	
