@@ -148,6 +148,10 @@ label.error {
 	background-color: #eee;
 }
 
+.timeline .usage-spacer{
+	width: 8px;
+}
+
 /* percentages / 10 */
 .timeline .total-1 {
 	background-color: #ffffff;

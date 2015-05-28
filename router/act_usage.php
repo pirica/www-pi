@@ -196,4 +196,20 @@ switch($action->getCode()){
 		break;
 }
 
+
+$section_width = 100; // .section-label
+if($show == 'total' || $show == 'all'){
+	$section_width += 16 + 1; // .usage-total
+}
+if($show == 'down' || $show == 'both' || $show == 'all'){
+	$section_width += 8 + 1; // .usage-down
+}
+if($show == 'up' || $show == 'both' || $show == 'all'){
+	$section_width += 8 + 1; // .usage-up
+}
+if($show == 'both' || $show == 'all'){
+	$section_width += 8; // .usage-spacer
+}
+$section_width .= mysql_num_rows($qry_totals);
+
 ?>
