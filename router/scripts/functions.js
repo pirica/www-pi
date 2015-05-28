@@ -30,6 +30,12 @@ $().ready(function(){
 		
 	}
 	
+	// scroll to the currently selected host (id in url)
+	if($("#host" + getUrlParameter('host')).length > 0){
+		$('html, body').animate({
+	        scrollTop: $("#host" + getUrlParameter('host')).offset().top - 100
+	    }, 500);
+		
 });
 
 
@@ -99,4 +105,19 @@ function updateHostValue(el, val){
 			
 		}
 	});
+}
+
+
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return (sParameterName.length > 1 ? sParameterName[1] : '');
+        }
+    }
 }
