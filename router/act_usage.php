@@ -74,6 +74,9 @@ switch($action->getCode()){
 		$date_prev = date("Y-m-d", strtotime('-1 day', $date));
 		$date_next = date("Y-m-d", strtotime('+1 day', $date));
 		
+		$subaction = 'usage_now';
+		$subdate = ':00';
+
 		break;
 	
 	case 'usage_day':
@@ -105,7 +108,7 @@ switch($action->getCode()){
 		}
 		
 		$subaction = 'usage_today';
-		$subdate = '';
+		$subdate = ' 00:00';
 
 		break;
 	
@@ -127,7 +130,7 @@ switch($action->getCode()){
 		$date_next = date("Y-m", strtotime('+1 year', $date));
 		
 		$subaction = 'usage_day';
-		$subdate = '';
+		$subdate = '-' . $tm_start0;
 
 		break;
 }

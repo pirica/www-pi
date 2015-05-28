@@ -54,13 +54,13 @@ while($host = mysql_fetch_array($qry_hosts)){
 	$pct_down	= $host['downloaded'] * 100 / $maxval['max_'.$show];
 	$pct_up		= $host['uploaded'] * 100 / $maxval['max_'.$show];
 	
-	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1));
-	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
-	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1)/10);
+	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)/10) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)/10) . ' ' . ($show == 'all' ? 'sm' : '');
 	
 	if($show == 'total' || $show == 'all'){
 		echo '		<li class="usage-total ' . $class_total . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -71,7 +71,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
 		if($show != 'all')
         {
@@ -83,7 +83,7 @@ while($host = mysql_fetch_array($qry_hosts)){
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
 		if($show != 'all')
         {
@@ -97,6 +97,10 @@ while($host = mysql_fetch_array($qry_hosts)){
 	if($show == 'both' || $show == 'all'){
 		echo '		<li class="usage-spacer">' . "\n";
 	}
+	
+	/*if(date resetted){
+		echo '		<li class="usage-period-spacer">' . "\n";
+	}*/
 	
 	$current_row++;
 }
@@ -127,14 +131,14 @@ while($host = mysql_fetch_array($qry_totals)){
 	$pct_down	= $host['downloaded'] * 100 / $maxval['max_'.$show];
 	$pct_up		= $host['uploaded'] * 100 / $maxval['max_'.$show];
 	
-	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1));
-	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
-	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_total	= 'total' . ($host['total'] == 0 ? -1 : round($pct_total, -1)/10);
+	$class_down		= 'down' . ($host['downloaded'] == 0 ? -1 : round($pct_down, -1)/10) . ' ' . ($show == 'all' ? 'sm' : '');
+	$class_up		= 'up' . ($host['uploaded'] == 0 ? -1 : round($pct_up, -1)/10) . ' ' . ($show == 'all' ? 'sm' : '');
 	
     //echo '<!--' . $host['total'] .'/'. $maxval['max_total'] . '-->';
 	if($show == 'total' || $show == 'all'){
 		echo '		<li class="usage-total ' . $class_total . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['total']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
 		if($show != 'all')
         {
@@ -146,7 +150,7 @@ while($host = mysql_fetch_array($qry_totals)){
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
 		if($show != 'all')
         {
@@ -158,7 +162,7 @@ while($host = mysql_fetch_array($qry_totals)){
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
-		echo '			<a href="?action='.$subaction.'&date=' . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
+		echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '" title="' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded']) . '">' . "\n";
 		//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
         {
 			echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
@@ -171,6 +175,10 @@ while($host = mysql_fetch_array($qry_totals)){
 	if($show == 'both' || $show == 'all'){
 		echo '		<li class="usage-spacer">' . "\n";
 	}
+	
+	/*if(date resetted){
+		echo '		<li class="usage-period-spacer">' . "\n";
+	}*/
 	
 	$current_row++;
 }
