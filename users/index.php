@@ -54,6 +54,7 @@ switch($action->getCode()){
 		break;
 	
 	
+	// management
 	
 	case 'settings':
 		require 'queries/pr_get_settings.php';
@@ -64,6 +65,18 @@ switch($action->getCode()){
 	
 	case 'do_setsetting':
 		include 'act_set_setting.php';
+		break;
+		
+		
+	case 'actions':
+		require 'queries/pr_get_actions.php';
+		require '../_core/dsp_header.php';
+		require 'dsp_actions.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_setaction':
+		include 'act_set_action.php';
 		break;
 		
 		
