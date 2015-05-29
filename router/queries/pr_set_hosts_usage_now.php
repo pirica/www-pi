@@ -9,7 +9,17 @@ $range_end_sql = date("YmdHi", $date + 60);
 $night_start_sql = '0000';
 $night_end_sql = '1000';
 
-mysql_query("truncate table t_usage_now");
+
+//mysql_query("truncate table t_usage_now");
+$date_clearance = time();
+$range_clearance_end_sql = date("Ym" . $tm_start0, strtotime('-2 month', $date_clearance));
+
+mysql_query("
+	delete from t_usage_now
+	where
+		DATE_FORMAT(date_usage, '%Y%m%d') < '" . $range_clearance_end_sql . "'
+", $conn);
+
 
 mysql_query("
 	
@@ -57,6 +67,10 @@ mysql_query("
 		and DATE_FORMAT(hu.date_usage, '%Y%m%d%H%i') < '" . $range_end_sql . "'
 		group by mac_address
 	) h
+	left join t_usage_now u on u.usagekey = concat(h.mac_address , DATE_FORMAT(d.date, '%Y-%m-%d %H:%i') )
+	
+	where
+		u.usagekey is null
 	
 ", $conn);
 	

@@ -35,7 +35,7 @@ $().ready(function(){
 		$('html, body').animate({
 	        scrollTop: $("#host" + getUrlParameter('host')).offset().top - 100
 	    }, 500);
-		
+	}
 });
 
 
