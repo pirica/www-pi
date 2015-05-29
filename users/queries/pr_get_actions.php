@@ -47,7 +47,7 @@ $actionsdata = [];
 	$page_title,
 	$login_required
 */
-$prev_id_app = -1;
+$prev_id_app = -2;
 while ($qry_mng_actions->fetch()) {
 	if($prev_id_app != $id_app){
 		$actionsdata[] = [];
