@@ -12,7 +12,8 @@ $night_end_sql = '1000';
 
 //mysql_query("truncate table t_usage_now");
 $date_clearance = time();
-$range_clearance_end_sql = date("Ym" . $tm_start0, strtotime('-2 month', $date_clearance));
+//$range_clearance_end_sql = date("Ym" . $tm_start0, strtotime('-2 month', $date_clearance));
+$range_clearance_end_sql = date("Ymd", strtotime('-1 month', $date_clearance));
 
 mysql_query("
 	delete from t_usage_now

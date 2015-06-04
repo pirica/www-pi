@@ -13,7 +13,7 @@ $().ready(function(){
 	
 	$('.section').width();
 	
-	$('#filter_show, #filter_telemeter').change(function(){
+	$('#filter_show, #filter_telemeter, #filter_all').change(function(){
 		$(this).parents('form').submit();
 	});
 	

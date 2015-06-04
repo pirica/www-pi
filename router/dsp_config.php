@@ -1,6 +1,15 @@
 
 
 <h1>Configure hosts</h1>
+<p>
+	<form method="get" action="?action=<?= $action->getCode() ?>">
+		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		
+		<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
+		<label for="filter_all">Show all</label>
+		
+	<form>
+</p>
 
 <table class="table" id="hosts-config-grid">
 	<thead>
@@ -44,7 +53,7 @@
 		
 	*/
 	while($host = mysql_fetch_array($qry_hosts)){ 
-		if($host['active'] == 1){
+		if($host['active'] == 1 || $show_all == 1){
 		?>
 			<tr class="tr-host<?=$host['id_host'] ?>" data-id_host="<?=$host['id_host'] ?>">
 				<td>

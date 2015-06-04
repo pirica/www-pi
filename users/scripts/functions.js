@@ -1,7 +1,7 @@
 
 var 
 	settingsForm = false,
-	actionsForm = false,
+	actionsForm = false
 ;
 
 $().ready(function(){
