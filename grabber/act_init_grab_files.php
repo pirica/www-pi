@@ -17,6 +17,10 @@ mysql_query("
 		case when ff.url_original = 'null' then ff.url_large else ff.url_original end <> 'null'  
 		and gf.id_grab_file is null 
 		and ff.filename <> '' 
+	group by
+		g.id_grab, 
+		case when ff.url_original = 'null' then ff.url_large else ff.url_original end,  
+		concat(g.path, ff.imageset, '/', ff.filename)
 		
 	", $conn);
 	

@@ -32,6 +32,17 @@
 				else {
 					echo 'Create grabber';
 				}
+				/*
+					$grab_max_grabbers = 'null';
+					$grab_excluded = '';
+					$grab_excluded_size = -1;
+					$grab_always_retry = 0;
+					$grab_script_completion = '';
+					$grab_remove_completed_after_days = -1;
+					$grab_remove_inactive_after_months = -1;
+					$grab_keep_diskspace_free = 0;
+					$grab_scheduled = 0;
+				*/
 				?>
 				</legend-->
 
@@ -55,16 +66,59 @@
 					<input id="grab_filename" name="grab_filename" placeholder="" class="form-control" type="text" value="<?=$grab_filename?>">
 				</div>
 				
-				<div class="form-group">
-					<label for="grab_excluded">Exclude if content contains</label>
-					<input id="grab_excluded" name="grab_excluded" placeholder="" class="form-control" type="text" value="<?=$grab_excluded?>">
-				</div>
 				
 				<div class="form-group">
 					<label for="grab_max_grabbers">Max nbr of grabbers (defaults to <?= $settings->val('grabber_maxgrabbers_default', 20) ?> if empty)</label>
 					<input id="grab_max_grabbers" name="grab_max_grabbers" placeholder="" class="form-control" type="text" value="<?=$grab_max_grabbers?>">
 				</div>
 				
+				<div class="form-group">
+					<label for="grab_keep_diskspace_free">Keep at least x % diskspace free</label>
+					<input id="grab_keep_diskspace_free" name="grab_keep_diskspace_free" placeholder="" class="form-control" type="text" value="<?=$grab_keep_diskspace_free?>">
+				</div>
+				
+				<div class="form-group">
+					<input id="grab_always_retry" name="grab_always_retry" class="form-control" type="checkbox" <?= ($grab_always_retry == 1 ? 'checked' : '') ?>>
+					<label for="grab_always_retry">Keep retrying</label>
+					
+					<p class="help-block col-sm-11 col-sm-offset-1">Retry to download files which were started but never completed</p>
+				</div>
+				
+				<div class="form-group">
+					<input id="grab_scheduled" name="grab_scheduled" class="form-control" type="checkbox" <?= ($grab_scheduled == 1 ? 'checked' : '') ?>>
+					<label for="grab_scheduled">Use schedules (managed separately)</label>
+					
+					<a href="#" class="<?= ($id_grab > 0 ? '' : 'disabled') ?>">Manage schedules</a>
+				</div>
+				
+				
+				<div class="form-group">
+					<label for="grab_excluded">Exclude if content contains</label>
+					<input id="grab_excluded" name="grab_excluded" placeholder="" class="form-control" type="text" value="<?=$grab_excluded?>">
+				</div>
+				
+				<div class="form-group">
+					<label for="grab_excluded_size">Exclude if smaller than (kb)</label>
+					<input id="grab_excluded_size" name="grab_excluded_size" placeholder="" class="form-control" type="text" value="<?=$grab_excluded_size?>">
+				</div>
+				
+				
+				<div class="form-group">
+					<label for="grab_remove_completed_after_days">Mark completed files as inactive after x days</label>
+					<input id="grab_remove_completed_after_days" name="grab_remove_completed_after_days" placeholder="" class="form-control" type="text" value="<?=$grab_remove_completed_after_days?>">
+				</div>
+				
+				<div class="form-group">
+					<label for="grab_remove_inactive_after_months">Remove inactive files after x months</label>
+					<input id="grab_remove_inactive_after_months" name="grab_remove_inactive_after_months" placeholder="" class="form-control" type="text" value="<?=$grab_remove_inactive_after_months?>">
+					<p class="help-block col-sm-11 col-sm-offset-1">Only from the database, not the physical files</p>
+				</div>
+				
+				
+				<div class="form-group">
+					<label for="grab_script_completion">Script to execute after completion</label>
+					<input id="grab_script_completion" name="grab_script_completion" placeholder="" class="form-control" type="text" value="<?=$grab_script_completion?>">
+				</div>
 				
 				
 				<div class="form-group">
