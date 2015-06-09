@@ -15,7 +15,7 @@
 			<div class="col-md-9">
 				<div class="form-group">
 					<label for="search">Search</label>
-					<input id="search" name="search" placeholder="" class="form-control" type="text" value="<?=$search ?>">
+					<input id="search" name="search" placeholder="" class="form-control" type="text" value="<?=//$search ?>">
 				</div>
 			</div>
 			
@@ -25,7 +25,7 @@
 				<div class="form-group">
 					<label for="status">Status</label>
 					<select id="status" name="status" class="form-control">
-						<option value="*" <?php echo $status == '*' ? 'selected="selected"' : ''; ?>>All</option>
+						<option value="*" <?php /*echo $status == '*' ? 'selected="selected"' : ''; ?>>All</option>
 						<option value="n" <?php echo $status == 'n' ? 'selected="selected"' : ''; ?>>New, unprocessed</option>
 						<option value="p" <?php echo $status == 'p' ? 'selected="selected"' : ''; ?>>Processing</option>
 						<option value="ok" <?php echo $status == 'ok' ? 'selected="selected"' : ''; ?>>Processed</option>
@@ -34,7 +34,7 @@
 						<option value="fe" <?php echo $status == 'fe' ? 'selected="selected"' : ''; ?>>File empty</option>
 						<option value="fx" <?php echo $status == 'fx' ? 'selected="selected"' : ''; ?>>File exists</option>
 						<option value="x" <?php echo $status == 'x' ? 'selected="selected"' : ''; ?>>Excluded</option>
-						<option value="e" <?php echo $status == 'e' ? 'selected="selected"' : ''; ?>>In error</option>
+						<option value="e" <?php echo $status == 'e' ? 'selected="selected"' : '';*/ ?>>In error</option>
 					</select>
 				</div>
 			</div>

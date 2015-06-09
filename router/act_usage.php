@@ -14,7 +14,7 @@ $tm = saneInput('tm', 'int', '-1');
 if(!in_array($show, array('total','down','up','both','all'))){
 	$show = $settings->val('usage_show_default_value', 'total');
 }
-if($tm != 0 || $tm != 1){
+if($tm != 0 && $tm != 1){
 	$tm = $settings->val('usage_telemeter_default_value', 0);
 }
 

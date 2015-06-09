@@ -16,7 +16,7 @@
 			for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
 				if($dirparts[$i] != ''){
 					$dircontent .= $dirparts[$i] . '/';
-					$str_currentdir = '<a href="?action=details&amp;id_share='. $id_share .'&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a> ' . $str_currentdir;
+					$str_currentdir = '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a> ' . $str_currentdir;
 				}
 			}
 		?>
@@ -29,7 +29,7 @@
 	<form method="get" action="?action=<?= $action->getCode() ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
 		<input type="hidden" name="id_share" value="<?= $id_share ?>">
-		<input type="hidden" name="dir" value="<?= $dir ?>">
+		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
 		
 		<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
 		<label for="filter_all">Also show deleted files</label>
@@ -93,7 +93,7 @@ if($currentdir['relative_directory'] != '/'){
 				?></td>
 				<td><?php
 					if($file['is_directory'] == 1){
-						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;dir=' . $file['relative_directory'] . '">' . $file['filename'] . '</a>';
+						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . $file['filename'] . '</a>';
 					}
 					else {
 						echo $file['filename'];
@@ -124,7 +124,7 @@ if($currentdir['relative_directory'] != '/'){
 				?></td>
 				<td><?php
 					if($file['is_directory'] == 1){
-						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
+						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
 					}
 					else {
 						echo $file['filename'];
