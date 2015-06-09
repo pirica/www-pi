@@ -19,16 +19,19 @@ $().ready(function(){
 			load: reload_img, 
 			error: error_img
 		});
-		$(this).src = '//' + $(this).data('address') + "/cam_pic.php?time=" + new Date().getTime();
+		var src = 'http://' + $(this).data('address') + "/cam_pic.php?time=" + (new Date().getTime());
+		$(this).attr('src', src);
 	});
 });
 
 function reload_img (e) {
-	$(e.target).src = '//' + $(this).data('address') + "/cam_pic.php?time=" + new Date().getTime();
+	var src = 'http://' + $(e.target).data('address') + "/cam_pic.php?time=" + (new Date().getTime());
+	$(e.target).attr('src', src);
 }
 
 function error_img (e) {
 	setTimeout(function(){
-		$(e.target).src = '//' + $(this).data('address') + "/cam_pic.php?time=" + new Date().getTime();
+		var src = 'http://' + $(e.target).data('address') + "/cam_pic.php?time=" + (new Date().getTime());
+		$(e.target).attr('src', src);
 	}, 100);
 }

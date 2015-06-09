@@ -6,23 +6,23 @@
 <?php 
 
 for ($i = 0; $i < $cameracount; $i++) {
-	if($id_camera <= 0 || $id_camera == $camera['id_camera']){
-		switch($camera['type']){
+	if($id_camera <= 0 || $id_camera == $cameras[$i]['id_camera']){
+		switch($cameras[$i]['type']){
 			case 'raspi':
 			case 'raspicam':
 			case 'raspimjpg':
 			case 'raspimjpeg':
 				if($id_camera <= 0){
-					echo $cameras[$i]['description'] + '<br>';
+					echo $cameras[$i]['description'] . '<br>';
 				}
-				echo '<img class="raspimjpeg" data-address="' + $cameras[$i]['address'] + '" />';
+				echo '<img class="raspimjpeg" data-address="' . $cameras[$i]['address'] . '" />';
 				break;
 			
 			//case 'mjpg':
 			//case 'mjpeg':
 			default:
 				if($id_camera <= 0){
-					echo $cameras[$i]['description'] + '<br>';
+					echo $cameras[$i]['description'] . '<br>';
 				}
 				echo '<img class="mjpeg" src="' . $cameras[$i]['address'] . '">';
 		}

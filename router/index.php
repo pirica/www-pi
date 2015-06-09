@@ -39,7 +39,7 @@ switch($action->getCode()){
 	
 	
 	case 'config':
-		$show_all = saneInput('all', 'int', 0);
+		$show_all = saneInput('all', 'int', $settings->val('config_showall_default_value', 0));
 		include 'queries/pr_get_hosts.php';
 		include 'queries/pr_get_categories.php';
 		

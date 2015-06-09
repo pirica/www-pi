@@ -26,6 +26,7 @@ new: Dashboard
 	- server stats
 		- for all servers / hosts / ...
 		- serverinfo.sh to start
+		- or http://phpsysinfo.github.io/phpsysinfo/ (has json output)
 	- network stats
 		- from openwrt
 	
@@ -46,21 +47,20 @@ Users:
 	- keep logged in
 
 Router:
+	- checkbox: ignore small usages + setting percentage threshold (<> max in period)
+	/- add telemeter columns
 	
 Apps:
-	- make settings manageable
 	\\- support external apps (transmission / adminer, in iframe?)
 	- sub menu's
-	- manage actions (set titles)
 	- functions for lockfiles => ps aux | grep __filename__ ?
+	- page titles also manageable
 
 filerep:
 	- up/download only
-	- flag dirs to reindex => find -ctime -5
-	- setting index_building => timestamp, check for timeout
-		- or better, check for running processes instead?
 	- show conflictfiles (<= already available)
 	- setfileindex: split into pre-, per 100 files upload, post-
+	- file view: filter on inactive + setting
 	
 GPS:
 	- add multi user support
@@ -73,12 +73,6 @@ GPS:
 		=> only update alerting when at least x time there / x distance covered before
 	
 Feeds:
-	- multi user : auto detect user?
-	
-	var wshshell=new ActiveXObject("wscript.shell");
-	var username=wshshell.ExpandEnvironmentStrings("%username%");
-	
-	or separate cookie with user id?
 	
 Messages:
 	- add "test send" form
@@ -91,6 +85,8 @@ Messages:
 		- rate limitation (check t_log_message)
 	- show current emails in inbox: subject, from => generate alerting
 	- check emails for tracking code?
+	- t&t alerting: time range (settings instead of cron)
+	- email alerting: time range (settings instead of cron)
 	
 Cameras:
 	- view video

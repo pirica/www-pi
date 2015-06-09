@@ -22,6 +22,7 @@ switch($action->getCode()){
 	// main: overview
 	case 'details':
 		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
+		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
 		
 		include 'queries/pr_get_files.php';
 		

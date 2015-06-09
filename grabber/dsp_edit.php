@@ -69,7 +69,7 @@
 				
 				<div class="form-group">
 					<label for="grab_max_grabbers">Max nbr of grabbers (defaults to <?= $settings->val('grabber_maxgrabbers_default', 20) ?> if empty)</label>
-					<input id="grab_max_grabbers" name="grab_max_grabbers" placeholder="" class="form-control" type="text" value="<?=$grab_max_grabbers?>">
+					<input id="grab_max_grabbers" name="grab_max_grabbers" placeholder="" class="form-control" type="text" value="<?= ($grab_max_grabbers > 0 ? $grab_max_grabbers : '') ?>">
 				</div>
 				
 				<div class="form-group">
@@ -78,15 +78,19 @@
 				</div>
 				
 				<div class="form-group">
-					<input id="grab_always_retry" name="grab_always_retry" class="form-control" type="checkbox" <?= ($grab_always_retry == 1 ? 'checked' : '') ?>>
-					<label for="grab_always_retry">Keep retrying</label>
+					<div class="col-sm-1">
+						<input id="grab_always_retry" name="grab_always_retry" class="form-control" type="checkbox" <?= ($grab_always_retry == 1 ? 'checked' : '') ?>>
+					</div>
+					<label for="grab_always_retry" class="col-sm-11">Keep retrying</label>
 					
 					<p class="help-block col-sm-11 col-sm-offset-1">Retry to download files which were started but never completed</p>
 				</div>
 				
 				<div class="form-group">
-					<input id="grab_scheduled" name="grab_scheduled" class="form-control" type="checkbox" <?= ($grab_scheduled == 1 ? 'checked' : '') ?>>
-					<label for="grab_scheduled">Use schedules (managed separately)</label>
+					<div class="col-sm-1">
+						<input id="grab_scheduled" name="grab_scheduled" class="form-control" type="checkbox" <?= ($grab_scheduled == 1 ? 'checked' : '') ?>>
+					</div>
+					<label for="grab_scheduled" class="col-sm-11">Use schedules (managed separately)</label>
 					
 					<a href="#" class="<?= ($id_grab > 0 ? '' : 'disabled') ?>">Manage schedules</a>
 				</div>

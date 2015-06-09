@@ -1,13 +1,14 @@
 
 <h1>share details</h1>
 
+	<!--
 <p>
-	<!--a class="btn btn-primary" href="index.php?action=setgrab&amp;id_grab=-1">
+
+	<!- -a class="btn btn-primary" href="index.php?action=setgrab&amp;id_grab=-1">
 		<span class="glyphicon glyphicon-plus"></span>
 		Add new grab
-	</a-->
+	</a- ->
 	
-	<!--
 	<form class="form-horizontal" id="files-form">
 		<fieldset>
 			
@@ -91,8 +92,9 @@
 			});
 		});
 	</script>
-	-->
+	
 </p>
+-->
 
 <div id="files-grid">
 	<?php

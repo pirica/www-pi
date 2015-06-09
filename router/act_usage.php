@@ -42,9 +42,13 @@ switch($action->getCode()){
 	case 'usage_now':
 		if($date != ''){
 			$date = (new DateTime($date . ':00'))->getTimestamp();
+			$range_start = date("Y-m-d H:00", $date);
+			$range_end = date("Y-m-d H:i", $date);
 		}
 		else {
 			$date = time();
+			$range_start = date("Y-m-d H:00", $date - 3600);
+			$range_end = date("Y-m-d H:i", $date + 60);
 		}
 		//$date = time(); // current hour, since this is 'now'
 		
@@ -52,25 +56,24 @@ switch($action->getCode()){
 		$date_label_format = '%H:%i';
 		$date_period = 'minute';
 		
-		$range_start = date("Y-m-d H:00", $date - 3600);
-		$range_end = date("Y-m-d H:i", $date + 60);
 		
 		break;
 	
 	case 'usage_today':
 		if($date != ''){
 			$date = (new DateTime($date . ' 00:00'))->getTimestamp();
+			$range_start = date("Y-m-d 00", $date);
+			$range_end = date("Y-m-d 00", strtotime('+1 day', $date));
 		}
 		else {
 			$date = time();
+			$range_start = date("Y-m-d 00", strtotime('-1 day', $date));
+			$range_end = date("Y-m-d H", strtotime('+1 day', $date));
 		}
 		$date_period_format = '%Y-%m-%d %H';
 		$date_label_format = '%H';
 		$date_period = 'hour';
 		
-		$range_start = date("Y-m-d 00", strtotime('-1 day', $date));
-		//$range_end = date("Y-m-d H", strtotime('+1 hour', $date));
-		$range_end = date("Y-m-d H", strtotime('+1 day', $date));
 
 		$date_prev = date("Y-m-d", strtotime('-1 day', $date));
 		$date_next = date("Y-m-d", strtotime('+1 day', $date));

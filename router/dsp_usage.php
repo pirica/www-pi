@@ -68,6 +68,18 @@ while($host = mysql_fetch_array($qry_hosts)){
 		echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-total ' . $class_total . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=' . $host['id_host'] . '" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['total_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
@@ -80,6 +92,19 @@ while($host = mysql_fetch_array($qry_hosts)){
 		echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-down ' . $class_down . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=' . $host['id_host'] . '" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			if($show != 'all')
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
@@ -92,9 +117,22 @@ while($host = mysql_fetch_array($qry_hosts)){
 		echo '				<span class="count" style="height: ' . $pct_up . '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-up ' . $class_up . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=' . $host['id_host'] . '" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			if($show != 'all')
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_up . '%">(' . formatFileSize($host['uploaded_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	
-	if($show == 'both' || $show == 'all'){
+	if($show == 'both' || $show == 'all' || $tm == 1){
 		echo '		<li class="usage-spacer">' . "\n";
 	}
 	
@@ -147,6 +185,19 @@ while($host = mysql_fetch_array($qry_totals)){
 		echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-total ' . $class_total . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=-1" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['total_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			if($show != 'all')
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_total . '%">(' . formatFileSize($host['total_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	if($show == 'down' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-down ' . $class_down . '">' . "\n";
@@ -159,6 +210,19 @@ while($host = mysql_fetch_array($qry_totals)){
 		echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-down ' . $class_down . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=-1" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['downloaded_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			if($show != 'all')
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_down . '%">(' . formatFileSize($host['downloaded_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	if($show == 'up' || $show == 'both' || $show == 'all'){
 		echo '		<li class="usage-up ' . $class_up . '">' . "\n";
@@ -170,9 +234,21 @@ while($host = mysql_fetch_array($qry_totals)){
 		echo '				<span class="count" style="height: ' . $pct_up	. '%">(' . formatFileSize($host['uploaded']) . ')</span>' . "\n";
 		echo '			</a>' . "\n";
 		echo '		</li>' . "\n";
+		
+		if($tm == 1){
+			echo '		<li class="usage-up ' . $class_up . '">' . "\n";
+			echo '			<a href="?action='.$subaction.'&date=' . $host['date_usage'] . $subdate . '&host=-1" title="Telemeter, ' . $host['date_usage'] . ': ' . formatFileSize($host['uploaded_telemeter']) . '">' . "\n";
+			//if($current_row == 0 || $current_row % 5 == 0 || $current_row == $rows - 1) 
+			{
+				echo '				<span class="label">' . $host['date_usage_label'] . '</span>' . "\n";
+			}
+			echo '				<span class="count" style="height: ' . $pct_up	. '%">(' . formatFileSize($host['uploaded_telemeter']) . ')</span>' . "\n";
+			echo '			</a>' . "\n";
+			echo '		</li>' . "\n";
+		}
 	}
 	
-	if($show == 'both' || $show == 'all'){
+	if($show == 'both' || $show == 'all' || $tm == 1){
 		echo '		<li class="usage-spacer">' . "\n";
 	}
 	
