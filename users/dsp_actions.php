@@ -32,7 +32,7 @@ $actionsdata_count = count($actionsdata);
 				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="app<?= $actionsdata[$i][0]['id_app'] ?>">
 					<div class="row clearfix">
 						<form role="form" class="form-horizontal actions-form">
-							<table>
+							<table border="0" cellpadding="3" cellspacing="0">
 								<tr>
 									<th>Code</th>
 									<th>Page title</th>

@@ -167,6 +167,8 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					// and execute any scripts on completion
 					$script_completion = $grabs['script_completion'];
 					$script_completion = str_replace('%url%', $grabs['url'], $script_completion);
+					$script_completion = str_replace('%full_url%', $grabs['full_url'], $script_completion);
+					$script_completion = str_replace('%full_path%', $grabs['full_path'], $script_completion);
 					$script_completion = str_replace('%path%', $grabs['path'], $script_completion);
 					$script_completion = str_replace('%filename%', $grabs['filename'], $script_completion);
 					$script_completion = str_replace('%description%', $grabs['description'], $script_completion);
@@ -174,6 +176,9 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					$script_completion = str_replace('%always_retry%', $grabs['always_retry'], $script_completion);
 					//$script_completion = str_replace('%%', $grabs[''], $script_completion);
 				
+					$filename_part = $grabs['full_path'];
+					$script_completion = str_replace('%filename_part%', $filename_part, $script_completion);
+					
 					shell_exec($script_completion);
 				}
 			}
