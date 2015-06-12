@@ -1,7 +1,12 @@
 
 <h1>Add a download</h1>
 
-<form id="frm-edit" class="form-horizontal" method="post" action="index.php?action=do_add_file&amp;id_grab=<?=$id_grab?>">
+<?php
+	if($added == 0) echo '<div class="alert alert-success" role="alert"><strong>Success!</strong> New download link added</div>';
+	if($added == 1) echo '<div class="alert alert-danger" role="alert"><strong>Error</strong> Your link could not be added</div>';
+?>
+
+<form id="frm-addfile" class="form-horizontal" method="post" action="index.php?action=do_add_file&amp;id_grab=<?=$id_grab?>">
 	<input type="hidden" name="action" value="do_add_file"/>
 	<input type="hidden" name="id_grab" value="<?=$id_grab?>"/>
 	

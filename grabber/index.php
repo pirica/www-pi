@@ -171,13 +171,15 @@ switch($action->getCode()){
 	
 	case 'do_add_file':
 		$id_grab = $settings->val('custom_downloads_id_grab',0);
+		$id_grab_file = -1;
+		$added = saneInput('added', 'int', -1);
 		if($id_grab > 0){
 			include 'queries/pr_grabs.php';
 			include 'act_init_grab.php';
 			
 			include 'act_add_file.php';
 		}
-		goto_action('main', false, 'id_grab=' . $id_grab);
+		goto_action('add_file', false, 'added=' . ($id_grab_file > 0 ? 1 : 0));
 		break;
 	
 	
