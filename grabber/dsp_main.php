@@ -6,6 +6,13 @@
 		<span class="glyphicon glyphicon-plus"></span>
 		Add new grab
 	</a>
+	
+	<?php if($settings->val('custom_downloads_id_grab',0) > 0){ ?>
+		<a class="btn btn-primary" href="index.php?action=add_file">
+			<span class="glyphicon glyphicon-plus"></span>
+			Add download
+		</a>
+	<?php } ?>
 </p>
 
 <table class="table">

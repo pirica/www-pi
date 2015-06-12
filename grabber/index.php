@@ -144,14 +144,40 @@ switch($action->getCode()){
 	
 	case 'detailsgrid':
 		include 'queries/pr_grabs.php';
-		include 'act_init_grab.php';
 		
+		include 'act_init_grab.php';
 		include 'act_init_grab_detail.php';
 		
 		include 'queries/pr_grab_files.php';
 		
 		include 'dsp_detail_grid.php';
-		
+		break;
+	
+	
+	case 'add_file':
+		$id_grab = $settings->val('custom_downloads_id_grab',0);
+		if($id_grab > 0){
+			include 'queries/pr_grabs.php';
+			include 'act_init_grab.php';
+			
+			include '../_core/dsp_header.php';
+			include 'dsp_add_file.php';
+			include '../_core/dsp_footer.php';
+		}
+		else {
+			goto_action('main');
+		}
+		break;
+	
+	case 'do_add_file':
+		$id_grab = $settings->val('custom_downloads_id_grab',0);
+		if($id_grab > 0){
+			include 'queries/pr_grabs.php';
+			include 'act_init_grab.php';
+			
+			include 'act_add_file.php';
+		}
+		goto_action('main', false, 'id_grab=' . $id_grab);
 		break;
 	
 	

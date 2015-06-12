@@ -57,6 +57,10 @@ if(isset($_POST['grab_scheduled']) && ($_POST['grab_scheduled'] == 0 || $_POST['
 	$grab_scheduled = $_POST['grab_scheduled'];
 }
 
+if(substr($grab_path, -1, 1) != '/'){
+	$grab_path = $grab_path . '/';
+}
+
 
 if($id_grab > 0){
 	mysql_query("
