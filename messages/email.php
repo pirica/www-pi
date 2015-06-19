@@ -107,6 +107,13 @@ for($i=$total-1;$i>=0;$i--) {
 		");
 	
 	if(mysql_num_rows($qry_check) == 0){
+		
+		$db_fromaddress	= $fromaddress	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($fromaddress) . "'";
+		$db_subject		= $subject		== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($subject) . "'";
+		$db_date		= $date			== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($date) . "'";
+		$db_message_id	= $message_id	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($message_id) . "'";
+		$db_toaddress	= $toaddress	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($toaddress) . "'";
+		
 		mysql_query("
 			insert into t_email
 			(
@@ -120,13 +127,13 @@ for($i=$total-1;$i>=0;$i--) {
 			)
 			values
 			(
-				raw,
-				fromaddress,
-				subject,
-				date,
-				message_id,
-				toaddress,
-				body
+				'" . mysql_real_escape_string($email_info) . "',
+				" . $db_fromaddress . ",
+				" . $db_subject . ",
+				" . $db_date . ",
+				" . $db_message_id . ",
+				" . $db_toaddress . ",
+				'" . mysql_real_escape_string($email['body']) . "'
 			)
 			");
 		$id_email = mysql_insert_id($conn);
