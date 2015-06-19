@@ -15,6 +15,10 @@ $errors = array();
 if(empty($rawPost)) $errors[] = 'You did not send any POST data.';
 if(empty($path)) $errors[] = 'You did not specify a file name in the url.';
 
+/*if(substr($path, -1, 1) != '/'){
+	$path = $path . '/';
+}*/
+
 // rename to temporary file
 $temppath = $path . '.filerep' . $fileId;
 
@@ -61,6 +65,13 @@ if(empty($errors)) {
 			$filenamearr = explode('/', $reldir);
 			$filename = array_pop($filenamearr);
 			$reldir = implode('/', $filenamearr);
+			
+			if($reldir == ''){
+				$reldir = '/';
+			}
+			if(substr($reldir, -1, 1) != '/'){
+				$reldir = $reldir . '/';
+			}
 			
 			$qry_files = mysql_query("
 				select

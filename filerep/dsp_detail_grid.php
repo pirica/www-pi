@@ -7,7 +7,7 @@
 <h2>
 	Current directory: 
 	<span>
-		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;dir=/">/</a>
+		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;all=<?= $show_all ?>&amp;dir=/">/</a>
 		<?php
 			$dircontent = '/';
 			$str_currentdir = '';
@@ -25,29 +25,27 @@
 	<?= $currentdir['filename'] ?>
 </h2>
 
-<p>
-	<form method="get" action="?action=<?= $action->getCode() ?>">
-		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
-		<input type="hidden" name="id_share" value="<?= $id_share ?>">
-		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
-		
-		<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
-		<label for="filter_all">Also show deleted files</label>
-		
-	<form>
-</p>
+<form method="get" action="?action=<?= $action->getCode() ?>">
+	<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+	<input type="hidden" name="id_share" value="<?= $id_share ?>">
+	<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
+	
+	<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
+	<label for="filter_all">Also show deleted files</label>
+	
+<form>
 
-<?php
-/*
-if($currentdir['relative_directory'] != '/'){
-?>
-	<p>
-		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;dir=<?= $parentdir['relative_directory'] ?>"><span class="glyphicon glyphicon-chevron-up"></span> <?= $parentdir['filename'] ?></a>
-	</p>
-<?php
-}
-*/
-?>
+<p>
+	<a href="#"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
+	
+	<!--<a href="#">
+		<span class="fa-stack fa-lg pull-right">
+			<i class="fa fa-lg fa-folder-o" title="Upload"></i>
+			<i class="fa fa-plus" title="Upload"></i>
+		</span>
+	</a>-->
+	
+</p>
 
 <table class="table">
 	<thead>

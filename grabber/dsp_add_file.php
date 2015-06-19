@@ -2,8 +2,8 @@
 <h1>Add a download</h1>
 
 <?php
-	if($added == 0) echo '<div class="alert alert-success" role="alert"><strong>Success!</strong> New download link added</div>';
-	if($added == 1) echo '<div class="alert alert-danger" role="alert"><strong>Error</strong> Your link could not be added</div>';
+	if($added == 1) echo '<div class="alert alert-success" role="alert"><strong>Success!</strong> New download link added</div>';
+	if($added == 0) echo '<div class="alert alert-danger" role="alert"><strong>Error</strong> Your link could not be added</div>';
 ?>
 
 <form id="frm-addfile" class="form-horizontal" method="post" action="index.php?action=do_add_file&amp;id_grab=<?=$id_grab?>">
@@ -38,6 +38,8 @@
 			<label for="grab_filename">Filename</label>
 			<input id="grab_filename" name="grab_filename" placeholder="" class="form-control" type="text" value="">
 		</div>
+		
+		<div class="alert alert-warning alert-file-exists hidden" role="alert">This file already exists! Please enter a different filename.</div>
 		
 		
 		<div class="form-group">

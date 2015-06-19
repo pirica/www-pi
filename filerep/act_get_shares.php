@@ -22,6 +22,7 @@ $qry = mysql_query("
 		hs.date_linked_since,
 		hs.date_last_replicated,
 		
+		hs.check_type,
 		hs.check_period,
 		hs.check_on_start,
 		hs.check_on_days,

@@ -24,6 +24,17 @@ switch($action->getCode()){
 		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
 		
+		$sort = strtolower(saneInput('sort'));
+		$sortorder = strtolower(saneInput('sortorder'));
+
+		// invalid values : reset to default
+		if(!in_array($sort, array('full_url', 'full_path', 'status', 'date_inserted', 'date_modified'))){
+			$sort = $settings->val('detailgrid_default_sort', 'date_inserted');
+		}
+		if(!in_array($sortorder, array('asc', 'desc'))){
+			$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
+		}
+		
 		include 'queries/pr_get_files.php';
 		
 		// row 1: current directory

@@ -158,7 +158,56 @@ $().ready(function(){
 		reloadDetailGrid();
 	});
 	
+	
+	// enter filename when download url is changed
+	$('#frm-addfile #grab_url').change(function(){
+		var f = $('#frm-addfile #grab_url').val().split('/');
+		f = f[f.length - 1];
+		
+		$('#frm-addfile #grab_filename').val(fixFileName(f));
+	});
+	
+	// enter filename when download url is changed
+	$('#frm-addfile #grab_filename').change(function(){
+		$(this).val(fixFileName($(this).val()));
+		// check filename if exists
+		$.ajax({
+			url: 'index.php?action=js_check_file' + 
+					'&file=' + $(this).val() + $('#frm-addfile #grab_path').val() + 
+				'',
+			type: 'GET',
+			cache: false,
+			//dataType: 'json',
+			error: function(xhr, status, error) {
+				//location.href = ...
+			},
+			success: function(data, textStatus, jqXHR){
+				if(''+data == '1' || (''+data).toLowerCase() == 'true'){
+					$('.alert-file-exists').show();
+				}
+				else {
+					$('.alert-file-exists').hide();
+				}
+			}
+		});
+	});
+	
 });
+
+function fixFileName(val){
+	val = val.replace(/\r|\n|\/|:|\*|\?|\"|\<|\>|\||\\|\~|\[|\]|\(|\)|\^|!|\=|\{|\}|\'/g, '');
+	val = val.replace(/\t|\+/g, ' ');
+	
+	val = val.replace(/#/g, '-hash-');
+	val = val.replace(/%/g, '-pct-');
+	val = val.replace(/\&/g, '-and-');
+	val = val.replace(/@/g, '-at-');
+	
+	val = val.replace(/  /g, ' ');
+	val = val.replace(/  /g, ' ');
+	
+	return val;
+}
 
 function onCounterTypeChange(){
 	$('.counter-fields').hide();

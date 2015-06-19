@@ -24,8 +24,6 @@ else {
 	
 	$grab_filename = str_replace('\r', '', $grab_filename);
 	$grab_filename = str_replace('\n', '', $grab_filename);
-	$grab_filename = str_replace('\t', '', $grab_filename);
-	$grab_filename = str_replace('\t', '', $grab_filename);
 	//$grab_filename = str_replace(' ', '', $grab_filename);
 	$grab_filename = str_replace('/', ' ', $grab_filename);
 	$grab_filename = str_replace(':', ' ', $grab_filename);
@@ -40,18 +38,21 @@ else {
 	$grab_filename = str_replace('(', '', $grab_filename);
 	$grab_filename = str_replace(')', '', $grab_filename);
 	$grab_filename = str_replace('^', '', $grab_filename);
-	$grab_filename = str_replace('#', 'hash', $grab_filename);
-	$grab_filename = str_replace('%', 'pct', $grab_filename);
-	$grab_filename = str_replace('&', ' and ', $grab_filename);
 	$grab_filename = str_replace('!', '', $grab_filename);
-	$grab_filename = str_replace('@', '(at)', $grab_filename);
 	$grab_filename = str_replace(':', '', $grab_filename);
-	$grab_filename = str_replace('+', ' ', $grab_filename);
 	$grab_filename = str_replace('=', '', $grab_filename);
 	$grab_filename = str_replace('{', '', $grab_filename);
 	$grab_filename = str_replace('}', '', $grab_filename);
 	$grab_filename = str_replace('\'', '', $grab_filename);
 	$grab_filename = str_replace('~', '', $grab_filename);
+	
+	$grab_filename = str_replace('\t', ' ', $grab_filename);
+	$grab_filename = str_replace('+', ' ', $grab_filename);
+	
+	$grab_filename = str_replace('#', '-hash-', $grab_filename);
+	$grab_filename = str_replace('%', '-pct-', $grab_filename);
+	$grab_filename = str_replace('&', '-and-', $grab_filename);
+	$grab_filename = str_replace('@', '-at-', $grab_filename);
 	
 	$grab_filename = str_replace('  ', ' ', $grab_filename);
 	$grab_filename = str_replace('  ', ' ', $grab_filename);
@@ -68,17 +69,18 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 	mysql_query("
 		insert into t_grab_file
 		(
-			url,
-			path,
-			filename
+			id_grab,
+			full_url,
+			full_path
 		)
 		values
 		(
+			" . $id_grab . ",
 			'" . mysql_real_escape_string($grab_url) . "',
-			'" . mysql_real_escape_string($grab_path) . "',
-			'" . mysql_real_escape_string($grab_filename) . "'
+			'" . mysql_real_escape_string($grab_full_path) . "'
 		)
 		", $conn);
+		
 		$id_grab_file = mysql_insert_id($conn);
 		
 	if($grab_filename == ''){
@@ -88,7 +90,7 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 		mysql_query("
 			update t_grab_file
 			set
-				filename = '" . mysql_real_escape_string($grab_filename) . "'
+				full_path = '" . mysql_real_escape_string($grab_full_path) . "'
 			where
 				id_grab_file = " . $id_grab_file . "
 			", $conn);

@@ -3,8 +3,8 @@ $logging = '';
 
 $sharename = mysql_real_escape_string(saneInput('sharename'));
 $local_directory = mysql_real_escape_string(saneInput('local_directory'));
-$remove_empty_dirs = saneInput('remove_empty_dirs', 'int', '0');
 
+$check_type = mysql_real_escape_string(saneInput('check_type'));
 $check_on_start = saneInput('check_on_start', 'int', '0');
 $check_period = saneInput('check_period', 'int', '0');
 $check_on_days = mysql_real_escape_string(saneInput('check_on_days'));
@@ -14,10 +14,12 @@ $check_on_minutes = mysql_real_escape_string(saneInput('check_on_minutes'));
 $exclude_extensions = mysql_real_escape_string(saneInput('exclude_extensions'));
 $exclude_directory = mysql_real_escape_string(saneInput('exclude_directory'));
 $exclude_filename = mysql_real_escape_string(saneInput('exclude_filename'));
+
 //$compare_date_modified = saneInput('compare_date_modified', 'int', '0');
 //$compare_checksum = saneInput('compare_checksum', 'int', '0');
-$max_download_speed = saneInput('max_download_speed', 'int', '0');
 //$cached_index = saneInput('cached_index', 'int', '0');
+$max_download_speed = saneInput('max_download_speed', 'int', '0');
+$remove_empty_dirs = saneInput('remove_empty_dirs', 'int', '0');
 $priority = mysql_real_escape_string(saneInput('priority'));
 
 
@@ -43,6 +45,8 @@ else {
 		update t_host_share 
 		set
 			local_directory = '" . $local_directory . "',
+			
+			check_type = '" . $check_type . "',
 			check_period = " . $check_period . ",
 			check_on_start = " . $check_on_start . ",
 			check_on_days = '" . $check_on_days . "',
@@ -72,6 +76,8 @@ else {
 				date_linked_since,
 				
 				local_directory,
+				
+				check_type,
 				check_period,
 				check_on_start,
 				check_on_days,
@@ -91,6 +97,8 @@ else {
 				CURRENT_TIMESTAMP,
 				
 				'" . $local_directory . "',
+				
+				'" . $check_type . "',
 				" . $check_period . ",
 				" . $check_on_start . ",
 				'" . $check_on_days . "',
