@@ -99,6 +99,9 @@ for($i=$total-1;$i>=0;$i--) {
 	
 	// LOGGING
 	
+	$id_email = '';
+	$id_emails = ',';
+	
 	$qry_check = mysql_query("
 		select * from t_email
 		where
@@ -108,6 +111,10 @@ for($i=$total-1;$i>=0;$i--) {
 			and ifnull(message_id,'- not set -') = '" . mysql_real_escape_string($message_id) . "'
 			and ifnull(toaddress,'- not set -') = '" . mysql_real_escape_string($toaddress) . "'
 		");
+		
+	while($check = mysql_fetch_array($qry_check)){
+		$id_emails .= $check['id_email'] . ',';
+	}
 	
 	if(mysql_num_rows($qry_check) == 0){
 		
@@ -140,6 +147,7 @@ for($i=$total-1;$i>=0;$i--) {
 			)
 			");
 		$id_email = mysql_insert_id($conn);
+		$id_emails .= $id_email . ',';
 	}
 	
 	
@@ -166,6 +174,10 @@ for($i=$total-1;$i>=0;$i--) {
 
 	while($spam = mysql_fetch_array($qry)){
 		$emailhandle->markRemove($email['index']);
+		
+		if($id_emails != ','){
+			mysql_query("update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
+		}
 	}
 	
 	
