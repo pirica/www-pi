@@ -155,12 +155,12 @@ for($i=$total-1;$i>=0;$i--) {
 	
 	$qry = mysql_query("
 		select
-			id_spam,
+			id_email_spam,
 			when_subject,
 			when_from,
 			when_body
 			
-		from t_spam
+		from t_email_spam
 		where
 			enabled = 1
 			and (
