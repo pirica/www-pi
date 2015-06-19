@@ -50,6 +50,16 @@ class Email_reader {
         // re-read the inbox
         $this->inbox();
     }
+	
+	// mark the message for deletion
+    function markRemove($msg_index) {
+        imap_delete($this->conn, $msg_index);
+    }
+	
+	// delete items marked for deletion
+    function remove() {
+        imap_expunge($this->conn);
+    }
  
     // get a specific message (1 = first email, 2 = second email, etc.)
     function get($msg_index=NULL) {

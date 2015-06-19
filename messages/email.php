@@ -96,6 +96,9 @@ for($i=$total-1;$i>=0;$i--) {
                 )
 	*/
 	
+	
+	// LOGGING
+	
 	$qry_check = mysql_query("
 		select * from t_email
 		where
@@ -138,6 +141,37 @@ for($i=$total-1;$i>=0;$i--) {
 			");
 		$id_email = mysql_insert_id($conn);
 	}
+	
+	
+	// SPAM PROTECTION
+	
+	$qry = mysql_query("
+		select
+			id_spam,
+			when_subject,
+			when_from,
+			when_body
+			
+		from t_spam
+		where
+			enabled = 1
+			and (
+				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($subject) . "' like when_subject)
+				or
+				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($fromaddress) . "' like when_from)
+				or
+				(ifnull(when_body,'') <> '' and '" . mysql_real_escape_string($email['body']) . "' like when_body)
+			)
+		");
+
+	while($spam = mysql_fetch_array($qry)){
+		$emailhandle->markRemove($email['index']);
+	}
+	
+	
+	
+	// ALERTING
+	
 	
 	$qry = mysql_query("
 		select
@@ -202,5 +236,9 @@ for($i=$total-1;$i>=0;$i--) {
 		}
 	}
 }
+
+
+$emailhandle->remove();
+
 
 ?>
