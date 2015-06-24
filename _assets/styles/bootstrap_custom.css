@@ -96,3 +96,12 @@ html,body {
 	height: 14px;
 	width: auto;
 }
+
+
+.hover {
+	visibility:hidden;
+}
+.hover:hover {
+	visibility:visible;
+}
+

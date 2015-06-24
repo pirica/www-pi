@@ -6,7 +6,7 @@
 
 <h2>
 	Current directory: 
-	<span>
+	<span class="details-dirlist">
 		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;all=<?= $show_all ?>&amp;dir=/">/</a>
 		<?php
 			$dircontent = '/';
@@ -16,7 +16,7 @@
 			for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
 				if($dirparts[$i] != ''){
 					$dircontent .= $dirparts[$i] . '/';
-					$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a> ' . "\r\n\t\t";
+					$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a>';// . "\r\n\t\t";
 				}
 			}
 		?>
@@ -109,28 +109,41 @@
 			$i++;
 			?>
 			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
-				<td><?php
-					if($file['fontawesome'] != ''){
-						echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
-					}
-					else if($file['glyphicon'] != ''){
-						echo '<span class="glyphicon ' . $file['glyphicon'] . '"></span>';
-					}
-					else {
-						echo '&nbsp;';
-					}
-				?></td>
-				<td><?php
-					if($file['is_directory'] == 1){
-						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
-					}
-					else {
-						echo $file['filename'];
-					}
-				?></td>
+				<td>
+					<?php
+						if($file['fontawesome'] != ''){
+							echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
+						}
+						else if($file['glyphicon'] != ''){
+							echo '<span class="glyphicon ' . $file['glyphicon'] . '"></span>';
+						}
+						else {
+							echo '&nbsp;';
+						}
+					?>
+				</td>
+				<td>
+					<?php
+						if($file['is_directory'] == 1){
+							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
+						}
+						else {
+							echo $file['filename'];
+						}
+					?>
+				</td>
 				<td><?= formatFileSize($file['size']) ?></td>
 				<td><?= $file['date_last_modified'] ?></td>
-				<td><?= ($file['indexing'] == 1 ? '<span class="fa fa-bolt" title="Indexing..."></span>' : '') ?></td>
+				<td>
+					<?php
+						if($file['indexing'] == 1){
+							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+						}
+						else if($file['can_reindex'] == 1){
+							echo '<a href="#" class="act-dir-reindex" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green hover" title="Force reindexing of directory"></span></a>';
+						}
+					?>
+				</td>
 			</tr>
 			<?php
 		}

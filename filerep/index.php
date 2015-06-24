@@ -26,6 +26,7 @@ switch($action->getCode()){
 		
 		$sort = strtolower(saneInput('sort'));
 		$sortorder = strtolower(saneInput('sortorder'));
+		$search = strtolower(saneInput('search'));
 
 		// invalid values : reset to default
 		if(!in_array($sort, array('full_url', 'full_path', 'status', 'date_inserted', 'date_modified'))){
@@ -44,11 +45,20 @@ switch($action->getCode()){
 		
 		$currentdirarr = explode('/', $currentdir['relative_directory']);
 		
+		$app->setHeaderScripts('<script type="text/javascript">var dir = "' . $dir . '", show_all = ' . $show_all . ', sort = "' . $sort . '", sortorder = "' . $sortorder . '", search = "' . $search . '";</script>' . "\n");
+		
 		include '../_core/dsp_header.php';
 		include 'dsp_detail.php';
 		include '../_core/dsp_footer.php';
         
         break;
+	
+	
+	case 'do_set_directory_reindex':
+		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
+		include 'queries/pr_set_directory_reindex.php';
+		break;
+	
 	
 	// main: overview
 	default:
