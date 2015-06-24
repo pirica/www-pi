@@ -7,8 +7,8 @@ mysql_query("
 		date_last_checked = null
 	
 	where
-		d.id_share = " . $id_share . "
-		and d.relative_directory = '" . $dir . "'
+		id_share = " . $id_share . "
+		and relative_directory = '" . $dir . "'
 		
 	", $conn);
 	
