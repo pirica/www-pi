@@ -105,7 +105,7 @@
 							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 						}
 						else if($file['can_reindex'] == 1){
-							echo '<a href="#" class="act-dir-reindex" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green hover" title="Force reindexing of directory"></span></a>';
+							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 						}
 					?>
 				</td>
@@ -149,7 +149,7 @@
 							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 						}
 						else if($file['can_reindex'] == 1){
-							echo '<a href="#" class="act-dir-reindex" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green hover" title="Force reindexing of directory"></span></a>';
+							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 						}*/
 					?>
 				</td>

@@ -98,10 +98,10 @@ html,body {
 }
 
 
-.hover {
+.hover  * {
 	visibility:hidden;
 }
-.hover:hover {
+.hover:hover * {
 	visibility:visible;
 }
 

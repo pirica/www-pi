@@ -55,7 +55,7 @@ switch($action->getCode()){
 	
 	
 	case 'do_set_directory_reindex':
-		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
+		$dir = str_replace("'", "\'", saneInput('dir', 'string', ''));
 		include 'queries/pr_set_directory_reindex.php';
 		break;
 	
