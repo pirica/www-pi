@@ -33,7 +33,7 @@
 	<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
 	<label for="filter_all">Also show deleted files</label>
 	
-<form>
+</form>
 
 <p>
 	<a href="#"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
@@ -99,7 +99,16 @@
 				?></td>
 				<td><?= formatFileSize($file['size']) ?></td>
 				<td><?= $file['date_last_modified'] ?></td>
-				<td><?= ($file['indexing'] == 1 ? '<span class="fa fa-bolt" title="Indexing..."></span>' : '') ?></td>
+				<td>
+					<?php
+						if($file['indexing'] == 1){
+							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+						}
+						else if($file['can_reindex'] == 1){
+							echo '<a href="#" class="act-dir-reindex" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green hover" title="Force reindexing of directory"></span></a>';
+						}
+					?>
+				</td>
 			</tr>
 			<?php
 		}		
@@ -136,12 +145,12 @@
 				<td><?= $file['date_last_modified'] ?></td>
 				<td>
 					<?php
-						if($file['indexing'] == 1){
+						/*if($file['indexing'] == 1){
 							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 						}
 						else if($file['can_reindex'] == 1){
 							echo '<a href="#" class="act-dir-reindex" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green hover" title="Force reindexing of directory"></span></a>';
-						}
+						}*/
 					?>
 				</td>
 			</tr>
