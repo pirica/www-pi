@@ -168,25 +168,26 @@ $().ready(function(){
 	});
 	
 	// enter filename when download url is changed
-	$('#frm-addfile #grab_filename').change(function(){
-		$(this).val(fixFileName($(this).val()));
+	$('#frm-addfile #grab_path, #frm-addfile #grab_filename').change(function(){
+		$('#frm-addfile #grab_filename').val(fixFileName($('#frm-addfile #grab_filename').val()));
 		// check filename if exists
 		$.ajax({
 			url: 'index.php?action=js_check_file' + 
-					'&file=' + $(this).val() + $('#frm-addfile #grab_path').val() + 
+					'&file=' + $('#frm-addfile #grab_path').val() + $('#frm-addfile #grab_filename').val() + 
 				'',
 			type: 'GET',
 			cache: false,
-			//dataType: 'json',
+			dataType: 'text',
 			error: function(xhr, status, error) {
 				//location.href = ...
 			},
 			success: function(data, textStatus, jqXHR){
-				if(''+data == '1' || (''+data).toLowerCase() == 'true'){
-					$('.alert-file-exists').show();
+				var d = (''+data.replace(/\r|\n|\t| /g, '')).toLowerCase();
+				if(d == '1' || d == 'true'){
+					$('.alert-file-exists').removeClass('hidden');
 				}
 				else {
-					$('.alert-file-exists').hide();
+					$('.alert-file-exists').addClass('hidden');
 				}
 			}
 		});

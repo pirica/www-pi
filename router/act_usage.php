@@ -43,7 +43,7 @@ switch($action->getCode()){
 		if($date != ''){
 			$date = (new DateTime($date . ':00'))->getTimestamp();
 			$range_start = date("Y-m-d H:00", $date);
-			$range_end = date("Y-m-d H:i", $date);
+			$range_end = date("Y-m-d H:00", $date + 3600);
 		}
 		else {
 			$date = time();
@@ -55,6 +55,9 @@ switch($action->getCode()){
 		$date_period_format = '%Y-%m-%d %H:%i';
 		$date_label_format = '%H:%i';
 		$date_period = 'minute';
+		
+		$date_prev = date("Y-m-d", strtotime('-1 hour', $date));
+		$date_next = date("Y-m-d", strtotime('+1 hour', $date));
 		
 		
 		break;

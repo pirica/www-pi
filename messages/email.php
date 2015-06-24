@@ -5,7 +5,7 @@ if(isset($_GET['debug']) && $_GET['debug'] == 1){
 }
 //require 'connection.php';
 require 'functions.php';
-require '../_core/appinit.php';
+require dirname(__FILE__).'/../_core/appinit.php';
 
 
 require 'com/Email_Reader.php';
@@ -16,6 +16,16 @@ $emailhandle = New Email_reader(
 	$settings->val('email_port', 110)
 );
 $emails = $emailhandle->inbox();
+
+/*
+hotmail:
+$emailhandle = New Email_reader(
+	'pop3.live.com',
+	'wim_fleerackers@hotmail.com',
+	'6twRYN2u',
+	995
+);
+*/
 
 /*
 include('com/pop3.php');

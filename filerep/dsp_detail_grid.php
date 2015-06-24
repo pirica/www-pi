@@ -16,7 +16,7 @@
 			for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
 				if($dirparts[$i] != ''){
 					$dircontent .= $dirparts[$i] . '/';
-					$str_currentdir = '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a> ' . $str_currentdir;
+					$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a> ' . "\r\n\t\t";
 				}
 			}
 		?>
