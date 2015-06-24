@@ -5,7 +5,9 @@ $().ready(function(){
 		$(this).parents('form').submit();
 	});
 	
-	$('.act-dir-reindex').click(function() {
+	$('.act-dir-reindex').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
 		setDirReindexing(this);
 	});
 
