@@ -35,6 +35,7 @@ else {
 		
 		$script_new_host = $settings->val('script_new_host','');
 		if($script_new_host != ''){
+			mysql_data_seek($qry, 0);
 			$host = mysql_fetch_array($qry);
 			// and execute any scripts on completion
 			$script_new_host = str_replace('%id_host%', $host['id_host'], $script_new_host);

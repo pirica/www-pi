@@ -33,7 +33,8 @@
 </form>
 
 <p>
-	<a href="#"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
+	<a href="index.php?action=upload&amp;id_share=<?= $id_share ?>&amp;dir=<?= $currentdir['relative_directory'] ?>&amp;"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
+	<!-- data-toggle="modal" data-target="#myModal"-->
 	
 	<!--<a href="#">
 		<span class="fa-stack fa-lg pull-right">

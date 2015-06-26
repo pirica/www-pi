@@ -69,6 +69,13 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'upload':
+		include '../_core/dsp_header.php';
+		include 'dsp_upload.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	
 	// main: overview
 	default:
 		include 'queries/pr_get_share_stats.php';

@@ -33,7 +33,7 @@ $tmpfile = $file;
 header('Cache-control: private');
 header('Content-Type: ' . $dbfile['mimetype']);
 //header('Content-Transfer-Encoding: Binary');
-//header('Content-disposition: attachment; filename="' . $dbfile['filename'] . '"'); 
+header('Content-disposition: inline; filename="' . $dbfile['filename'] . '"'); 
 header('Content-Length: ' . $dbfile['size']);
 	
 //readfile($tmpfile);
