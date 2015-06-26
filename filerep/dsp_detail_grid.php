@@ -156,14 +156,14 @@
 						}*/
 						
 						if($file['can_download'] == 1){
-							echo '<a href="?action=downloadfile&amp;id_file=' . $id_file . '"><span class="fa fa-download title="Download"></span></a>';
+							echo '<a href="?action=downloadfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-download title="Download"></span></a>';
 						}
 						else {
 							echo '<span class="fa"></span>';
 						}
 						
 						if($file['can_view'] == 1){
-							echo '<a href="?action=viewfile&amp;id_file=' . $id_file . '"><span class="fa fa-eye title="View"></span></a>';
+							echo '<a href="?action=viewfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-eye title="View"></span></a>';
 						}
 						else {
 							echo '<span class="fa"></span>';
