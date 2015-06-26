@@ -11,10 +11,12 @@ $qry_file = mysql_query("
 		f.size,
 		f.version,
 		f.date_last_modified,
-		s.server_directory
+		s.server_directory,
+		ifnull(m.mimetype, 'text/html') as mimetype
 	from t_file f
 	join t_share s on s.id_share = f.id_share
 		and s.active = 1
+	left join t_mimetype m on m.extension = SUBSTRING_INDEX(f.filename, '.', -1)
 	where
 		f.id_file = " . $id_file . "
 		and f.active = 1
@@ -29,10 +31,10 @@ $tmpfile = $file;
 //shell_exec('file.sh cp ' . $file . ' ' . $tmpfile);
 
 header('Cache-control: private');
-header('Content-Type: application/octet-stream');
-header('Content-Transfer-Encoding: Binary');
-header('Content-disposition: attachment; filename="' . $dbfile['filename'] . '"'); 
-header('Content-Length: '.$dbfile['size']);
+header('Content-Type: ' . $dbfile['mimetype']);
+//header('Content-Transfer-Encoding: Binary');
+//header('Content-disposition: attachment; filename="' . $dbfile['filename'] . '"'); 
+header('Content-Length: ' . $dbfile['size']);
 	
 //readfile($tmpfile);
 readfile_advanced($tmpfile, 1, $max_download_speed);

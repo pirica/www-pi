@@ -30,7 +30,9 @@ function setDirReindexing(el, val){
 			//location.href = ...
 		},
 		success: function(data, textStatus, jqXHR){
-			$(el).replaceWith('<span class="fa fa-bolt red" title="Indexing..."></span>');
+			
 		}
 	});
+	
+	$(el).replaceWith('<span class="fa fa-bolt red" title="Indexing..."></span>');
 }

@@ -59,6 +59,15 @@ switch($action->getCode()){
 		include 'queries/pr_set_directory_reindex.php';
 		break;
 	
+		
+	case 'downloadfile':
+		include 'act_download_file.php';
+		break;
+	
+	case 'viewfile':
+		include 'act_view_file.php';
+		break;
+	
 	
 	// main: overview
 	default:

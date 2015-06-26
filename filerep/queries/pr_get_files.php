@@ -10,7 +10,10 @@ $qry_files_currentdir = mysql_query("
 		d.active,
 		1 as is_directory,
 		case when d.date_last_checked is null then 1 else 0 end as indexing,
+		
 		0 as can_reindex,
+		0 as can_download,
+		0 as can_view,
 		
 		d.dirname as filename,
 		d.relative_directory,
@@ -43,7 +46,10 @@ $qry_files_parentdir = mysql_query("
 		dp.active,
 		1 as is_directory,
 		case when dp.date_last_checked is null then 1 else 0 end as indexing,
+		
 		0 as can_reindex,
+		0 as can_download,
+		0 as can_view,
 		
 		dp.dirname as filename,
 		dp.relative_directory,
@@ -77,7 +83,10 @@ $qry_files_subdirs = mysql_query("
 		d.active,
 		1 as is_directory,
 		case when d.date_last_checked is null then 1 else 0 end as indexing,
+		
 		case when d.date_last_checked is not null then 1 else 0 end as can_reindex,
+		0 as can_download,
+		0 as can_view,
 		
 		d.dirname as filename,
 		d.relative_directory,
@@ -112,7 +121,10 @@ $qry_files = mysql_query("
 		f.active,
 		0 as is_directory,
 		0 as indexing,
+		
 		0 as can_reindex,
+		1 as can_download,
+		1 as can_view,
 		
 		f.filename,
 		f.relative_directory,

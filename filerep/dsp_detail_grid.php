@@ -2,27 +2,24 @@
 <?php
 
 	//include 'dsp_detail_grid_pager.php';
+	
+	$dircontent = '/';
+	$str_currentdir = '';
+	$dirparts = explode('/', $currentdir['relative_directory']); //  /a/b/c/
+	$dirparts_count = count($dirparts);
+	for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
+		if($dirparts[$i] != ''){
+			$dircontent .= $dirparts[$i] . '/';
+			$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a>';// . "\r\n\t\t";
+		}
+	}
 ?>
 
 <h2>
 	Current directory: 
 	<span class="details-dirlist">
-		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;all=<?= $show_all ?>&amp;dir=/">/</a>
-		<?php
-			$dircontent = '/';
-			$str_currentdir = '';
-			$dirparts = explode('/', $currentdir['relative_directory']); //  /a/b/c/
-			$dirparts_count = count($dirparts);
-			for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
-				if($dirparts[$i] != ''){
-					$dircontent .= $dirparts[$i] . '/';
-					$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a>';// . "\r\n\t\t";
-				}
-			}
-		?>
-		<?= $str_currentdir ?>
+		<a href="?action=details&amp;id_share=<?= $id_share ?>&amp;all=<?= $show_all ?>&amp;dir=/">/</a><?= $str_currentdir ?><?= $currentdir['filename'] ?>
 	</span>
-	<?= $currentdir['filename'] ?>
 </h2>
 
 <form method="get" action="?action=<?= $action->getCode() ?>">
@@ -107,6 +104,11 @@
 						else if($file['can_reindex'] == 1){
 							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 						}
+						
+						// download
+						echo '<span class="fa"></span>';
+						// view
+						echo '<span class="fa"></span>';
 					?>
 				</td>
 			</tr>
@@ -145,12 +147,27 @@
 				<td><?= $file['date_last_modified'] ?></td>
 				<td>
 					<?php
+						echo '<span class="fa"></span>';
 						/*if($file['indexing'] == 1){
 							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 						}
 						else if($file['can_reindex'] == 1){
 							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 						}*/
+						
+						if($file['can_download'] == 1){
+							echo '<a href="?action=downloadfile&amp;id_file=' . $id_file . '"><span class="fa fa-download title="Download"></span></a>';
+						}
+						else {
+							echo '<span class="fa"></span>';
+						}
+						
+						if($file['can_view'] == 1){
+							echo '<a href="?action=viewfile&amp;id_file=' . $id_file . '"><span class="fa fa-eye title="View"></span></a>';
+						}
+						else {
+							echo '<span class="fa"></span>';
+						}
 					?>
 				</td>
 			</tr>

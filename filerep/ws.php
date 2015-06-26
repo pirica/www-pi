@@ -1,8 +1,9 @@
 <?php
+require dirname(__FILE__).'/../_core/appinit.php';
 
 include 'connection.php';
 include 'functions.php';
-require '../_core/functions.php';
+//require '../_core/functions.php';
 
 // Global method vars
 $method = saneInput('method');

@@ -25,6 +25,7 @@ h2 {
 }
 */
 
+
 label.valid {
 	width: 24px;
 	height: 24px;
@@ -40,6 +41,10 @@ label.error {
 	margin-top: 2px;
 }
 
+.details-dirlist a {
+	padding: 0 5px;
+}
+
 #files-grid {
 	font-size: 90%;
 }
@@ -49,13 +54,18 @@ label.error {
 }
 #files-grid h2 span {
 	font-size: 20px;
-	color: #999;
+	/*color: #999;*/
 	padding-left: 8px;
 }
 
 #files-grid td {
 	padding: 4px 8px;
 	border-top: 1px solid #EEEEEE;
+}
+
+#files-grid .fa {
+	min-width: 10px;
+	text-align: center;
 }
 
 /*
