@@ -62,7 +62,7 @@ function sec_session_start() {
 
 function login($email, $password_plain, $mysqli, $rememberme = false) {
     // Using prepared statements means that SQL injection is not possible. 
-    if ($stmt = $mysqli->prepare("SELECT id_user, username, password, salt 
+    if ($stmt = $mysqli->prepare("SELECT id_user, username, password, salt, id_profile
 				  FROM t_user 
                   WHERE email = ? 
 					and active = 1
@@ -72,7 +72,7 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
         $stmt->store_result();
 
         // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password, $salt);
+        $stmt->bind_result($user_id, $username, $db_password, $salt, $id_profile);
         $stmt->fetch();
 
         // hash the password with the unique salt.
@@ -102,6 +102,8 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 
                     $_SESSION['username'] = $username;
                     $_SESSION['username_safe'] = htmlentities(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username));
+                    $_SESSION['id_profile'] = $id_profile;
+					
                     $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
 					$_SESSION['logintime'] = time();
 					$_SESSION['logintimecheck'] = time();

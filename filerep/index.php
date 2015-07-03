@@ -70,11 +70,18 @@ switch($action->getCode()){
 	
 	
 	case 'upload':
+		
+		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
+		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.min.js"></script>');
+
 		include '../_core/dsp_header.php';
 		include 'dsp_upload.php';
 		include '../_core/dsp_footer.php';
 		break;
 	
+	case 'do_upload':
+		include 'act_upload_site.php';
+		break;
 	
 	// main: overview
 	default:

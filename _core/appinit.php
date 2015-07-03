@@ -24,20 +24,30 @@ else if(isset($_SERVER['REQUEST_URI'])){
 
 $app = new App($mysqli, $request_uri);
 $settings = new Settings($mysqli, $app->getId());
-$action = new Action($mysqli, $app->getId(), saneInput('action', 'string', ''));
-
-$app->setTitle( $action->getPageTitle() );
 
 sec_session_start();
 
 $user = new User($mysqli, $app->getId(), $_SESSION);
 
 $loggedin = login_check($mysqli);
+$id_profile = $settings->val('default_profile_notloggedin', -1);
+
+$action = new Action($mysqli, $app->getId(), saneInput('action', 'string', ''), $id_profile);
+
+$app->setTitle( $action->getPageTitle() );
+
+if ($loggedin){
+	$id_profile = $_SESSION['id_profile'];
+}
 
 if (!$loggedin && $action->getLoginRequired()){
-	$action = new Action($mysqli, $app->getId(), 'login');
+	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 	$_SESSION['url_after_login'] = get_url_after_login();
 }
 
+if (!$action->getAllowed()){
+	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
+	$_SESSION['url_after_login'] = get_url_after_login();
+}
 
 ?>

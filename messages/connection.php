@@ -11,7 +11,6 @@ $mysql_user = 'root';
 $mysql_pw = '';
 require '/etc/mysql/conf.php';
 
-//$mysql_failed_inserts = "/media/usbdrive2/mysql/".$mysql_dbn . "_" . date('Ymd', time()) . ".sql";
 $mysql_failed_inserts = "/var/www/messagelogs/".$mysql_dbn . "_" . date('Ymd', time()) . ".sql";
 
 $conn = @mysql_connect($mysql_host, $mysql_user, $mysql_pw) ;//or die("Unable to connect to MySQL");

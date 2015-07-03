@@ -8,21 +8,25 @@ class Action
 	private $_db;
 	private $_id_app;
 	private $_code;
+	private $_id_profile;
 	
 	private $_id_app_action;
 	private $_page_title;
 	private $_login_required;
+	private $_allowed;
 	
 	public $default_code;
 
-	public function __construct($db, $id_app, $code) {
+	public function __construct($db, $id_app, $code, $id_profile) {
 		$this->_db = $db;
 		$this->_id_app = $id_app;
 		$this->_code = $code;
+		$this->_id_profile = $id_profile;
 		
 		$this->_id_app_action = -1;
 		$this->_page_title = '';
 		$this->_login_required = true;
+		$this->_allowed = false;
 		
         $this->default_code = 'main';
         
@@ -54,6 +58,9 @@ class Action
 	public function getLoginRequired() {
 		return $this->_login_required;
 	}
+	public function getAllowed() {
+		return $this->_allowed;
+	}
 
 	private function getData() {
 		//if(count($this->_data) == 0){
@@ -65,9 +72,14 @@ class Action
 					#aa.id_app,
 					#aa.code,
 					aa.page_title,
-					aa.login_required
+					aa.login_required,
+					case when (pa.allowed = 1 or p.full_access = 1) and (paa.allowed = 1 or p.full_access = 1) then 1 else 0 end as allowed
 					
 				from t_app_action aa
+					join t_profile p on p.id_profile = ?
+					left join t_profile_app pa on pa.id_app = aa.id_app and pa.id_profile = p.id_profile
+					left join t_profile_app_action paa on paa.id_app_action = aa.id_app_action and paa.id_profile = p.id_profile
+					
 				where
 					ifnull(aa.id_app,?) = ?
 					and aa.code = ?
@@ -76,7 +88,7 @@ class Action
 				");
 				
             $code = ($this->_code == '' ? $this->default_code : $this->_code);
-			$qry_action->bind_param('iis', $this->_id_app, $this->_id_app, $code);
+			$qry_action->bind_param('iiis', $this->_id_profile, $this->_id_app, $this->_id_app, $code);
 			$qry_action->execute();
 			$qry_action->store_result();
 
@@ -86,7 +98,8 @@ class Action
 					//$this->_id_app,
 					//$code,
 					$this->_page_title,
-					$this->_login_required
+					$this->_login_required,
+					$this->_allowed
 				);
 				
 				$qry_action->fetch();
@@ -110,6 +123,7 @@ class Action
 				//$code,
 				$this->_page_title = '';
 				$this->_login_required = true;
+				$this->_allowed = false;
 			}
 			
 		//}*/

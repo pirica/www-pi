@@ -70,6 +70,7 @@ $settingsdata_count = count($settingsdata);
 										switch($settingsdata[$i][$j]['edittype']){
 										
 											case 'select':
+											case 'profiles':
 												?>
 													<div class="form-group">
 														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
@@ -79,6 +80,9 @@ $settingsdata_count = count($settingsdata);
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>">
 																<?php
 																	$extra = json_decode($settingsdata[$i][$j]['extra'], true);
+																	if($settingsdata[$i][$j]['edittype'] == 'profiles'){
+																		$extra['options'] = $profilesdata;
+																	}
 																	$options_count = count($extra['options']);
 																	for ($o=0; $o<$options_count; $o++) {
 																		echo '<option value="' . $extra['options'][$o]['code'] . '" ' . ($extra['options'][$o]['code'] == $settingsdata[$i][$j]['value'] ? 'selected' : '') . '>' . $extra['options'][$o]['value'] . '</option>';

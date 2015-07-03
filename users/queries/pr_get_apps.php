@@ -27,13 +27,16 @@ $qry_apps = $mysqli->prepare("
 		case when ? = a.relative_url then 1 else 0 end as is_current
 		
 	from t_app a
-	
+		join t_profile p on p.id_profile = ?
+		left join t_profile_app pa on pa.id_app = a.id_app and pa.id_profile = p.id_profile
+	where
+		pa.allowed = 1 or p.full_access = 1
 	order by
 		ifnull(a.sort_order, a.id_app)
 		
 	");
 	
-$qry_apps->bind_param('s', $request_uri);
+$qry_apps->bind_param('si', $request_uri, $id_profile);
 $qry_apps->execute();
 $qry_apps->store_result();
 

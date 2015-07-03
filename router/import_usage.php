@@ -16,14 +16,14 @@ having count(id_host_usage)  > 1
 
 2014-12-08
 
-find /media/usbdrive/router/2015-01-01 -type f -name 'usage_2015-01-01*' -exec cat {} + >> /media/usbdrive/router_combined/2014-12-08/usage_2015-01-01.sql
+find /var/docs/router/2015-01-01 -type f -name 'usage_2015-01-01*' -exec cat {} + >> /var/docs/router_combined/2014-12-08/usage_2015-01-01.sql
 
-rm /media/usbdrive/router/usage_2015-01-01*
+rm /var/docs/router/usage_2015-01-01*
 
  
 */
 
-$fulldir = '/media/usbdrive/router';
+$fulldir = '/var/docs/router';
 $lockfile = 'import_usage.lock';
 
 if (!file_exists( $fulldir . '/' . $lockfile)) {
@@ -43,6 +43,13 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 		if($file != '.' && $file != '..'){
 			echo 'file: ' . $file;
 			
+            if(count(explode('_', $file)) == 3){
+                $date = explode('_', $file)[1];
+            }
+            else {
+                $date = date("Y-m-d", time());
+            }
+            
 			$extarr = explode('.', $file);
 			$extension = '.' . $extarr[count($extarr) - 1];
 			
@@ -71,11 +78,11 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 				if($insertcount > 0 || $emptycount > 0){
 					echo ' imported';
 					//if($extension == '.imported'){
-						if (!file_exists( $fulldir . '/' . date("Y-m-d", time()))) {
-							mkdir( $fulldir . '/' . date("Y-m-d", time()), 0777, true);
-							echo ', dir ' . date("Y-m-d", time()) . ' created';
+						if (!file_exists( $fulldir . '/' . $date)) {
+							mkdir( $fulldir . '/' . $date, 0777, true);
+							echo ', dir ' . $date . ' created';
 						}
-						if(rename($fullfile, $fulldir . '/' . date("Y-m-d", time()) . '/' . $file)){
+						if(rename($fullfile, $fulldir . '/' . $date . '/' . $file)){
 							echo ', moved';
 						}
 					//}
@@ -107,7 +114,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 					echo ', could not delete!';
 				}* /
 				
-				rename($fullfile, $fulldir . '/' . date("Y-m-d", time()) . '/' . $file);
+				rename($fullfile, $fulldir . '/' . $date . '/' . $file);
 				echo ', moved';
 			}*/
 			else {

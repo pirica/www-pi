@@ -64,8 +64,9 @@ label.error {
 }
 
 #files-grid .fa {
-	min-width: 10px;
+	min-width: 12px;
 	text-align: center;
+	margin: 0px 2px;
 }
 
 /*

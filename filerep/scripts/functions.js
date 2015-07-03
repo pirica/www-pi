@@ -12,25 +12,23 @@ $().ready(function(){
 	});
 	
 	
-	// Initialize the jQuery File Upload widget:
-    $('#fileupload').fileupload({
-        // Uncomment the following to send cross-domain cookies:
-        //xhrFields: {withCredentials: true},
-        url: 'upload/'
-    }).addClass('fileupload-processing');
-        
-	$.ajax({
-		// Uncomment the following to send cross-domain cookies:
-		//xhrFields: {withCredentials: true},
-		url: $('#fileupload').fileupload('option', 'url'),
-		dataType: 'json',
-		context: $('#fileupload')[0]
-	}).always(function () {
-		$(this).removeClass('fileupload-processing');
-	}).done(function (result) {
-		$(this).fileupload('option', 'done')
-			.call(this, $.Event('done'), {result: result});
-	});
+	var settings = {
+		url: "YOUR_MULTIPE_FILE_UPLOAD_URL",
+		method: "POST",
+		allowedTypes:"jpg,png,gif,doc,pdf,zip",
+		fileName: "myfile",
+		multiple: true,
+		onSuccess:function(files,data,xhr)
+		{
+			alert("Upload success");
+		},
+		onError: function(files,status,errMsg)
+		{       
+			alert("Upload Failed");
+		}
+	}
+	 
+	$("#mulitplefileuploader").uploadFile(settings);
 });
 
 
