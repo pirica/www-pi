@@ -41,7 +41,7 @@ class Settings
 					
 				from t_setting s
 				where
-					s.id_app = ?
+					(s.id_app = ? or s.id_app = -1)
 					and s.active = 1
 					
 				order by

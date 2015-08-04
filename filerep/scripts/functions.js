@@ -12,19 +12,48 @@ $().ready(function(){
 	});
 	
 	
+	// http://hayageek.com/docs/jquery-upload-file.php
 	var settings = {
-		url: "YOUR_MULTIPE_FILE_UPLOAD_URL",
+		url: "?action=do_upload",
 		method: "POST",
 		allowedTypes:"jpg,png,gif,doc,pdf,zip",
 		fileName: "myfile",
 		multiple: true,
+		formData: {dir: dir},
+		
+		//sequential:true,
+		//sequentialCount:1,
+		
+		//maxFileCount:3,
+		//maxFileSize:100*1024,
+		
+		/*
+		dragDropStr: "<span><b>Faites glisser et déposez les fichiers</b></span>",
+		abortStr:"abandonner",
+		cancelStr:"résilier",
+		doneStr:"fait",
+		multiDragErrorStr: "Plusieurs Drag &amp; Drop de fichiers ne sont pas autorisés.",
+		extErrorStr:"n'est pas autorisé. Extensions autorisées:",
+		sizeErrorStr:"n'est pas autorisé. Admis taille max:",
+		uploadErrorStr:"Upload n'est pas autorisé",
+		uploadStr:"Téléchargez",
+		*/
+		
+		//onSubmit:function(files),
+		//onCancel:function(files,pd),
+		
 		onSuccess:function(files,data,xhr)
 		{
-			alert("Upload success");
+			alert("Upload success for: " + JSON.stringify(data));
 		},
 		onError: function(files,status,errMsg)
 		{       
 			alert("Upload Failed");
+		},
+		afterUploadAll:function(obj)
+		{
+			alert("All files are uploaded");
+			
 		}
 	}
 	 

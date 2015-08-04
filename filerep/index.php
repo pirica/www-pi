@@ -8,8 +8,9 @@ require '../_core/appinit.php';
 $id_share = saneInput('id_share', 'int', -1);
 $id_host = saneInput('id_host', 'int', -1);
 $id_file = saneInput('id_file', 'int', -1);
+$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 
-$app->setHeaderScripts('<script type="text/javascript">var id_share = ' . $id_share . ', id_host = ' . $id_host . ', id_file = ' . $id_file . ';</script>' . "\n");
+$app->setHeaderScripts('<script type="text/javascript">var id_share = ' . $id_share . ', id_host = ' . $id_host . ', id_file = ' . $id_file . ', dir = \'' . $dir . '\';</script>' . "\n");
 
 switch($action->getCode()){
 
@@ -21,7 +22,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	case 'details':
-		$dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
 		
 		$sort = strtolower(saneInput('sort'));
@@ -45,7 +45,7 @@ switch($action->getCode()){
 		
 		$currentdirarr = explode('/', $currentdir['relative_directory']);
 		
-		$app->setHeaderScripts('<script type="text/javascript">var dir = "' . $dir . '", show_all = ' . $show_all . ', sort = "' . $sort . '", sortorder = "' . $sortorder . '", search = "' . $search . '";</script>' . "\n");
+		$app->setHeaderScripts('<script type="text/javascript">var show_all = ' . $show_all . ', sort = "' . $sort . '", sortorder = "' . $sortorder . '", search = "' . $search . '";</script>' . "\n");
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_detail.php';
@@ -55,7 +55,6 @@ switch($action->getCode()){
 	
 	
 	case 'do_set_directory_reindex':
-		$dir = str_replace("'", "\'", saneInput('dir', 'string', ''));
 		include 'queries/pr_set_directory_reindex.php';
 		break;
 	
@@ -72,7 +71,7 @@ switch($action->getCode()){
 	case 'upload':
 		
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
-		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.min.js"></script>');
+		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
 
 		include '../_core/dsp_header.php';
 		include 'dsp_upload.php';

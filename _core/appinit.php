@@ -13,13 +13,13 @@ require dirname(__FILE__).'/../users/sec-users.php';
 
 $request_uri = '';
 // from command line
-if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
+//if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
 	$request_uri = str_replace('/var/www', '', $_SERVER['SCRIPT_FILENAME']);
-}
+//}
 // from www
-else if(isset($_SERVER['REQUEST_URI'])){
+/*else if(isset($_SERVER['REQUEST_URI'])){
 	$request_uri = $_SERVER['REQUEST_URI'];
-}
+}*/
 
 
 $app = new App($mysqli, $request_uri);
@@ -40,12 +40,11 @@ if ($loggedin){
 	$id_profile = $_SESSION['id_profile'];
 }
 
-if (!$loggedin && $action->getLoginRequired()){
+if ($action->getLoginRequired() && !$loggedin){
 	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 	$_SESSION['url_after_login'] = get_url_after_login();
 }
-
-if (!$action->getAllowed()){
+else if ($action->getLoginRequired() && !$action->getAllowed()){
 	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 	$_SESSION['url_after_login'] = get_url_after_login();
 }
