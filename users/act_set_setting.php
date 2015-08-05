@@ -10,29 +10,7 @@ if(/*$id_app > 0 &&*/ $code != ''){
 	switch($edittype){
 		case 'size':
 		case 'filesize':
-			
-			$newvalue = 1;
-			$value = strtolower($value);
-			
-			if(strpos($value, 't') !== false){
-				$newvalue = 1024 * 1024 * 1024 * 1024;
-				$value = str_replace('t', '', $value);
-			}
-			else if(strpos($value, 'g') !== false){
-				$newvalue = 1024 * 1024 * 1024;
-				$value = str_replace('g', '', $value);
-			}
-			else if(strpos($value, 'm') !== false){
-				$newvalue = 1024 * 1024;
-				$value = str_replace('m', '', $value);
-			}
-			else if(strpos($value, 'k') !== false){
-				$newvalue = 1024;
-				$value = str_replace('k', '', $value);
-			}
-			
-			$value *= $newvalue;
-			
+			$value = revertFileSize($value);
 			break;
 	}
 	

@@ -341,6 +341,34 @@ function formatFileSize($sizeInBytes, $rounding = 2){
 	return round($sizeInBytes, $rounding) . ' ' . $sizes[$index];
 }
 
+function revertFileSize($value){
+	$newvalue = 1;
+	$value = strtolower($value);
+	
+	$value = str_replace('b', '', $value);
+	
+	if(strpos($value, 't') !== false){
+		$newvalue = 1024 * 1024 * 1024 * 1024;
+		$value = str_replace('t', '', $value);
+	}
+	else if(strpos($value, 'g') !== false){
+		$newvalue = 1024 * 1024 * 1024;
+		$value = str_replace('g', '', $value);
+	}
+	else if(strpos($value, 'm') !== false){
+		$newvalue = 1024 * 1024;
+		$value = str_replace('m', '', $value);
+	}
+	else if(strpos($value, 'k') !== false){
+		$newvalue = 1024;
+		$value = str_replace('k', '', $value);
+	}
+	
+	$value *= $newvalue;
+	
+	return $value;
+}
+
 
 function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
     $sort_col = array();

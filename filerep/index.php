@@ -73,7 +73,7 @@ switch($action->getCode()){
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
 		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
 		
-		$app->setHeaderScripts('<script type="text/javascript">var upload_max_filesize = ' . ini_get('upload_max_filesize') . ', max_file_uploads = ' . ini_get('max_file_uploads') . ';</script>' . "\n");
+		$app->setHeaderScripts('<script type="text/javascript">var upload_max_filesize = ' . revertFileSize(ini_get('upload_max_filesize')) . ', max_file_uploads = ' . ini_get('max_file_uploads') . ';</script>' . "\n");
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_upload.php';
