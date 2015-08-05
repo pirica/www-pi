@@ -16,7 +16,7 @@ $().ready(function(){
 	var settings = {
 		url: "?action=do_upload",
 		method: "POST",
-		allowedTypes:"jpg,png,gif,doc,pdf,zip",
+		//allowedTypes:"jpg,png,gif,doc,pdf,zip",
 		fileName: "myfile",
 		multiple: true,
 		formData: {
