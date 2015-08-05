@@ -103,6 +103,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_create_dir':
+		include 'queries/pr_get_share_stats.php';
 		include 'act_create_dir.php';
 		break;
 	
