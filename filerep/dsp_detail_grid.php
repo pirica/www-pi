@@ -43,6 +43,8 @@
 		</span>
 	</a>-->
 	
+	<a href="index.php?action=create_dir&amp;id_share=<?= $id_share ?>&amp;dir=<?= $currentdir['relative_directory'] ?>"><i class="fa fa-lg fa-plus pull-right" title="Create new directory"></i></a>
+	
 </p>
 
 <table class="table">

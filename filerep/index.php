@@ -85,6 +85,29 @@ switch($action->getCode()){
 		include 'act_upload_site.php';
 		break;
 	
+	
+	
+	case 'create_dir':
+		include 'queries/pr_get_files.php';
+		
+		// row 1: current directory
+		$currentdir = mysql_fetch_array($qry_files_currentdir);
+		// row 2: parent directory
+		$parentdir = mysql_fetch_array($qry_files_parentdir);
+		
+		$currentdirarr = explode('/', $currentdir['relative_directory']);
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_create_dir.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_create_dir':
+		include 'act_create_dir.php';
+		break;
+	
+	
+	
 	// main: overview
 	default:
 		include 'queries/pr_get_share_stats.php';
