@@ -168,6 +168,7 @@ for($i=$total-1;$i>=0;$i--) {
 			id_email_spam,
 			when_subject,
 			when_from,
+			when_to,
 			when_body
 			
 		from t_email_spam
@@ -177,6 +178,10 @@ for($i=$total-1;$i>=0;$i--) {
 				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($subject) . "' like when_subject)
 				or
 				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($fromaddress) . "' like when_from)
+				or
+				(ifnull(when_to,'') <> '' and '" . mysql_real_escape_string($toaddress) . "' like when_to)
+				or
+				(ifnull(when_to,'') <> '' and '" . mysql_real_escape_string($toaddress) . "' like concat('%<', when_to, '>%') )
 				or
 				(ifnull(when_body,'') <> '' and '" . mysql_real_escape_string($email['body']) . "' like when_body)
 			)
