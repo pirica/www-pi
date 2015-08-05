@@ -25,8 +25,8 @@ class Action
 		
 		$this->_id_app_action = -1;
 		$this->_page_title = '';
-		$this->_login_required = true;
-		$this->_allowed = false;
+		$this->_login_required = 1;
+		$this->_allowed = 0;
 		
         $this->default_code = 'main';
         
@@ -56,10 +56,10 @@ class Action
 		return $this->_page_title;
 	}
 	public function getLoginRequired() {
-		return $this->_login_required;
+		return ($this->_login_required == 1);
 	}
 	public function getAllowed() {
-		return $this->_allowed;
+		return true;//($this->_allowed == 1);
 	}
 
 	private function getData() {
@@ -68,9 +68,10 @@ class Action
 			
 			$qry_action = $this->_db->prepare("
 				select
-					aa.id_app_action,
 					#aa.id_app,
 					#aa.code,
+					
+					aa.id_app_action,
 					aa.page_title,
 					aa.login_required,
 					case when (pa.allowed = 1 or p.full_access = 1) and (paa.allowed = 1 or p.full_access = 1) then 1 else 0 end as allowed
@@ -84,25 +85,34 @@ class Action
 					ifnull(aa.id_app,?) = ?
 					and aa.code = ?
 					and aa.active = 1
-					
+				order by
+					aa.id_app desc
+				limit 1
 				");
 				
             $code = ($this->_code == '' ? $this->default_code : $this->_code);
 			$qry_action->bind_param('iiis', $this->_id_profile, $this->_id_app, $this->_id_app, $code);
 			$qry_action->execute();
-			$qry_action->store_result();
-
-			if ($qry_action->num_rows > 0) {
+			//$qry_action->store_result();
+			
+			//if ($qry_action->num_rows > 0) {
 				$qry_action->bind_result(
-					$this->_id_app_action,
 					//$this->_id_app,
 					//$code,
-					$this->_page_title,
-					$this->_login_required,
-					$this->_allowed
+					
+					$_id_app_action,
+					$_page_title,
+					$_login_required,
+					$_allowed
 				);
 				
 				$qry_action->fetch();
+				
+				$this->_id_app_action = $_id_app_action;
+				$this->_page_title = $_page_title;
+				$this->_login_required = $_login_required;
+				$this->_allowed = $_allowed;
+				
 				/*
 				while ($qry_action->fetch()) {
 					$this->_count++;
@@ -116,15 +126,15 @@ class Action
 					
 				}
 				*/
-			}
+			/*}
 			else {
 				$this->_id_app_action = -1;
 				//$this->_id_app,
 				//$code,
 				$this->_page_title = '';
-				$this->_login_required = true;
-				$this->_allowed = false;
-			}
+				$this->_login_required = 1;
+				$this->_allowed = 0;
+			}*/
 			
 		//}*/
 		return $this->_data;
@@ -185,6 +195,10 @@ class Action
 	public function __toString() {
 		return $this->_code;
 	} 
+	
+	public function _debug() {
+		//print_r($this->_data);
+	}
 	
 }
 

@@ -17,11 +17,11 @@ $qry_mng_profiles = $mysqli->prepare("
 		
 	");
 	
-//$qry_mng_actions->bind_param('s', $request_uri);
-$qry_mng_actions->execute();
-$qry_mng_actions->store_result();
+//$qry_mng_profiles->bind_param('s', $request_uri);
+$qry_mng_profiles->execute();
+$qry_mng_profiles->store_result();
 
-$qry_mng_actions->bind_result(
+$qry_mng_profiles->bind_result(
 	$id_profile,
 	$description,
 	$full_access,
@@ -30,7 +30,7 @@ $qry_mng_actions->bind_result(
 	
 		
 $profilesdata = [];
-while ($qry_mng_actions->fetch()) {
+while ($qry_mng_profiles->fetch()) {
 	$profilesdata[] = array(
 		'id_profile' => $id_profile,
 		'description' => $description,

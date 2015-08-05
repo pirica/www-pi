@@ -63,7 +63,7 @@ $settingsdata = [];
 	$category,
 	$tooltip
 */
-$prev_id_app = -1;
+$prev_id_app = -999;
 while ($qry_mng_settings->fetch()) {
 	if($prev_id_app != $id_app){
 		$settingsdata[] = [];

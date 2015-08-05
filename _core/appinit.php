@@ -27,12 +27,16 @@ $settings = new Settings($mysqli, $app->getId());
 
 sec_session_start();
 
+$_SESSION['log'] = '';
+
 $user = new User($mysqli, $app->getId(), $_SESSION);
 
 $loggedin = login_check($mysqli);
 $id_profile = $settings->val('default_profile_notloggedin', -1);
 
 $action = new Action($mysqli, $app->getId(), saneInput('action', 'string', ''), $id_profile);
+
+$_SESSION['log'] .= '1:' . $action->getId() . '-' . $action->getCode() . '-' . $action->getAllowed() . "\n";
 
 $app->setTitle( $action->getPageTitle() );
 
@@ -43,10 +47,14 @@ if ($loggedin){
 if ($action->getLoginRequired() && !$loggedin){
 	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 	$_SESSION['url_after_login'] = get_url_after_login();
+	
+	$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
 }
 else if ($action->getLoginRequired() && !$action->getAllowed()){
 	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 	$_SESSION['url_after_login'] = get_url_after_login();
+	
+	$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
 }
 
 ?>

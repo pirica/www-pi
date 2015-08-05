@@ -57,10 +57,10 @@ switch($action->getCode()){
 	// management
 	
 	case 'settings':
+		require '../_core/dsp_header.php';
+		
 		require 'queries/pr_get_profiles.php';
 		require 'queries/pr_get_settings.php';
-		
-		require '../_core/dsp_header.php';
 		require 'dsp_settings.php';
 		require '../_core/dsp_footer.php';
 		break;

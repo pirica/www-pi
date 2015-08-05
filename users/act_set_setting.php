@@ -5,7 +5,7 @@ $value = saneInput('value', 'string');
 $edittype = saneInput('edittype', 'string', 'string');
 
 $error = 0;
-if($id_app > 0 && $code != ''){
+if(/*$id_app > 0 &&*/ $code != ''){
 	
 	switch($edittype){
 		case 'size':

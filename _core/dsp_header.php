@@ -3,9 +3,18 @@
 <head>
 	<?php
 		if(true){
-			echo '<!--';
-			echo $app->getBaseUrl();
+			echo '<!--' . "\n";
+			echo 'id:' . $app->getId() . "\n";
+			echo 'id:' . $action->getId() . '-' . $action->getCode() . "\n";
+			echo '=====' . "\n";
+			echo 'a.lir:' . $action->getLoginRequired() . "\n";
+			echo 'li:' . $loggedin . "\n";
+			echo 'a.a:' . $action->getAllowed() . "\n";
+			echo '=====' . "\n";
+			//echo $app->getBaseUrl();
 			$settings->_debug();
+			echo '=====' . "\n";
+			print_r($_SESSION);
 			echo '-->';
 		}
 	?>
