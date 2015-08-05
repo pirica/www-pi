@@ -28,8 +28,8 @@ $().ready(function(){
 		//sequential:true,
 		//sequentialCount:1,
 		
-		//maxFileCount:3,
-		//maxFileSize:100*1024,
+		maxFileCount:max_file_uploads,
+		maxFileSize:upload_max_filesize,
 		
 		/*
 		dragDropStr: "<span><b>Faites glisser et déposez les fichiers</b></span>",
