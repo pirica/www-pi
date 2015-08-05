@@ -79,6 +79,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_upload':
+		include 'queries/pr_get_share_stats.php';
 		include 'act_upload_site.php';
 		break;
 	

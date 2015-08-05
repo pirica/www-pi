@@ -11,6 +11,12 @@ echo ini_get('max_file_uploads');
 
 //$temppath = '.filerep' . ((int)(rand() * 999999999)) ;
 
+while($stat = mysql_fetch_array($qry_share_stats)){
+	if($stat['id_share'] == $id_share){
+		$dir = $stat['server_directory'] . $dir;
+	}
+}
+
 if(isset($_FILES["myfile"]))
 {
 	$ret = array();

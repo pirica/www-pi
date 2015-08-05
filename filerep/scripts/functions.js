@@ -19,7 +19,11 @@ $().ready(function(){
 		allowedTypes:"jpg,png,gif,doc,pdf,zip",
 		fileName: "myfile",
 		multiple: true,
-		formData: {dir: dir},
+		formData: {
+			dir: dir,
+			id_share: id_share,
+			id_host: id_host
+		},
 		
 		//sequential:true,
 		//sequentialCount:1,
