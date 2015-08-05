@@ -88,6 +88,8 @@ switch($action->getCode()){
 	
 	
 	case 'create_dir':
+		$newdir = saneInput('newdir');
+		$error = saneInput('error');
 		include 'queries/pr_get_files.php';
 		
 		// row 1: current directory
@@ -103,6 +105,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_create_dir':
+		$newdir = saneInput('newdir');
 		include 'queries/pr_get_share_stats.php';
 		include 'act_create_dir.php';
 		break;

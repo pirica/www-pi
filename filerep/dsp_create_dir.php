@@ -32,7 +32,7 @@
 	
 	<div class="form-group">
 		<label for="newdir">Directory name</label>
-		<input id="newdir" name="newdir" placeholder="" class="form-control" type="text" value="">
+		<input id="newdir" name="newdir" placeholder="" class="form-control" type="text" value="<?= $newdir ?>">
 	</div>
 	
 	
@@ -45,9 +45,15 @@
 	
 	<div class="form-group">
 	<?php
-	/*if($error == 1){
-		echo '<div class="alert alert-danger">Some required fields are incorrect</div>';
-	}*/
+	if($error == 'notcreated'){
+		echo '<div class="alert alert-danger">The directory could not be created</div>';
+	}
+	if($error == 'direxists'){
+		echo '<div class="alert alert-info">The directory already exists</div>';
+	}
+	if($error == 'nodir'){
+		echo '<div class="alert alert-warning">Please enter a directory</div>';
+	}
 	?>
 	</div>
 	
