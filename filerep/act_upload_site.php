@@ -26,18 +26,18 @@ if(isset($_FILES["myfile"]))
 	
 	if(!is_array($_FILES["myfile"]['name'])) //single file
 	{
-		$fileName = $_FILES["myfile"]["name"];
-		$ret[$fileName] = $server_directory . $dir . $fileName;
+		$filename = $_FILES["myfile"]["name"];
+		$ret[$filename] = $server_directory . $dir . $filename;
 		
-		if(file_exists($server_directory . $dir . $fileName)){
-			$ret['jquery-upload-file-error'] = 'File '.$fileName.' already exists!';
+		if(file_exists($server_directory . $dir . $filename)){
+			$ret['jquery-upload-file-error'] = 'File '.$filename.' already exists!';
 		}
 		else 
 		{
-			move_uploaded_file($_FILES["myfile"]["tmp_name"], $server_directory . $dir . $fileName);
+			move_uploaded_file($_FILES["myfile"]["tmp_name"], $server_directory . $dir . $filename);
 			
-			$filesize = filesize($server_directory . $dir . $fileName);
-			$modified = filemtime($server_directory . $dir . $fileName);
+			$filesize = filesize($server_directory . $dir . $filename);
+			$modified = filemtime($server_directory . $dir . $filename);
 			
 			mysql_query("
 				insert into t_file
@@ -68,18 +68,18 @@ if(isset($_FILES["myfile"]))
 		$fileCount = count($_FILES["myfile"]['name']);
 		for($i=0; $i < $fileCount; $i++)
 		{
-			$fileName = $_FILES["myfile"]["name"][$i];
-			$ret[$fileName] = $server_directory . $dir . $fileName;
+			$filename = $_FILES["myfile"]["name"][$i];
+			$ret[$filename] = $server_directory . $dir . $filename;
 			
-			if(file_exists($server_directory . $dir . $fileName)){
-				$ret['jquery-upload-file-error'] = 'File '.$fileName.' already exists!';
+			if(file_exists($server_directory . $dir . $filename)){
+				$ret['jquery-upload-file-error'] = 'File '.$filename.' already exists!';
 			}
 			else 
 			{
-				move_uploaded_file($_FILES["myfile"]["tmp_name"][$i], $server_directory . $dir . $fileName );
+				move_uploaded_file($_FILES["myfile"]["tmp_name"][$i], $server_directory . $dir . $filename );
 				
-				$filesize = filesize($server_directory . $dir . $fileName);
-				$modified = filemtime($server_directory . $dir . $fileName);
+				$filesize = filesize($server_directory . $dir . $filename);
+				$modified = filemtime($server_directory . $dir . $filename);
 				
 				mysql_query("
 					insert into t_file
