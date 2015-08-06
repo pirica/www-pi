@@ -25,7 +25,7 @@
 
 <div class="row">
 	<form method="get" action="?action=search">
-		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		<input type="hidden" name="action" value="search">
 		<input type="hidden" name="id_share" value="<?= $id_share ?>">
 		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
 		

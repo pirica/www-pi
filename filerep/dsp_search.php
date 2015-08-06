@@ -1,12 +1,8 @@
 
-<h1>share details</h1>
+<h1>Search files</h1>
 
 <div id="files-grid">
 	
-	<h2>
-		Search files
-	</h2>
-
 	<form method="get" action="?action=<?= $action->getCode() ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
 		<input type="hidden" name="id_share" value="<?= $id_share ?>">
@@ -20,7 +16,7 @@
 			</div>
 			
 			<div class="col-md-2">
-				<input class="btn btn-default" type="submit" value="Search">
+				<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
 			</div>
 			
 			<div class="col-md-1"></div>

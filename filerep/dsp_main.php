@@ -21,8 +21,7 @@
 			<th># Hosts</th>
 			<th>Total size</th>
 			<th>Last modification</th>
-			<th>Edit</th>
-			<th>Delete</th>
+			<th>&nbsp;</th>
 		</tr>
 	</thead>
 	
@@ -39,17 +38,11 @@
 			<td><?= $stat['max_date_last_modified'] ?></td>
 			
 			<td>
-				<a class="btn btn-primary" href="index.php?action=setgrab&amp;id_share=<?=$stat['id_share'] ?>">
-					<span class="glyphicon glyphicon-edit"></span>
-					Edit
+				<a class="btn btn-primary" href="index.php?action=search&amp;id_share=<?=$stat['id_share'] ?>">
+					<span class="fa fa-search" title="Search in files"></span>
 				</a>
 			</td>
-			<td>
-				<a class="btn btn-danger btn-delete-grab" href="index.php?action=delgrab&amp;id_share=<?=$stat['id_share'] ?>" data-toggle="modal" data-target="#myModal">
-					<span class="glyphicon glyphicon-remove"></span>
-					Delete
-				</a>
-			</td>
+			
 		</tr>
 		
 	<?php 
