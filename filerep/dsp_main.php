@@ -38,8 +38,8 @@
 			<td><?= $stat['max_date_last_modified'] ?></td>
 			
 			<td>
-				<a class="btn btn-primary" href="index.php?action=search&amp;id_share=<?=$stat['id_share'] ?>">
-					<span class="fa fa-search" title="Search in files"></span>
+				<a class="btn btn-primary" href="index.php?action=search&amp;id_share=<?=$stat['id_share'] ?>" title="Search in files">
+					<span class="fa fa-search"></span>
 				</a>
 			</td>
 			

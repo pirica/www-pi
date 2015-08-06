@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="col-md-2">
-			<input class="btn btn-default" type="submit" value="Search">
+			<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
 		</div>
 	</form>
 	

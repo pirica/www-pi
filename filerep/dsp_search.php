@@ -79,18 +79,18 @@
 					?></td>
 					<td><?php
 						if($file['is_directory'] == 1){
-							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . $file['parent_directory'] . '</a>';
+							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['parent_directory'], array($search)) . '</a>';
 						}
 						else {
-							echo $file['parent_directory'];
+							echo highlightWords($file['parent_directory'], array($search));
 						}
 					?></td>
 					<td><?php
 						if($file['is_directory'] == 1){
-							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . $file['filename'] . '</a>';
+							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
 						}
 						else {
-							echo $file['filename'];
+							echo highlightWords($file['filename'], array($search));
 						}
 					?></td>
 					<td><?= formatFileSize($file['size']) ?></td>
@@ -135,20 +135,20 @@
 					<td>
 						<?php
 							if($file['is_directory'] == 1){
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['relative_directory'] . '</a>';
+								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
 							}
 							else {
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . $file['relative_directory'] . '</a>';
+								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
 							}
 						?>
 					</td>
 					<td>
 						<?php
 							if($file['is_directory'] == 1){
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
+								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
 							}
 							else {
-								echo $file['filename'];
+								echo highlightWords($file['filename'], array($search));
 							}
 						?>
 					</td>
