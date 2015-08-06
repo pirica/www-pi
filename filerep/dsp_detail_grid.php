@@ -22,15 +22,40 @@
 	</span>
 </h2>
 
-<form method="get" action="?action=<?= $action->getCode() ?>">
-	<input type="hidden" name="action" value="<?= $action->getCode() ?>">
-	<input type="hidden" name="id_share" value="<?= $id_share ?>">
-	<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
+
+<div class="row">
+	<form method="get" action="?action=search">
+		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		<input type="hidden" name="id_share" value="<?= $id_share ?>">
+		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
+		
+		<div class="col-md-7">
+			<input id="search" name="search" placeholder="" class="form-control" type="text" value="<?=$search ?>">
+		</div>
+		
+		<div class="col-md-2">
+			<input class="btn btn-default" type="submit" value="Search">
+		</div>
+	</form>
 	
-	<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
-	<label for="filter_all">Also show deleted files</label>
+	<div class="col-md-1"></div>
 	
-</form>
+	
+	<form method="get" action="?action=<?= $action->getCode() ?>">
+		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		<input type="hidden" name="id_share" value="<?= $id_share ?>">
+		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
+		
+		<div class="col-md-2">
+			<div class="form-group">
+				<input type="checkbox" id="filter_all" name="all" value="1" <?= ($show_all == 1 ? 'checked="checked"' : '') ?>/>
+				<label for="filter_all">Also show deleted files</label>
+			</div>
+		</div>
+	</form>
+	
+</div>
+
 
 <p>
 	<a href="index.php?action=upload&amp;id_share=<?= $id_share ?>&amp;dir=<?= $currentdir['relative_directory'] ?>"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>

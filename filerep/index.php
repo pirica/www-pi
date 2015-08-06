@@ -29,8 +29,8 @@ switch($action->getCode()){
 		$search = strtolower(saneInput('search'));
 
 		// invalid values : reset to default
-		if(!in_array($sort, array('full_url', 'full_path', 'status', 'date_inserted', 'date_modified'))){
-			$sort = $settings->val('detailgrid_default_sort', 'date_inserted');
+		if(!in_array($sort, array('filename', 'size', 'date_last_modified'))){
+			$sort = $settings->val('detailgrid_default_sort', 'filename');
 		}
 		if(!in_array($sortorder, array('asc', 'desc'))){
 			$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
@@ -53,6 +53,32 @@ switch($action->getCode()){
         
         break;
 	
+	
+	case 'search':
+		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
+		
+		$sort = strtolower(saneInput('sort'));
+		$sortorder = strtolower(saneInput('sortorder'));
+		$search = strtolower(saneInput('search'));
+
+		// invalid values : reset to default
+		if(!in_array($sort, array('relative_directory', 'filename', 'size', 'date_last_modified'))){
+			$sort = $settings->val('detailgrid_default_sort', 'filename');
+		}
+		if(!in_array($sortorder, array('asc', 'desc'))){
+			$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
+		}
+		
+		include 'queries/pr_get_files_search.php';
+		
+		$app->setHeaderScripts('<script type="text/javascript">var show_all = ' . $show_all . ', sort = "' . $sort . '", sortorder = "' . $sortorder . '", search = "' . $search . '";</script>' . "\n");
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_search.php';
+		include '../_core/dsp_footer.php';
+        
+        break;
+		
 	
 	case 'do_set_directory_reindex':
 		include 'queries/pr_set_directory_reindex.php';
