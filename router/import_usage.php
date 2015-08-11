@@ -26,6 +26,8 @@ rm /var/docs/router/usage_2015-01-01*
 $fulldir = '/var/docs/router';
 $lockfile = 'import_usage.lock';
 
+$crondate = time();
+
 if (!file_exists( $fulldir . '/' . $lockfile)) {
 	file_put_contents($fulldir . '/' . $lockfile, date('Y-m-d H:i:s', time()) );
 	
@@ -136,8 +138,6 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 	require 'queries/pr_set_hosts_usage_now.php';
 	require 'queries/pr_set_hosts_usage_today.php';
 	
-	$crondate = time();
-	
 	//if(date("H", $crondate) == 0 && date("i", $crondate) < 5)
 	if(date("i", $crondate) % 5 == 0)
 	{
@@ -204,6 +204,13 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 	}
 	
 	require 'queries/pr_clear_host_usage.php';
+	
+	
+	//if(date("H", $crondate) == 0 && date("i", $crondate) < 5){
+	if(date("i", $crondate) < 5){
+		require 'queries/pr_set_hosts_usage_newhosts.php';
+	}
+	
 	
 	unlink($fulldir . '/' . $lockfile);
 	
