@@ -6,6 +6,7 @@ include 'connections.php';
 include "class.myrssparser.php"; 
 include "class.myatomparser.php"; 
 
+$date_start = time();
 
 $qry_feeds = mysql_query("
 	
@@ -19,7 +20,7 @@ $qry_feeds = mysql_query("
 	left join t_feed_entry fe on fe.id_feed = f.id_feed and fe.is_read = 1 and fe.active = 1
 	where
 		f.active = 1
-		and ifnull(f.date_last_checked, '1970-01-01') < now() - interval (ifnull(f.refresh, " . $settings->val('default_interval_check_feeds_minutes', 60) . ")) minute
+		and ifnull(f.date_last_checked, '1970-01-01') <= now() - interval (ifnull(f.refresh, " . $settings->val('default_interval_check_feeds_minutes', 60) . ")) minute
 		and hour(now()) between " . $settings->val('check_feeds_from_hour', 6) . " and " . $settings->val('check_feeds_to_hour', 23) . "
 	group by
 		f.id_feed,
@@ -391,7 +392,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		}
 		
 		// set "last checked"
-		mysql_query("update t_feed set date_last_checked = now() where id_feed = " . $feeds['id_feed'] . "", $conn);
+		mysql_query("update t_feed set date_last_checked = date('Y-m-d H:i:s', " . $date_start . ") where id_feed = " . $feeds['id_feed'] . "", $conn);
 		
 		
 		//echo ' -> ' . $items . " items in feed\n";
