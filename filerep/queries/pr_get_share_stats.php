@@ -19,6 +19,9 @@ $qry_share_stats = mysql_query("
 	where
 		s.active = 1
 		
+	order by
+		s.name
+		
 	group by
 		s.id_share,
 		s.name,

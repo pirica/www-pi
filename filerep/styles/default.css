@@ -45,6 +45,11 @@ label.error {
 	padding: 0 5px;
 }
 
+.highlight {
+	font-weight: bold;
+	
+}
+
 #files-grid {
 	font-size: 90%;
 }

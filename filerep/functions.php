@@ -383,13 +383,15 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 
 function highlightWords($inp, $words)
 {
-  $replace=array_flip(array_flip($words)); // remove duplicates
-  $pattern=array();
-  foreach ($replace as $k=>$fword) {
-     $pattern[]='/\b(' . $fword . ')(?!>)\b/i';
-     $replace[$k]='<b>$1</b>';
-  }
-  return preg_replace($pattern, $replace, $inp);
+	$replace=array_flip(array_flip($words)); // remove duplicates
+	$pattern=array();
+	foreach ($replace as $k=>$fword) {
+		//$pattern[]='/\b(' . $fword . ')(?!>)\b/i';
+		//$pattern[]='/\b(' . $fword . ')\b/i'; // filters word only
+		$pattern[]='/(' . $fword . ')/i'; // filters part of words
+		$replace[$k]='<span class="highlight">$1</span>';
+	}
+	return preg_replace($pattern, $replace, $inp);
 }
 
 

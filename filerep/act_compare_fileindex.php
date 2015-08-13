@@ -3,7 +3,8 @@ set_time_limit(0);
 $debug = 0;
 
 if(!isset($id_host)){
-	include 'functions.php';
+	include 'connection.php';
+	require '../_core/functions.php';
 	
 	$id_host = saneInput('id_host', 'int', -1);
 	$id_share = saneInput('id_share', 'int', -1);
