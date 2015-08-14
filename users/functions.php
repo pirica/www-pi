@@ -287,14 +287,14 @@ function esc_url($url) {
 function get_url_after_login(){
 	// from: http://stackoverflow.com/questions/6768793/get-the-full-url-in-php 
 	$ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true:false;
-	$sp = strtolower($_SERVER['SERVER_PROTOCOL']);
+	$sp = isset($_SERVER['SERVER_PROTOCOL']) ? strtolower($_SERVER['SERVER_PROTOCOL']) : 'http/';
 	$protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
-	$port = $_SERVER['SERVER_PORT'];
+	$port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
 	$port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
 	$host = /*($use_forwarded_host && isset($_SERVER['HTTP_X_FORWARDED_HOST'])) ? $_SERVER['HTTP_X_FORWARDED_HOST'] :*/ (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null);
-	$host = isset($host) ? $host : $_SERVER['SERVER_NAME'] . $port;
+	$host = isset($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] . $port : 'localhost');
 	
-	return $protocol . '://' . $host . $_SERVER['REQUEST_URI'];
+	return $protocol . '://' . $host . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 }
 
 ?>

@@ -35,7 +35,7 @@ $settingsdata_count = count($settingsdata);
 			?>
 				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="app<?= $settingsdata[$i][0]['id_app'] ?>">
 					<div class="row clearfix">
-						<div class="col-md-6 column">
+						<div class="col-md-12 column">
 							<form role="form" class="form-horizontal settings-form">
 								<?php
 									$settingsdata_app_count = count($settingsdata[$i]);
@@ -73,8 +73,8 @@ $settingsdata_count = count($settingsdata);
 											case 'profiles':
 												?>
 													<div class="form-group">
-														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
-														<div class="col-sm-6">
+														<label class="col-sm-3 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-3">
 															<select id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" class="form-control" 
 																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>">
@@ -107,8 +107,8 @@ $settingsdata_count = count($settingsdata);
 											case 'check':
 												?>
 													<div class="form-group">
-														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
-														<div class="col-sm-6">
+														<label class="col-sm-3 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-3">
 															<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="checkbox" 
 																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
@@ -127,8 +127,8 @@ $settingsdata_count = count($settingsdata);
 											case 'filesize':
 												?>
 													<div class="form-group">
-														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
-														<div class="col-sm-6">
+														<label class="col-sm-3 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<div class="col-sm-3">
 															<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="text" class="form-control" 
 																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
@@ -150,8 +150,16 @@ $settingsdata_count = count($settingsdata);
 											default:
 												?>
 													<div class="form-group">
-														<label class="col-sm-6 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
-														<div class="col-sm-6">
+														<label class="col-sm-3 control-label" for="setting<?= $settingsdata[$i][$j]['id_setting'] ?>"><?= $label ?></label>
+														<?php
+															if($settingsdata[$i][$j]['edittype'] == 'int' || $settingsdata[$i][$j]['edittype'] == 'integer'){
+																$colsize = 3;
+															}
+															else {
+																$colsize = 9;
+															}
+														?>
+														<div class="col-sm-<?= $colsize ?>">
 															<input id="setting<?= $settingsdata[$i][$j]['id_setting'] ?>" type="text" class="form-control" 
 																data-code="<?= $settingsdata[$i][$j]['code'] ?>" 
 																data-edittype="<?= $settingsdata[$i][$j]['edittype'] ?>" 
