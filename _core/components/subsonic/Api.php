@@ -1,8 +1,8 @@
 <?php
 class Subsonic
 {
-	protected static $_serverUrl;
-	protected static $_serverPort;
+	protected $_serverUrl;
+	protected $_serverPort;
 	protected $_creds;
 	protected $_commands;
 	
@@ -142,9 +142,10 @@ class Subsonic
 		if(property_exists($object, "subsonic-response"))
 		{
 			$response = (array)$object->{'subsonic-response'};
-			$data = array_shift($response);
-			if(property_exists($data, "status"))
-			{
+			//$data = array_shift($response);
+			$data = $response;
+			//if(property_exists($data, "status"))
+			//{
 				//if($data->status == 'ok')
 				//{
 					return (object) array("success"=>true, "data"=>$data);
@@ -153,11 +154,11 @@ class Subsonic
 				{
 					return $this->error("Invalid response from server!", $object);
 				}*/
-			}
+			/*}
 			else
 			{
 				return $this->error("Invalid response from server!", $object);
-			}
+			}*/
 		}
 		else
 		{
@@ -181,13 +182,31 @@ class Subsonic
 	
 	public function getPlaylists()
 	{
-		return $this->_querySubsonic('getPlaylists');
+		return $this->_querySubsonic('getPlaylists')->data['playlists']->playlist;
 	}
 	
 	public function getPlaylist($id)
 	{
-		return $this->_querySubsonic('getPlaylist', array('id' => $id));
+		return $this->_querySubsonic('getPlaylist', array('id' => $id))->data['playlist']->entry;
 	}
+	
+	
+	public function getIndexes()
+	{
+		return $this->_querySubsonic('getIndexes')->data['indexes']->index;
+	}
+	
+	public function getMusicDirectory($id)
+	{
+		$data = $this->_querySubsonic('getMusicDirectory', array('id' => $id))->data['directory'];
+		if(property_exists($data, "child")){
+			return $data->child;
+		}
+		else {
+			return []
+		}
+	}
+	
 }
 
 ?>
