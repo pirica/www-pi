@@ -203,7 +203,7 @@ class Subsonic
 			return $data->child;
 		}
 		else {
-			return []
+			return [];
 		}
 	}
 	

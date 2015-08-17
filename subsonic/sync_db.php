@@ -75,7 +75,7 @@ for($pi=0; $pi<$c_playlists; $pi++){
 $qry_indexes = mysql_query("select count(*) as indexcount from indexes;");
 $indexes = mysql_fetch_array($qry_indexes);
 
-if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5) || $indexes['indexcount'] == 0){
+if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 
 	mysql_query("truncate table indexes;");
 	mysql_query("truncate table songs;");
@@ -104,28 +104,6 @@ if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date(
 				)
 				");
 			
-			/*
-			$playlist_entries = $s->getPlaylist( $indexes[$ii]->id );
-			$c_playlist_entries = count($playlist_entries);
-			
-			for($pei=0; $pei<$c_playlist_entries; $pei++){
-				mysql_query("
-					insert into playlistEntries
-					(
-						playlistId,
-						songId,
-						songIndex
-					)
-					values 
-					(
-						" . $indexes[$ii]->id . ",
-						" . $playlist_entries[$pei]->id . ",
-						" . $pei . "
-					)
-					");
-			}
-			*/
-			
 		}
 	}
 
@@ -140,10 +118,6 @@ if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date(
 				checked = 0
 			");
 			
-			// getMusicDirectory -> isDir 
-				// ? title -> index
-				// : path -> song
-		
 		$rowcount = mysql_affected_rows($conn);
 		
 		mysql_query("
@@ -180,7 +154,7 @@ if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date(
 				else {
 					$paths = explode('/', $music_directories[$mdi]->path);
 					$filename = array_pop($paths);
-					$relative_directory = '/' . implode('/', $music_directories[$mdi]->path);
+					$relative_directory = '/' . implode('/', $paths);
 					
 					mysql_query("
 						insert into songs
@@ -222,8 +196,8 @@ if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date(
 							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'bitRate') ? $music_directories[$mdi]->bitRate : '-1') . ",
 							'" . $music_directories[$mdi]->path . "',
-							'" . $relative_directory . "',
 							'" . $filename . "',
+							'" . $relative_directory . "',
 							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
 							'" . $music_directories[$mdi]->created . "',
 							'" . $music_directories[$mdi]->type . "',
