@@ -154,7 +154,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				else {
 					$paths = explode('/', $music_directories[$mdi]->path);
 					$filename = array_pop($paths);
-					$relative_directory = '/' . implode('/', $paths);
+					$relative_directory = '/' . implode('/', $paths) . '/';
 					
 					mysql_query("
 						insert into songs
