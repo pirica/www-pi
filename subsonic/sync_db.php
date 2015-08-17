@@ -72,7 +72,10 @@ for($pi=0; $pi<$c_playlists; $pi++){
 }
 
 
-if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5){
+$qry_indexes = mysql_query("select count(*) as indexcount from indexes;");
+$indexes = mysql_fetch_array($qry_indexes);
+
+if((date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5) || $indexes['indexcount'] == 0){
 
 	mysql_query("truncate table indexes;");
 	mysql_query("truncate table songs;");
