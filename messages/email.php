@@ -199,7 +199,7 @@ for($i=$total-1;$i>=0;$i--) {
 	
 	// ALERTING
 	
-	
+	/*
 	$qry = mysql_query("
 		select
 			id_alert_email,
@@ -262,10 +262,86 @@ for($i=$total-1;$i>=0;$i--) {
 			
 		}
 	}
+	*/
 }
 
-
 $emailhandle->remove();
+
+
+
+// ALERTING
+
+
+$qry = mysql_query("
+	select
+		ae.id_alert_email,
+		ae.description,
+		ae.when_from,
+		ae.when_subject,
+		
+		e.fromaddress,
+		e.subject
+		
+	from t_alert_email ae
+	join t_email e on e.is_alerted = 0
+		and (
+			(ifnull(ae.when_from,'') <> '' and e.fromaddress like ae.when_from)
+			or
+			(ifnull(ae.when_subject,'') <> '' and e.subject like ae.when_subject)
+		)
+	where
+		ae.enabled = 1
+	");
+
+while($tt = mysql_fetch_array($qry)){
+	$channel = 'Email_' . $tt['description'];
+	$title =  'Email from ' . $tt['fromaddress'];
+	$msg = 'Sub: ' . $tt['subject'];
+	$priority = $settings->val('email_alerting_priority', 2);
+	
+	$status = '';
+	/*
+	$qry_result = mysql_query("
+		select 
+			result
+		from t_alert_email_result
+		where
+			id_alert_email = " . $tt['id_alert_email'] . "
+			and result = '" . mysql_real_escape_string($title . ' - ' . $msg) . "'
+			#and date_result < now() - interval 1 hour
+		order by
+			id_alert_email_result desc
+		limit 1
+		");
+		
+	while($ttresult = mysql_fetch_array($qry_result)){
+		$status = $ttresult['result'];
+	}
+	*/
+	
+	if($status == ''){
+		
+		mysql_query("
+			insert into t_alert_email_result
+			(
+				id_alert_email,
+				result,
+				date_result
+			)
+			values
+			(
+				" . $tt['id_alert_email'] . ",
+				'" . mysql_real_escape_string($title . ' - ' . $msg) . "',
+				now()
+			)
+			");
+	
+		send_msg($channel, $title, $msg, $priority);
+		
+	}
+}
+
+mysql_query("update t_email set is_alerted = 1 where is_alerted = 0");
 
 
 ?>
