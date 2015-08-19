@@ -61,66 +61,13 @@
 		<tbody>
 		<?php 
 		$i = 0;
-		while($file = mysql_fetch_array($qry_files_subdirs)){ 
-			if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
-				$i++;
-				?>
-				<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
-					<td><?php
-						if($file['fontawesome'] != ''){
-							echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
-						}
-						else if($file['glyphicon'] != ''){
-							echo '<span class="glyphicon ' . $file['glyphicon'] . '"></span>';
-						}
-						else {
-							echo '&nbsp;';
-						}
-					?></td>
-					<td><?php
-						if($file['is_directory'] == 1){
-							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['parent_directory'], array($search)) . '</a>';
-						}
-						else {
-							echo highlightWords($file['parent_directory'], array($search));
-						}
-					?></td>
-					<td><?php
-						if($file['is_directory'] == 1){
-							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
-						}
-						else {
-							echo highlightWords($file['filename'], array($search));
-						}
-					?></td>
-					<td><?= formatFileSize($file['size']) ?></td>
-					<td><?= $file['date_last_modified'] ?></td>
-					<td>
-						<?php
-							if($file['indexing'] == 1){
-								echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
-							}
-							else if($file['can_reindex'] == 1){
-								echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
-							}
-							
-							// download
-							echo '<span class="fa"></span>';
-							// view
-							echo '<span class="fa"></span>';
-						?>
-					</td>
-				</tr>
-				<?php
-			}		
-		}
-		while($file = mysql_fetch_array($qry_files)){ 
-			if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
-				$i++;
-				?>
-				<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
-					<td>
-						<?php
+		if(isset($qry_files_subdirs)){
+			while($file = mysql_fetch_array($qry_files_subdirs)){ 
+				if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
+					$i++;
+					?>
+					<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+						<td><?php
 							if($file['fontawesome'] != ''){
 								echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
 							}
@@ -130,57 +77,114 @@
 							else {
 								echo '&nbsp;';
 							}
-						?>
-					</td>
-					<td>
-						<?php
+						?></td>
+						<td><?php
 							if($file['is_directory'] == 1){
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
+								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['parent_directory'], array($search)) . '</a>';
 							}
 							else {
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
+								echo highlightWords($file['parent_directory'], array($search));
 							}
-						?>
-					</td>
-					<td>
-						<?php
+						?></td>
+						<td><?php
 							if($file['is_directory'] == 1){
-								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
+								echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
 							}
 							else {
 								echo highlightWords($file['filename'], array($search));
 							}
-						?>
-					</td>
-					<td><?= formatFileSize($file['size']) ?></td>
-					<td><?= $file['date_last_modified'] ?></td>
-					<td>
-						<?php
-							echo '<span class="fa"></span>';
-							/*if($file['indexing'] == 1){
-								echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
-							}
-							else if($file['can_reindex'] == 1){
-								echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
-							}*/
-							
-							if($file['can_download'] == 1){
-								echo '<a href="?action=downloadfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-download" title="Download"></span></a>';
-							}
-							else {
+						?></td>
+						<td><?= formatFileSize($file['size']) ?></td>
+						<td><?= $file['date_last_modified'] ?></td>
+						<td>
+							<?php
+								if($file['indexing'] == 1){
+									echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+								}
+								else if($file['can_reindex'] == 1){
+									echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+								}
+								
+								// download
 								echo '<span class="fa"></span>';
-							}
-							
-							if($file['can_view'] == 1){
-								echo '<a href="?action=viewfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-eye" title="View"></span></a>';
-							}
-							else {
+								// view
 								echo '<span class="fa"></span>';
-							}
-						?>
-					</td>
-				</tr>
-				<?php
+							?>
+						</td>
+					</tr>
+					<?php
+				}		
+			}	
+		}
+		if(isset($qry_files)){
+			while($file = mysql_fetch_array($qry_files)){ 
+				if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
+					$i++;
+					?>
+					<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+						<td>
+							<?php
+								if($file['fontawesome'] != ''){
+									echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
+								}
+								else if($file['glyphicon'] != ''){
+									echo '<span class="glyphicon ' . $file['glyphicon'] . '"></span>';
+								}
+								else {
+									echo '&nbsp;';
+								}
+							?>
+						</td>
+						<td>
+							<?php
+								if($file['is_directory'] == 1){
+									echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
+								}
+								else {
+									echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . highlightWords($file['relative_directory'], array($search)) . '</a>';
+								}
+							?>
+						</td>
+						<td>
+							<?php
+								if($file['is_directory'] == 1){
+									echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
+								}
+								else {
+									echo highlightWords($file['filename'], array($search));
+								}
+							?>
+						</td>
+						<td><?= formatFileSize($file['size']) ?></td>
+						<td><?= $file['date_last_modified'] ?></td>
+						<td>
+							<?php
+								echo '<span class="fa"></span>';
+								/*if($file['indexing'] == 1){
+									echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+								}
+								else if($file['can_reindex'] == 1){
+									echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+								}*/
+								
+								if($file['can_download'] == 1){
+									echo '<a href="?action=downloadfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-download" title="Download"></span></a>';
+								}
+								else {
+									echo '<span class="fa"></span>';
+								}
+								
+								if($file['can_view'] == 1){
+									echo '<a href="?action=viewfile&amp;id_file=' . $file['id_file'] . '"><span class="fa fa-eye" title="View"></span></a>';
+								}
+								else {
+									echo '<span class="fa"></span>';
+								}
+							?>
+						</td>
+					</tr>
+					<?php
+				}
 			}
 		}
 		?>

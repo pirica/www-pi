@@ -69,7 +69,9 @@ switch($action->getCode()){
 			$sortorder = $settings->val('detailgrid_default_sortorder', 'desc');
 		}
 		
-		include 'queries/pr_get_files_search.php';
+		if($search != ''){
+			include 'queries/pr_get_files_search.php';
+		}
 		
 		$app->setHeaderScripts('<script type="text/javascript">var show_all = ' . $show_all . ', sort = "' . $sort . '", sortorder = "' . $sortorder . '", search = "' . $search . '";</script>' . "\n");
 		
