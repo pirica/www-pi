@@ -50,21 +50,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 
 	while ($share = mysql_fetch_array($qry_shares)) {
 		$id_share = $share{'id_share'};
-		//$dir = $share{'server_directory'};
 		$dir = $share{'server_directory'} . $share{'relative_directory'};
-		
-		/*
-		$date_last_replicated = $share{'date_last_replicated'};
-		
-		// make db timestamp into unix time
-		$date_last_replicated = str_replace('-', '/', $date_last_replicated);
-		$date_last_replicated = explode('.', $date_last_replicated)[0];
-		$date_last_replicated = strtotime($date_last_replicated);
-		
-		if($date_last_replicated == '' || $date_last_replicated == null){
-			$date_last_replicated = 0;
-		}
-		*/
 		
 		$date_start = time();
 		
@@ -73,7 +59,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		//echo " -> started on " . date('Y-m-d H:i:s', time()) . "'\n";
 		//echo " -> modified since " . date('Y-m-d H:i:s', $date_last_replicated) . "'\n";
 		//echo " -> modified since " . $share{'date_last_replicated'} . "'\n";
-			
+		
 		flush();
 		
 		$is_dir = true;
@@ -133,7 +119,6 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			
 			// get files in the share directory
 			$files = [];
-			//$filesfound = list_dir_shell($files, $dir, $date_last_replicated, 0);
 			$filesfound = list_dir_shell($files, $dir, 0, 0, 0, 0);
 			
 			//print_r($files);
@@ -270,17 +255,6 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					}
 					// file not found after index was reset (all files checked on dir)
 					else if($file_valid == 0 && $dbfile['active'] == 1 /*&& $date_last_replicated == 0*/){
-						// check deleted
-						/*mysql_query("
-							update t_file 
-							set
-								date_deleted_check = now()
-								#active = 0
-							where
-								id_file = " . $dbfile['id_file'] . "
-								and date_deleted_check is not null
-							", $conn);
-						*/
 						
 						// mark as deleted
 						mysql_query("
@@ -337,17 +311,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				for ($i = 0; $i < $filecount; $i++) {
 					
 					$reldir = $files[$i]['nativepath'];
-					//$reldir = str_replace($dir, '', $reldir, 1);
-					
-					// remove server dir - only first instance
-					//$reldir = preg_replace($dir, '', $reldir, 1);
 					$reldir = implode('', explode($share{'server_directory'}, $reldir, 2));
 					$filenamearr = explode('/', $reldir);
 					array_pop($filenamearr);
 					$reldir = implode('/', $filenamearr) . '/';
-					
-					// remove file name - only last instance
-					//$reldir = strrev(implode(strrev(''), explode($files[$i]['name'], strrev($reldir), 2)));
 					
 					mysql_query("
 						insert into t_file
@@ -419,16 +386,17 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			}
 			echo "\n";
 			
-			// set date last replicated on share
-			mysql_query("
-				update t_directory
-				set
-					date_last_checked = '" . date('Y-m-d H:i:s', $date_start) . "'
-				where
-					id_directory = " . $share['id_directory'] . "
-				", $conn);
-			
 		}
+		
+		// set date last replicated on share
+		mysql_query("
+			update t_directory
+			set
+				date_last_checked = '" . date('Y-m-d H:i:s', $date_start) . "'
+			where
+				id_directory = " . $share['id_directory'] . "
+			", $conn);
+		
 	}
 	
 	// script is done, unmark as running
