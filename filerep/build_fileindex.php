@@ -24,6 +24,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			d.id_directory,
 			d.relative_directory,
 			d.date_last_checked,
+			d.active,
 			s.id_share,
 			s.name,
 			s.server_directory
@@ -34,7 +35,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		
 		where
 			d.date_last_checked is null
-			and d.active = 1
+			#and d.active = 1
 			
 		#order by 
 		#	ifnull(d.date_last_checked, '2000-01-01 00:00:00'),
@@ -81,22 +82,25 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		}
 		catch(Exception $e){}
 		
-		if ($is_dir !== true) {
+		if ($is_dir !== true || $share['active'] == 0) {
 			
 			// set directory inactive
 			mysql_query("
 				update t_directory
 				set
-					active = 0
+					active = 0,
+					date_deleted = now()
 				where
 					id_directory = " . $share['id_directory'] . "
+					and active = 1
 				", $conn);
 			
 			// set related files inactive
 			mysql_query("
 				update t_file
 				set
-					active = 0
+					active = 0,
+					date_deleted = now()
 				where
 					f.id_share = " . $id_share . "
 					and relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'

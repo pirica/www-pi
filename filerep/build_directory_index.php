@@ -161,7 +161,24 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			f.relative_directory
 			
 		", $conn);
-
+		
+	// remove deleted dir and flag to be reindexed (to delete files)
+	mysql_query("
+		
+		update t_directory d
+		left join t_directory_index di on di.id_share = d.id_share
+			and d.relative_directory = di.relative_directory
+		set
+			d.active = 0,
+			d.date_deleted = now(),
+			d.date_last_checked = null
+			
+		where
+			d.active = 1
+			and di.id_directory_index is null
+			
+		", $conn);
+	
 	/*
 	// update dirname (take last part of directory structure)
 	mysql_query("
