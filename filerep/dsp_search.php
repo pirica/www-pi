@@ -6,7 +6,6 @@
 	<form method="get" action="?action=<?= $action->getCode() ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
 		<input type="hidden" name="id_share" value="<?= $id_share ?>">
-		<input type="hidden" name="dir" value="<?= $currentdir['relative_directory'] ?>">
 		
 		
 		
