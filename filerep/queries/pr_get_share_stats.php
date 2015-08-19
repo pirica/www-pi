@@ -19,14 +19,17 @@ $qry_share_stats = mysql_query("
 	where
 		s.active = 1
 		
-	order by
-		s.name
-		
 	group by
 		s.id_share,
 		s.name,
 		s.info,
-		s.server_directory
+		s.server_directory,
+		s.total_files,
+		s.total_filesize,
+		s.date_last_modified 
+		
+	order by
+		s.name
 		
 	", $conn);
 	

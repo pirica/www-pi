@@ -48,7 +48,7 @@ function saneInput($name, $type = 'string', $default = '', $caseSensitive = fals
 			case 'integer':
 			case 'unixtime':
 				if($post[$name] != '' && is_numeric($post[$name]) ){
-					$value = $post[$name];
+					$value = (int)$post[$name];
 				}
 				break;
 			case 'bool':
@@ -71,7 +71,7 @@ function saneInput($name, $type = 'string', $default = '', $caseSensitive = fals
 			case 'integer':
 			case 'unixtime':
 				if($get[$name] != '' && is_numeric($get[$name]) ){
-					$value = $get[$name];
+					$value = (int)$get[$name];
 				}
 				break;
 			case 'bool':
