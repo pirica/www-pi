@@ -33,5 +33,5 @@ require '../_core/dsp_header.php';
 </div>
 
 <?php
-require '_core/dsp_footer.php';
+require '../_core/dsp_footer.php';
 ?>

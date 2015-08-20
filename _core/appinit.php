@@ -51,8 +51,8 @@ if ($action->getLoginRequired() && !$loggedin){
 	$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
 }
 else if ($action->getLoginRequired() && !$action->getAllowed()){
-	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
-	$_SESSION['url_after_login'] = get_url_after_login();
+	$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
+	//$_SESSION['url_after_login'] = get_url_after_login();
 	
 	$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
 }
@@ -62,9 +62,17 @@ else if ($action->getLoginRequired() && !$action->getAllowed()){
 switch($action->getCode()){
 
 	case 'login':
-		include 'dsp_header.php';
+		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
-		include 'dsp_footer.php';
+		include '../_core/dsp_footer.php';
+		exit();
+		break;
+		
+	case 'notallowed':
+		include '../_core/dsp_header.php';
+		include '../users/dsp_notallowed.php';
+		include '../_core/dsp_footer.php';
+		exit();
 		break;
 		
 }
