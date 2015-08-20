@@ -112,7 +112,7 @@ function cURLcheckBasicFunctions()
  * Returns string status information.
  * Can be changed to int or bool return types.
  */
-function cURLdownload($url, $file, $redirects = 5)
+function cURLdownload($url, $file, $redirects = 5, $referer = '')
 {
 	if( !cURLcheckBasicFunctions() ) return "UNAVAILABLE: cURL Basic Functions";
 	$ch = curl_init();
@@ -130,7 +130,9 @@ function cURLdownload($url, $file, $redirects = 5)
 			if ((!ini_get('open_basedir') && !ini_get('safe_mode')) || $redirects < 1) {
 				curl_setopt($ch, CURLOPT_USERAGENT, '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				//curl_setopt($ch, CURLOPT_REFERER, 'http://domain.com/');
+				if($referer != ''){
+					curl_setopt($ch, CURLOPT_REFERER, $referer);
+				}
 				//if( !curl_setopt($ch, CURLOPT_HEADER, $curlopt_header)) return "FAIL: curl_setopt(CURLOPT_HEADER)";
 				if( !curl_setopt($ch, CURLOPT_FOLLOWLOCATION, $redirects > 0)) return "FAIL: curl_setopt(CURLOPT_FOLLOWLOCATION)";
 				if( !curl_setopt($ch, CURLOPT_FILE, $fp) ) return "FAIL: curl_setopt(CURLOPT_FILE)";
@@ -141,7 +143,9 @@ function cURLdownload($url, $file, $redirects = 5)
 			else {
 				curl_setopt($ch, CURLOPT_USERAGENT, '"Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.11) Gecko/20071204 Ubuntu/7.10 (gutsy) Firefox/2.0.0.11');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				//curl_setopt($ch, CURLOPT_REFERER, 'http://domain.com/');
+				if($referer != ''){
+					curl_setopt($ch, CURLOPT_REFERER, $referer);
+				}
 				if( !curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false)) return "FAIL: curl_setopt(CURLOPT_FOLLOWLOCATION)";
 				if( !curl_setopt($ch, CURLOPT_FILE, $fp) ) return "FAIL: curl_setopt(CURLOPT_FILE)";
 				if( !curl_setopt($ch, CURLOPT_HEADER, true)) return "FAIL: curl_setopt(CURLOPT_HEADER)";

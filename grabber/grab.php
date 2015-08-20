@@ -132,6 +132,8 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 			select
 				gf.id_grab_file,
 				gf.full_url,
+				gf.referer,
+				
 				gf.full_path,
 				
 				gf.status,
@@ -228,7 +230,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					// grab file 
 					try {
 						
-						$grabbedfile = cURLdownload($grabfile['full_url'], $grabfile['full_path']);
+						$grabbedfile = cURLdownload($grabfile['full_url'], $grabfile['full_path'], 5, $grabfile['referer']);
 						
 						if(isset($grabbedfile)){
 							

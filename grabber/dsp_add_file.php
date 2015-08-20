@@ -30,6 +30,11 @@
 		</div>
 		
 		<div class="form-group">
+			<label for="grab_referer">(Optional) Referer</label>
+			<input id="grab_referer" name="grab_referer" placeholder="" class="form-control" type="text" value="">
+		</div>
+		
+		<div class="form-group">
 			<label for="grab_path">Path</label>
 			<input id="grab_path" name="grab_path" placeholder="" class="form-control" type="text" value="<?=$grab_path?>">
 		</div>
