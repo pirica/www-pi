@@ -5,12 +5,13 @@ require 'functions.php';
 require '../_core/appinit.php';
 
 switch($action->getCode()){
-
+	/*
 	case 'login':
 		require '../_core/dsp_header.php';
 		require '../users/dsp_loginform.php';
 		require '../_core/dsp_footer.php';
 		break;
+	*/
 	
 	case 'usage_now': // show per host usage graph for current hour, per minute
 	case 'usage_today': // show per host usage graph for today, per hour

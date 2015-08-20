@@ -57,4 +57,16 @@ else if ($action->getLoginRequired() && !$action->getAllowed()){
 	$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
 }
 
+
+
+switch($action->getCode()){
+
+	case 'login':
+		include 'dsp_header.php';
+		include '../users/dsp_loginform.php';
+		include 'dsp_footer.php';
+		break;
+		
+}
+
 ?>

@@ -10,12 +10,13 @@ $app->setHeaderScripts('<script type="text/javascript">var id_grab = ' . $id_gra
 
 
 switch($action->getCode()){
-	
+	/*
 	case 'login':
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
+	*/
 	
 	// actions on grab
 	

@@ -11,13 +11,13 @@ $time = saneInput('time', 'string', '');
 $archived = 0;
 
 switch($action->getCode()){
-	
+	/*
 	case 'login':
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
-	
+	*/
 	
 	case 'image':
         $src = saneInput('src', 'string', '');

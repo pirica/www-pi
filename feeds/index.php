@@ -17,12 +17,13 @@ if(isset($_SESSION['desktop'])){
 
 switch($action->getCode()){
 	
-	
+	/*
 	case 'login':
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
+	*/
 	
 	case 'feeds':
 		include 'queries/pr_feeds.php';

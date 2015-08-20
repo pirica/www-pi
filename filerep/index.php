@@ -13,12 +13,14 @@ $dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
 $app->setHeaderScripts('<script type="text/javascript">var id_share = ' . $id_share . ', id_host = ' . $id_host . ', id_file = ' . $id_file . ', dir = \'' . $dir . '\';</script>' . "\n");
 
 switch($action->getCode()){
-
+	
+	/*
 	case 'login':
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
+	*/
 	
 	// main: overview
 	case 'details':

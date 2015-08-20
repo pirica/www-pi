@@ -7,13 +7,13 @@ require '../_core/appinit.php';
 
 
 switch($action->getCode()){
-	
+	/*
 	case 'login':
 		include '../_core/dsp_header.php';
 		include '../users/dsp_loginform.php';
 		include '../_core/dsp_footer.php';
 		break;
-	
+	*/
 	
 	case 'weather':
 		$app->();
