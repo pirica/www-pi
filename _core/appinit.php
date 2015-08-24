@@ -32,7 +32,7 @@ $_SESSION['log'] = '';
 
 $_SESSION['shell'] = 0;
 // from command line
-if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
+if(isset($_SERVER['SHELL'])){
 	$_SESSION['shell'] = 1;
 }
 

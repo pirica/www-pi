@@ -12,7 +12,7 @@
 			echo 'a.a:' . $action->getAllowed() . "\n";
 			echo '=====' . "\n";
 			//echo $app->getBaseUrl();
-			$settings->_debug();
+			//$settings->_debug();
 			echo '=====' . "\n";
 			print_r($_SESSION);
 			echo '-->';

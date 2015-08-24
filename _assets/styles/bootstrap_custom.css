@@ -16,22 +16,22 @@ html,body {
 .topmenu {
 	background-color: #2f2f2f;
 }
-.topmenu .nav-tabs > li > a,
-.topmenu .navbar > .navbar-nav > a {
+.topmenu .nav-tabs  li  a,
+.topmenu .navbar .navbar-nav a {
 	color: #fff;
 }
-.topmenu .nav > li.disabled > a ,
-.topmenu .navbar > .navbar-nav.disabled > a{
+.topmenu .nav  li.disabled  a ,
+.topmenu .navbar  .navbar-nav.disabled  a{
     color: #666;
 }
 
-.topmenu .nav-tabs > li.active > a,
-.topmenu .nav-tabs > li.active > a:hover,
-.topmenu .nav-tabs > li.active > a:focus,
+.topmenu .nav-tabs  li.active  a,
+.topmenu .nav-tabs  li.active  a:hover,
+.topmenu .nav-tabs  li.active  a:focus,
 
-.topmenu .navbar > .navbar-nav.active > a,
-.topmenu .navbar > .navbar-nav.active > a:hover,
-.topmenu .navbar > .navbar-nav.active > a:focus  {
+.topmenu .navbar  .navbar-nav.active  a,
+.topmenu .navbar  .navbar-nav.active  a:hover,
+.topmenu .navbar  .navbar-nav.active  a:focus  {
     background-color: #FFFFFF;
     border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
     color: #000;
@@ -41,6 +41,9 @@ html,body {
     float: left;
 }
 
+.topmenu .navbar-brand {
+	
+}
 
 /* desktop */
 @media (min-width: 1000px)
