@@ -22,12 +22,20 @@ $request_uri = '';
 }*/
 
 
+
 $app = new App($mysqli, $request_uri);
 $settings = new Settings($mysqli, $app->getId());
 
 sec_session_start();
 
 $_SESSION['log'] = '';
+
+$_SESSION['shell'] = 0;
+// from command line
+if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
+	$_SESSION['shell'] = 1;
+}
+
 
 $user = new User($mysqli, $app->getId(), $_SESSION);
 
@@ -44,34 +52,35 @@ if ($loggedin){
 	$id_profile = $_SESSION['id_profile'];
 }
 
-if ($action->getLoginRequired() && !$loggedin){
-	$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
-	$_SESSION['url_after_login'] = get_url_after_login();
-	
-	$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
+if($_SESSION['shell'] == 0){
+	if ($action->getLoginRequired() && !$loggedin){
+		$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
+		$_SESSION['url_after_login'] = get_url_after_login();
+		
+		$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
+	}
+	else if ($action->getLoginRequired() && !$action->getAllowed()){
+		$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
+		//$_SESSION['url_after_login'] = get_url_after_login();
+		
+		$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
+	}
 }
-else if ($action->getLoginRequired() && !$action->getAllowed()){
-	$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
-	//$_SESSION['url_after_login'] = get_url_after_login();
-	
-	$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
-}
-
 
 
 switch($action->getCode()){
 
 	case 'login':
-		include '../_core/dsp_header.php';
-		include '../users/dsp_loginform.php';
-		include '../_core/dsp_footer.php';
+		require dirname(__FILE__).'/../_core/dsp_header.php';
+		require dirname(__FILE__).'/../users/dsp_loginform.php';
+		require dirname(__FILE__).'/../_core/dsp_footer.php';
 		exit();
 		break;
 		
 	case 'notallowed':
-		include '../_core/dsp_header.php';
-		include '../users/dsp_notallowed.php';
-		include '../_core/dsp_footer.php';
+		require dirname(__FILE__).'/../_core/dsp_header.php';
+		require dirname(__FILE__).'/../users/dsp_notallowed.php';
+		require dirname(__FILE__).'/../_core/dsp_footer.php';
 		exit();
 		break;
 		
