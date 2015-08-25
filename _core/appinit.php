@@ -52,7 +52,7 @@ if ($loggedin){
 	$id_profile = $_SESSION['id_profile'];
 }
 
-if($_SESSION['shell'] == 0){
+if($_SESSION['shell'] == 0 || (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') === false){
 	if ($action->getLoginRequired() && !$loggedin){
 		$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 		$_SESSION['url_after_login'] = get_url_after_login();
