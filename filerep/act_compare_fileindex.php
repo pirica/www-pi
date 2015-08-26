@@ -26,6 +26,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
 		and fi.date_last_modified <> f.date_last_modified
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
 	where fa.id_file_action is null
 	and f.active = 1
@@ -55,6 +56,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
 		and fi.date_last_modified <> f.date_last_modified
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
 	where fa.id_file_action is null
 	and f.active = 1
@@ -83,6 +85,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
 		and fi.date_last_modified <> f.date_last_modified
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
 	where fa.id_file_action is null
 	and f.active = 1
