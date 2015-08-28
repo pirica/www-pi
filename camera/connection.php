@@ -6,8 +6,8 @@ $mysql_user = 'root';
 $mysql_pw = '';
 require '/etc/mysql/conf.php';
 
-$main_dir = '/media/usbdrive2/motion/';
-$archive_dir = '/media/usbdrive2/motion_archive/';
+$main_dir = '/var/docs/motion/';
+$archive_dir = '/var/docs/motion_archive/';
 
 $conn = mysql_connect($mysql_host, $mysql_user, $mysql_pw) ;//or die("Unable to connect to MySQL");
 mysql_select_db($mysql_dbn, $conn) ;//or die("Could not select examples");

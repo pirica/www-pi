@@ -18,6 +18,13 @@ for ($i = 0; $i < $cameracount; $i++) {
 				echo '<img class="raspimjpeg" data-address="' . $cameras[$i]['address'] . '" />';
 				break;
 			
+			case 'vlc':
+				if($id_camera <= 0){
+					echo $cameras[$i]['description'] . '<br>';
+				}
+				echo '<embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" version="VideoLAN.VLCPlugin.2" width="640" height="480" target="' . $cameras[$i]['address'] . '" id="vlc' . $cameras[$i]['id_camera'] . '"></embed>';
+				break;
+			
 			//case 'mjpg':
 			//case 'mjpeg':
 			default:
