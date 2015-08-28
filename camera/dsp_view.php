@@ -80,7 +80,7 @@
 					echo $camera_log['name'] . '</p>';
 				}
 				
-				if(strtolower($extension) == '.mp4'){
+				if(strtolower($extension) == '.mp4' || strtolower($extension) == '.avi'){
 					echo '<p><a href="video.php?src=' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
 				}
 				
