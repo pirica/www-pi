@@ -190,6 +190,8 @@ for($i=$total-1;$i>=0;$i--) {
 	while($spam = mysql_fetch_array($qry)){
 		$emailhandle->markRemove($email['index']);
 		
+		mysql_query("update t_email_spam set last_hit = now() where id_email_spam = " . $qry['id_email_spam']);
+		
 		if($id_emails != ','){
 			mysql_query("update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
 		}
