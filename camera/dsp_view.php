@@ -44,11 +44,11 @@
 				?>
 					<a href="#date<?= $log_date ?>" class="list-group-item <?= $log_date == $date && $time == 'all' ? 'active' : '' ?>" data-toggle="collapse" data-parent="#MainMenu" title="<?= $subcount ?> events"><?= $log_date ?> <span class="badge"><?= $subcount ?></span></a>
 					<div class="<?= $log_date == $date ? '' : 'collapse' ?>" id="date<?= $log_date ?>">
-						<a href="?action=view&date=<?= $log_date ?>&time=all" class="list-group-item list-group-item-sub">All</a>
+						<a href="?action=<?= $action->getCode() ?>&date=<?= $log_date ?>&time=all" class="list-group-item list-group-item-sub">All</a>
 						<?php
 						for ($j = 0; $j < $subcount; $j++) {
 						?>
-							<a href="?action=view&date=<?= $log_date ?>&time=<?= $log_times[$j]['hour_lbl'] ?>" class="list-group-item list-group-item-sub <?= $log_date == $date && $time == $log_times[$j]['hour_lbl'] ? 'active' : '' ?>" title="<?= $log_times[$j]['nbr_images'] ?> images, <?= $log_times[$j]['nbr_videos'] ?> videos"><?= $log_times[$j]['hour_lbl'] ?> <span class="badge"><?= $log_times[$j]['nbr_images'] ?></span></a>
+							<a href="?action=<?= $action->getCode() ?>&date=<?= $log_date ?>&time=<?= $log_times[$j]['hour_lbl'] ?>" class="list-group-item list-group-item-sub <?= $log_date == $date && $time == $log_times[$j]['hour_lbl'] ? 'active' : '' ?>" title="<?= $log_times[$j]['nbr_images'] ?> images, <?= $log_times[$j]['nbr_videos'] ?> videos"><?= $log_times[$j]['hour_lbl'] ?> <span class="badge"><?= $log_times[$j]['nbr_images'] ?></span></a>
 						<?php
 						}
 						?>

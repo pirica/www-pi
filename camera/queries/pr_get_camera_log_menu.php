@@ -6,7 +6,7 @@ $qry_camera_log_menu = mysql_query("
 		cl.date,
 		cl.hour_lbl,
 		sum(case when cl.name like '%.jpg' then 1 else 0 end) as nbr_images,
-		sum(case when cl.name like '%.mp4' then 1 else 0 end) as nbr_videos
+		sum(case when cl.name like '%.mp4' or cl.name like '%.avi' then 1 else 0 end) as nbr_videos
 		
 	from t_camera_log cl
 	where
