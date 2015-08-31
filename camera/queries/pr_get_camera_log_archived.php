@@ -3,7 +3,7 @@
 $qry_camera_log = mysql_query("
 	
 	select
-		cl.id_camera_log,
+		cl.id_camera_log_archive,
 		cl.date,
 		cl.time,
 		cl.hour_lbl,
