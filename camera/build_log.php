@@ -6,6 +6,7 @@ require 'functions.php';
 
 require dirname(__FILE__).'/../_core/appinit.php';
 
+$crondate = time();
 
 	
 $qry_camera_log_del = mysql_query("
@@ -33,7 +34,6 @@ while($logdel = mysql_fetch_array($qry_camera_log_del)){
 }
 
 // clear complete table at 3 AM
-$crondate = time();
 if(date("H", $crondate) == 3 && date("i", $crondate) < 10){
 	mysql_query("truncate table t_camera_log", $conn);
 }
@@ -78,6 +78,8 @@ for ($d = 0; $d < $dircount; $d++) {
 		
 		if($tmpfilecount > 0){
 			sort($tmpfiles);
+			
+			$querydata = '';
 			
 			for ($i = 0; $i < $tmpfilecount; $i++) {
 				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false){
@@ -124,17 +126,8 @@ for ($d = 0; $d < $dircount; $d++) {
 					);
 					$files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['filecount']++;
 					
-					mysql_query("
-						insert into t_camera_log
-						(
-							date,
-							time,
-							hour_lbl,
-							time_value,
-							name,
-							status
-						)
-						values
+					$querydata .= ($querydata == '' ? '' : ',');
+					$querydata .= "
 						(
 							'".mysql_real_escape_string($dirs[$d])."',
 							'".mysql_real_escape_string($hour_lbl)."',
@@ -143,9 +136,43 @@ for ($d = 0; $d < $dircount; $d++) {
 							'".mysql_real_escape_string($tmpfiles[$i])."',
 							1
 						)
-						", $conn);
+						";
 					
+					if($i > 0 && $i % 100 == 0){
+							
+						mysql_query("
+							insert into t_camera_log
+							(
+								date,
+								time,
+								hour_lbl,
+								time_value,
+								name,
+								status
+							)
+							values
+							" . $querydata . "
+							", $conn);
+						
+						$querydata = '';
+					}
 				}
+			}
+			
+			if($querydata != ''){
+				mysql_query("
+					insert into t_camera_log
+					(
+						date,
+						time,
+						hour_lbl,
+						time_value,
+						name,
+						status
+					)
+					values
+					" . $querydata . "
+					", $conn);
 			}
 			
 		}
