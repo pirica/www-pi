@@ -74,12 +74,17 @@
 					echo '<a href="?action=do_delete&date=' . $date . '&time=' . $camera_log['hour_lbl'] . '"">Delete these</a>';
 					echo '</p>';
 					$prev_hour_lbl = $camera_log['hour_lbl'];
+					
+					if($time == 'all'){
+						echo '<p><img src="imagegif.php?date=' . $date . '&time=' . $hour_lbl . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /><br/>';
+						echo $camera_log['hour_lbl'] . '</p>';
+					}
 				}
 				
 				$extarr = explode('.', $camera_log['name']);
 				$extension = '.' . $extarr[count($extarr) - 1];
 				
-				if(strtolower($extension) == '.jpg'){
+				if(strtolower($extension) == '.jpg' && $time != 'all'){
 					echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 					echo $camera_log['name'] . '</p>';
 				}
@@ -89,6 +94,7 @@
 				}
 				
 			}
+			
 		}
 		?>
 
