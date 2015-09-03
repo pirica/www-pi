@@ -66,6 +66,7 @@
 		<?php 
 		if($date != ''){
 			$prev_hour_lbl = '';
+			$prev_time_value = -1;
 			while($camera_log = mysql_fetch_array($qry_camera_log)){
 				if($prev_hour_lbl != $camera_log['hour_lbl']){
 					echo '<h4>' . $camera_log['hour_lbl'] . '</h4>';
@@ -75,18 +76,25 @@
 					echo '</p>';
 					$prev_hour_lbl = $camera_log['hour_lbl'];
 					
-					if($time == 'all'){
-						echo '<p><img src="imagegif.php?date=' . $date . '&time=' . $hour_lbl . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /><br/>';
+					/*if($time == 'all'){
+						echo '<p><img src="imagegif.php?date=' . $date . '&time=' . $camera_log['hour_lbl'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /><br/>';
 						echo $camera_log['hour_lbl'] . '</p>';
-					}
+					}*/
 				}
 				
 				$extarr = explode('.', $camera_log['name']);
 				$extension = '.' . $extarr[count($extarr) - 1];
 				
-				if(strtolower($extension) == '.jpg' && $time != 'all'){
+				if(false && strtolower($extension) == '.jpg' /*&& $time != 'all'*/){
 					echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 					echo $camera_log['name'] . '</p>';
+				}
+				
+				if($prev_time_value = $camera_log['time_value'] || $prev_time_value + 1 == $camera_log['time_value']){
+					$prev_time_value = $camera_log['time_value'];
+					
+					//echo '<p><img src="imagegif.php?date=' . $date . '&time_value=' . $camera_log['time_value'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /></p>';
+					echo '<p>imagegif.php?date=' . $date . '&time_value=' . $camera_log['time_value'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '</p>';
 				}
 				
 				if(strtolower($extension) == '.mp4' || strtolower($extension) == '.avi'){
