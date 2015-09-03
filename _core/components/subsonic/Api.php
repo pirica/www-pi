@@ -185,9 +185,20 @@ class Subsonic
 		return $this->_querySubsonic('getPlaylists')->data['playlists']->playlist;
 	}
 	
-	public function getPlaylist($id)
+	public function getPlaylist($playlistId)
 	{
-		return $this->_querySubsonic('getPlaylist', array('id' => $id))->data['playlist']->entry;
+		return $this->_querySubsonic('getPlaylist', array('id' => $playlistId))->data['playlist']->entry;
+	}
+	
+	
+	public function updatePlaylistAdd($playlistId, $songId)
+	{
+		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIdToAdd' => $songId))->status == 'ok';
+	}
+	
+	public function updatePlaylistRemove($playlistId, $playlistSongIndex)
+	{
+		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIndexToRemove' => $playlistSongIndex))->status == 'ok';
 	}
 	
 	
@@ -196,15 +207,42 @@ class Subsonic
 		return $this->_querySubsonic('getIndexes')->data['indexes']->index;
 	}
 	
-	public function getMusicDirectory($id)
+	public function getMusicDirectory($indexId)
 	{
-		$data = $this->_querySubsonic('getMusicDirectory', array('id' => $id))->data['directory'];
+		$data = $this->_querySubsonic('getMusicDirectory', array('id' => $indexId))->data['directory'];
 		if(property_exists($data, "child")){
 			return $data->child;
 		}
 		else {
 			return [];
 		}
+	}
+	
+	
+	/**
+		"id" : "3337", // song
+		"parent" : "15",
+		"isDir" : false,
+		"title" : "Rammstein - Rammstein",
+		"artist" :   // NOT ALWAYS RETURNED!
+		"album" : "r",
+		"size" : 4291087,
+		"contentType" : "audio/mpeg",
+		"suffix" : "mp3",
+		"duration" : 268,
+		"bitRate" : 128,
+		"path" : "r/Rammstein - Rammstein.mp3",
+		"isVideo" : false,
+		"created" : "2013-02-11T19:31:00.000Z",
+		"type" : "music",
+		"username" : "wikke",
+		"minutesAgo" : 0,
+		"playerId" : 2,
+		"playerName" : "android"
+	*/
+	public function getNowPlaying()
+	{
+		return $this->_querySubsonic('getNowPlaying')->data['nowPlaying']->entry;
 	}
 	
 }

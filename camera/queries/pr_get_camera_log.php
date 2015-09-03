@@ -18,6 +18,8 @@ if($time == 'all')
 			and status = 0
 		
 		order by
+			cl.hour_lbl,
+			case when cl.name like '%.mp4' or cl.name like '%.avi' then 0 else 1 end,
 			cl.name
 			
 			
@@ -41,6 +43,8 @@ else {
 			and status = 0
 		
 		order by
+			cl.hour_lbl,
+			case when cl.name like '%.mp4' or cl.name like '%.avi' then 0 else 1 end,
 			cl.name
 			
 			

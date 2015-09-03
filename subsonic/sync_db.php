@@ -16,58 +16,61 @@ $s = new Subsonic(
 	$settings->val('subsonic_clientname', 'subsonic_php')
 );
 
-mysql_query("delete from playlistEntries;");
-mysql_query("truncate table playlistEntries;");
-mysql_query("truncate table playlists;");
 
 $playlists = $s->getPlaylists();
 $c_playlists = count($playlists);
 
-for($pi=0; $pi<$c_playlists; $pi++){
-	mysql_query("
-		insert into playlists
-		(
-			id,
-			name,
-			comment,
-			owner,
-			public,
-			songcount,
-			duration,
-			created
-		)
-		values 
-		(
-			" . $playlists[$pi]->id . ",
-			'" . $playlists[$pi]->name . "',
-			'" . $playlists[$pi]->comment . "',
-			'" . $playlists[$pi]->owner . "',
-			" . $playlists[$pi]->public . ",
-			" . $playlists[$pi]->songCount . ",
-			" . $playlists[$pi]->duration . ",
-			'" . $playlists[$pi]->created . "'
-		)
-		");
-		
+if($c_playlists > 0){
+	mysql_query("delete from playlistEntries;");
+	mysql_query("truncate table playlistEntries;");
+	mysql_query("truncate table playlists;");
 	
-	$playlist_entries = $s->getPlaylist( $playlists[$pi]->id );
-	$c_playlist_entries = count($playlist_entries);
-	
-	for($pei=0; $pei<$c_playlist_entries; $pei++){
+	for($pi=0; $pi<$c_playlists; $pi++){
 		mysql_query("
-			insert into playlistEntries
+			insert into playlists
 			(
-				playlistId,
-				songId,
-				songIndex
+				id,
+				name,
+				comment,
+				owner,
+				public,
+				songcount,
+				duration,
+				created
 			)
 			values 
 			(
 				" . $playlists[$pi]->id . ",
-				" . $playlist_entries[$pei]->id . ",
-				" . $pei . "
+				'" . $playlists[$pi]->name . "',
+				'" . $playlists[$pi]->comment . "',
+				'" . $playlists[$pi]->owner . "',
+				" . $playlists[$pi]->public . ",
+				" . $playlists[$pi]->songCount . ",
+				" . $playlists[$pi]->duration . ",
+				'" . $playlists[$pi]->created . "'
 			)
 			");
+			
+		
+		$playlist_entries = $s->getPlaylist( $playlists[$pi]->id );
+		$c_playlist_entries = count($playlist_entries);
+		
+		for($pei=0; $pei<$c_playlist_entries; $pei++){
+			mysql_query("
+				insert into playlistEntries
+				(
+					playlistId,
+					songId,
+					songIndex
+				)
+				values 
+				(
+					" . $playlists[$pi]->id . ",
+					" . $playlist_entries[$pei]->id . ",
+					" . $pei . "
+				)
+				");
+		}
 	}
 }
 

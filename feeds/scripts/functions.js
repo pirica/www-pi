@@ -31,12 +31,16 @@ function initHandlers(){
 		$.get($(this).attr('href'));
 		$(this).parents('.list-group-item').hide(200);
 		
-		/*
-		var entries = parseInt($(this).parents('.panel-default').find('.title-entries').html().replace(/\(|\)/, ''));
-		entries = entries > 0 ? entries - 1 : 0;
-		$(this).parents('.panel-default').find('.title-entries').html('(' + entries + ')');
+		countItems(this);
+	});
+	
+	$('.btn-mark-as-read-until').click(function(e){
+		e.preventDefault();
+		e.stopPropagation();
 		
-		*/
+		$.get($(this).attr('href'));
+		$(this).parents('.list-group-item').hide(200);
+		$(this).parents('.list-group-item').prevAll().hide(200);
 		
 		countItems(this);
 	});
@@ -46,13 +50,6 @@ function initHandlers(){
 		e.stopPropagation();
 		
 		$.get($(this).attr('href'));
-		
-		/*
-		var entries = parseInt($(this).parents('.panel-default').find('.title-entries').html().replace(/\(|\)/, ''));
-		entries = entries > 0 ? entries - 1 : 0;
-		$(this).parents('.panel-default').find('.title-entries').html('(' + entries + ')');
-		
-		*/
 		
 		$(this).parents('.panel').find('.panel-body').hide(500);
 		$(this).attr('entriesloaded', 'false');

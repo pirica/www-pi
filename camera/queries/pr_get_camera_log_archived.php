@@ -17,6 +17,8 @@ $qry_camera_log = mysql_query("
 		and ifnull(status,0) = 0
 	
 	order by
+		cl.hour_lbl,
+		case when cl.name like '%.mp4' or cl.name like '%.avi' then 0 else 1 end,
 		cl.name
 		
 		

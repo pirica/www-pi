@@ -69,7 +69,11 @@
 			while($camera_log = mysql_fetch_array($qry_camera_log)){
 				if($prev_hour_lbl != $camera_log['hour_lbl']){
 					echo '<h4>' . $camera_log['hour_lbl'] . '</h4>';
-					echo '<p><a href="?action=do_archive&date=' . $date . '&time=' . $camera_log['hour_lbl'] . '"">Archive these</a></p>';
+					echo '<p>';
+					echo '<a href="?action=do_archive&date=' . $date . '&time=' . $camera_log['hour_lbl'] . '"">Archive these</a>';
+					echo '<a href="?action=do_delete&date=' . $date . '&time=' . $camera_log['hour_lbl'] . '"">Delete these</a>';
+					echo '</p>';
+					$prev_hour_lbl = $camera_log['hour_lbl'];
 				}
 				
 				$extarr = explode('.', $camera_log['name']);

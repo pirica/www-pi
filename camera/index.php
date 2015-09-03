@@ -70,6 +70,22 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'do_delete':
+		include 'queries/pr_get_camera_log.php';
+		//include 'act_view.php';
+		
+		while($camera_log = mysql_fetch_array($qry_camera_log)){
+			if($camera_log['date'] == $date && ($time == 'all' || $camera_log['hour_lbl'] == $time)){
+				// delete files
+				unlink($main_dir . $date . $camera_log['name']);
+			}
+		}
+		
+		include 'queries/pr_delete_camera_log.php';
+		goto_action('view', false, 'date=' . $date . '&time=' . $time . '');
+		break;
+	
+	
 	case 'camera':
 		include 'queries/pr_get_cameras.php';
 		//include 'act_main.php';
