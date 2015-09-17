@@ -8,14 +8,16 @@ mysql_query("
 		time,
 		hour_lbl,
 		time_value,
-		name
+		name,
+		camera
 	)
 	select
 		cl.date,
 		cl.time,
 		cl.hour_lbl,
 		cl.time_value,
-		cl.name
+		cl.name,
+		cl.camera
 	from t_camera_log cl
 	where
 		date = '" . $date . "'

@@ -8,15 +8,15 @@ require dirname(__FILE__).'/../_core/appinit.php';
 
 $crondate = time();
 
+shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . '"');
+shell_exec ('sudo chmod 777 -R "' . $main_dir . '"');
+
 	
 $qry_camera_log_del = mysql_query("
 	
 	select
 		cl.id_camera_log,
 		cl.date,
-		cl.time,
-		cl.hour_lbl,
-		cl.time_value,
 		cl.name
 		
 	from t_camera_log cl
@@ -54,17 +54,17 @@ $dirs = explode("\n", $tmpdirs);
 $dircount = count($dirs);
 sort($dirs);
 
-$files = [];
+//$files = [];
 $tmpfiles = [];
-$filecount = 0;
+//$filecount = 0;
 
 for ($d = 0; $d < $dircount; $d++) {
 	if($dirs[$d] != ''){
-		$files[] = array(
+		/*$files[] = array(
 			'name' => $dirs[$d],
 			'subs' => [],
 			'subcount' => 0
-		);
+		);*/
 		
 		$tmpfilestr = str_replace($main_dir . $dirs[$d], '', shell_exec('find "' . $main_dir . $dirs[$d] . '" -mindepth 1 -maxdepth 1'));
 		$tmpfilestr = str_replace("\r", "\n", $tmpfilestr);
@@ -75,6 +75,9 @@ for ($d = 0; $d < $dircount; $d++) {
 		$tmpfilecount = count($tmpfiles);
 		
 		$prev_time_lbl = '';
+		$prev_timeval = -9999;
+		$prev_timeval_gif = -9999;
+		$timeval_gif = -9999;
 		
 		if($tmpfilecount > 0){
 			sort($tmpfiles);
@@ -82,11 +85,12 @@ for ($d = 0; $d < $dircount; $d++) {
 			$querydata = '';
 			
 			for ($i = 0; $i < $tmpfilecount; $i++) {
-				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false){
-					// name = 20150211_220329-x190-y160-w256-h321_pibot.jpg
+				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false && strpos($tmpfiles[$i], 'x0-y0-w0-h0') === false){
+					// name = 20150911_150439_picam1_00_x572-y286-w8-h40.jpg
 					$hourstr = $tmpfiles[$i];//['name'];
-					$hourstr = explode('-', $hourstr)[0];
+					//$hourstr = explode('-', $hourstr)[0];
 					$hourstr = explode('_', $hourstr)[1];
+					$camera = explode('_', $hourstr)[2];
 					
 					$hours = substr($hourstr, 0, 2);
 					$minutes = substr($hourstr, 2, 2);
@@ -97,13 +101,14 @@ for ($d = 0; $d < $dircount; $d++) {
 					$timeval += $minutes * 60;
 					$timeval += $hours * 3600;
 					
-					if($settings->val('images_grouping_interval', 300) < 60){
+					//if($settings->val('images_grouping_interval', 300) < 60){
 						$hour_lbl = $hours . ':' . $minutes . ':' . $seconds;
-					}
+					/*}
 					else {
 						$hour_lbl = $hours . ':' . $minutes;
-					}
+					}*/
 					
+					/*
 					if(count($files[count($files)-1]['subs']) == 0 || $files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['timeval'] < $timeval - $settings->val('images_grouping_interval', 300)){
 						$prev_time_lbl = $hour_lbl;
 						
@@ -125,6 +130,19 @@ for ($d = 0; $d < $dircount; $d++) {
 						'timeval' => $timeval
 					);
 					$files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['filecount']++;
+					*/
+					
+					if($prev_timeval < $timeval - $settings->val('images_grouping_interval', 300)){
+						$prev_time_lbl = $hour_lbl;
+						
+					}
+					$prev_timeval = $timeval;
+					
+					if($prev_timeval_gif + 1 < $timeval){
+						$timeval_gif = $timeval;
+					}
+					$prev_timeval_gif = $timeval;
+					
 					
 					$querydata .= ($querydata == '' ? '' : ',');
 					$querydata .= "
@@ -133,8 +151,10 @@ for ($d = 0; $d < $dircount; $d++) {
 							'".mysql_real_escape_string($hour_lbl)."',
 							'".mysql_real_escape_string($prev_time_lbl)."',
 							".$timeval.",
+							".$timeval_gif.",
 							'".mysql_real_escape_string($tmpfiles[$i])."',
-							1
+							1,
+							'".mysql_real_escape_string($camera)."'
 						)
 						";
 					
@@ -147,8 +167,10 @@ for ($d = 0; $d < $dircount; $d++) {
 								time,
 								hour_lbl,
 								time_value,
+								time_value_gif,
 								name,
-								status
+								status,
+								camera
 							)
 							values
 							" . $querydata . "
@@ -167,8 +189,10 @@ for ($d = 0; $d < $dircount; $d++) {
 						time,
 						hour_lbl,
 						time_value,
+						time_value_gif,
 						name,
-						status
+						status,
+						camera
 					)
 					values
 					" . $querydata . "
@@ -177,11 +201,12 @@ for ($d = 0; $d < $dircount; $d++) {
 			
 		}
 	}
-	$filecount = count($files);
+	//$filecount = count($files);
 }
 
 mysql_query("delete from t_camera_log where ifnull(status,0) = 0", $conn);
 mysql_query("update t_camera_log set status = 0", $conn);
+
 
 
 ?>

@@ -8,7 +8,8 @@ $qry_camera_log = mysql_query("
 		cl.time,
 		cl.hour_lbl,
 		cl.time_value,
-		cl.name
+		cl.name,
+		cl.camera
 		
 	from t_camera_log_archive cl
 	where

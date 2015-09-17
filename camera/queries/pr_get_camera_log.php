@@ -10,7 +10,8 @@ if($time == 'all')
 			cl.time,
 			cl.hour_lbl,
 			cl.time_value,
-			cl.name
+			cl.name,
+			cl.camera
 			
 		from t_camera_log cl
 		where
@@ -34,7 +35,8 @@ else {
 			cl.time,
 			cl.hour_lbl,
 			cl.time_value,
-			cl.name
+			cl.name,
+			cl.camera
 			
 		from t_camera_log cl
 		where

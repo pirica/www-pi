@@ -4,37 +4,6 @@
 <div class="row">
 
 	<div class="col-xs-12 col-md-2">
-		
-		<!--
-		<div id="MainMenu">
-		  <div class="list-group panel">
-			<a href="#demo3" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Item 3</a>
-			<div class="collapse" id="demo3">
-			  <a href="#SubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubMenu1">Subitem 1 <i class="fa fa-caret-down"></i></a>
-			  <div class="collapse list-group-submenu" id="SubMenu1">
-				<a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 1 a</a>
-				<a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 2 b</a>
-				<a href="#SubSubMenu1" class="list-group-item" data-toggle="collapse" data-parent="#SubSubMenu1">Subitem 3 c <i class="fa fa-caret-down"></i></a>
-				<div class="collapse list-group-submenu list-group-submenu-1" id="SubSubMenu1">
-				  <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 1</a>
-				  <a href="#" class="list-group-item" data-parent="#SubSubMenu1">Sub sub item 2</a>
-				</div>
-				<a href="#" class="list-group-item" data-parent="#SubMenu1">Subitem 4 d</a>
-			  </div>
-			  <a href="javascript:;" class="list-group-item">Subitem 2</a>
-			  <a href="javascript:;" class="list-group-item">Subitem 3</a>
-			</div>
-			
-			<a href="#demo4" class="list-group-item list-group-item-success" data-toggle="collapse" data-parent="#MainMenu">Item 4</a>
-			<div class="collapse" id="demo4">
-			  <a href="" class="list-group-item">Subitem 1</a>
-			  <a href="" class="list-group-item">Subitem 2</a>
-			  <a href="" class="list-group-item">Subitem 3</a>
-			</div>
-		  </div>
-		</div>
-		-->
-
 
 		<div id="MainMenu">
 			<div class="list-group panel">
@@ -76,25 +45,19 @@
 					echo '</p>';
 					$prev_hour_lbl = $camera_log['hour_lbl'];
 					
-					/*if($time == 'all'){
-						echo '<p><img src="imagegif.php?date=' . $date . '&time=' . $camera_log['hour_lbl'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /><br/>';
-						echo $camera_log['hour_lbl'] . '</p>';
-					}*/
 				}
 				
 				$extarr = explode('.', $camera_log['name']);
 				$extension = '.' . $extarr[count($extarr) - 1];
 				
-				if(false && strtolower($extension) == '.jpg' /*&& $time != 'all'*/){
+				if($settings->val('captures_show_gifs', 0) == 0 && strtolower($extension) == '.jpg'){
 					echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 					echo $camera_log['name'] . '</p>';
 				}
 				
-				if($prev_time_value = $camera_log['time_value'] || $prev_time_value + 1 == $camera_log['time_value']){
-					$prev_time_value = $camera_log['time_value'];
-					
-					//echo '<p><img src="imagegif.php?date=' . $date . '&time_value=' . $camera_log['time_value'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '" /></p>';
-					echo '<p>imagegif.php?date=' . $date . '&time_value=' . $camera_log['time_value'] . '" title="' . $date . ' ' .$camera_log['hour_lbl'] . '</p>';
+				if($settings->val('captures_show_gifs', 0) == 1 && strtolower($extension) == '.gif'){
+					echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+					echo $camera_log['name'] . '</p>';
 				}
 				
 				if(strtolower($extension) == '.mp4' || strtolower($extension) == '.avi'){
