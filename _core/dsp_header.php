@@ -54,6 +54,13 @@
 				echo '<script type="text/javascript" src="../users/scripts/sha512.js"></script>';
 				echo '<script type="text/javascript" src="../users/scripts/forms.js"></script>';
 				break;
+				
+			case 'register':
+				echo '<link rel="stylesheet" href="../users/styles/default.css" />';
+				echo '<script type="text/javascript" src="../users/scripts/sha512.js"></script>';
+				echo '<script type="text/javascript" src="../users/scripts/forms.js"></script>';
+				break;
+				
 			/*
 			case 'details':
 				echo '<script type="text/javascript">var sort = "' . $sort . '", sortorder = "' . $sortorder . '", perpage = ' . $perpage . ', page = ' . $page . ', status = "' . $status . '", search = "' . $search . '";</script>';
