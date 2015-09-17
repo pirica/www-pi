@@ -74,7 +74,7 @@ switch($action->getCode()){
 	
 	case 'do_delgrab':
 		include 'act_del_grab.php';
-		goto_action('setgrab', false, 'id_grab=' . $id_grab);
+		goto_action('main', false, 'id_grab=' . $id_grab);
 		break;
 	
 	
