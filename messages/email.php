@@ -183,7 +183,7 @@ for($i=$total-1;$i>=0;$i--) {
 				or
 				(ifnull(when_to,'') <> '' and '" . mysql_real_escape_string($toaddress) . "' like concat('%<', when_to, '>%') )
 				or
-				(ifnull(when_body,'') <> '' and '" . mysql_real_escape_string($email['body']) . "' like when_body)
+				(ifnull(when_body,'') <> '' and '" . mysql_real_escape_string(base64_decode($email['body'])) . "' like when_body)
 			)
 		");
 
