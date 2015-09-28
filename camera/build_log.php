@@ -79,6 +79,9 @@ for ($d = 0; $d < $dircount; $d++) {
 		$prev_timeval_gif = -9999;
 		$timeval_gif = -9999;
 		
+		$current_image = 0;
+		
+		
 		if($tmpfilecount > 0){
 			sort($tmpfiles);
 			
@@ -86,11 +89,14 @@ for ($d = 0; $d < $dircount; $d++) {
 			
 			for ($i = 0; $i < $tmpfilecount; $i++) {
 				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false && strpos($tmpfiles[$i], 'x0-y0-w0-h0') === false){
+					$current_image++;
+					
 					// name = 20150911_150439_picam1_00_x572-y286-w8-h40.jpg
+					$camera = explode('_', $tmpfiles[$i])[2];
+					
 					$hourstr = $tmpfiles[$i];//['name'];
 					//$hourstr = explode('-', $hourstr)[0];
 					$hourstr = explode('_', $hourstr)[1];
-					$camera = explode('_', $hourstr)[2];
 					
 					$hours = substr($hourstr, 0, 2);
 					$minutes = substr($hourstr, 2, 2);
@@ -108,33 +114,9 @@ for ($d = 0; $d < $dircount; $d++) {
 						$hour_lbl = $hours . ':' . $minutes;
 					}*/
 					
-					/*
-					if(count($files[count($files)-1]['subs']) == 0 || $files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['timeval'] < $timeval - $settings->val('images_grouping_interval', 300)){
+					if($prev_timeval < $timeval - $settings->val('images_grouping_interval', 300) || $current_image >= $settings->val('max_images_per_grouping', 1000)){
 						$prev_time_lbl = $hour_lbl;
-						
-						$files[count($files)-1]['subs'][] = array(
-							'hour_lbl' => $hour_lbl,
-							'timeval' => $timeval,
-							'files' => [],
-							'filecount' => 0
-						);
-						$files[count($files)-1]['subcount']++;
-						
-					}
-					else {
-						$files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['timeval'] = $timeval;
-					}
-					$files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['files'][] = array(
-						'name' => $tmpfiles[$i],
-						'hour_lbl' => $hour_lbl,
-						'timeval' => $timeval
-					);
-					$files[count($files)-1]['subs'][count($files[count($files)-1]['subs'])-1]['filecount']++;
-					*/
-					
-					if($prev_timeval < $timeval - $settings->val('images_grouping_interval', 300)){
-						$prev_time_lbl = $hour_lbl;
-						
+						$current_image = 0;
 					}
 					$prev_timeval = $timeval;
 					
