@@ -137,14 +137,14 @@ switch($action->getCode()){
 		$id_share = 9;
 		$dir = '/uploads/';
 		
-		require '../messages/functions.php';
 		include 'queries/pr_get_share_stats.php';
 		include 'act_upload_site.php';
 		
+		require '../messages/functions.php';
 		if($fileCount == 1){
 			$channel = 'Filerep_uploads';
 			$title =  'New file uploaded';
-			$msg = 'File: ' . $filename;
+			$msg = 'File: ' . $filename . ' (' . formatFileSize($filesize,0) . ')';
 			$priority = $settings->val('upload_alerting_priority', 1);
 			send_msg($channel, $title, $msg, $priority);
 		}
