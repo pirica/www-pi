@@ -117,7 +117,8 @@ switch($action->getCode()){
 	
 	
 	case 'free_upload':
-		ini_set('post_max_size', '256M');
+		ini_set('memory_limit', '260M');
+		ini_set('post_max_size', '258M');
 		ini_set('upload_max_filesize', '256M');
 		
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
@@ -131,7 +132,8 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_free_upload':
-		ini_set('post_max_size', '256M');
+		ini_set('memory_limit', '260M');
+		ini_set('post_max_size', '258M');
 		ini_set('upload_max_filesize', '256M');
 		
 		$id_share = 9;
