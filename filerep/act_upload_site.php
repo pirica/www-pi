@@ -37,7 +37,7 @@ if(isset($_FILES["myfile"]))
 		if(file_exists($server_directory . $dir . $filename)){
 			$ret['jquery-upload-file-error'] = 'File '.$filename.' already exists!';
 		}
-		else 
+		else if($_FILES['myfile']['error'] == 0)
 		{
 			move_uploaded_file($_FILES["myfile"]["tmp_name"], $server_directory . $dir . $filename);
 			
@@ -67,6 +67,35 @@ if(isset($_FILES["myfile"]))
 			//$new_id_file = mysql_insert_id($conn);
 			
 		}
+		else {
+			switch ($_FILES['myfile']['error']) {
+				case UPLOAD_ERR_INI_SIZE:
+					$ret['jquery-upload-file-error'] = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+					break;
+				case UPLOAD_ERR_FORM_SIZE:
+					$ret['jquery-upload-file-error'] = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+					break;
+				case UPLOAD_ERR_PARTIAL:
+					$ret['jquery-upload-file-error'] = "The uploaded file was only partially uploaded";
+					break;
+				case UPLOAD_ERR_NO_FILE:
+					$ret['jquery-upload-file-error'] = "No file was uploaded";
+					break;
+				case UPLOAD_ERR_NO_TMP_DIR:
+					$ret['jquery-upload-file-error'] = "Missing a temporary folder";
+					break;
+				case UPLOAD_ERR_CANT_WRITE:
+					$ret['jquery-upload-file-error'] = "Failed to write file to disk";
+					break;
+				case UPLOAD_ERR_EXTENSION:
+					$ret['jquery-upload-file-error']= "File upload stopped by extension";
+					break;
+
+				default:
+					$ret['jquery-upload-file-error'] = "Unknown upload error";
+					break;
+			} 
+		}
 	}
 	else
 	{
@@ -81,7 +110,7 @@ if(isset($_FILES["myfile"]))
 			if(file_exists($server_directory . $dir . $filename)){
 				$ret['jquery-upload-file-error'] = 'File '.$filename.' already exists!';
 			}
-			else 
+			else if($_FILES["myfile"]["error"][$i] == 0)
 			{
 				move_uploaded_file($_FILES["myfile"]["tmp_name"][$i], $server_directory . $dir . $filename );
 				
@@ -110,6 +139,35 @@ if(isset($_FILES["myfile"]))
 					", $conn);
 				//$new_id_file = mysql_insert_id($conn);
 				
+			}
+			else {
+				switch ($_FILES['myfile']['error']) {
+					case UPLOAD_ERR_INI_SIZE:
+						$ret['jquery-upload-file-error'] = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+						break;
+					case UPLOAD_ERR_FORM_SIZE:
+						$ret['jquery-upload-file-error'] = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+						break;
+					case UPLOAD_ERR_PARTIAL:
+						$ret['jquery-upload-file-error'] = "The uploaded file was only partially uploaded";
+						break;
+					case UPLOAD_ERR_NO_FILE:
+						$ret['jquery-upload-file-error'] = "No file was uploaded";
+						break;
+					case UPLOAD_ERR_NO_TMP_DIR:
+						$ret['jquery-upload-file-error'] = "Missing a temporary folder";
+						break;
+					case UPLOAD_ERR_CANT_WRITE:
+						$ret['jquery-upload-file-error'] = "Failed to write file to disk";
+						break;
+					case UPLOAD_ERR_EXTENSION:
+						$ret['jquery-upload-file-error']= "File upload stopped by extension";
+						break;
+
+					default:
+						$ret['jquery-upload-file-error'] = "Unknown upload error";
+						break;
+				} 
 			}
 		}
 	}

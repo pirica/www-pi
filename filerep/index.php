@@ -132,6 +132,9 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_free_upload':
+		set_time_limit(0);
+		ini_set('max_execution_time', 3600);
+		ini_set('max_input_time', 3600);
 		ini_set('memory_limit', '260M');
 		ini_set('post_max_size', '258M');
 		ini_set('upload_max_filesize', '256M');
