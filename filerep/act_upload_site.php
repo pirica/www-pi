@@ -19,10 +19,15 @@ while($stat = mysql_fetch_array($qry_share_stats)){
 	}
 }
 
+$fileCount = 0;
+$filenames = '';
+
 if(isset($_FILES["myfile"]))
 {
 	$ret = array();
 	$error = $_FILES["myfile"]["error"];
+	
+	$fileCount = 1;
 	
 	if(!is_array($_FILES["myfile"]['name'])) //single file
 	{
@@ -70,6 +75,8 @@ if(isset($_FILES["myfile"]))
 		{
 			$filename = $_FILES["myfile"]["name"][$i];
 			$ret[$filename] = $server_directory . $dir . $filename;
+			
+			$filenames .= ($filenames == '' ? '' : ', ') . $filename;
 			
 			if(file_exists($server_directory . $dir . $filename)){
 				$ret['jquery-upload-file-error'] = 'File '.$filename.' already exists!';

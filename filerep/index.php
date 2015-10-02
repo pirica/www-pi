@@ -116,6 +116,43 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'free_upload':
+		
+		$id_share = 9;
+		$dir = '/uploads/';
+		
+		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
+		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
+		
+		$app->setHeaderScripts('<script type="text/javascript">var upload_max_filesize = ' . revertFileSize(ini_get('upload_max_filesize')) . ', max_file_uploads = ' . ini_get('max_file_uploads') . ';</script>' . "\n");
+		
+		include '../_core/dsp_header_minimal.php';
+		include 'dsp_free_upload.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_free_upload':
+		require '../messages/functions.php';
+		include 'queries/pr_get_share_stats.php';
+		include 'act_upload_site.php';
+		
+		if($fileCount == 1){
+			$channel = 'Filerep_uploads';
+			$title =  'New file uploaded';
+			$msg = 'File: ' . $filename;
+			$priority = $settings->val('upload_alerting_priority', 1);
+			send_msg($channel, $title, $msg, $priority);
+		}
+		else if($fileCount > 1){
+			$channel = 'Filerep_uploads';
+			$title =  'New files uploaded';
+			$msg = 'Files: ' . $filename;
+			$priority = $settings->val('upload_alerting_priority', 1);
+			send_msg($channel, $title, $msg, $priority);
+		}
+		break;
+	
+	
 	
 	case 'create_dir':
 		$newdir = saneInput('newdir');
