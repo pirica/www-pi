@@ -117,6 +117,8 @@ switch($action->getCode()){
 	
 	
 	case 'free_upload':
+		ini_set('post_max_size', '256M');
+		ini_set('upload_max_filesize', '256M');
 		
 		$id_share = 9;
 		$dir = '/uploads/';
@@ -132,6 +134,9 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_free_upload':
+		ini_set('post_max_size', '256M');
+		ini_set('upload_max_filesize', '256M');
+		
 		require '../messages/functions.php';
 		include 'queries/pr_get_share_stats.php';
 		include 'act_upload_site.php';
