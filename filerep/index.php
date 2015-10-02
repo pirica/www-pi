@@ -122,6 +122,7 @@ switch($action->getCode()){
 		
 		$id_share = 9;
 		$dir = '/uploads/';
+		$app->setHeaderScripts('<script type="text/javascript">id_share = ' . $id_share . ', dir = \'' . $dir . '\';</script>' . "\n");
 		
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
 		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
