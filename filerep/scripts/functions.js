@@ -62,6 +62,34 @@ $().ready(function(){
 	}
 	 
 	$("#mulitplefileuploader").uploadFile(settings);
+	
+	var freesettings = {
+		url: "?action=do_free_upload",
+		method: "POST",
+		//allowedTypes:"jpg,png,gif,doc,pdf,zip",
+		fileName: "myfile",
+		multiple: true,
+		
+		maxFileCount:max_file_uploads,
+		maxFileSize:upload_max_filesize,
+		
+		onSuccess:function(files,data,xhr)
+		{
+			//alert("Upload success for: " + JSON.stringify(data));
+		},
+		onError: function(files,status,errMsg)
+		{       
+			//alert("Upload Failed");
+		},
+		afterUploadAll:function(obj)
+		{
+			alert("All files are uploaded");
+			
+		}
+	}
+	 
+	$("#freemulitplefileuploader").uploadFile(freesettings);
+	
 });
 
 

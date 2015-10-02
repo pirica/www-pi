@@ -120,10 +120,6 @@ switch($action->getCode()){
 		ini_set('post_max_size', '256M');
 		ini_set('upload_max_filesize', '256M');
 		
-		$id_share = 9;
-		$dir = '/uploads/';
-		$app->setHeaderScripts('<script type="text/javascript">id_share = ' . $id_share . ', dir = \'' . $dir . '\';</script>' . "\n");
-		
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
 		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
 		
