@@ -116,7 +116,7 @@ if(isset($_GET['newmenu'])) {
 							</a>
 							<ul class="dropdown-menu pull-right" role="menu">
 								<li><a href="../users/index.php?action=login">Log in</a></li>
-								<li><a href="../users/index.php?action=register">Register</a></li>
+								<!--<li><a href="../users/index.php?action=register">Register</a></li>-->
 							</ul>
 						</li>
 					<?php
@@ -202,7 +202,7 @@ if(isset($_GET['newmenu'])) {
 				</a>
 				<ul class="dropdown-menu pull-right" role="menu">
 					<li><a href="../users/index.php?action=login">Log in</a></li>
-					<li><a href="../users/index.php?action=register">Register</a></li>
+					<!--<li><a href="../users/index.php?action=register">Register</a></li>-->
 				</ul>
 			</li>
 			

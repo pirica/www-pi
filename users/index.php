@@ -36,7 +36,7 @@ switch($action->getCode()){
 		include_once 'act_register.php';
 		
 		require '../_core/dsp_header.php';
-		require 'dsp_register.php';
+		//require 'dsp_register.php';
 		require '../_core/dsp_footer.php';
 		break;
 	
