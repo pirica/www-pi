@@ -39,6 +39,7 @@ else {
 		<div class="form-group">
 			<label for="feed_refresh">Refresh rate (minutes, empty for default (= <?= $settings->val('default_interval_check_feeds_minutes') ?>))</label>
 			<input id="feed_refresh" name="feed_refresh" placeholder="" class="form-control" type="text" value="<?=$feed_refresh?>">
+			<div id="feed_refresh_lbl"><?= minutesToTimeRange($feed_refresh) ?></div>
 		</div>
 		
 		

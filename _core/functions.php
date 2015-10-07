@@ -396,4 +396,35 @@ function countProcesses($scriptName)
 } 
 
 
+function secondsToTimeRange($value)
+{
+	$intervals = array(
+		array('label' => 'sec',   'value' => 1.0),
+		array('label' => 'min',   'value' => 60.0),
+		array('label' => 'hour',  'value' => 60.0 * 60.0),
+		array('label' => 'day',   'value' => 24.0 * 60.0 * 60.0),
+		//array('label' => 'week',  'value' => 7.0 * 24.0 * 60.0 * 60.0),
+		array('label' => 'month', 'value' => 30.0 * 24.0 * 60.0 * 60.0),
+		array('label' => 'year',  'value' => 12.0 * 30.0 * 24.0 * 60.0 * 60.0)
+	);
+	$ret = '';
+	
+	for($i = count($intervals)-1; $i >= 0; $i--)
+	{
+		if($value * 1.0 >= $intervals[$i]['value'] ){
+			$tmpval = floor(($value * 1.0) / $intervals[$i]['value'])
+			$ret .= $tmpval . $intervals[$i]['label'] . ($tmpval == 1 ? '' : 's') . ' ';
+			$value = $value * 1.0 % $intervals[$i]['value'];
+		}
+	}
+	
+	return $ret;
+}
+
+function minutesToTimeRange($value)
+{
+	return secondsToTimeRange($value * 60);
+}
+
+
 ?>

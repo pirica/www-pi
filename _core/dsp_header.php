@@ -34,12 +34,14 @@
 	<script src="../_assets/scripts/jquery/jquery.validate.js"></script>
 	<script src="../_assets/scripts/jquery/additional-methods.js"></script>
 	
+	
 	<script type="text/javascript" src="../_assets/scripts/bootstrap/daterangepicker/moment.js"></script>
 	<script type="text/javascript" src="../_assets/scripts/bootstrap/daterangepicker/daterangepicker.js"></script>
 	<link rel="stylesheet" type="text/css" href="../_assets/styles/bootstrap/daterangepicker-bs3.css" />
 	
 	<link href="../_assets/styles/font-awesome.min.css" rel="stylesheet">
 
+	<script src="../_assets/scripts/core.js"></script>
 	<script type="text/javascript" src="scripts/functions.js"></script>
 	
 	<?php
