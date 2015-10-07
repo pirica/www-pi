@@ -18,7 +18,30 @@ $().ready(function(){
 		}
 	});
 	
-	$('#feed_refresh').keyup(function(){
+	$('#feed_refresh').keyup(function(e){
+		switch(e.keyCode){
+			//case Keyboard.UP:
+			case 38:
+				$('#feed_refresh').val($('#feed_refresh').val()+10);
+				break;
+			//case Keyboard.DOWN:
+			case 40:
+				$('#feed_refresh').val($('#feed_refresh').val()-10);
+				break;
+			//case Keyboard.LEFT:
+			case 37:
+				
+				break;
+			//case Keyboard.RIGHT:
+			case 39:
+				
+				break;
+			//case Keyboard.SHIFT:
+			case 16:
+				
+				break;
+		}
+		
 		$('#feed_refresh_lbl').html( minutesToTimeRange($('#feed_refresh').val()) );
 	});
 	
