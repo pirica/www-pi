@@ -18,6 +18,10 @@ $().ready(function(){
 		}
 	});
 	
+	$('#feed_refresh').keyup(function(){
+		$('#feed_refresh_lbl').html( minutesToTimeRange($('#feed_refresh').val()) );
+	});
+	
 	//initHandlers();
 	
 });

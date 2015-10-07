@@ -412,7 +412,7 @@ function secondsToTimeRange($value)
 	for($i = count($intervals)-1; $i >= 0; $i--)
 	{
 		if($value * 1.0 >= $intervals[$i]['value'] ){
-			$tmpval = floor(($value * 1.0) / $intervals[$i]['value'])
+			$tmpval = floor(($value * 1.0) / $intervals[$i]['value']);
 			$ret .= $tmpval . $intervals[$i]['label'] . ($tmpval == 1 ? '' : 's') . ' ';
 			$value = $value * 1.0 % $intervals[$i]['value'];
 		}
