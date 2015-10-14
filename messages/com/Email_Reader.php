@@ -115,19 +115,19 @@ class Email_reader {
 						break;
 					# 8BIT
 					case 1:
-						$message = quoted_printable_decode(imap_8bit($message));
+						$body = quoted_printable_decode(imap_8bit($body));
 						break;
 					# BINARY
 					case 2:
-						$message = imap_binary($message);
+						$body = imap_binary($body);
 						break;
 					# BASE64
 					case 3:
-						$message = imap_base64($message);
+						$body = imap_base64($body);
 						break;
 					# QUOTED-PRINTABLE
 					case 4:
-						$message = quoted_printable_decode($message);
+						$body = quoted_printable_decode($body);
 						break;
 					# OTHER
 					case 5:
