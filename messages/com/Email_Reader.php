@@ -80,11 +80,38 @@ class Email_reader {
  
         $in = array();
         for($i = 1; $i <= $this->msg_cnt; $i++) {
+			$errors = 0;
+			
+			$headerinfo = '';
+			try {
+				$headerinfo = imap_headerinfo($this->conn, $i);
+			}
+			catch(Exception $e) {
+				$errors++;
+			}
+			
+			$body = '';
+			try {
+				$body = imap_body($this->conn, $i);
+			}
+			catch(Exception $e) {
+				$errors++;
+			}
+			
+			$structure = '';
+			try {
+				$structure = imap_fetchstructure($this->conn, $i);
+			}
+			catch(Exception $e) {
+				$errors++;
+			}
+			
             $in[] = array(
                 'index'     => $i,
-                'header'    => imap_headerinfo($this->conn, $i),
-                'body'      => imap_body($this->conn, $i),
-                'structure' => imap_fetchstructure($this->conn, $i)
+                'header'    => $headerinfo,
+                'body'      => $body,
+                'structure' => $structure,
+				'errors'	=> $errors
             );
         }
  
