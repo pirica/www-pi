@@ -106,6 +106,37 @@ class Email_reader {
 				$errors++;
 			}
 			
+			if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])) {
+				$part = $structure->parts[1];
+				
+				switch ($part->encoding) {
+					# 7BIT
+					case 0:
+						break;
+					# 8BIT
+					case 1:
+						$message = quoted_printable_decode(imap_8bit($message));
+						break;
+					# BINARY
+					case 2:
+						$message = imap_binary($message);
+						break;
+					# BASE64
+					case 3:
+						$message = imap_base64($message);
+						break;
+					# QUOTED-PRINTABLE
+					case 4:
+						$message = quoted_printable_decode($message);
+						break;
+					# OTHER
+					case 5:
+						break;
+					# UNKNOWN
+					default:
+				}
+			}
+			
             $in[] = array(
                 'index'     => $i,
                 'header'    => $headerinfo,
