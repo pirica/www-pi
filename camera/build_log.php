@@ -50,10 +50,11 @@ mysql_query("
 	mysql_query("truncate table t_camera_log", $conn);
 }*/
 
-$dirs = [];
+$dirs = [date('Ymd', time() - (60*60*24)), date('Ymd')];
 //$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . '" -mindepth 1 -maxdepth 1'));
 $tmpdirs = '';
 
+/*
 $datedir = date('Ymd', time() - (60*60*24));
 $tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '" -mindepth 1 -maxdepth 1'));
 
@@ -76,6 +77,7 @@ $dirs = explode("\n", $tmpdirs);
 
 $dircount = count($dirs);
 sort($dirs);
+*/
 
 //$files = [];
 $tmpfiles = [];
