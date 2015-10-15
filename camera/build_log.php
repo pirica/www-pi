@@ -68,10 +68,10 @@ $tmpdirs .= "\r\n";
 echo '<!--';
 echo $tmpdirs;
 echo '-->';
-
+*/
 $dircount = count($dirs);
 sort($dirs);
-*/
+
 
 //$files = [];
 $tmpfiles = [];
