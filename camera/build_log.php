@@ -68,12 +68,6 @@ $tmpdirs .= "\r\n";
 echo '<!--';
 echo $tmpdirs;
 echo '-->';
-///*
-$tmpdirs = str_replace("\r", "\n", $tmpdirs);
-$tmpdirs = str_replace("\n\n", "\n", $tmpdirs);
-$tmpdirs = str_replace("\n\n", "\n", $tmpdirs);
-$dirs = explode("\n", $tmpdirs);
-// */
 
 $dircount = count($dirs);
 sort($dirs);
@@ -93,11 +87,6 @@ mysql_query("
 
 for ($d = 0; $d < $dircount; $d++) {
 	if($dirs[$d] != ''){
-		/*$files[] = array(
-			'name' => $dirs[$d],
-			'subs' => [],
-			'subcount' => 0
-		);*/
 		
 		$tmpfilestr = str_replace($main_dir . $dirs[$d], '', shell_exec('find "' . $main_dir . $dirs[$d] . '" -mindepth 1 -maxdepth 1'));
 		$tmpfilestr = str_replace("\r", "\n", $tmpfilestr);
@@ -127,8 +116,7 @@ for ($d = 0; $d < $dircount; $d++) {
 					// name = 20150911_150439_picam1_00_x572-y286-w8-h40.jpg
 					$camera = explode('_', $tmpfiles[$i])[2];
 					
-					$hourstr = $tmpfiles[$i];//['name'];
-					//$hourstr = explode('-', $hourstr)[0];
+					$hourstr = $tmpfiles[$i];
 					$hourstr = explode('_', $hourstr)[1];
 					
 					$hours = substr($hourstr, 0, 2);
@@ -216,7 +204,6 @@ for ($d = 0; $d < $dircount; $d++) {
 			
 		}
 	}
-	//$filecount = count($files);
 }
 
 mysql_query("
