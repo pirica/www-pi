@@ -55,12 +55,12 @@ $dirs = [];
 $tmpdirs = '';
 
 $datedir = date('Ymd', time() - (60*60*24));
-$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '"'));
+$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '" -mindepth 1 -maxdepth 1'));
 
 $tmpdirs .= "\r\n";
 
 $datedir = date('Ymd');
-$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '"'));
+$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '" -mindepth 1 -maxdepth 1'));
 
 $tmpdirs .= "\r\n";
 
