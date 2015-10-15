@@ -32,15 +32,38 @@ while($logdel = mysql_fetch_array($qry_camera_log_del)){
 	unlink($main_dir . $logdel['date'] . $logdel['name']);
 	rmdir($main_dir . $logdel['date']);
 }
+mysql_query("
+	delete
+	from t_camera_log
+	where
+		date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
+	;
+	delete
+	from t_camera_menu
+	where
+		date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
+	;
+	");
 
 // clear complete table at 3 AM
-if(date("H", $crondate) == 3 && date("i", $crondate) < 10){
+/*if(date("H", $crondate) == 3 && date("i", $crondate) < 10){
 	mysql_query("truncate table t_camera_log", $conn);
-}
+}*/
 
 $dirs = [];
+//$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . '" -mindepth 1 -maxdepth 1'));
+$tmpdirs = '';
 
-$tmpdirs = str_replace($main_dir, '', shell_exec('find "' . $main_dir . '" -mindepth 1 -maxdepth 1'));
+$datedir = date('Ymd', time() - (60*60*24));
+$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '"'));
+
+$tmpdirs .= "\r\n";
+
+$datedir = date('Ymd');
+$tmpdirs .= str_replace($main_dir, '', shell_exec('find "' . $main_dir . $datedir . '/' . '"'));
+
+$tmpdirs .= "\r\n";
+
 echo '<!--';
 echo $tmpdirs;
 echo '-->';
@@ -57,6 +80,14 @@ sort($dirs);
 //$files = [];
 $tmpfiles = [];
 //$filecount = 0;
+
+mysql_query("
+	update t_camera_log
+	set status = 2
+	where
+		date >= date_format(now() - interval 1 day, '%Y%m%d')
+	
+	");
 
 for ($d = 0; $d < $dircount; $d++) {
 	if($dirs[$d] != ''){
@@ -186,9 +217,39 @@ for ($d = 0; $d < $dircount; $d++) {
 	//$filecount = count($files);
 }
 
-mysql_query("delete from t_camera_log where ifnull(status,0) = 0", $conn);
-mysql_query("update t_camera_log set status = 0", $conn);
+mysql_query("
+	replace into t_camera_menu
+	(
+		date_hour_lbl,
+		date,
+		hour_lbl,
+		nbr_images,
+		nbr_videos
+	)
+	select
+		concat(cl.date, '-', cl.hour_lbl) date_hour_lbl,
+		cl.date,
+		cl.hour_lbl,
+		sum(case when cl.name like '%.jpg' then 1 else 0 end) as nbr_images,
+		sum(case when cl.name like '%.mp4' or cl.name like '%.avi' then 1 else 0 end) as nbr_videos
+		
+	from t_camera_log cl
+	where
+		ifnull(status,0) = 1
+	
+	group by
+		cl.date,
+		cl.hour_lbl
+		
+	order by
+		cl.date,
+		cl.hour_lbl
 
+	", $conn);
+
+
+mysql_query("delete from t_camera_log where status = 2", $conn);
+mysql_query("update t_camera_log set status = 0 where status = 1", $conn);
 
 
 ?>
