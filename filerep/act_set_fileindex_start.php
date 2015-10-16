@@ -33,8 +33,9 @@ mysql_query("
 mysql_query("
 	delete from t_file_action
 	where
-		id_share = " . $id_share . " 
-		and id_host = " . $id_host . " 
+		(id_share = " . $id_share . " 
+		and id_host = " . $id_host . " )
+		or date_action < now() - interval 5 day
 	", $conn);
 	
 $returnvalue = array('data' => [], 'logging' => $logging);

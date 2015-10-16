@@ -24,10 +24,10 @@ mysql_query("
 		concat(f.relative_directory,f.filename) as source,
 		'' as target 
 	from t_file f
-	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
+	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
 		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
-	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
+	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
 	and f.id_share = " . $id_share . "
@@ -54,10 +54,10 @@ mysql_query("
 		concat(f.relative_directory,f.filename) as source,
 		'' as target 
 	from t_file f
-	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
+	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
 		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
-	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
+	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
 	and f.id_share = " . $id_share . "
@@ -83,10 +83,10 @@ mysql_query("
 		concat(f.relative_directory,f.filename) as source,
 		'' as target 
 	from t_file f
-	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename
+	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
 		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
-	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.date_executed is null
+	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
 	and f.id_share = " . $id_share . "
@@ -175,7 +175,7 @@ mysql_query("
 		concat(fi.relative_directory,fi.filename) as source,
 		'' as target 
 	from t_file_index fi
-	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fa.date_executed is null
+	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fi.id_share = fa.id_share and fi.id_host = fa.id_host
 	where fa.id_file_action is null
 	and fi.notfound = 1
 	and fi.id_share = " . $id_share . "
@@ -250,7 +250,7 @@ mysql_query("
 		'' as target 
 	from t_file f
 	left join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
-	left join t_file_action fa on (fa.source = concat(f.relative_directory,f.filename) or fa.target = concat(f.relative_directory,f.filename)) and fa.date_executed is null
+	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and fi.relative_directory is null
 	and f.active = 1
@@ -272,8 +272,8 @@ mysql_query("
 		concat(fi.relative_directory,fi.filename) as source,
 		'' as target 
 	from t_file_index fi
-	left join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.active = 1 and f.id_share = " . $id_share . "
-	left join t_file_action fa on (fa.source = concat(fi.relative_directory,fi.filename) or fa.target = concat(fi.relative_directory,fi.filename)) and fa.date_executed is null
+	left join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.active = 1 and f.id_share = fi.id_share
+	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fa.id_share = fi.id_share and fa.id_host = fi.id_host
 	where fa.id_file_action is null
 	and f.relative_directory is null
 	and fi.id_share = " . $id_share . "

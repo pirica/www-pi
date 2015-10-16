@@ -7,6 +7,7 @@ include 'functions.php';
 
 // Global method vars
 $method = saneInput('method');
+$id_user = saneInput('id_user', 'int', -1);
 $logging = '';
 
 // Host vars
@@ -76,13 +77,18 @@ switch($method){
 		echo json_encode($returnvalue);
 		break;
 	
+	case 'setFileIndex':
+		include 'act_set_fileindex.php';
+		echo json_encode($returnvalue);
+		break;
+		
 	case 'setFileIndexStart':
 		include 'act_set_fileindex_start.php';
 		echo json_encode($returnvalue);
 		break;
 		
-	case 'setFileIndex':
-		include 'act_set_fileindex.php';
+	case 'setFileIndexMiddle':
+		include 'act_set_fileindex_middle.php';
 		echo json_encode($returnvalue);
 		break;
 		
