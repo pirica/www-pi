@@ -83,12 +83,14 @@ if($id_grab > 0){
 			
 		where
 			id_grab = " . $id_grab . "
+			and id_user = " . $_SESSION['user_id'] . "
 		", $conn);
 }
 else {
 	mysql_query("
 		insert into t_grab
 		(
+			id_user,
 			description,
 			url,
 			path,
@@ -106,6 +108,7 @@ else {
 		)
 		values
 		(
+			" . $_SESSION['user_id'] . ",
 			'" . mysql_real_escape_string($grab_description) . "',
 			'" . mysql_real_escape_string($grab_url) . "',
 			'" . mysql_real_escape_string($grab_path) . "',

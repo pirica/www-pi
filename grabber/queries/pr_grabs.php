@@ -56,7 +56,8 @@ $qry_grabs = mysql_query("
 		left join t_grab_counter gc on gc.id_grab = g.id_grab
 			and gc.active = 1
 	where
-		g.active = 1
+		g.id_user = " . $_SESSION['user_id'] . "
+		and g.active = 1
 	
 	group by
 		g.id_grab,

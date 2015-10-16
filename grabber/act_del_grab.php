@@ -8,6 +8,7 @@ if($id_grab > 0){
 			active = 0
 		where
 			id_grab = " . $id_grab . "
+			and id_user = " . $_SESSION['user_id'] . "
 		", $conn);
 }
 
