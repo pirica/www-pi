@@ -22,11 +22,11 @@ $().ready(function(){
 		switch(e.keyCode){
 			//case Keyboard.UP:
 			case 38:
-				$('#feed_refresh').val($('#feed_refresh').val()+10);
+				$('#feed_refresh').val(parseInt($('#feed_refresh').val())+10);
 				break;
 			//case Keyboard.DOWN:
 			case 40:
-				$('#feed_refresh').val($('#feed_refresh').val()-10);
+				$('#feed_refresh').val(parseInt($('#feed_refresh').val())-10);
 				break;
 			//case Keyboard.LEFT:
 			case 37:

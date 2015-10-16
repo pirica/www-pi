@@ -24,6 +24,7 @@ $qry_feed_entries = mysql_query("
 			and ifnull(fe.is_read,0) = 0
 	where
 		f.id_feed = " . $id_feed . "
+		and f.id_user = " . $_SESSION['user_id'] . "
 	
 	order by
 		fe.pubdate asc,

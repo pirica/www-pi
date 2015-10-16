@@ -8,6 +8,7 @@ if($id_feed > 0){
 			active = 0
 		where
 			id_feed = " . $id_feed . "
+			and id_user = " . $_SESSION['user_id'] . "
 		", $conn);
 }
 

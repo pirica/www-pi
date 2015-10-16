@@ -25,18 +25,21 @@ if($id_feed > 0){
 			refresh = " . ($feed_refresh == '' ? 'NULL' : $feed_refresh) . "
 		where
 			id_feed = " . $id_feed . "
+			and id_user = " . $_SESSION['user_id'] . "
 		", $conn);
 }
 else {
 	mysql_query("
 		insert into t_feed
 		(
+			id_user,
 			title,
 			url,
 			refresh
 		)
 		values
 		(
+			" . $_SESSION['user_id'] . ",
 			'" . mysql_real_escape_string($feed_title) . "',
 			'" . mysql_real_escape_string($feed_url) . "',
 			" . ($feed_refresh == '' ? 'NULL' : $feed_refresh) . "
