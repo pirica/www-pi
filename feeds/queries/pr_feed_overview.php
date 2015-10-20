@@ -15,7 +15,8 @@ $qry_feed_overview = mysql_query("
 			and fe.active = 1
 			and ifnull(fe.is_read,0) = 0
 	where
-		f.active = 1
+		f.id_user = " . $_SESSION['user_id'] . "
+		and f.active = 1
 		and ifnull(f.desktop_only, 0) <= " . $desktop . "
 	
 	group by
