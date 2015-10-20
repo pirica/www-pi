@@ -11,7 +11,7 @@ $qry_camera_log_menu = mysql_query("
 	from t_camera_menu cm
 	
 	order by
-		cm.date_hour_lbl
+		cm.date_hour_lbl desc
 		
 		
 	");
