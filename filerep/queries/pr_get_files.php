@@ -11,7 +11,7 @@ $qry_files_currentdir = mysql_query("
 		1 as is_directory,
 		case when d.date_last_checked is null then 1 else 0 end as indexing,
 		
-		0 as can_reindex,
+		case when d.date_last_checked is not null then 1 else 0 end as can_reindex,
 		0 as can_download,
 		0 as can_view,
 		
@@ -47,7 +47,7 @@ $qry_files_parentdir = mysql_query("
 		1 as is_directory,
 		case when dp.date_last_checked is null then 1 else 0 end as indexing,
 		
-		0 as can_reindex,
+		case when d.date_last_checked is not null then 1 else 0 end as can_reindex,
 		0 as can_download,
 		0 as can_view,
 		
