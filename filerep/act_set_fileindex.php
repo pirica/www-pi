@@ -231,9 +231,20 @@ $qry = mysql_query("
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
 		and fa.active = 1
-		and fa.date_executed is null
+	
 	", $conn);
 $data = mysql2json($qry);
+
+/*
+SELECT 
+     CONCAT("[",
+          GROUP_CONCAT(
+               CONCAT("{username:'",username,"'"),
+               CONCAT(",email:'",email),"'}")
+          )
+     ,"]") 
+AS json FROM users;
+*/
 
 $returnvalue = array('data' => $data, 'logging' => $logging);
 

@@ -98,6 +98,85 @@
 	<tbody>
 	<?php 
 	$i = 0;
+	
+	$i++;
+	?>
+	<tr class="row-dir-<?=($i % 2 == 1 ? 'odd' : 'even') . '-' . ($currentdir['active'] == 1 ? 'active' : 'inactive') ?>">
+		<td><?php
+			if($currentdir['fontawesome'] != ''){
+				echo '<span class="fa ' . $currentdir['fontawesome'] . '"></span>';
+			}
+			else if($currentdir['glyphicon'] != ''){
+				echo '<span class="glyphicon ' . $currentdir['glyphicon'] . '"></span>';
+			}
+			else {
+				echo '&nbsp;';
+			}
+		?></td>
+		<td><?php
+			echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $currentdir['relative_directory'] . '">.</a>';
+			
+		?></td>
+		<td><?= formatFileSize($currentdir['size']) ?></td>
+		<td><?= $currentdir['date_last_modified'] ?></td>
+		<td>
+			<?php
+				if($currentdir['indexing'] == 1){
+					echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+				}
+				else if($currentdir['can_reindex'] == 1){
+					echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $currentdir['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+				}
+				
+				// download
+				echo '<span class="fa"></span>';
+				// view
+				echo '<span class="fa"></span>';
+			?>
+		</td>
+	</tr>
+	<?php
+	
+	if(isset($parentdir['relative_directory'])){
+		$i++;
+		?>
+		<tr class="row-dir-<?=($i % 2 == 1 ? 'odd' : 'even') . '-' . ($parentdir['active'] == 1 ? 'active' : 'inactive') ?>">
+			<td><?php
+				if($parentdir['fontawesome'] != ''){
+					echo '<span class="fa ' . $parentdir['fontawesome'] . '"></span>';
+				}
+				else if($parentdir['glyphicon'] != ''){
+					echo '<span class="glyphicon ' . $parentdir['glyphicon'] . '"></span>';
+				}
+				else {
+					echo '&nbsp;';
+				}
+			?></td>
+			<td><?php
+				echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '">.</a>';
+				
+			?></td>
+			<td><?= formatFileSize($parentdir['size']) ?></td>
+			<td><?= $parentdir['date_last_modified'] ?></td>
+			<td>
+				<?php
+					if($parentdir['indexing'] == 1){
+						echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
+					}
+					else if($parentdir['can_reindex'] == 1){
+						echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $parentdir['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+					}
+					
+					// download
+					echo '<span class="fa"></span>';
+					// view
+					echo '<span class="fa"></span>';
+				?>
+			</td>
+		</tr>
+		<?php
+	}
+	
 	while($file = mysql_fetch_array($qry_files_subdirs)){ 
 		if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 			$i++;
