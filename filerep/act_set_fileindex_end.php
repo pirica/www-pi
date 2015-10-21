@@ -54,7 +54,7 @@ $qry = mysql_query("
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
 		and fa.active = 1
-		and fa.date_executed is null
+		
 	", $conn);
 $data = mysql2json($qry);
 

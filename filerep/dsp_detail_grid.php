@@ -153,7 +153,7 @@
 				}
 			?></td>
 			<td><?php
-				echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '">.</a>';
+				echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '">..</a>';
 				
 			?></td>
 			<td><?= formatFileSize($parentdir['size']) ?></td>
