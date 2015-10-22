@@ -162,7 +162,7 @@ mysql_query("
 $logging = $logging . ' servermove:' . mysql_affected_rows($conn);
 */
 
-
+/*
 // file deleted client
 mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
@@ -176,17 +176,17 @@ mysql_query("
 		'' as target 
 	from t_file_index fi
 	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fi.id_share = fa.id_share and fi.id_host = fa.id_host
-	where fa.id_file_action is null
-	and fi.notfound = 1
-	and fi.id_share = " . $id_share . "
-	and fi.id_host = " . $id_host . "
-	and ifnull(fi.conflict,0) = 0
-	and ifnull(fi.notfound,0) = 0
-	and ifnull(fi.excluded,0) = 0
+	where 
+		fa.id_file_action is null
+		and fi.id_share = " . $id_share . "
+		and fi.id_host = " . $id_host . "
+		and ifnull(fi.conflict,0) = 0
+		and ifnull(fi.notfound,0) = 1
+		and ifnull(fi.excluded,0) = 0
 	", $conn);
 
 $logging = $logging . ' delc:' . mysql_affected_rows($conn);
-
+*/
 
 // file deleted server
 mysql_query("
@@ -201,12 +201,14 @@ mysql_query("
 		'' as target 
 	from t_file_index fi
 	join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and f.active = 0
+	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fi.id_share = fa.id_share and fi.id_host = fa.id_host
 	where 
-	fi.id_share = " . $id_share . "
-	and fi.id_host = " . $id_host . "
-	and fi.notfound = 0
-	and ifnull(fi.conflict,0) = 0
-	and ifnull(fi.excluded,0) = 0
+		fa.id_file_action is null
+		and fi.id_share = " . $id_share . "
+		and fi.id_host = " . $id_host . "
+		and ifnull(fi.conflict,0) = 0
+		and ifnull(fi.notfound,0) = 0
+		and ifnull(fi.excluded,0) = 0
 	", $conn);
 
 $logging = $logging . ' dels:' . mysql_affected_rows($conn);
@@ -252,9 +254,9 @@ mysql_query("
 	left join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
-	and fi.relative_directory is null
-	and f.active = 1
-	and f.id_share = " . $id_share . "
+		and fi.relative_directory is null
+		and f.active = 1
+		and f.id_share = " . $id_share . "
 	", $conn);
 
 $logging = $logging . ' downloadnew:' . mysql_affected_rows($conn);
@@ -275,12 +277,12 @@ mysql_query("
 	left join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.active = 1 and f.id_share = fi.id_share
 	left join t_file_action fa on fa.source = concat(fi.relative_directory,fi.filename) and fa.id_share = fi.id_share and fa.id_host = fi.id_host
 	where fa.id_file_action is null
-	and f.relative_directory is null
-	and fi.id_share = " . $id_share . "
-	and fi.id_host = " . $id_host . "
-	and ifnull(fi.notfound,0) = 0
-	and ifnull(fi.conflict,0) = 0
-	and ifnull(fi.excluded,0) = 0
+		and f.relative_directory is null
+		and fi.id_share = " . $id_share . "
+		and fi.id_host = " . $id_host . "
+		and ifnull(fi.notfound,0) = 0
+		and ifnull(fi.conflict,0) = 0
+		and ifnull(fi.excluded,0) = 0
 	", $conn);
 
 $logging = $logging . ' uploadnew:' . mysql_affected_rows($conn);
