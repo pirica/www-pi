@@ -53,8 +53,8 @@ $qry = mysql_query("
 	where
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
-		and fa.active = 1
 		
+	limit 0,0
 	", $conn);
 $data = mysql2json($qry);
 

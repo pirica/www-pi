@@ -38,6 +38,17 @@ mysql_query("
 		or date_action < now() - interval 5 day
 	", $conn);
 	
+	
+// clear all my actions
+mysql_query("
+	delete from t_file_index_temp
+	where
+		id_share = " . $id_share . " 
+		and id_host = " . $id_host . " 
+		
+	", $conn);
+	
+	
 $returnvalue = array('data' => [], 'logging' => $logging);
 
 
