@@ -11,6 +11,129 @@ $dpmod_nonc_count = 0;
 $dpmod_nonc_c_count = 0;
 
 
+	
+	update filerep.t_file f
+	join songs s on f.relative_directory = s.relative_directory and f.filename = s.filename
+	join playlistEntries p on p.songid = s.id
+	set
+		f.ss_on_playlist = 1
+	
+	
+
+// update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 1
+mysql_query("
+	update t_file_index fi
+	join t_file_index_temp fit
+		on fit.id_share = fi.id_share
+		and fit.id_host = fi.id_host
+		and fit.relative_directory = fi.relative_directory
+		and fit.filename = fi.filename
+		and fit.conflict = 1
+	set
+		fi.date_previous_modified = fi.date_last_modified
+	where
+		fi.id_share = " . $id_share . " 
+		and fi.id_host = " . $id_host . " 
+		and fi.conflict = 0
+	", $conn);
+$dpmod_newc_count = $dpmod_newc_count + mysql_affected_rows($conn);
+
+// update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 0
+mysql_query("
+	update t_file_index fi
+	join t_file_index_temp fit
+		on fit.id_share = fi.id_share
+		and fit.id_host = fi.id_host
+		and fit.relative_directory = fi.relative_directory
+		and fit.filename = fi.filename
+		and fit.conflict = 0
+	set
+		fi.date_previous_modified = fi.date_last_modified
+	where
+		fi.id_share = " . $id_share . " 
+		and fi.id_host = " . $id_host . " 
+		and fi.conflict = 0
+	", $conn);
+$dpmod_nonc_count = $dpmod_nonc_count + mysql_affected_rows($conn);
+
+// update conflict = 0,date_previous_modified = date_last_modified where conflmict=1 + temp conflict = 0
+mysql_query("
+	update t_file_index fi
+	join t_file_index_temp fit
+		on fit.id_share = fi.id_share
+		and fit.id_host = fi.id_host
+		and fit.relative_directory = fi.relative_directory
+		and fit.filename = fi.filename
+		and fit.conflict = 1
+	set
+		fi.date_previous_modified = fi.date_last_modified
+	where
+		fi.id_share = " . $id_share . " 
+		and fi.id_host = " . $id_host . " 
+		and fi.conflict = 1
+	", $conn);
+$dpmod_nonc_c_count = $dpmod_nonc_c_count + mysql_affected_rows($conn);
+
+
+
+
+mysql_query("
+	update t_file_index fi
+	join t_file_index_temp fit
+		on fit.id_share = fi.id_share
+		and fit.id_host = fi.id_host
+		and fit.relative_directory = fi.relative_directory
+		and fit.filename = fi.filename
+	set
+		fi.date_last_modified = fit.date_last_modified,
+		fi.notfound = 0
+	where
+		fi.id_share = " . $id_share . " 
+		and fi.id_host = " . $id_host . " 
+		
+	", $conn);
+	
+	
+mysql_query("
+	insert into t_file_index
+	(
+		relative_directory,
+		filename,
+		date_last_modified,
+		date_previous_modified,
+		notfound,
+		conflict,
+		excluded,
+	
+		id_share,
+		id_host
+	)
+	select
+		fit.relative_directory,
+		fit.filename,
+		fit.date_last_modified,
+		fit.date_last_modified,
+		0,
+		fit.conflict,
+		fit.excluded,
+	
+		fit.id_share,
+		fit.id_host
+		
+	from t_file_index_temp fit
+	left join t_file_index fi
+		on fit.id_share = fi.id_share
+		and fit.id_host = fi.id_host
+		and fit.relative_directory = fi.relative_directory
+		and fit.filename = fi.filename
+	where
+		fit.id_share = " . $id_share . " 
+		and fit.id_host = " . $id_host . " 
+		and fi.id_file_index is null
+		
+	", $conn);
+				
+				
 // set as conflicting where t_file date modified is already greater than current index
 mysql_query("
 	update t_file_index fi
@@ -54,7 +177,6 @@ $qry = mysql_query("
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
 		
-	limit 0,0
 	", $conn);
 $data = mysql2json($qry);
 

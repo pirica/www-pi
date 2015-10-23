@@ -27,13 +27,13 @@ for ($i = 0; $i < $filelen; $i++) {
 	
 	$counter++;
 	
-	$sql += ($sql == '' ? '' : ',');
-	$sql += "
+	$sql .= ($sql == '' ? '' : ',');
+	$sql .= "
 		(
 			'" . mysql_real_escape_string($path) . "',
 			'" . mysql_real_escape_string($files[$i]->n) . "',
 			'" . mysql_real_escape_string($files[$i]->m) . "',
-			0,
+			" . mysql_real_escape_string($files[$i]->c) . ",
 			" . mysql_real_escape_string($files[$i]->e) . ",
 		
 			" . $id_share . ",
