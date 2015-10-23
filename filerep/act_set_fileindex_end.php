@@ -11,14 +11,6 @@ $dpmod_nonc_count = 0;
 $dpmod_nonc_c_count = 0;
 
 
-	
-	update filerep.t_file f
-	join songs s on f.relative_directory = s.relative_directory and f.filename = s.filename
-	join playlistEntries p on p.songid = s.id
-	set
-		f.ss_on_playlist = 1
-	
-	
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 1
 mysql_query("

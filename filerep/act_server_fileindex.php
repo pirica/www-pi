@@ -14,7 +14,7 @@ if(!isset($id_host)){
 // delete file on server
 mysql_query("
 	update t_file f
-	join t_file_index fi on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share
+	join t_file_index fi on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and fi.id_host = " . $id_host . " 
 		and fi.notfound = 1
 	set
 		f.active = 0
