@@ -161,10 +161,36 @@ $().ready(function(){
 	
 	// enter filename when download url is changed
 	$('#frm-addfile #grab_url').change(function(){
-		var f = $('#frm-addfile #grab_url').val().split('/');
+		var u = $('#frm-addfile #grab_url').val();
+		
+		var f = u.split('/');
 		f = f[f.length - 1];
 		
-		$('#frm-addfile #grab_filename').val(fixFileName(f));
+		if(u.indexOf(/youtube.com/i) > 0){
+			$.ajax({
+				url: 'index.php?action=js_check_url' + 
+						'&u=' + u + 
+					'',
+				type: 'GET',
+				cache: false,
+				dataType: 'text',
+				error: function(xhr, status, error) {
+					//location.href = ...
+				},
+				success: function(data, textStatus, jqXHR){
+					var t = (''+data.replace(/\r|\n|\t| /g, ''));
+					if(t != ''){
+						$('#frm-addfile #grab_filename').val(fixFileName(t));
+					}
+					else {
+						$('#frm-addfile #grab_filename').val(fixFileName(f));
+					}
+				}
+			});
+		}
+		else {
+			$('#frm-addfile #grab_filename').val(fixFileName(f));
+		}
 	});
 	
 	// enter filename when download url is changed

@@ -188,6 +188,13 @@ switch($action->getCode()){
 		echo file_exists($file);
 		break;
 	
+	case 'js_check_url':
+		$url = saneInput('u', 'string', '');
+		$yt = json_decode(file_get_contents('http://youtubeinmp3.com/fetch/?format=JSON&video=' . $url));
+		echo $yt->title;
+		break;
+	
+	
 	
 	// main: overview
 	default:
