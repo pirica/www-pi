@@ -4,7 +4,7 @@ set_time_limit(0);
 // Read the PHP input stream and save the contents to $rawPost.
 $rawPost = file_get_contents('php://input');
 
-$path = saneInput('path');
+$path = urldecode(saneInput('path'));
 $chunk = saneInput('chunk', 'int');
 $last = saneInput('last', 'bit', false);
 $fileId = saneInput('id');
