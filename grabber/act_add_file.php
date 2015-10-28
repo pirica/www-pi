@@ -68,6 +68,12 @@ if(substr($grab_path, -1, 1) != '/'){
 
 $grab_full_path = $grab_path . $grab_filename;
 
+// get youtube
+if(strpos($grab_url, 'youtube.com') !== false && strpos($grab_filename, '.mp3') !== false){
+	$yt = json_decode(file_get_contents('http://youtubeinmp3.com/fetch/?format=JSON&video=' . $grab_url));
+	
+	$grab_url = $yt->link;
+}
 
 if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 	mysql_query("
