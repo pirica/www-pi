@@ -133,6 +133,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 				gf.id_grab_file,
 				gf.full_url,
 				gf.referer,
+				gf.type,
 				
 				gf.full_path,
 				
@@ -229,8 +230,36 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					
 					// grab file 
 					try {
-						
-						$grabbedfile = cURLdownload($grabfile['full_url'], $grabfile['full_path'], 5, $grabfile['referer']);
+					
+						switch($grabfile['type']){
+							case 'youtube-dl':
+								$grabbedfile = shell_exec('youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+								/* // error
+[youtube] y_lhqg_p21k: Downloading webpage
+[youtube] y_lhqg_p21k: Downloading video info webpage
+[youtube] y_lhqg_p21k: Extracting video information
+[youtube] y_lhqg_p21k: Downloading DASH manifest
+[youtube] y_lhqg_p21k: Downloading DASH manifest
+WARNING: Your copy of avconv is outdated and unable to properly mux separate video and audio files, youtube-dl will download single file media. Update avconv to version 10-0 or newer to fix this.
+[download] Destination: /var/docs/downloads/Mythbusting Linux..mp4
+[download]  58.5% of 199.07MiB at  3.39MiB/s ETA 00:24ERROR: unable to download video data: [Errno 1] _ssl.c:1415: error:1408F119:SSL routines:SSL3_GET_RECORD:decryption failed or bad record mac
+								*/
+								/* // success
+[youtube] y_lhqg_p21k: Downloading webpage
+[youtube] y_lhqg_p21k: Downloading video info webpage
+[youtube] y_lhqg_p21k: Extracting video information
+[youtube] y_lhqg_p21k: Downloading DASH manifest
+[youtube] y_lhqg_p21k: Downloading DASH manifest
+WARNING: Your copy of avconv is outdated and unable to properly mux separate video and audio files, youtube-dl will download single file media. Update avconv to version 10-0 or newer to fix this.
+[download] Destination: /var/docs/downloads/Mythbusting Linux..mp4
+[download] 100% of 199.07MiB in 00:58
+								*/
+								break;
+								
+							default:
+								$grabbedfile = cURLdownload($grabfile['full_url'], $grabfile['full_path'], 5, $grabfile['referer']);
+								
+						}
 						
 						if(isset($grabbedfile)){
 							
@@ -255,6 +284,11 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 								$status_info = $status_info . '<br>' . "File excluded by content: " . $grabs['excluded'];
 								echo "File excluded by content: " . $grabbedfile . "<br>\n";
 								unlink($grabfile['full_path']); // delete
+							}
+							else if($grabfile['type'] == 'youtube-dl' && strpos($grabbedfile, "error") === false){
+								$status = 'OK';
+								$status_info = $status_info . $grabbedfile;
+								echo "File OK: " . $grabbedfile . "<br>\n";
 							}
 							else if(strpos($grabbedfile, "SUCCESS") == 0){
 								$status = 'OK';

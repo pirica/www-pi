@@ -32,9 +32,9 @@ h2 {
 
 #info {
 	background-color:#FFFFFF;
-	left:80px;
+	left:10px;
 	position:absolute;
-	top:5px;
+	top:80px;
 	z-index:2;
 	padding:3px;
 	border: 1px solid #000;

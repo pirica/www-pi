@@ -166,7 +166,7 @@ $().ready(function(){
 		var f = u.split('/');
 		f = f[f.length - 1];
 		
-		if(u.indexOf(/youtube.com/i) > 0){
+		if(u.toLowerCase().indexOf("youtube.com") > 0){
 			$.ajax({
 				url: 'index.php?action=js_check_url' + 
 						'&u=' + u + 
@@ -178,8 +178,8 @@ $().ready(function(){
 					//location.href = ...
 				},
 				success: function(data, textStatus, jqXHR){
-					var t = (''+data.replace(/\r|\n|\t| /g, ''));
-					if(t != ''){
+					var t = (''+data.replace(/\r|\n|\t/g, ''));
+					if(t.replace(/ /g, '') != ''){
 						$('#frm-addfile #grab_filename').val(fixFileName(t));
 					}
 					else {

@@ -2,6 +2,7 @@
 //$id_grab = -1;
 $error = 0;
 
+$grab_type = '';
 $grab_url = '';
 $grab_referer = '';
 $grab_full_path = '';
@@ -10,6 +11,9 @@ $grab_path = '';
 $grab_filename = '';
 */
 
+if(isset($_POST['grab_type'])){
+	$grab_type = $_POST['grab_type'];
+}
 if(isset($_POST['grab_url'])){
 	$grab_url = $_POST['grab_url'];
 }
@@ -82,14 +86,16 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 			id_grab,
 			full_url,
 			referer,
-			full_path
+			full_path,
+			type
 		)
 		values
 		(
 			" . $id_grab . ",
 			'" . mysql_real_escape_string($grab_url) . "',
 			'" . mysql_real_escape_string($grab_referer) . "',
-			'" . mysql_real_escape_string($grab_full_path) . "'
+			'" . mysql_real_escape_string($grab_full_path) . "',
+			'" . mysql_real_escape_string($grab_type) . "'
 		)
 		", $conn);
 		

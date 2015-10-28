@@ -25,6 +25,14 @@
 		?>
 
 		<div class="form-group">
+			<label for="grab_type">Type</label>
+			<select id="grab_type" name="grab_type" class="form-control">
+				<option value="">Default (grabber)</option>
+				<option value="youtube-dl">Youtube downloader (youtube-dl)</option>
+			</select>
+		</div>
+		
+		<div class="form-group">
 			<label for="grab_url">URL</label>
 			<input id="grab_url" name="grab_url" placeholder="" class="form-control" type="text" value="">
 		</div>
