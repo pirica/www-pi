@@ -201,7 +201,8 @@ switch($action->getCode()){
 			echo $yt->title;
 		}
 		else {
-			$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-title ' . $grabfile['full_url']);
+			//$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-title ' . $url);
+			$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-filename ' . $url);
 			
 			if(isset($ytdl)){
 				echo $ytdl;
