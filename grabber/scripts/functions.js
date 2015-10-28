@@ -166,7 +166,8 @@ $().ready(function(){
 		var f = u.split('/');
 		f = f[f.length - 1];
 		
-		if(u.toLowerCase().indexOf("youtube.com") > 0){
+		//if(u.toLowerCase().indexOf("youtube.com") > 0){
+		if(u != ''){
 			$.ajax({
 				url: 'index.php?action=js_check_url' + 
 						'&u=' + u + 
@@ -197,26 +198,31 @@ $().ready(function(){
 	$('#frm-addfile #grab_path, #frm-addfile #grab_filename').change(function(){
 		$('#frm-addfile #grab_filename').val(fixFileName($('#frm-addfile #grab_filename').val()));
 		// check filename if exists
-		$.ajax({
-			url: 'index.php?action=js_check_file' + 
-					'&file=' + $('#frm-addfile #grab_path').val() + $('#frm-addfile #grab_filename').val() + 
-				'',
-			type: 'GET',
-			cache: false,
-			dataType: 'text',
-			error: function(xhr, status, error) {
-				//location.href = ...
-			},
-			success: function(data, textStatus, jqXHR){
-				var d = (''+data.replace(/\r|\n|\t| /g, '')).toLowerCase();
-				if(d == '1' || d == 'true'){
-					$('.alert-file-exists').removeClass('hidden');
+		if($('#frm-addfile #grab_filename').val() != ''){
+			$.ajax({
+				url: 'index.php?action=js_check_file' + 
+						'&file=' + $('#frm-addfile #grab_path').val() + $('#frm-addfile #grab_filename').val() + 
+					'',
+				type: 'GET',
+				cache: false,
+				dataType: 'text',
+				error: function(xhr, status, error) {
+					//location.href = ...
+				},
+				success: function(data, textStatus, jqXHR){
+					var d = (''+data.replace(/\r|\n|\t| /g, '')).toLowerCase();
+					if(d == '1' || d == 'true'){
+						$('.alert-file-exists').removeClass('hidden');
+					}
+					else {
+						$('.alert-file-exists').addClass('hidden');
+					}
 				}
-				else {
-					$('.alert-file-exists').addClass('hidden');
-				}
-			}
-		});
+			});
+		}
+		else {
+			$('.alert-file-exists').addClass('hidden');
+		}
 	});
 	
 });

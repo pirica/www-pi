@@ -233,7 +233,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					
 						switch($grabfile['type']){
 							case 'youtube-dl':
-								$grabbedfile = shell_exec('youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+								$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
 								/* // error
 [youtube] y_lhqg_p21k: Downloading webpage
 [youtube] y_lhqg_p21k: Downloading video info webpage

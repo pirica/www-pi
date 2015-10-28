@@ -103,7 +103,12 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 		
 	if($grab_filename == ''){
 		
-		$grab_full_path = $grab_path . 'download_' . $id_grab_file . '.tmp';
+		if($grab_type == 'youtube-dl'){
+			$grab_full_path = $grab_path . '%(title)s.%(ext)s';
+		}
+		else {
+			$grab_full_path = $grab_path . 'download_' . $id_grab_file . '.tmp';
+		}
 		
 		mysql_query("
 			update t_grab_file

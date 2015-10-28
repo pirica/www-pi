@@ -185,13 +185,31 @@ switch($action->getCode()){
 	
 	case 'js_check_file':
 		$file = saneInput('file', 'string', '');
-		echo file_exists($file);
+		if($file != ''){
+			echo file_exists($file);
+		}
+		else {
+			echo 'false';
+		}
 		break;
 	
 	case 'js_check_url':
 		$url = saneInput('u', 'string', '');
 		$yt = json_decode(file_get_contents('http://youtubeinmp3.com/fetch/?format=JSON&video=' . $url));
-		echo $yt->title;
+		
+		if(isset($yt->title)){
+			echo $yt->title;
+		}
+		else {
+			$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-title ' . $grabfile['full_url']);
+			
+			if(isset($ytdl)){
+				echo $ytdl;
+			}
+			else {
+				echo '';
+			}
+		}
 		break;
 	
 	
