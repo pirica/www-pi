@@ -170,7 +170,7 @@ $().ready(function(){
 		
 		//if(u.toLowerCase().indexOf("youtube.com") > 0){
 		if(u != ''){
-			$('#grab_filename').parent().find('fa-spin').removeClass('hidden');
+			$('#grab_filename').parent().find('.fa-spin').removeClass('hidden');
 			$.ajax({
 				url: 'index.php?action=js_check_url' + 
 						'&u=' + u + 
@@ -180,7 +180,7 @@ $().ready(function(){
 				dataType: 'json',
 				error: function(xhr, status, error) {
 					//location.href = ...
-					$('#grab_filename').parent().find('fa-spin').addClass('hidden');
+					$('#grab_filename').parent().find('.fa-spin').addClass('hidden');
 				},
 				success: function(data, textStatus, jqXHR){
 					if(typeof data.filename !== undefined){
@@ -196,7 +196,7 @@ $().ready(function(){
 							}
 						});
 					}
-					$('#grab_filename').parent().find('fa-spin').addClass('hidden');
+					$('#grab_filename').parent().find('.fa-spin').addClass('hidden');
 				}
 			});
 		}
