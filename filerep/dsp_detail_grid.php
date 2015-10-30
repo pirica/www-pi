@@ -91,7 +91,7 @@
 				<span class="thsort thsort-date_last_modified-asc glyphicon glyphicon-arrow-up <?php if(!($sort == 'date_last_modified' && $sortorder == 'asc')){ ?>hidden<?php } ?>"></span>
 				<span class="thsort thsort-date_last_modified-desc glyphicon glyphicon-arrow-down <?php if(!($sort == 'date_last_modified' && $sortorder == 'desc')){ ?>hidden<?php } ?>"></span>
 			</th>
-			<th width="80">&nbsp;</th>
+			<th width="100">&nbsp;</th>
 		</tr>
 	</thead>
 	
@@ -283,7 +283,7 @@
 						}
 						
 						//if($file['active'] == 1){
-							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
+							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
 						/*}
 						else {
 							echo '<span class="fa"></span>';
