@@ -48,7 +48,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="grab_filename">Filename</label>
+			<label for="grab_filename">Filename <i class="fa fa-spinner fa-spin hidden"></i></label>
 			<input id="grab_filename" name="grab_filename" placeholder="" class="form-control" type="text" value="">
 		</div>
 		
