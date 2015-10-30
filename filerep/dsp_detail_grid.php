@@ -132,6 +132,8 @@
 				echo '<span class="fa"></span>';
 				// view
 				echo '<span class="fa"></span>';
+				// delete
+				echo '<span class="fa"></span>';
 			?>
 		</td>
 	</tr>
@@ -170,6 +172,8 @@
 					// download
 					echo '<span class="fa"></span>';
 					// view
+					echo '<span class="fa"></span>';
+					// delete
 					echo '<span class="fa"></span>';
 				?>
 			</td>
@@ -215,6 +219,8 @@
 						// download
 						echo '<span class="fa"></span>';
 						// view
+						echo '<span class="fa"></span>';
+						// delete
 						echo '<span class="fa"></span>';
 					?>
 				</td>
@@ -275,6 +281,14 @@
 						else {
 							echo '<span class="fa"></span>';
 						}
+						
+						//if($file['active'] == 1){
+							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
+						/*}
+						else {
+							echo '<span class="fa"></span>';
+						}*/
+						
 					?>
 				</td>
 			</tr>

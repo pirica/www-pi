@@ -97,6 +97,9 @@ switch($action->getCode()){
 		include 'act_view_file.php';
 		break;
 	
+	case 'deletefile':
+		include 'act_delete_file.php';
+		break;
 	
 	case 'upload':
 		
