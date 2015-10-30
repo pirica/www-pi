@@ -9,6 +9,7 @@ $id_share = saneInput('id_share', 'int', -1);
 $id_host = saneInput('id_host', 'int', -1);
 $id_file = saneInput('id_file', 'int', -1);
 $dir = str_replace("'", "\'", saneInput('dir', 'string', '/'));
+$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
 
 $app->setHeaderScripts('<script type="text/javascript">var id_share = ' . $id_share . ', id_host = ' . $id_host . ', id_file = ' . $id_file . ', dir = \'' . $dir . '\';</script>' . "\n");
 
@@ -24,8 +25,6 @@ switch($action->getCode()){
 	
 	// main: overview
 	case 'details':
-		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
-		
 		$sort = strtolower(saneInput('sort'));
 		$sortorder = strtolower(saneInput('sortorder'));
 		$search = strtolower(saneInput('search'));
@@ -57,8 +56,6 @@ switch($action->getCode()){
 	
 	
 	case 'search':
-		$show_all = saneInput('all', 'int', $settings->val('details_showall_default_value', 0));
-		
 		$sort = strtolower(saneInput('sort'));
 		$sortorder = strtolower(saneInput('sortorder'));
 		$search = strtolower(saneInput('search'));

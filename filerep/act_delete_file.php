@@ -23,7 +23,7 @@ $file = $dbfile['server_directory'] . $dbfile['relative_directory'] . $dbfile['f
 
 if($dbfile['active'] == $active){
 	if($active == 1){
-		rename($dbfile, $dbfile . '.deleted');
+		rename($file, $file . '.deleted');
 		
 		// mark as deleted
 		mysql_query("
@@ -36,8 +36,8 @@ if($dbfile['active'] == $active){
 			", $conn);
 	}
 	else {
-		if(file_exists($dbfile . '.deleted')){
-			unlink($dbfile . '.deleted');
+		if(file_exists($file . '.deleted')){
+			unlink($file . '.deleted');
 		}
 		// delete
 		mysql_query("
@@ -48,5 +48,8 @@ if($dbfile['active'] == $active){
 			", $conn);
 	}
 }
+
+goto_action('details', false, 'id_share=' . $id_share . '&dir=' . $dir . '&all=' . $show_all );
+
 
 ?>
