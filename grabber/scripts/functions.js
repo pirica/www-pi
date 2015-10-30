@@ -166,6 +166,8 @@ $().ready(function(){
 		var f = u.split('/');
 		f = f[f.length - 1];
 		
+		$('#frm-addfile #grab_filename').val(fixFileName(f));
+		
 		//if(u.toLowerCase().indexOf("youtube.com") > 0){
 		if(u != ''){
 			$.ajax({
@@ -174,23 +176,26 @@ $().ready(function(){
 					'',
 				type: 'GET',
 				cache: false,
-				dataType: 'text',
+				dataType: 'json',
 				error: function(xhr, status, error) {
 					//location.href = ...
 				},
 				success: function(data, textStatus, jqXHR){
-					var t = (''+data.replace(/\r|\n|\t/g, ''));
-					if(t.replace(/ /g, '') != ''){
-						$('#frm-addfile #grab_filename').val(fixFileName(t));
+					if(typeof data.filename !== undefined){
+						var f = (''+data.filename.replace(/\r|\n|\t/g, ''));
+						if(f.replace(/ /g, '') != ''){
+							$('#frm-addfile #grab_filename').val(fixFileName(f));
+						}
 					}
-					else {
-						$('#frm-addfile #grab_filename').val(fixFileName(f));
+					if(typeof data.type !== undefined){
+						$('#grab_type').find('option').each(function(){
+							if($(this).val() == data.type){
+								$(this).prop('selected', 'selected');
+							}
+						});
 					}
 				}
 			});
-		}
-		else {
-			$('#frm-addfile #grab_filename').val(fixFileName(f));
 		}
 	});
 	

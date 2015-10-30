@@ -195,22 +195,23 @@ switch($action->getCode()){
 	
 	case 'js_check_url':
 		$url = saneInput('u', 'string', '');
-		$yt = json_decode(file_get_contents('http://youtubeinmp3.com/fetch/?format=JSON&video=' . $url));
 		
-		if(isset($yt->title)){
-			echo $yt->title;
+		$type = '';
+		$filename = '';
+		
+		//$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-title ' . $url);
+		$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-filename ' . $url);
+		
+		if(isset($ytdl) && $ytdl != ''){
+			$type = 'youtube-dl';
+			$filename = $ytdl;
 		}
-		else {
-			//$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-title ' . $url);
-			$ytdl = shell_exec('/usr/local/bin/youtube-dl --get-filename ' . $url);
 			
-			if(isset($ytdl)){
-				echo $ytdl;
-			}
-			else {
-				echo '';
-			}
-		}
+		echo json_encode(array(
+			"type" => $type,
+			"filename" => $filename
+		));
+		
 		break;
 	
 	

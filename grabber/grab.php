@@ -233,7 +233,13 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					
 						switch($grabfile['type']){
 							case 'youtube-dl':
-								$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+								if(strpos($grabfile['full_path'], '.mp3') > 0){
+									$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part --extract-audio --audio-format mp3 --audio-quality 0 -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+								}
+								else {
+									$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+								}
+								
 								/* // error
 [youtube] y_lhqg_p21k: Downloading webpage
 [youtube] y_lhqg_p21k: Downloading video info webpage

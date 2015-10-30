@@ -72,12 +72,6 @@ if(substr($grab_path, -1, 1) != '/'){
 
 $grab_full_path = $grab_path . $grab_filename;
 
-// get youtube
-if(strpos($grab_url, 'youtube.com') !== false && strpos($grab_filename, '.mp3') !== false){
-	$yt = json_decode(file_get_contents('http://youtubeinmp3.com/fetch/?format=JSON&video=' . $grab_url));
-	
-	$grab_url = $yt->link;
-}
 
 if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 	mysql_query("
@@ -103,12 +97,7 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 		
 	if($grab_filename == ''){
 		
-		if($grab_type == 'youtube-dl'){
-			$grab_full_path = $grab_path . '%(title)s.%(ext)s';
-		}
-		else {
-			$grab_full_path = $grab_path . 'download_' . $id_grab_file . '.tmp';
-		}
+		$grab_full_path = $grab_path . 'download_' . $id_grab_file . '.tmp';
 		
 		mysql_query("
 			update t_grab_file
