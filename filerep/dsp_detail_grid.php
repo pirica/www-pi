@@ -283,7 +283,7 @@
 						}
 						
 						//if($file['active'] == 1){
-							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
+							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
 						/*}
 						else {
 							echo '<span class="fa"></span>';
