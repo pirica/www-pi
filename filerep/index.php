@@ -98,6 +98,11 @@ switch($action->getCode()){
 		include 'act_delete_file.php';
 		break;
 	
+	case 'undeletefile':
+		include 'act_undelete_file.php';
+		break;
+	
+	
 	case 'upload':
 		
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');

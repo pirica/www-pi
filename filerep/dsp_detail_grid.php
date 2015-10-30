@@ -91,7 +91,7 @@
 				<span class="thsort thsort-date_last_modified-asc glyphicon glyphicon-arrow-up <?php if(!($sort == 'date_last_modified' && $sortorder == 'asc')){ ?>hidden<?php } ?>"></span>
 				<span class="thsort thsort-date_last_modified-desc glyphicon glyphicon-arrow-down <?php if(!($sort == 'date_last_modified' && $sortorder == 'desc')){ ?>hidden<?php } ?>"></span>
 			</th>
-			<th width="100">&nbsp;</th>
+			<th width="120">&nbsp;</th>
 		</tr>
 	</thead>
 	
@@ -134,6 +134,8 @@
 				echo '<span class="fa"></span>';
 				// delete
 				echo '<span class="fa"></span>';
+				// undelete
+				echo '<span class="fa"></span>';
 			?>
 		</td>
 	</tr>
@@ -174,6 +176,8 @@
 					// view
 					echo '<span class="fa"></span>';
 					// delete
+					echo '<span class="fa"></span>';
+					// undelete
 					echo '<span class="fa"></span>';
 				?>
 			</td>
@@ -221,6 +225,8 @@
 						// view
 						echo '<span class="fa"></span>';
 						// delete
+						echo '<span class="fa"></span>';
+						// undelete
 						echo '<span class="fa"></span>';
 					?>
 				</td>
@@ -288,6 +294,13 @@
 						else {
 							echo '<span class="fa"></span>';
 						}*/
+						
+						if($file['active'] == 0){
+							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa-stack" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
+						}
+						else {
+							echo '<span class="fa"></span>';
+						}
 						
 					?>
 				</td>
