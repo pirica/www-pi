@@ -108,3 +108,9 @@ html,body {
 	visibility:visible;
 }
 
+
+.fa-stack-small {
+    line-height: 1;
+    height: 1em;
+    width: 1em;
+}

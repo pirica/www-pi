@@ -29,7 +29,7 @@ $qry_camera_log_del = mysql_query("
 	");
 	
 while($logdel = mysql_fetch_array($qry_camera_log_del)){
-	unlink($main_dir . $logdel['date'] . $logdel['name']);
+	unlink($main_dir . $logdel['date'] . '/' . $logdel['name']);
 	rmdir($main_dir . $logdel['date']);
 }
 mysql_query("

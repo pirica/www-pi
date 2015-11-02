@@ -1,6 +1,7 @@
 <?php
 require 'connection.php';
 require 'functions.php';
+require dirname(__FILE__).'/../_core/appinit.php';
 
 $qry = mysql_query("
 	select

@@ -296,7 +296,7 @@
 						}*/
 						
 						if($file['active'] == 0){
-							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa-stack" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
+							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa-stack fa-stack-small" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
 						}
 						else {
 							echo '<span class="fa"></span>';

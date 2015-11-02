@@ -193,7 +193,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							" . (property_exists($music_directories[$mdi], 'track') ? $music_directories[$mdi]->track : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'year') ? $music_directories[$mdi]->year : '-1') . ",
 							'" . (property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
-							" . (property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->size : '-1') . ",
+							" . (property_exists($music_directories[$mdi], 'size') ? $music_directories[$mdi]->size : '-1') . ",
 							'" . $music_directories[$mdi]->contentType . "',
 							'" . $music_directories[$mdi]->suffix . "',
 							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
