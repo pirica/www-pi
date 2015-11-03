@@ -21,9 +21,9 @@ $playlists = $s->getPlaylists();
 $c_playlists = count($playlists);
 
 if($c_playlists > 0){
-	mysql_query("delete from playlistEntries;");
-	mysql_query("truncate table playlistEntries;");
-	mysql_query("truncate table playlists;");
+	mysql_query("delete from playlistEntries");
+	mysql_query("truncate table playlistEntries");
+	mysql_query("truncate table playlists");
 	
 	for($pi=0; $pi<$c_playlists; $pi++){
 		mysql_query("
@@ -75,13 +75,13 @@ if($c_playlists > 0){
 }
 
 
-$qry_indexes = mysql_query("select count(*) as indexcount from indexes;");
+$qry_indexes = mysql_query("select count(*) as indexcount from indexes");
 $indexes = mysql_fetch_array($qry_indexes);
 
 if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 
-	mysql_query("truncate table indexes;");
-	mysql_query("truncate table songs;");
+	mysql_query("truncate table indexes");
+	mysql_query("truncate table songs");
 
 	$indexes = $s->getIndexes();
 	$c_indexes = count($indexes);
@@ -217,12 +217,12 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 }
 
 
-
-$qry_users = mysql_query("select count(*) as usercount from users where active = 1;");
+/*
+$qry_users = mysql_query("select count(*) as usercount from users where active = 1");
 $users = mysql_fetch_array($qry_users);
 
 if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
-
+*/
 	$users = $s->getUsers();
 	$c_users = count($users);
 	$usernames = '';
@@ -240,7 +240,7 @@ if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic
 			)
 			values 
 			(
-				" . mysql_real_escape_string($users[$ui]->username) . ",
+				'" . mysql_real_escape_string($users[$ui]->username) . "',
 				1,
 				
 				'" . (property_exists($users[$ui], 'email') ? mysql_real_escape_string($users[$ui]->email) : '') . "'
@@ -249,9 +249,9 @@ if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic
 			
 	}
 
-	mysql_query("update users set active = 0 where username not in (" . $usernames . ")");
+	mysql_query("update users set active = 0 where username not in (" . $usernames . ") and active = 1");
 
-}
+//}
 
 
 /*
