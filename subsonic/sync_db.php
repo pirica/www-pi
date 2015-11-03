@@ -41,13 +41,13 @@ if($c_playlists > 0){
 			values 
 			(
 				" . $playlists[$pi]->id . ",
-				'" . $playlists[$pi]->name . "',
-				'" . $playlists[$pi]->comment . "',
-				'" . $playlists[$pi]->owner . "',
+				'" . mysql_real_escape_string($playlists[$pi]->name) . "',
+				'" . mysql_real_escape_string($playlists[$pi]->comment) . "',
+				'" . mysql_real_escape_string($playlists[$pi]->owner) . "',
 				" . $playlists[$pi]->public . ",
 				" . $playlists[$pi]->songCount . ",
 				" . $playlists[$pi]->duration . ",
-				'" . $playlists[$pi]->created . "'
+				'" . mysql_real_escape_string($playlists[$pi]->created) . "'
 			)
 			");
 			
@@ -103,7 +103,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				(
 					" . $indexes_artists[$iai]->id . ",
 					0,
-					'" . $indexes_artists[$iai]->name . "'
+					'" . mysql_real_escape_string($indexes_artists[$iai]->name) . "'
 				)
 				");
 			
@@ -150,7 +150,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						(
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
-							'" . $music_directories[$mdi]->title . "'
+							'" . mysql_real_escape_string($music_directories[$mdi]->title) . "'
 						)
 						");
 				}
@@ -187,23 +187,23 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						(
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
-							'" . (property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
-							'" . (property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
-							'" . (property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
 							" . (property_exists($music_directories[$mdi], 'track') ? $music_directories[$mdi]->track : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'year') ? $music_directories[$mdi]->year : '-1') . ",
-							'" . (property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
 							" . (property_exists($music_directories[$mdi], 'size') ? $music_directories[$mdi]->size : '-1') . ",
-							'" . $music_directories[$mdi]->contentType . "',
-							'" . $music_directories[$mdi]->suffix . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->contentType) . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->suffix) . "',
 							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'bitRate') ? $music_directories[$mdi]->bitRate : '-1') . ",
-							'" . $music_directories[$mdi]->path . "',
-							'" . $filename . "',
-							'" . $relative_directory . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->path) . "',
+							'" . mysql_real_escape_string($filename) . "',
+							'" . mysql_real_escape_string($relative_directory) . "',
 							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
-							'" . $music_directories[$mdi]->created . "',
-							'" . $music_directories[$mdi]->type . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . "
 						)
 						");
@@ -216,6 +216,45 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 
 }
 
+
+
+$qry_users = mysql_query("select count(*) as usercount from users where active = 1;");
+$users = mysql_fetch_array($qry_users);
+
+if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
+
+	$users = $s->getUsers();
+	$c_users = count($users);
+	$usernames = '';
+
+	for($ui=0; $ui<$c_users; $ui++){
+		$usernames .= ($usernames == '' ? '' : ',') . "'" . mysql_real_escape_string($users[$ui]->username) . "'"; 
+		
+		mysql_query("
+			replace into users
+			(
+				username,
+				active,
+				
+				email
+			)
+			values 
+			(
+				" . mysql_real_escape_string($users[$ui]->username) . ",
+				1,
+				
+				'" . (property_exists($users[$ui], 'email') ? mysql_real_escape_string($users[$ui]->email) : '') . "'
+			)
+			");
+			
+	}
+
+	mysql_query("update users set active = 0 where username not in (" . $usernames . ")");
+
+}
+
+
+/*
 // update filerep
 mysql_query("
 	update filerep.t_file
@@ -232,5 +271,6 @@ mysql_query("
 		f.ss_on_playlist = 1
 	;
 	", $conn);
+*/
 
 ?>

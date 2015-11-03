@@ -36,6 +36,7 @@ class Subsonic
 			'getCoverArt',
 			'scrobble',
 			'changePassword',
+			'getUsers',
 			'getUser',
 			'createUser',
 			'deleteUser',
@@ -217,6 +218,30 @@ class Subsonic
 			return [];
 		}
 	}
+	
+	
+	/**
+		"username" : "wikke",
+		"email" : "subsonic@wikke.net",	// NOT ALWAYS RETURNED!
+		"scrobblingEnabled" : false,
+		"adminRole" : true,
+		"settingsRole" : true,
+		"downloadRole" : true,
+		"uploadRole" : true,
+		"playlistRole" : true,
+		"coverArtRole" : true,
+		"commentRole" : true,
+		"podcastRole" : true,
+		"streamRole" : true,
+		"jukeboxRole" : true,
+		"shareRole" : true,
+		"folder" : [ 0, 1 ]		// NOT ALWAYS RETURNED!
+	*/
+	public function getUsers()
+	{
+		return $this->_querySubsonic('getUsers')->data['users']->user;
+	}
+	
 	
 	
 	/**
