@@ -33,17 +33,41 @@ if($dbfile['active'] == 0 && file_exists($file . '.deleted')){
 			and active = 0
 		", $conn);
 	
+}
+else if($dbfile['active'] == 0 && file_exists($file)){
+	
 	// undelete
 	mysql_query("
-		delete from t_file_index
+		update t_file 
+		set active = 1
 		where
-			id_share = " . $dbfile['id_share'] . "
-			and filename = '" .  mysql_real_escape_string($dbfile['filename']) . "'
-			and relative_directory = '" .  mysql_real_escape_string($dbfile['relative_directory']) . "'
-			
+			id_file = " . $dbfile['id_file'] . "
+			and active = 0
 		", $conn);
 	
 }
+else {
+	
+	// remove to be reindexed
+	mysql_query("
+		delete from t_file 
+		where
+			id_file = " . $dbfile['id_file'] . "
+			and active = 0
+		", $conn);
+	
+}
+
+// undelete
+mysql_query("
+	delete from t_file_index
+	where
+		id_share = " . $dbfile['id_share'] . "
+		and filename = '" .  mysql_real_escape_string($dbfile['filename']) . "'
+		and relative_directory = '" .  mysql_real_escape_string($dbfile['relative_directory']) . "'
+		
+	", $conn);
+	
 
 goto_action('details', false, 'id_share=' . $id_share . '&dir=' . $dir . '&all=' . $show_all );
 
