@@ -6,6 +6,7 @@ $active = saneInput('active', 'int', -1);
 $qry_file = mysql_query("
 	select
 		f.id_file,
+		f.id_share,
 		f.active,
 		f.filename,
 		f.relative_directory,
