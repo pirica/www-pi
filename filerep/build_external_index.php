@@ -110,7 +110,7 @@ include 'functions.php';
 		$online = 0;
 		$check = 'checking...';
 		try {
-			$check = file_get_contents($server_url . '/get.php');
+			$check = @file_get_contents($server_url . '/get.php');
 			if(strpos($check, '====') !== false){
 				$online = 1;
 			}
@@ -118,7 +118,7 @@ include 'functions.php';
 		catch(Exception $e){
 		}
 		
-		echo 'Share '. $share{'name'} . ": " . $check . "\n\n";
+		echo 'Share '. $share{'name'} . ": " . ($online == 1 ? 'online' : 'offline') . "" . "<br>\r\n";
 		
 		if($online == 1){
 			
@@ -149,54 +149,63 @@ include 'functions.php';
 				
 				$raw = file_get_contents($server_url . '/dir.php?d=' . urlencode($dirs['relative_directory']));
 				
-				//echo $raw;
+				echo $raw . "<br>\r\n";
 				
 				//echo $raw->logging;
 				
-				$tmpdirs = $raw->data;
-				
-				$tmpdircount = count($tmpdirs);
-				$tmpinsertcount = 0;
-				
-				for ($i = 0; $i < $tmpdircount; $i++) {
-					if($tmpdirs[$i] != ''){
-						$dirname = $tmpdirs[$i];
-						$dirname = str_replace($dir, '', $dirname); // remove main dir
-						$dirname = substr($dirname, 0, -1);	// remove trailing ':'
-						/*if($dirname == ''){
-							$dirname = '/';
-						}*/
-						$dirname .= '/';
-						
-						mysql_query("
-							insert into t_external_index
-							(
-								id_share,
-								filename,
-								relative_directory,
-								is_dir,
-								size,
-								modified,
-								do_check
-							) 
-							values
-							(
-								" . $id_share . ",
-								'" . mysql_real_escape_string($tmpdirs[$i]->filename) . "',
-								'" . mysql_real_escape_string($dirs['relative_directory'] . $tmpdirs[$i]->filename) . "',
-								" . $tmpdirs[$i]->is_dir . ",
-								" . $tmpdirs[$i]->size . ",
-								'" . $tmpdirs[$i]->modified . "',
-								1
-							)
+				if(isset($raw->data)){
+					$tmpdirs = $raw->data;
+					
+					$tmpdircount = count($tmpdirs);
+					$tmpinsertcount = 0;
+					
+					for ($i = 0; $i < $tmpdircount; $i++) {
+						if($tmpdirs[$i] != ''){
+							$dirname = $tmpdirs[$i];
+							$dirname = str_replace($dir, '', $dirname); // remove main dir
+							$dirname = substr($dirname, 0, -1);	// remove trailing ':'
+							/*if($dirname == ''){
+								$dirname = '/';
+							}*/
+							$dirname .= '/';
 							
-							", $conn);
+							mysql_query("
+								insert into t_external_index
+								(
+									id_share,
+									filename,
+									relative_directory,
+									is_dir,
+									size,
+									modified,
+									do_check
+								) 
+								values
+								(
+									" . $id_share . ",
+									'" . mysql_real_escape_string($tmpdirs[$i]->filename) . "',
+									'" . mysql_real_escape_string($dirs['relative_directory'] . $tmpdirs[$i]->filename) . "',
+									" . $tmpdirs[$i]->is_dir . ",
+									" . $tmpdirs[$i]->size . ",
+									'" . date('Y-m-d H:i:s', $tmpdirs[$i]->modified) . "',
+									1
+								)
+								
+								", $conn);
+						}
 					}
+					
+					mysql_query("
+						update t_external_index
+						set do_check = 0
+						where
+							id_external_index = " . $dirs['id_external_index'] . "
+							
+						", $conn);
 				}
-				
 			}
 			
-			//echo '======================'. "\n\n\n\n";
+			//echo '======================<br>'. "\r\n\r\n";
 		}
 	}
 	
@@ -353,6 +362,6 @@ include 'functions.php';
 	// script is done, unmark as running
 	//mysql_query("update t_setting set value = '0' where code = 'directoryindex_running'", $conn);
 	
-}
+//}
 
 ?>
