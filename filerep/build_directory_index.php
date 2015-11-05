@@ -62,6 +62,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			and hs.id_host = " . $setting_server_id_host . " 
 		where
 			s.active = 1
+			and s.external = 0
 		order by s.id_share
 		", $conn);
 		

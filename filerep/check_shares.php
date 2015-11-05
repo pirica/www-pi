@@ -23,6 +23,7 @@ if($setting_directoryindex_running == '0'){
 		from t_share s
 		where
 			s.active = 1
+			and s.external = 0
 		
 		", $conn);
 		

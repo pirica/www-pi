@@ -32,6 +32,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		from t_directory d
 		join t_share s on s.id_share = d.id_share
 			and s.active = 1
+			and s.external = 0
 		
 		where
 			d.date_last_checked is null

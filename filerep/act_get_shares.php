@@ -49,6 +49,7 @@ $qry = mysql_query("
 		and hss.id_host = " . $setting_server_id_host . " 
 	where
 		s.active = 1
+		and s.external = 0
 	", $conn);
 	
 $returnvalue = array('data' => mysql2json($qry));
