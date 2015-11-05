@@ -1,7 +1,9 @@
 <?php
+ob_start();
+
 $fulldir = '';
 if(isset($_GET['d'])){
-	$fulldir = $_GET['d'];
+	$fulldir = str_replace("/", "\\", urldecode($_GET['d']));
 }
 $data = array();
 
@@ -18,14 +20,24 @@ if($fulldir != ''){
 				$dir = 1;
 			}
 			else {
-				$size = filesize($fullfile);
-				$modified = filemtime($fullfile);
+				try {
+					$size = filesize($fullfile);
+				}
+				catch(Exception $e){
+					$size = -1;
+				}
+				try {
+					$modified = filemtime($fullfile);
+				}
+				catch(Exception $e){
+					$modified = '';
+				}
 				$dir = 0;
 			}
 			
 			$data[] = array(
-				'name' => $file,
-				'nativepath' => $fullfile,
+				'filename' => $file,
+				//'relative_directory' => str_replace("\\", "/", $fulldir),
 				'size' => $size,
 				'modified' => $modified,
 				'dir' => $dir
@@ -38,6 +50,8 @@ if($fulldir != ''){
 
 }
 
-echo json_encode($data);
+$logging = ob_get_clean();
+
+echo json_encode(array('data' => $data, 'logging' => $logging));
 
 ?>
