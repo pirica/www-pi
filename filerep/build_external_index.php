@@ -55,7 +55,7 @@ function curl_get_contents($url)
 
 		from 
 			t_share s
-			left join t_external_index d on d.relative_directory = 'c:/'
+			left join t_external_index d on d.relative_directory = '/c:/'
 				and d.id_share = s.id_share 
 				#and d.active = 1
 				
