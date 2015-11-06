@@ -11,6 +11,17 @@ include 'connection.php';
 include 'act_settings.php';
 include 'functions.php';
 
+function curl_get_contents($url)
+{
+  $ch = curl_init($url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+  $data = curl_exec($ch);
+  curl_close($ch);
+  return $data;
+}
 
 // check if script is already running - no, continue
 //if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
@@ -107,10 +118,11 @@ include 'functions.php';
 		$server_url = $share{'server_url'};
 		$date_last_replicated = $share{'date_last_replicated'};
 		
-		$online = 0;
+		$online = 1;
 		$check = 'checking...';
 		try {
-			$check = @file_get_contents($server_url . '/get.php');
+			$check = curl_get_contents($server_url . '/get.php');
+			echo $check;
 			if(strpos($check, '====') !== false){
 				$online = 1;
 			}
@@ -146,10 +158,16 @@ include 'functions.php';
 				", $conn);
 			
 			while ($dirs = mysql_fetch_array($qry_dirs)) {
-				
-				$raw = file_get_contents($server_url . '/dir.php?d=' . urlencode($dirs['relative_directory']));
+				$relative_directory = $dirs['relative_directory'];
+				if(substr($relative_directory, 0, 1) == '/'){
+					$relative_directory = substr($relative_directory, 1);
+				}
+					
+				$raw = file_get_contents($server_url . '/dir.php?d=' . urlencode($relative_directory));
 				
 				echo $raw . "<br>\r\n";
+				
+				$raw = json_decode($raw);
 				
 				//echo $raw->logging;
 				
@@ -161,13 +179,17 @@ include 'functions.php';
 					
 					for ($i = 0; $i < $tmpdircount; $i++) {
 						if($tmpdirs[$i] != ''){
-							$dirname = $tmpdirs[$i];
-							$dirname = str_replace($dir, '', $dirname); // remove main dir
-							$dirname = substr($dirname, 0, -1);	// remove trailing ':'
-							/*if($dirname == ''){
-								$dirname = '/';
-							}*/
-							$dirname .= '/';
+							if($tmpdirs[$i]->modified != ''){
+								$modified = "'" . date('Y-m-d H:i:s', $tmpdirs[$i]->modified) . "'";
+							}
+							else {
+								$modified = "NULL";
+							}
+							
+							$relative_directory = $dirs['relative_directory'];
+							if(substr($relative_directory, 0, 1) == '/'){
+								$relative_directory = substr($relative_directory, 1);
+							}
 							
 							mysql_query("
 								insert into t_external_index
@@ -184,10 +206,10 @@ include 'functions.php';
 								(
 									" . $id_share . ",
 									'" . mysql_real_escape_string($tmpdirs[$i]->filename) . "',
-									'" . mysql_real_escape_string($dirs['relative_directory'] . $tmpdirs[$i]->filename) . "',
-									" . $tmpdirs[$i]->is_dir . ",
+									'/" . mysql_real_escape_string($dirs['relative_directory'] . ($tmpdirs[$i]->dir == 1 ? $tmpdirs[$i]->filename . '/' : '') ) . "',
+									" . $tmpdirs[$i]->dir . ",
 									" . $tmpdirs[$i]->size . ",
-									'" . date('Y-m-d H:i:s', $tmpdirs[$i]->modified) . "',
+									" . $modified . ",
 									1
 								)
 								
@@ -209,8 +231,43 @@ include 'functions.php';
 		}
 	}
 	
-/*
-	// insert new ones
+
+	// insert root
+	mysql_query("
+		insert into t_directory
+		(
+			id_share,
+			relative_directory,
+			parent_directory,
+			dirname,
+			active,
+			depth
+		) 
+		select
+			f.id_share,
+			'/' as relative_directory,
+			null as parent_directory,
+			'' as dirname,
+			1 as active,
+			0 as depth
+
+		from 
+			t_share f
+			left join t_directory d on d.relative_directory = '/'
+				and d.id_share = f.id_share 
+				#and d.active = 1
+				
+		where
+			f.id_share = " . $id_share . "
+			and d.id_directory is null
+			
+		group by
+			f.id_share,
+			f.relative_directory
+			
+		", $conn);
+		
+	// insert new directories
 	mysql_query("
 		insert into t_directory
 		(
@@ -225,13 +282,14 @@ include 'functions.php';
 			f.id_share,
 			f.relative_directory as relative_directory,
 			case 
-				when f.relative_directory = '/' then null
+				when f.relative_directory = '/c:/' then '/'
 				else replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/')
 			end as parent_directory,
-			case 
-				when f.relative_directory = '/' then ''
-				else replace( SUBSTRING_INDEX(f.relative_directory, '/', -2), '/', '')
-			end as dirname,
+			#case 
+			#	when f.relative_directory = '/c:/' then 'c:'
+			#	else replace( SUBSTRING_INDEX(f.relative_directory, '/', -2), '/', '')
+			#end as dirname,
+			f.filename,
 			1 as active,
 			( ROUND (
 				(
@@ -241,20 +299,57 @@ include 'functions.php';
 			) - 1 ) as depth
 
 		from 
-			t_directory_index f
+			t_external_index f
 			left join t_directory d on d.relative_directory = f.relative_directory
 				and d.id_share = f.id_share 
 				#and d.active = 1
 				
 		where
-			d.id_directory is null
+			f.is_dir = 1
+			and d.id_directory is null
 			
 		group by
 			f.id_share,
 			f.relative_directory
 			
 		", $conn);
-		
+	
+	// insert new files
+	mysql_query("
+		insert into t_file
+		(
+			id_share,
+			filename,
+			relative_directory,
+			size,
+			date_last_modified,
+			active
+		) 
+		select
+			f.id_share,
+			f.filename,
+			f.relative_directory,
+			f.size,
+			f.modified,
+			1 as active
+
+		from 
+			t_external_index f
+			left join t_file d on d.relative_directory = f.relative_directory
+				and d.filename = f.filename
+				and d.id_share = f.id_share 
+				#and d.active = 1
+		where
+			f.is_dir = 0
+			and d.id_file is null
+			
+		group by
+			f.id_share,
+			f.relative_directory
+
+		", $conn);
+
+/*
 	// remove deleted dir and flag to be reindexed (to delete files)
 	mysql_query("
 		
