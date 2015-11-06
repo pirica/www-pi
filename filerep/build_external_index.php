@@ -47,7 +47,7 @@ function curl_get_contents($url)
 		select
 			s.id_share,
 			'c:' as filename,
-			'c:/' as relative_directory,
+			'/c:/' as relative_directory,
 			1 as is_dir,
 			-1 as size,
 			null as modified,
