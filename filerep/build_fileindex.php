@@ -158,7 +158,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 							break;
 						}
 						// file is being uploaded, ignore
-						else if(substr($extension, 0, 8) == '.filerep'){
+						else if(strpos($extension, '.filerep') !== false){
 							$file_found = 2;
 							
 							// if modification date some time in the past, delete (faulty upload)
