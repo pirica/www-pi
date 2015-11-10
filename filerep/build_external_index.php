@@ -206,7 +206,7 @@ function curl_get_contents($url)
 								(
 									" . $id_share . ",
 									'" . mysql_real_escape_string($tmpdirs[$i]->filename) . "',
-									'/" . mysql_real_escape_string($dirs['relative_directory'] . ($tmpdirs[$i]->dir == 1 ? $tmpdirs[$i]->filename . '/' : '') ) . "',
+									'" . mysql_real_escape_string($dirs['relative_directory'] . ($tmpdirs[$i]->dir == 1 ? $tmpdirs[$i]->filename . '/' : '') ) . "',
 									" . $tmpdirs[$i]->dir . ",
 									" . $tmpdirs[$i]->size . ",
 									" . $modified . ",
