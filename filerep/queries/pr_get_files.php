@@ -107,6 +107,9 @@ $qry_files_subdirs = mysql_query("
 		dp.id_share = " . $id_share . "
 		and dp.relative_directory = '" . $dir . "'
 	
+	order by
+		d.dirname asc
+		
 	", $conn);
 		
 	
@@ -147,9 +150,7 @@ $qry_files = mysql_query("
 		and f.relative_directory = '" . $dir . "'
 		
 	order by
-		sort asc,
-		is_directory desc,
-		filename asc
+		f.filename asc
 		
 	", $conn);
 	

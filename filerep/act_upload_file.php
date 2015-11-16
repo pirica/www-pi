@@ -73,6 +73,18 @@ if(empty($errors)) {
 				$reldir = $reldir . '/';
 			}
 			
+			
+			mysql_query("
+				update t_directory
+				set
+					date_last_checked = null
+				
+				where
+					id_share = " . $id_share . "
+					and relative_directory = '" . mysql_real_escape_string($reldir) . "'
+				", $conn);
+				
+			/*
 			$qry_files = mysql_query("
 				select
 					f.id_file,
@@ -109,7 +121,7 @@ if(empty($errors)) {
 					if($date_last_modified != $modified){
 						// update file in db
 						
-						/*mysql_query("
+						/ *mysql_query("
 							insert into t_file_log
 							(
 								id_file,
@@ -132,7 +144,7 @@ if(empty($errors)) {
 								" . ($dbfile['version'] + 1) . ",
 								'" . date('Y-m-d H:i:s', $modified) . "'
 							)
-							", $conn);*/
+							", $conn);* /
 							
 						mysql_query("
 							update t_file 
@@ -146,7 +158,7 @@ if(empty($errors)) {
 							
 					}
 					else {
-						/*mysql_query("
+						/ *mysql_query("
 							insert into t_file_log
 							(
 								id_file,
@@ -169,7 +181,7 @@ if(empty($errors)) {
 								" . $dbfile['version'] . ",
 								'" . date('Y-m-d H:i:s', $dbfile['modified']) . "'
 							)
-							", $conn);*/
+							", $conn);* /
 					}
 					break;
 				}
@@ -200,7 +212,7 @@ if(empty($errors)) {
 					", $conn);
 				$new_id_file = mysql_insert_id($conn);
 				
-				/*mysql_query("
+				/ *mysql_query("
 					insert into t_file_log
 					(
 						id_file,
@@ -223,11 +235,12 @@ if(empty($errors)) {
 						1,
 						'" . date('Y-m-d H:i:s', $modified) . "'
 					)
-					", $conn);*/
+					", $conn);* /
 			}
 			else {
 			
 			}
+			*/
 		}
         die('<result>' . $chunk . '</result>');
     }
