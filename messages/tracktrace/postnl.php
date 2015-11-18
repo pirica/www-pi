@@ -1,62 +1,18 @@
 <?php
 
-$response = get_headers('https://mijnpakket.postnl.nl/Claim?barcode='.$tt['tracking_code'].'&postalcode='.$tt['postal_code'].'&CountryIso=BE', 1);
-//print_r($response);
+$str = file_get_contents('https://jouw.postnl.be/api/shipment?barcode='.$tt['tracking_code'].'&language=nl&postalCode='.$tt['postal_code'].'&_'.time().'=');
+$str = substr($str,1,strlen($str)-2);
+$o = json_decode($str);
 
-$cookies = 'Cookie: ';
+//print_r($o);
 
-foreach($response as $c=>$v){
-	if($c == 'Set-Cookie'){
-		$cc = count($v);
-		for($i=0; $i<$cc; $i++){
-			$cookies .= "" . explode(';', $v[$i])[0] . "; ";
-		}
-	}
-}
+$msg = $o->phaseMessage;
 
-//echo 'cookies:' . $cookies;
+//echo $msg;
 
-$opts = array(
-	'http'=>array(
-		'method'=>"GET",
-		'header'=>"Accept-language: en\r\n" .
-		$cookies . "\r\n"
-	)
-);
-$context = stream_context_create($opts);
-$str = file_get_contents('https://mijnpakket.postnl.nl/Inbox/Claimed', false, $context);
-
-$DOM = new DOMDocument;
-$DOM->loadHTML($str, LIBXML_NOERROR);
-
-//get all H1
-$items = $DOM->getElementsByTagName('div');
-
-//display all H1 text
-for ($i = $items->length - 1; $i >= 0; $i--){
-	if(stripos($items->item($i)->nodeValue, 'Status zending') !== false){
-		echo $items->item($i)->textContent;
-		if($status != $items->item($i)->textContent){
-			$msg = $items->item($i)->textContent;
-
-			$msg = str_replace("\r", ' ', $msg);
-			$msg = str_replace("\n", ' ', $msg);
-			$msg = str_replace("\t", ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-			$msg = str_replace('  ', ' ', $msg);
-
-			$msg = str_replace("Status zending: ", '', $msg);
-
-			$status_changed = true;
-			
-			break;
-		}
-	}
+if($msg != $status){
+	$status_changed = true;
+	
 }
 
 ?>
