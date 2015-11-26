@@ -36,10 +36,6 @@ if(count($tmp) > 5)
 	$msg = str_replace('  ', ' ', $msg);
 	$msg = str_replace('  ', ' ', $msg);
 
-	if($msg != $status){
-		$status_changed = true;
-		
-	}
 }
 
 ?>

@@ -10,9 +10,5 @@ $msg = $o->phaseMessage;
 
 //echo $msg;
 
-if($msg != $status){
-	$status_changed = true;
-	
-}
 
 ?>

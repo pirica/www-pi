@@ -34,10 +34,6 @@ if(count($tmp) > 4)
 	$msg = str_replace('  ', ' ', $msg);
 	$msg = str_replace('  ', ' ', $msg);
 
-	if($msg != $status){
-		$status_changed = true;
-		
-	}
 }
 
 ?>

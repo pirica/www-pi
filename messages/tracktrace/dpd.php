@@ -14,9 +14,5 @@ $msg = $d[count($d)-1]->contents[0]->label;
 
 //echo $msg;
 
-if($msg != $status){
-	$status_changed = true;
-	
-}
 
 ?>

@@ -45,6 +45,10 @@ while($tt = mysql_fetch_array($qry)){
 
 	include ('tracktrace/' . $tt['template']);
 	
+	if($msg != $status && $msg != ''){
+		$status_changed = true;
+	}
+	
 	if($status_changed && $msg != ''){
 		
 		mysql_query("
