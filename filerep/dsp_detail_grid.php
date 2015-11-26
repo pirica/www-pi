@@ -101,7 +101,7 @@
 	
 	$i++;
 	?>
-	<tr class="row-dir-<?=($currentdir['active'] == 1 ? 'row-dir-active' : 'row-dir-inactive') ?>">
+	<tr class="row-dir <?=($currentdir['active'] == 1 ? 'row-dir-active' : 'row-dir-inactive') ?>">
 		<td><?php
 			if($currentdir['fontawesome'] != ''){
 				echo '<span class="fa ' . $currentdir['fontawesome'] . '"></span>';
