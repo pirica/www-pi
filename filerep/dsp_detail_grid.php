@@ -101,7 +101,7 @@
 	
 	$i++;
 	?>
-	<tr class="row-dir-<?=($i % 2 == 1 ? 'odd' : 'even') . '-' . ($currentdir['active'] == 1 ? 'active' : 'inactive') ?>">
+	<tr class="row-dir-<?=($currentdir['active'] == 1 ? 'row-dir-active' : 'row-dir-inactive') ?>">
 		<td><?php
 			if($currentdir['fontawesome'] != ''){
 				echo '<span class="fa ' . $currentdir['fontawesome'] . '"></span>';
@@ -144,7 +144,7 @@
 	if(isset($parentdir['relative_directory'])){
 		$i++;
 		?>
-		<tr class="row-dir-<?=($i % 2 == 1 ? 'odd' : 'even') . '-' . ($parentdir['active'] == 1 ? 'active' : 'inactive') ?>">
+		<tr class="row-dir <?=($parentdir['active'] == 1 ? 'row-dir-active' : 'row-dir-inactive') ?>">
 			<td><?php
 				if($parentdir['fontawesome'] != ''){
 					echo '<span class="fa ' . $parentdir['fontawesome'] . '"></span>';
@@ -189,7 +189,7 @@
 		if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 			$i++;
 			?>
-			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
 				<td><?php
 					if($file['fontawesome'] != ''){
 						echo '<span class="fa ' . $file['fontawesome'] . '"></span>';
@@ -238,7 +238,7 @@
 		if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 			$i++;
 			?>
-			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($i % 2 == 1 ? 'odd' : 'even') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
 				<td>
 					<?php
 						if($file['fontawesome'] != ''){
