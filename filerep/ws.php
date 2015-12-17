@@ -24,6 +24,11 @@ switch($method){
 	/* Main functions, lookups */
 	/* ======================= */
 	
+	case 'getStatus':
+		$returnvalue = array("status" => "ok");
+		echo json_encode($returnvalue);
+		break;
+	
 	case 'getSettings':
 		include 'act_get_settings.php';
 		echo json_encode($returnvalue);
@@ -31,6 +36,20 @@ switch($method){
 	
 	case 'setSetting':
 		include 'act_set_setting.php';
+		echo json_encode($returnvalue);
+		break;
+	
+	case 'login':
+		include 'act_ws_login.php';
+		echo json_encode($returnvalue);
+		break;
+	
+	
+	/* Hosts */
+	/* ===== */
+	
+	case 'getHosts':
+		include 'act_get_hosts.php';
 		echo json_encode($returnvalue);
 		break;
 	
