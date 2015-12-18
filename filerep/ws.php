@@ -25,7 +25,7 @@ switch($method){
 	/* ======================= */
 	
 	case 'getStatus':
-		$returnvalue = array("status" => "ok");
+		$returnvalue = array("data" => array("status" => "ok"));
 		echo json_encode($returnvalue);
 		break;
 	
