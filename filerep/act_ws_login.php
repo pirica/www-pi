@@ -10,16 +10,26 @@ $qry = mysql_query("
 		u.username,
 		u.email,
 		u.date_inserted,
-		u.id_profile	
+		u.id_profile,
+		u.salt
 	
 	from users.t_user u
 	where
 		u.email = '" . $email . "'
-		and u.password = '" . $password . "'
 		and u.active = 1
 		
 	", $conn);
 	
-$returnvalue = array('data' => mysql2json($qry));
+$user = mysql_fetch_array($qry);
+$password_check = hash('sha512', $password . $user['salt']);
+
+if($password_check == $password){
+	$returnvalue = array('type' => 'ok', 'data' => mysql2json($qry));
+}
+else {
+	$returnvalue = array('type' => 'nok', 'message' => 'login failed');
+}
+	
+
 
 ?>
