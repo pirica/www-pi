@@ -291,6 +291,7 @@ $qry = mysql_query("
 			or
 			(ifnull(ae.when_subject,'') <> '' and e.subject like ae.when_subject)
 		)
+		and e.is_spam = 0
 	where
 		ae.enabled = 1
 	");
@@ -361,7 +362,8 @@ $qry = mysql_query("
 		
 	from t_tracktrace_type ttt
 	join t_email e on e.is_tracktrace = 0
-		 and e.body like concat('%', ttt.tracking_code , '%')
+		and e.body like concat('%', ttt.tracking_code , '%')
+		and e.is_spam = 0
 	where
 		ifnull(ttt.tracking_code,'') <> ''
 	");
