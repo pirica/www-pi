@@ -381,27 +381,40 @@ while($tt = mysql_fetch_array($qry)){
 			$postalcode = '2630';
 		}
 		
-		mysql_query("
-			insert into t_tracktrace
-			(
-				id_tracktrace_type,
-				enabled,
-				tracking_code,
-				postal_code,
-				title
-			)
-			values
-			(
-				" . $tt['id_tracktrace_type'] . ",
-				1,
-				'" . mysql_real_escape_string($tt['tracking_code']) . "',
-				'" . mysql_real_escape_string($postalcode) . "',
-				'" . mysql_real_escape_string($tt['fromaddress']) . "'
-			)
-			");
-	
-		send_msg($channel, $title, $msg, $priority);
+		$added = false;
 		
+		$qry2 = mysql_query("
+			select
+				tt.*
+			from t_tracktrace
+			where
+				tt.tracking_code = '" . mysql_real_escape_string($tmp) . "'
+			");
+		
+		while($ttcheck = mysql_fetch_array($qry2)){
+			$added = true;
+		}
+		
+		if(!$added){
+			mysql_query("
+				insert into t_tracktrace
+				(
+					id_tracktrace_type,
+					enabled,
+					tracking_code,
+					postal_code,
+					title
+				)
+				values
+				(
+					" . $tt['id_tracktrace_type'] . ",
+					1,
+					'" . mysql_real_escape_string($tmp) . "',
+					'" . mysql_real_escape_string($postalcode) . "',
+					'" . mysql_real_escape_string($tt['fromaddress']) . "'
+				)
+				");
+		}
 	}
 }
 
