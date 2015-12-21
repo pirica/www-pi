@@ -354,6 +354,7 @@ $qry = mysql_query("
 	select
 		ttt.id_tracktrace_type,
 		ttt.tracking_code,
+		e.id_email,
 		e.fromaddress,
 		e.subject,
 		e.body
@@ -363,6 +364,7 @@ $qry = mysql_query("
 		 and e.body like concat('%', ttt.tracking_code , '%')
 	where
 		ifnull(ttt.tracking_code,'') <> ''
+	limit 1
 	");
 
 	
@@ -416,9 +418,9 @@ while($tt = mysql_fetch_array($qry)){
 				");
 		}
 	}
+	mysql_query("update t_email set is_tracktrace = 1 where id_email = " . $tt['id_email']);
 }
 
-mysql_query("update t_email set is_tracktrace = 1 where is_tracktrace = 0");
 
 
 
