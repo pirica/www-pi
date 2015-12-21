@@ -346,4 +346,68 @@ while($tt = mysql_fetch_array($qry)){
 mysql_query("update t_email set is_alerted = 1 where is_alerted = 0");
 
 
+
+
+// TRACK & TRACE
+
+
+$qry = mysql_query("
+	select
+		ttt.id_tracktrace_type,
+		ttt.tracking_code,
+		e.fromaddress,
+		e.subject,
+		e.body
+		
+	from t_tracktrace_type ttt
+	join t_email e on e.is_tracktrace = 0
+		 and e.body like concat('%', ttt.tracking_code , '%')
+	where
+		ifnull(ttt.tracking_code,'') <> ''
+	");
+
+while($tt = mysql_fetch_array($qry)){
+	$tmp = $tt['body'];
+	$tmp = $tt['tracking_code'] . explode($tt['tracking_code'], $tmp, 2)[1];
+	$tmp = explode('&', $tmp, 2)[0];
+	$tmp = explode(' ', $tmp, 2)[0];
+	$tmp = explode('.', $tmp, 2)[0];
+	$tmp = explode(',', $tmp, 2)[0];
+	
+	if($tmp != ''){
+		
+		$postalcode = '2440';
+		if(strpos($tt['body'], '2630') > 0){
+			$postalcode = '2630';
+		}
+		
+		mysql_query("
+			insert into t_tracktrace
+			(
+				id_tracktrace_type,
+				enabled,
+				tracking_code,
+				postal_code,
+				title
+			)
+			values
+			(
+				" . $tt['id_tracktrace_type'] . ",
+				1,
+				'" . mysql_real_escape_string($tt['tracking_code']) . "',
+				'" . mysql_real_escape_string($postalcode) . "',
+				'" . mysql_real_escape_string($tt['fromaddress']) . "'
+			)
+			");
+	
+		send_msg($channel, $title, $msg, $priority);
+		
+	}
+}
+
+mysql_query("update t_email set is_tracktrace = 1 where is_tracktrace = 0");
+
+
+
+
 ?>
