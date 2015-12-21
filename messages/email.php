@@ -350,6 +350,7 @@ mysql_query("update t_email set is_alerted = 1 where is_alerted = 0");
 
 // TRACK & TRACE
 
+$codes = ',';
 
 $qry = mysql_query("
 	select
@@ -366,6 +367,19 @@ $qry = mysql_query("
 		ifnull(ttt.tracking_code,'') <> ''
 	");
 
+	
+$qry2 = mysql_query("
+	select
+		tt.*
+	from t_tracktrace
+	where
+		tt.tracking_code = '" . mysql_real_escape_string($tmp) . "'
+	");
+
+while($ttcheck = mysql_fetch_array($qry2)){
+	$codes .= $ttcheck['tracking_code'] . ',';
+}
+
 while($tt = mysql_fetch_array($qry)){
 	$tmp = $tt['body'];
 	$tmp = $tt['tracking_code'] . explode($tt['tracking_code'], $tmp, 2)[1];
@@ -381,21 +395,7 @@ while($tt = mysql_fetch_array($qry)){
 			$postalcode = '2630';
 		}
 		
-		$added = false;
-		
-		$qry2 = mysql_query("
-			select
-				tt.*
-			from t_tracktrace
-			where
-				tt.tracking_code = '" . mysql_real_escape_string($tmp) . "'
-			");
-		
-		while($ttcheck = mysql_fetch_array($qry2)){
-			$added = true;
-		}
-		
-		if(!$added){
+		if(strpos($codes, ',' . $tmp . ',') === false){
 			mysql_query("
 				insert into t_tracktrace
 				(
