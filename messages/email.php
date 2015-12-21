@@ -364,7 +364,6 @@ $qry = mysql_query("
 		 and e.body like concat('%', ttt.tracking_code , '%')
 	where
 		ifnull(ttt.tracking_code,'') <> ''
-	limit 1
 	");
 
 	
@@ -375,22 +374,9 @@ while($tt = mysql_fetch_array($qry)){
 	$tmp = explode(' ', $tmp, 2)[0];
 	$tmp = explode('.', $tmp, 2)[0];
 	$tmp = explode(',', $tmp, 2)[0];
-	
+	/*
 	if($tmp != ''){
 		
-		$codes = ',';
-		
-		$qry2 = mysql_query("
-			select
-				tt.*
-			from t_tracktrace
-			where
-				tt.tracking_code = '" . mysql_real_escape_string($tmp) . "'
-			");
-
-		while($ttcheck = mysql_fetch_array($qry2)){
-			$codes .= $ttcheck['tracking_code'] . ',';
-		}
 		
 		$postalcode = '2440';
 		if(strpos($tt['body'], '2630') > 0){
@@ -418,10 +404,33 @@ while($tt = mysql_fetch_array($qry)){
 				");
 		}
 	}
-	mysql_query("update t_email set is_tracktrace = 1 where id_email = " . $tt['id_email']);
+	*/
+	mysql_query("update t_email set is_tracktrace = 1, tracking_code = '" . mysql_real_escape_string($tmp) . "' where id_email = " . $tt['id_email']);
+	
 }
 
-
+mysql_query("
+	insert into t_tracktrace
+	(
+		id_tracktrace_type,
+		enabled,
+		tracking_code,
+		postal_code,
+		title
+	)
+	select
+		ttt.id_tracktrace_type,
+		1,
+		e.tracking_code,
+		case when e.body like '%2630%' then '2630' else '2440' end,
+		e.fromaddress
+	from t_email e
+	join t_tracktrace_type ttt on e.tracking_code like concat(ttt.tracking_code, '%')
+	left join t_tracktrace tt on tt.tracking_code = e.tracking_code
+	where ifnull(e.tracking_code,'') <> ''
+		and tt.id_tracktrace is null
+	limit 1
+	");
 
 
 
