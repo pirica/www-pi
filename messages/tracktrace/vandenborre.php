@@ -33,6 +33,9 @@ if(
 			$msg = str_replace('  ', ' ', $msg);
 			$msg = str_replace('  ', ' ', $msg);
 			$msg = str_replace('  ', ' ', $msg);
+			$msg = str_replace('  ', ' ', $msg);
+			$msg = str_replace('  ', ' ', $msg);
+			$msg = str_replace('  ', ' ', $msg);
 		}
 		
 	}
