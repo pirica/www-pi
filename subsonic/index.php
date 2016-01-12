@@ -9,7 +9,7 @@ $playlistId = saneInput('playlistId', 'int', -1);
 $songId = saneInput('songId', 'int', -1);
 $songIndex = saneInput('songIndex', 'int', -1);
 
-$app->setHeaderScripts('<script type="text/javascript">var playlistId = ' . $playlistId . ', songId = ' . $songId . ', songIndex = ' . $songIndex . ', dir = \'' . $dir . '\';</script>' . "\n");
+$app->setHeaderScripts('<script type="text/javascript">var playlistId = ' . $playlistId . ', songId = ' . $songId . ', songIndex = ' . $songIndex . ', dir = \'' . /*$dir .*/ '\';</script>' . "\n");
 
 switch($action->getCode()){
 	
@@ -25,6 +25,12 @@ switch($action->getCode()){
 	case 'playlist':
 		include 'queries/pr_get_playlists.php';
 		include 'queries/pr_get_playlist_entries.php';
+		$playlist = {};
+		while($_playlist = mysql_fetch_array($qry_playlists)){
+			if($_playlist['id'] == $playlistId){
+				$playlist = $_playlist;
+			}
+		}
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_playlist.php';
@@ -34,6 +40,7 @@ switch($action->getCode()){
 	
 	// main: overview
 	default:
+		include 'queries/pr_get_playlists.php';
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_main.php';

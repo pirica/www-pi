@@ -30,14 +30,14 @@
 		?>
 		<tr>
 			<td><?= $playlist['id'] ?></td>
-			<td><?= $playlist['name'] ?></td>
+			<td><a href="index.php?action=playlist&amp;playlistId=<?= $playlist['id'] ?>"><?= $playlist['name'] ?></a></td>
 			<td><?= secondsToTimeRange($playlist['duration']) ?></td>
 			
 			<td><?= $playlist['owner'] ?></td>
 			<td><?= $playlist['public'] ?></td>
 			
 			<td>
-				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delete_playlist&amp;playlistId=<?= $playlist['playlistId'] ?>" data-toggle="modal" data-target="#myModal">
+				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delete_playlist&amp;playlistId=<?= $playlist['id'] ?>" data-toggle="modal" data-target="#myModal">
 					<span class="glyphicon glyphicon-remove"></span>
 					Remove
 				</a>
