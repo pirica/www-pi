@@ -109,6 +109,13 @@ html,body {
 }
 
 
+.hover-ctr .hovered {
+	visibility:hidden;
+}
+.hover-ctr:hover .hovered {
+	visibility:visible;
+}
+
 .fa-stack-small {
     line-height: 1;
     height: 1em;

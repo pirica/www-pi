@@ -427,4 +427,42 @@ function minutesToTimeRange($value)
 }
 
 
+function timeRangeToSeconds($value)
+{
+	$intervals = array(
+		'sec' => 1.0,
+		'min' => 60.0,
+		'hour' => 60.0 * 60.0,
+		'day' => 24.0 * 60.0 * 60.0,
+		'week' => 7.0 * 24.0 * 60.0 * 60.0,
+		'month' => 30.0 * 24.0 * 60.0 * 60.0,
+		'year' => 12.0 * 30.0 * 24.0 * 60.0 * 60.0
+	);
+	$ret = 0;
+	$parts = explode(' ', $value);
+	
+	for($i = 0; $i < count($parts); $i++)
+	{
+		if($parts[$i] != ''){
+			foreach($intervals as $intervalkey => $intervalvalue){
+				if(strpos($parts[$i], $intervalkey . 's') !== false){
+					$ret += (str_replace($intervalkey . 's', "", $parts[$i]) * $intervalvalue);
+				}
+				if(strpos($parts[$i], $intervalkey) !== false){
+					$ret += (str_replace($intervalkey, "", $parts[$i]) * $intervalvalue);
+				}
+			}
+			
+		}
+	}
+	
+	return $ret;
+}
+
+function timeRangeToMinutes($value)
+{
+	return timeRangeToSeconds($value) / 60;
+}
+
+
 ?>

@@ -9,7 +9,7 @@ $qry = mysql_query("
 		u.id_user,
 		u.username,
 		u.email,
-		u.date_inserted,
+		#u.date_inserted,
 		u.id_profile,
 		u.password,
 		u.salt
@@ -21,11 +21,11 @@ $qry = mysql_query("
 		
 	", $conn);
 	
-$user = mysql_fetch_array($qry);
-$password_check = hash('sha512', $password . $user['salt']);
+$userdata = mysql_fetch_array($qry);
+$password_check = hash('sha512', $password . $userdata['salt']);
 
-if($password_check == $user['password']){
-	$returnvalue = array('type' => 'ok', 'data' => mysql2json($user));
+if($password_check == $userdata['password']){
+	$returnvalue = array('type' => 'ok', 'data' => $userdata);
 }
 else {
 	$returnvalue = array('type' => 'nok', 'message' => 'login failed');

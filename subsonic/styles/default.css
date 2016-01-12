@@ -1,0 +1,96 @@
+/*
+html, body {
+	width: 960px;
+}
+
+html,body,p,table{
+	font-family:Arial, sans-serif;
+	font-size:12px;
+	color:#333333;
+	margin:0px;
+	padding:1px;
+}
+
+table,tr,td,th{
+	font-family:Arial, sans-serif;
+	font-size:12px;
+	color:#333333;
+}
+
+h1 {
+	font-size: 18px;
+}
+h2 {
+	font-size: 16px;
+}
+*/
+
+
+label.valid {
+	width: 24px;
+	height: 24px;
+	background: url(assets/img/valid.png) center center no-repeat;
+	display: inline-block;
+	text-indent: -9999px;
+}
+
+label.error {
+	font-weight: bold;
+	color: red;
+	padding: 2px 8px;
+	margin-top: 2px;
+}
+
+.details-dirlist a {
+	padding: 0 5px;
+}
+
+.highlight {
+	font-weight: bold;
+	
+}
+
+#files-grid {
+	font-size: 90%;
+}
+
+#files-grid h2 {
+	font-size: 24px;
+}
+#files-grid h2 span {
+	font-size: 20px;
+	/*color: #999;*/
+	padding-left: 8px;
+}
+
+#files-grid td {
+	padding: 4px 8px;
+	border-top: 1px solid #EEEEEE;
+}
+
+#files-grid .fa {
+	min-width: 12px;
+	text-align: center;
+	margin: 0px 2px;
+}
+
+/*
+				odd		even
+				
+	dir: #eee	#EEE	#F2F2F2
+	
+	file: #fff	#fff	#f6f6f6
+	
+	inactive: text = #666
+	
+*/
+
+.row-dir-odd-active {background-color: #EEE;}
+.row-dir-odd-inactive {background-color: #EEE; color: #900; font-style: italic;}
+.row-dir-even-active {background-color: #F2F2F2;}
+.row-dir-even-inactive {background-color: #F2F2F2; color: #900; font-style: italic;}
+
+.row-file-odd-active {background-color: #fff;}
+.row-file-odd-inactive {background-color: #fff; color: #900; font-style: italic;}
+.row-file-even-active {background-color: #fcfcfc;}
+.row-file-even-inactive {background-color: #fcfcfc; color: #900; font-style: italic;}

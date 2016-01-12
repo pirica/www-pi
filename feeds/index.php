@@ -2,7 +2,7 @@
 include 'connections.php';
 //include 'functions.php';
 
-require '../_core/appinit.php';
+require '../_core/webinit.php';
 
 $id_feed = saneInput('id_feed', 'int', -1);
 $id_feed_entry = saneInput('id_feed_entry', 'int', -1);

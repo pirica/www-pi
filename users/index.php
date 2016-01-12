@@ -2,7 +2,7 @@
 //require 'connection.php';
 //require 'functions.php';
 
-require '../_core/appinit.php';
+require '../_core/webinit.php';
 
 switch($action->getCode()){
 

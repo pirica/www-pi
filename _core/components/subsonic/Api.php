@@ -188,9 +188,19 @@ class Subsonic
 	
 	public function getPlaylist($playlistId)
 	{
-		return $this->_querySubsonic('getPlaylist', array('id' => $playlistId))->data['playlist']->entry;
+		$data = $this->_querySubsonic('getPlaylist', array('id' => $playlistId))->data['playlist'];
+		if(property_exists($data, "entry")){
+			return $data->entry;
+		}
+		else {
+			return [];
+		}
 	}
 	
+	public function createPlaylist($playlistName)
+	{
+		return $this->_querySubsonic('createPlaylist', array('name' => $playlistName))->status == 'ok';
+	}
 	
 	public function updatePlaylistAdd($playlistId, $songId)
 	{
@@ -201,6 +211,12 @@ class Subsonic
 	{
 		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIndexToRemove' => $playlistSongIndex))->status == 'ok';
 	}
+	
+	public function deletePlaylist($playlistId)
+	{
+		return $this->_querySubsonic('deletePlaylist', array('id' => $playlistId))->status == 'ok';
+	}
+	
 	
 	
 	public function getIndexes()
