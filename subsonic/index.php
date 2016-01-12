@@ -25,12 +25,12 @@ switch($action->getCode()){
 	case 'playlist':
 		include 'queries/pr_get_playlists.php';
 		include 'queries/pr_get_playlist_entries.php';
-		$playlist = {};
+		/*$playlist = {};
 		while($_playlist = mysql_fetch_array($qry_playlists)){
 			if($_playlist['id'] == $playlistId){
 				$playlist = $_playlist;
 			}
-		}
+		}*/
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_playlist.php';

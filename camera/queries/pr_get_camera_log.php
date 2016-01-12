@@ -16,7 +16,7 @@ if($time == 'all')
 		from t_camera_log cl
 		where
 			cl.date = '" . $date . "'
-			and status = 0
+			and status in (0, 2)
 		
 		order by
 			cl.hour_lbl,
@@ -42,7 +42,7 @@ else {
 		where
 			cl.date = '" . $date . "'
 			and cl.hour_lbl = '".$time."'
-			and status = 0
+			and status in (0, 2)
 		
 		order by
 			cl.hour_lbl,
