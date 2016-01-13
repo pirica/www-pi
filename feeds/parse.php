@@ -412,7 +412,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		}
 		
 		// set "last checked"
-		mysql_query("update t_feed set date_last_checked = date('Y-m-d H:i:s', " . $date_start . "), date_end = now() where id_feed = " . $feeds['id_feed'] . "", $conn);
+		mysql_query("update t_feed set date_last_checked = '" . mysql_real_escape_string(date('Y-m-d H:i:s', $date_start) . "', date_end = now() where id_feed = " . $feeds['id_feed'] . "", $conn);
 		
 		
 		//echo ' -> ' . $items . " items in feed\n";
