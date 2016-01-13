@@ -23,7 +23,7 @@ $qry_feeds = mysql_query("
 			when f.date_start is not null and f.date_end is null then 1
 			when f.date_start > f.date_end then 1
 			else 0
-		end as check
+		end as check_feed
 	
 	from t_feed f
 		left join t_feed_entry fe on fe.id_feed = f.id_feed
@@ -38,7 +38,9 @@ $qry_feeds = mysql_query("
 		f.id_feed,
 		f.title,
 		f.open_url,
-		f.desktop_only
+		f.desktop_only,
+		f.date_start,
+		f.date_end
 		
 	order by
 		f.title asc

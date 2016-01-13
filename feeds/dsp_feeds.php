@@ -42,7 +42,7 @@
 			<td><?= ($feed['last_entry_date'] != '0000-00-00 00:00:00' ? $feed['last_entry_date'] : '') ?></td>
 			
 			<td><?= ($feed['date_start'] != '0000-00-00 00:00:00' ? $feed['date_start'] : '') ?></td>
-			<td><?= $feed['check'] == 1 ? '<span class="fa fa-2x fa-exclamation-circle text-danger"></span>' : '' ?></td>
+			<td><?= ($feed['check_feed'] == 1 ? '<span class="fa fa-2x fa-exclamation-circle text-danger"></span>' : '') ?></td>
 			
 			<td>
 				<a class="btn btn-primary" href="index.php?action=setfeed&amp;id_feed=<?=$feed['id_feed'] ?>">
