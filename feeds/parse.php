@@ -8,6 +8,32 @@ include "class.myatomparser.php";
 
 $date_start = time();
 
+
+// clean up entries for inactive feeds
+mysql_query("
+	
+	update t_feed_entry
+	set
+		active = 0,
+		date_deleted = now()
+	where
+		id_feed in (select id_feed from t_feed where active = 0)
+		and active = 1
+		
+	", $conn);
+
+	
+// clean up entries older than a month
+mysql_query("
+	
+	delete from t_feed_entry
+	where
+		active = 0
+		and date_deleted < now() - interval 1 month
+		
+	", $conn);
+	
+
 $qry_feeds = mysql_query("
 	
 	select
@@ -75,16 +101,6 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		echo ' -> ' . ($feeds['entries'] - $remaining_entries) . " read entries deleted\n";
 		
 	}
-	
-	// clean up entries older than a month
-	mysql_query("
-		
-		delete from t_feed_entry
-		where
-			active = 0,
-			and date_deleted < now() - interval 1 month
-			
-		", $conn);
 	
 	// get current entries
 	$qry_feed_entries = mysql_query("
