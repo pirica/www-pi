@@ -23,11 +23,13 @@ $c_playlists = count($playlists);
 if($c_playlists > 0){
 	mysql_query("delete from playlistEntries");
 	mysql_query("truncate table playlistEntries");
-	mysql_query("truncate table playlists");
+	//mysql_query("truncate table playlists");
+	
+	mysql_query("update playlists set active = 2");
 	
 	for($pi=0; $pi<$c_playlists; $pi++){
 		mysql_query("
-			insert into playlists
+			replace into playlists
 			(
 				id,
 				name,
@@ -36,7 +38,8 @@ if($c_playlists > 0){
 				public,
 				songcount,
 				duration,
-				created
+				created,
+				active
 			)
 			values 
 			(
@@ -47,7 +50,8 @@ if($c_playlists > 0){
 				" . $playlists[$pi]->public . ",
 				" . $playlists[$pi]->songCount . ",
 				" . $playlists[$pi]->duration . ",
-				'" . mysql_real_escape_string($playlists[$pi]->created) . "'
+				'" . mysql_real_escape_string($playlists[$pi]->created) . "',
+				1
 			)
 			");
 			
@@ -72,6 +76,9 @@ if($c_playlists > 0){
 				");
 		}
 	}
+	
+	mysql_query("update playlists set active = 0 where active = 2");
+	
 }
 
 
@@ -81,8 +88,11 @@ $indexes = mysql_fetch_array($qry_indexes);
 if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 
 	mysql_query("truncate table indexes");
-	mysql_query("truncate table songs");
-
+	//mysql_query("truncate table songs");
+	
+	mysql_query("update songs set active = 2");
+	
+	
 	$indexes = $s->getIndexes();
 	$c_indexes = count($indexes);
 
@@ -160,7 +170,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 					$relative_directory = '/' . implode('/', $paths) . '/';
 					
 					mysql_query("
-						insert into songs
+						replace into songs
 						(
 							id,
 							parentId,
@@ -181,7 +191,8 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							isVideo,
 							created,
 							type,
-							albumId
+							albumId,
+							active
 						)
 						values 
 						(
@@ -204,7 +215,8 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
 							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
 							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
-							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . "
+							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
+							1
 						)
 						");
 						
@@ -213,7 +225,9 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			
 		}
 	}
-
+	
+	mysql_query("update songs set active = 0 where active = 2");
+	
 }
 
 
