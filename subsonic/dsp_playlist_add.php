@@ -12,8 +12,8 @@
 	
 
 	<div class="form-group">
-		<label for="description">Description</label>
-		<input id="description" name="description" placeholder="" class="form-control" type="text" value="<?=$playlist_description?>">
+		<label for="playlist_description">Description</label>
+		<input id="playlist_description" name="playlist_description" placeholder="" class="form-control" type="text" value="<?=$playlist_description?>">
 	</div>
 	
 	
