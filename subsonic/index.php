@@ -59,7 +59,7 @@ switch($action->getCode()){
 		
 		include 'queries/pr_get_songs_recent_total.php';
 		
-		include 'act_init_songs';
+		include 'act_init_songs.php';
 		
 		include 'queries/pr_get_songs_recent.php';
 		
