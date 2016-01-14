@@ -1,13 +1,13 @@
 <?php
 
 $error = 0;
-$description = saneInput('description');
+$playlist_description = saneInput('playlist_description');
 
-if($description != ''){
+if($playlist_description != ''){
 	
 	include 'act_init_subsonic.php';
 	
-	$subsonic->createPlaylist($description);
+	$subsonic->createPlaylist($playlist_description);
 	
 	$playlists = $subsonic->getPlaylists();
 	$c_playlists = count($playlists);

@@ -13,7 +13,7 @@
 
 	<div class="form-group">
 		<label for="description">Description</label>
-		<input id="description" name="description" placeholder="" class="form-control" type="text" value="<?=$description?>">
+		<input id="description" name="description" placeholder="" class="form-control" type="text" value="<?=$playlist_description?>">
 	</div>
 	
 	

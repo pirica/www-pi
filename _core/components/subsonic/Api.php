@@ -183,7 +183,7 @@ class Subsonic
 	
 	public function getPlaylists()
 	{
-		return $this->_querySubsonic('getPlaylists')->data['playlists']->playlist;
+		return $this->_querySubsonic('getPlaylists', array('username' => $this->_creds['u']))->data['playlists']->playlist;
 	}
 	
 	public function getPlaylist($playlistId)
