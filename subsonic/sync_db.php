@@ -6,18 +6,11 @@ set_time_limit(3600);
 require dirname(__FILE__).'/../_core/appinit.php';
 
 include 'connection.php';
-require dirname(__FILE__).'/../_core/components/subsonic/Api.php';
 
-$s = new Subsonic(
-	$settings->val('subsonic_server_username', 'admin'),
-	$settings->val('subsonic_server_password', 'password'),
-	$settings->val('subsonic_server_url', 'localhost'),
-	$settings->val('subsonic_server_port', 4040),
-	$settings->val('subsonic_clientname', 'subsonic_php')
-);
+include 'act_init_subsonic.php';
 
 
-$playlists = $s->getPlaylists();
+$playlists = $subsonic->getPlaylists();
 $c_playlists = count($playlists);
 
 if($c_playlists > 0){
@@ -56,7 +49,7 @@ if($c_playlists > 0){
 			");
 			
 		
-		$playlist_entries = $s->getPlaylist( $playlists[$pi]->id );
+		$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
 		$c_playlist_entries = count($playlist_entries);
 		
 		for($pei=0; $pei<$c_playlist_entries; $pei++){
@@ -93,7 +86,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	mysql_query("update songs set active = 2");
 	
 	
-	$indexes = $s->getIndexes();
+	$indexes = $subsonic->getIndexes();
 	$c_indexes = count($indexes);
 
 	for($ii=0; $ii<$c_indexes; $ii++){
@@ -143,7 +136,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			
 		while($index = mysql_fetch_array($qry_indexes)){
 			
-			$music_directories = $s->getMusicDirectory($index['id']);
+			$music_directories = $subsonic->getMusicDirectory($index['id']);
 			$c_music_directories = count($music_directories);
 
 			for($mdi=0; $mdi<$c_music_directories; $mdi++){
@@ -237,7 +230,7 @@ $users = mysql_fetch_array($qry_users);
 
 if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 */
-	$users = $s->getUsers();
+	$users = $subsonic->getUsers();
 	$c_users = count($users);
 	$usernames = '';
 

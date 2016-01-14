@@ -2,7 +2,7 @@
 <h1>Playlists</h1>
 
 <p>
-	<a class="btn btn-primary" href="index.php?action=setgrab&amp;id_grab=-1">
+	<a class="btn btn-primary" href="index.php?action=add_playlist">
 		<span class="glyphicon glyphicon-plus"></span>
 		Add new playlist
 	</a>

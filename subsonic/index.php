@@ -38,6 +38,15 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'add_playlist':
+		include 'act_playlist_add.php';
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_playlist_add.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	
 	// main: overview
 	default:
 		include 'queries/pr_get_playlists.php';
