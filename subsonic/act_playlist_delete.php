@@ -4,6 +4,8 @@ $error = 0;
 
 if($playlistId > 0){
 	
+	include 'act_init_subsonic.php';
+	
 	$subsonic->deletePlaylist($playlistId);
 	
 	mysql_query("

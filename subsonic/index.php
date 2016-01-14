@@ -25,12 +25,15 @@ switch($action->getCode()){
 	case 'playlist':
 		include 'queries/pr_get_playlists.php';
 		include 'queries/pr_get_playlist_entries.php';
-		/*$playlist = {};
+		$playlist = array(
+			'id' => -1,
+			'name' => ''
+		);
 		while($_playlist = mysql_fetch_array($qry_playlists)){
 			if($_playlist['id'] == $playlistId){
 				$playlist = $_playlist;
 			}
-		}*/
+		}
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_playlist.php';
@@ -51,6 +54,17 @@ switch($action->getCode()){
 		include 'act_playlist_delete.php';
 		break;
 	
+	
+	case 'songs_recent':
+		
+		include 'queries/pr_get_songs_recent.php';
+		
+		include 'act_init_songs';
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_songs_recent.php';
+		include '../_core/dsp_footer.php';
+		break;
 	
 	// main: overview
 	default:
