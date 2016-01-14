@@ -47,6 +47,11 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'del_playlist':
+		include 'act_playlist_delete.php';
+		break;
+	
+	
 	// main: overview
 	default:
 		include 'queries/pr_get_playlists.php';
