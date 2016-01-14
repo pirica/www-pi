@@ -37,7 +37,7 @@
 			<td><?= $playlist['public'] ?></td>
 			
 			<td>
-				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delete_playlist&amp;playlistId=<?= $playlist['id'] ?>" data-toggle="modal" data-target="#myModal">
+				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=del_playlist&amp;playlistId=<?= $playlist['id'] ?>"><!-- data-toggle="modal" data-target="#myModal"-->
 					<span class="glyphicon glyphicon-remove"></span>
 					Remove
 				</a>
