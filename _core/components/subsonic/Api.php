@@ -199,22 +199,22 @@ class Subsonic
 	
 	public function createPlaylist($playlistName)
 	{
-		return $this->_querySubsonic('createPlaylist', array('name' => $playlistName))->status == 'ok';
+		return $this->_querySubsonic('createPlaylist', array('name' => $playlistName))->data['status'] == 'ok';
 	}
 	
 	public function updatePlaylistAdd($playlistId, $songId)
 	{
-		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIdToAdd' => $songId))->status == 'ok';
+		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIdToAdd' => $songId))->data['status'] == 'ok';
 	}
 	
 	public function updatePlaylistRemove($playlistId, $playlistSongIndex)
 	{
-		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIndexToRemove' => $playlistSongIndex))->status == 'ok';
+		return $this->_querySubsonic('updatePlaylist', array('playlistId' => $playlistId, 'songIndexToRemove' => $playlistSongIndex))->data['status'] == 'ok';
 	}
 	
 	public function deletePlaylist($playlistId)
 	{
-		return $this->_querySubsonic('deletePlaylist', array('id' => $playlistId))->status == 'ok';
+		return $this->_querySubsonic('deletePlaylist', array('id' => $playlistId))->data['status'] == 'ok';
 	}
 	
 	

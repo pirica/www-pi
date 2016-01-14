@@ -40,7 +40,7 @@ if($c_playlists > 0){
 				'" . mysql_real_escape_string($playlists[$pi]->name) . "',
 				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
 				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
-				" . $playlists[$pi]->public . ",
+				" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
 				" . $playlists[$pi]->songCount . ",
 				" . $playlists[$pi]->duration . ",
 				'" . mysql_real_escape_string($playlists[$pi]->created) . "',

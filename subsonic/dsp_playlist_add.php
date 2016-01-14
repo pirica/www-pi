@@ -1,10 +1,4 @@
 
-<ul class="nav nav-tabs">
-	<li class="active"><a href="#grabber" data-toggle="tab">Grabber</a></li>
-	<li><a href="#counters" data-toggle="tab">Counters</a></li>
-	<li class="disabled"><a href="#counterdetail" data-toggle="tab">Counter detail</a></li>
-</ul>
-
 <h1>Add a new playlist</h1>
 
 <form id="frm-edit" class="form-horizontal" method="post" action="index.php?action=add_playlist">
