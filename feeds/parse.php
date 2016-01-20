@@ -129,7 +129,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	try
 	{
 		if($feeds['parser'] != ''){
-			include ('parsers/' . $feeds['parser']);
+			
 		}
 		else if(strpos($feeds['url'], 'feed.atom') !== false){
 			$rss_parser = new myAtomParser($feeds['url']);
@@ -160,6 +160,8 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			$link = '';
 			$description = '';
 			$pubdate = time();
+			
+			include ('parsers/' . $feeds['parser']);
 			
 			$found = 0;
 			// loop over feed items
