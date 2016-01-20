@@ -154,6 +154,9 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	// no errors, continue
 	else
 	{
+		$items = 0;
+		$items_ins = 0;
+		
 		if($feeds['parser'] != ''){
 			$items++;
 			
@@ -230,9 +233,6 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			
 		}
 		else {
-			$items = 0;
-			$items_ins = 0;
-			
 			$start_tag = key($rss);
 			
 			// loop over rss items
