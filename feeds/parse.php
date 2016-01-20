@@ -133,11 +133,12 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		}
 		else if(strpos($feeds['url'], 'feed.atom') !== false){
 			$rss_parser = new myAtomParser($feeds['url']);
+			$rss = $rss_parser->getRawOutput();
 		}
 		else {
 			$rss_parser = new myRSSParser($feeds['url']);
+			$rss = $rss_parser->getRawOutput();
 		}
-		$rss = $rss_parser->getRawOutput();
 	}
 	catch(Exception $e)
 	{
