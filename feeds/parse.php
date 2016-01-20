@@ -175,7 +175,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			}
 			
 			// if already inserted, ignore
-			if($found == 1)
+			if($found == 1 || ($description == '' && $title == ''))
 			{
 				
 			}

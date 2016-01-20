@@ -1,7 +1,6 @@
 <?php
 
-//$str = file_get_contents($feeds['url']);
-$str = file_get_contents('http://dilbert.com/');
+$str = file_get_contents($feeds['url']);
 //echo $str;
 //echo "\n\n==================\n\n";
 
@@ -18,9 +17,9 @@ if(count($tmp) > 1){
 	$tmp = explode('>', $tmp[1])[0];
 	//$tmp = explode(' ', $tmp[0]);
 	
-	$title = substr($tmp, strpos($tmp, 'alt="')+5, strpos($tmp, '"', strpos($tmp, 'alt="') + 5) - strpos($tmp, 'alt="') - 5);
+	$title = $date . ' - ' . substr($tmp, strpos($tmp, 'alt="')+5, strpos($tmp, '"', strpos($tmp, 'alt="') + 5) - strpos($tmp, 'alt="') - 5);
 	
-	$description = $date . ' - ' . substr($tmp, strpos($tmp, 'src="')+5, strpos($tmp, '"', strpos($tmp, 'src="') + 5) - strpos($tmp, 'src="') - 5);
+	$description = '<img src="' . substr($tmp, strpos($tmp, 'src="')+5, strpos($tmp, '"', strpos($tmp, 'src="') + 5) - strpos($tmp, 'src="') - 5) . '">';
 	
 }
 
