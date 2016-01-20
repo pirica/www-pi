@@ -1,10 +1,6 @@
 <?php
 
-//$str = file_get_contents($feeds['url']);
-$str = file_get_contents('http://explosm.net/comics/latest');
-//echo $str;
-//echo "\n\n==================\n\n";
-
+$str = file_get_contents($feeds['url']);
 
 $tmp = explode('id="main-comic"', $str, 2);
 

@@ -1,9 +1,6 @@
 <?php
 
 $str = file_get_contents($feeds['url']);
-//echo $str;
-//echo "\n\n==================\n\n";
-
 
 $tmp = explode('img-comic-container', $str, 2);
 

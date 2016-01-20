@@ -2,6 +2,8 @@
 set_time_limit(3600);
 require dirname(__FILE__).'/../_core/appinit.php';
 
+require dirname(__FILE__).'/../_core/components/phpQuery/phpQuery.php';
+
 include 'connections.php';
 include "class.myrssparser.php"; 
 include "class.myatomparser.php"; 
