@@ -41,6 +41,7 @@ $qry_feeds = mysql_query("
 		f.url,
 		f.title,
 		f.description,
+		f.parser,
 		count(fe.id_feed_entry) as entries
 	from t_feed f
 	left join t_feed_entry fe on fe.id_feed = f.id_feed and fe.is_read = 1 and fe.active = 1
@@ -127,7 +128,10 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	
 	try
 	{
-		if(strpos($feeds['url'], 'feed.atom') !== false){
+		if($feeds['parser'] != ''){
+			include ('parsers/' . $feeds['parser']);
+		}
+		else if(strpos($feeds['url'], 'feed.atom') !== false){
 			$rss_parser = new myAtomParser($feeds['url']);
 		}
 		else {
@@ -149,237 +153,141 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	// no errors, continue
 	else
 	{
-		
-		$items = 0;
-		$items_ins = 0;
-		
-		$start_tag = key($rss);
-		
-		// loop over rss items
-		if($start_tag == 'RSS')
-		{
-			foreach($rss['RSS']["CHANNEL"] as $channel)
+		if($feeds['parser'] != ''){
+			$items++;
+			
+			$title = '';
+			$link = '';
+			$description = '';
+			$pubdate = time();
+			
+			$found = 0;
+			// loop over feed items
+			while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
 			{
-				foreach($channel['ITEM'] as $item)
+				if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title))
 				{
-					$items++;
-					
-					$title = '';
-					$link = '';
-					$description = '';
-					$pubdate = '';
-					if(isset($item['TITLE']))	$title = $item['TITLE'];
-					if(isset($item['LINK']))	$link = $item['LINK'];
-					if(isset($item['DESCRIPTION']))	$description = $item['DESCRIPTION'];
-					if(isset($item['PUBDATE']))	$pubdate = $item['PUBDATE'];
-					else if(isset($item['DATE']))	$pubdate = $item['DATE'];
-					
-					$found = 0;
-					// loop over feed items
-					while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
-					{
-						if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title))
-						{
-							$found = 1;
-						}
-					}
-					
-					// if already inserted, ignore
-					if($found == 1)
-					{
-						
-					}
-					// else, new item: insert
-					else 
-					{
-						if($pubdate == '')
-						{
-							$pubdate = 'NULL';
-						}
-						else
-						{
-							$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
-						}
-						
-						//$description = str_replace('"', '\"', $description);
-						$description = str_replace("'", "\'", $description);
-						
-						// if 'slashdot':
-						/*if('' . $feeds['id_feed'] == '1')
-						{
-							// remove html from entry
-							$description = explode('<p>', $description, 1)[0];
-						}*/
-						
-						mysql_query("
-							insert into t_feed_entry 
-							(
-								id_feed,
-								title,
-								link,
-								description,
-								pubdate
-							)
-							values
-							(
-								" . $feeds['id_feed'] . ",
-								'" . mysql_real_escape_string($title) . "',
-								'" . mysql_real_escape_string($link) . "',
-								'" . $description . "',
-								" . $pubdate . "
-							)
-							
-							", $conn);
-						
-						$items_ins++;
-					}
-					
-					if(mysql_num_rows($qry_feed_entries) >= 1){
-						mysql_data_seek($qry_feed_entries, 0);
-					}
+					$found = 1;
 				}
 			}
-		}
-		// loop over rss items
-		else if($start_tag == 'RDF:RDF')
-		{
-			//foreach($rss['RDF:RDF']["CHANNEL"] as $channel)
+			
+			// if already inserted, ignore
+			if($found == 1)
 			{
-				foreach($rss[$start_tag]['ITEM'] as $item)
-				{
-					$items++;
-					
-					$title = '';
-					$link = '';
-					$description = '';
-					$pubdate = '';
-					if(isset($item['TITLE']))	$title = $item['TITLE'];
-					if(isset($item['LINK']))	$link = $item['LINK'];
-					if(isset($item['DESCRIPTION']))	$description = $item['DESCRIPTION'];
-					if(isset($item['PUBDATE']))	$pubdate = $item['PUBDATE'];
-					else if(isset($item['DATE']))	$pubdate = $item['DATE'];
-					
-					$found = 0;
-					// loop over feed items
-					while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
-					{
-                        if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
-							$found = 1;
-						}
-					}
-					
-					// if already inserted, ignore
-					if($found == 1)
-					{
-					
-					}
-					// else, new item: insert
-					else 
-					{
-						if($pubdate == '')
-						{
-							$pubdate = 'NULL';
-						}
-						else
-						{
-							$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
-						}
-						
-						//$description = str_replace('"', '\"', $description);
-						$description = str_replace("'", "\'", $description);
-						
-						// if 'slashdot':
-						/*if('' . $feeds['id_feed'] == '1')
-						{
-							// remove html from entry
-							$description = explode('<p>', $description, 1)[0];
-						}*/
-						
-						mysql_query("
-							insert into t_feed_entry 
-							(
-								id_feed,
-								title,
-								link,
-								description,
-								pubdate
-							)
-							values
-							(
-								" . $feeds['id_feed'] . ",
-								'" . mysql_real_escape_string($title) . "',
-								'" . mysql_real_escape_string($link) . "',
-								'" . $description . "',
-								" . $pubdate . "
-							)
-							
-							", $conn);
-						
-						$items_ins++;
-					}
-					
-					if(mysql_num_rows($qry_feed_entries) >= 1){
-						mysql_data_seek($qry_feed_entries, 0);
-					}
-				}
+				
 			}
-		}
-		// loop over atom items
-		else if($start_tag == 'FEED')
-		{
-			//foreach($rss['RDF:RDF']["CHANNEL"] as $channel)
+			// else, new item: insert
+			else 
 			{
-				foreach($rss[$start_tag]['ENTRY'] as $item)
+				if($pubdate == '')
 				{
-					$items++;
+					$pubdate = 'NULL';
+				}
+				else
+				{
+					$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
+				}
+				
+				//$description = str_replace('"', '\"', $description);
+				$description = str_replace("'", "\'", $description);
+				
+				// if 'slashdot':
+				/*if('' . $feeds['id_feed'] == '1')
+				{
+					// remove html from entry
+					$description = explode('<p>', $description, 1)[0];
+				}*/
+				
+				mysql_query("
+					insert into t_feed_entry 
+					(
+						id_feed,
+						title,
+						link,
+						description,
+						pubdate
+					)
+					values
+					(
+						" . $feeds['id_feed'] . ",
+						'" . mysql_real_escape_string($title) . "',
+						'" . mysql_real_escape_string($link) . "',
+						'" . $description . "',
+						" . $pubdate . "
+					)
 					
-					$title = '';
-					$link = '';
-					$description = '';
-					$pubdate = '';
-					if(isset($item['TITLE']))	$title = $item['TITLE'];
-					if(isset($item['LINK']))	$link = $item['LINK'];
-					if(isset($item['CONTENT']))	$description = $item['CONTENT'];
-					if(isset($item['UPDATED']))	$pubdate = $item['UPDATED'];
-					else if(isset($item['PUBLISHED']))	$pubdate = $item['PUBLISHED'];
-					
-					$found = 0;
-					// loop over feed items
-					while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+					", $conn);
+				
+				$items_ins++;
+			}
+			
+			if(mysql_num_rows($qry_feed_entries) >= 1){
+				mysql_data_seek($qry_feed_entries, 0);
+			}
+			
+		}
+		else {
+			$items = 0;
+			$items_ins = 0;
+			
+			$start_tag = key($rss);
+			
+			// loop over rss items
+			if($start_tag == 'RSS')
+			{
+				foreach($rss['RSS']["CHANNEL"] as $channel)
+				{
+					foreach($channel['ITEM'] as $item)
 					{
-                        if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
-							$found = 1;
-						}
-					}
-					
-					// if already inserted, ignore
-					if($found == 1)
-					{
-					
-					}
-					// else, new item: insert
-					else 
-					{
-						if($pubdate == '')
+						$items++;
+						
+						$title = '';
+						$link = '';
+						$description = '';
+						$pubdate = '';
+						if(isset($item['TITLE']))	$title = $item['TITLE'];
+						if(isset($item['LINK']))	$link = $item['LINK'];
+						if(isset($item['DESCRIPTION']))	$description = $item['DESCRIPTION'];
+						if(isset($item['PUBDATE']))	$pubdate = $item['PUBDATE'];
+						else if(isset($item['DATE']))	$pubdate = $item['DATE'];
+						
+						$found = 0;
+						// loop over feed items
+						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
 						{
-							$pubdate = 'NULL';
-						}
-						else
-						{
-							$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
+							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title))
+							{
+								$found = 1;
+							}
 						}
 						
-						//$description = str_replace('"', '\"', $description);
-						$description = str_replace("'", "\'", $description);
-						
-						// if 'slashdot':
-						/*if('' . $feeds['id_feed'] == '1')
+						// if already inserted, ignore
+						if($found == 1)
 						{
-							// remove html from entry
-							$description = explode('<p>', $description, 1)[0];
-						}*/
-						
-						if($link != '' || $title != ''){
+							
+						}
+						// else, new item: insert
+						else 
+						{
+							if($pubdate == '')
+							{
+								$pubdate = 'NULL';
+							}
+							else
+							{
+								$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
+							}
+							
+							//$description = str_replace('"', '\"', $description);
+							$description = str_replace("'", "\'", $description);
+							
+							// if 'slashdot':
+							/*if('' . $feeds['id_feed'] == '1')
+							{
+								// remove html from entry
+								$description = explode('<p>', $description, 1)[0];
+							}*/
+							
 							mysql_query("
 								insert into t_feed_entry 
 								(
@@ -402,10 +310,180 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 							
 							$items_ins++;
 						}
+						
+						if(mysql_num_rows($qry_feed_entries) >= 1){
+							mysql_data_seek($qry_feed_entries, 0);
+						}
 					}
-					
-					if(mysql_num_rows($qry_feed_entries) >= 1){
-						mysql_data_seek($qry_feed_entries, 0);
+				}
+			}
+			// loop over rss items
+			else if($start_tag == 'RDF:RDF')
+			{
+				//foreach($rss['RDF:RDF']["CHANNEL"] as $channel)
+				{
+					foreach($rss[$start_tag]['ITEM'] as $item)
+					{
+						$items++;
+						
+						$title = '';
+						$link = '';
+						$description = '';
+						$pubdate = '';
+						if(isset($item['TITLE']))	$title = $item['TITLE'];
+						if(isset($item['LINK']))	$link = $item['LINK'];
+						if(isset($item['DESCRIPTION']))	$description = $item['DESCRIPTION'];
+						if(isset($item['PUBDATE']))	$pubdate = $item['PUBDATE'];
+						else if(isset($item['DATE']))	$pubdate = $item['DATE'];
+						
+						$found = 0;
+						// loop over feed items
+						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+						{
+							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
+								$found = 1;
+							}
+						}
+						
+						// if already inserted, ignore
+						if($found == 1)
+						{
+						
+						}
+						// else, new item: insert
+						else 
+						{
+							if($pubdate == '')
+							{
+								$pubdate = 'NULL';
+							}
+							else
+							{
+								$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
+							}
+							
+							//$description = str_replace('"', '\"', $description);
+							$description = str_replace("'", "\'", $description);
+							
+							// if 'slashdot':
+							/*if('' . $feeds['id_feed'] == '1')
+							{
+								// remove html from entry
+								$description = explode('<p>', $description, 1)[0];
+							}*/
+							
+							mysql_query("
+								insert into t_feed_entry 
+								(
+									id_feed,
+									title,
+									link,
+									description,
+									pubdate
+								)
+								values
+								(
+									" . $feeds['id_feed'] . ",
+									'" . mysql_real_escape_string($title) . "',
+									'" . mysql_real_escape_string($link) . "',
+									'" . $description . "',
+									" . $pubdate . "
+								)
+								
+								", $conn);
+							
+							$items_ins++;
+						}
+						
+						if(mysql_num_rows($qry_feed_entries) >= 1){
+							mysql_data_seek($qry_feed_entries, 0);
+						}
+					}
+				}
+			}
+			// loop over atom items
+			else if($start_tag == 'FEED')
+			{
+				//foreach($rss['RDF:RDF']["CHANNEL"] as $channel)
+				{
+					foreach($rss[$start_tag]['ENTRY'] as $item)
+					{
+						$items++;
+						
+						$title = '';
+						$link = '';
+						$description = '';
+						$pubdate = '';
+						if(isset($item['TITLE']))	$title = $item['TITLE'];
+						if(isset($item['LINK']))	$link = $item['LINK'];
+						if(isset($item['CONTENT']))	$description = $item['CONTENT'];
+						if(isset($item['UPDATED']))	$pubdate = $item['UPDATED'];
+						else if(isset($item['PUBLISHED']))	$pubdate = $item['PUBLISHED'];
+						
+						$found = 0;
+						// loop over feed items
+						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+						{
+							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
+								$found = 1;
+							}
+						}
+						
+						// if already inserted, ignore
+						if($found == 1)
+						{
+						
+						}
+						// else, new item: insert
+						else 
+						{
+							if($pubdate == '')
+							{
+								$pubdate = 'NULL';
+							}
+							else
+							{
+								$pubdate = "'".date('Y-m-d H:i:s', strtotime($pubdate))."'";
+							}
+							
+							//$description = str_replace('"', '\"', $description);
+							$description = str_replace("'", "\'", $description);
+							
+							// if 'slashdot':
+							/*if('' . $feeds['id_feed'] == '1')
+							{
+								// remove html from entry
+								$description = explode('<p>', $description, 1)[0];
+							}*/
+							
+							if($link != '' || $title != ''){
+								mysql_query("
+									insert into t_feed_entry 
+									(
+										id_feed,
+										title,
+										link,
+										description,
+										pubdate
+									)
+									values
+									(
+										" . $feeds['id_feed'] . ",
+										'" . mysql_real_escape_string($title) . "',
+										'" . mysql_real_escape_string($link) . "',
+										'" . $description . "',
+										" . $pubdate . "
+									)
+									
+									", $conn);
+								
+								$items_ins++;
+							}
+						}
+						
+						if(mysql_num_rows($qry_feed_entries) >= 1){
+							mysql_data_seek($qry_feed_entries, 0);
+						}
 					}
 				}
 			}
