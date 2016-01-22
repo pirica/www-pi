@@ -21,9 +21,7 @@ include 'dsp_songs_pager.php';
 		
 		<tbody>
 		<?php 
-		$allsongs = '';
 		while($song = mysql_fetch_array($qry_songs_recent)){
-			$allsongs .= ($allsongs == '' ? '' : ',') . $song['songId'];
 			
 			?>
 			<tr>
@@ -33,13 +31,13 @@ include 'dsp_songs_pager.php';
 				<td><?= secondsToTimeRange($song['duration']) ?></td>
 				
 				<td>
-					<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=add_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+					<a class="btn btn-danger btn-xs" href="index.php?action=add_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
 						<span class="glyphicon glyphicon-plus"></span>
 						Add
 					</a>
 				</td>
 				<td>
-					<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delete_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+					<a class="btn btn-danger btn-xs" href="index.php?action=delete_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
 						<span class="glyphicon glyphicon-remove"></span>
 						Remove
 					</a>
@@ -60,12 +58,12 @@ include 'dsp_songs_pager.php';
 <div>
 	With selected:
 	
-	<a class="btn btn-danger btn-delete-grab" href="index.php?action=add_playlist_entry&amp;songId=<?=$allsongs ?>" data-toggle="modal" data-target="#myModal">
+	<a id="btnAddAll" class="btn btn-danger" href="index.php?action=add_playlist_entry&amp;songId=" data-toggle="modal" data-target="#myModal">
 		<span class="glyphicon glyphicon-plus"></span>
 		Add to playlist
 	</a>
 
-	<a class="btn btn-danger btn-delete-grab" href="index.php?action=delete_playlist_entry&amp;songId=<?=$allsongs ?>" data-toggle="modal" data-target="#myModal">
+	<a id="btnRemoveAll" class="btn btn-danger" href="index.php?action=delete_playlist_entry&amp;songId=" data-toggle="modal" data-target="#myModal">
 		<span class="glyphicon glyphicon-remove"></span>
 		Remove from playlist
 	</a>

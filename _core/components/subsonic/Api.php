@@ -30,6 +30,7 @@ class Subsonic
 			'getPlaylists',
 			'getPlaylist',
 			'createPlaylist',
+			'updatePlaylist',
 			'deletePlaylist',
 			'download',
 			'stream',
