@@ -51,6 +51,18 @@ function saneInput($name, $type = 'string', $default = '', $caseSensitive = fals
 					$value = (int)$post[$name];
 				}
 				break;
+			case 'intlist':
+			case 'integerlist':
+				if($post[$name] != ''){
+					$value = $post[$name];
+					$test = explode(',', $post[$name]);
+					for($i=0; $i<count($test); $i++){
+						if(!is_numeric($test[$i])){
+							$value = $default;
+						}
+					}
+				}
+				break;
 			case 'bool':
 			case 'boolean':
 			case 'bit':
@@ -72,6 +84,18 @@ function saneInput($name, $type = 'string', $default = '', $caseSensitive = fals
 			case 'unixtime':
 				if($get[$name] != '' && is_numeric($get[$name]) ){
 					$value = (int)$get[$name];
+				}
+				break;
+			case 'intlist':
+			case 'integerlist':
+				if($post[$name] != ''){
+					$value = $post[$name];
+					$test = explode(',', $post[$name]);
+					for($i=0; $i<count($test); $i++){
+						if(!is_numeric($test[$i])){
+							$value = $default;
+						}
+					}
 				}
 				break;
 			case 'bool':
