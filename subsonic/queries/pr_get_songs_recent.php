@@ -30,8 +30,11 @@ $qry_songs_recent = mysql_query("
 		s.albumId
 		
 	from songs s
+	left join playlistEntries pe on pe.songId = s.id
+	
 	where
 		s.isVideo = 0
+		and pe.id is null
 		
 	order by
 		s.id desc
