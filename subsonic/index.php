@@ -68,15 +68,11 @@ switch($action->getCode()){
 	
 	
 	case 'songs_recent':
-		
-		include 'queries/pr_get_songs_recent_total.php';
-		
+	case 'songs_search':
 		include 'act_init_songs.php';
 		
-		include 'queries/pr_get_songs_recent.php';
-		
 		include '../_core/dsp_header.php';
-		include 'dsp_songs_recent.php';
+		include 'dsp_songs.php';
 		include '../_core/dsp_footer.php';
 		break;
 	

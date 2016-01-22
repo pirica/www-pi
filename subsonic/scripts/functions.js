@@ -15,7 +15,7 @@ $().ready(function(){
 		
 		$('input[name=song]').each(function(el){
 			if($(this).is(':checked')){
-				songIds = (songIds == '' ? '' : ',') + $(this).val();
+				songIds += (songIds == '' ? '' : ',') + $(this).val();
 			}
 			else {
 				allChecked = false;
@@ -26,8 +26,8 @@ $().ready(function(){
 		$('#allsongs').prop( "checked", allChecked);
 		
 		// get all selected song ids and add to 'all'-buttons
-		$('#btnAddAll').attr('href', 'index.php?action=add_playlist_entry&amp;songId=' + songIds);
-		$('#btnRemoveAll').attr('href', 'index.php?action=delete_playlist_entry&amp;songId=' + songIds);
+		$('#btnAddAll').attr('href', 'index.php?action=add_playlist_entry&songId=' + songIds);
+		$('#btnRemoveAll').attr('href', 'index.php?action=delete_playlist_entry&songId=' + songIds);
 		
 	});
 	

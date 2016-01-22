@@ -1,6 +1,6 @@
 <?php
 	
-$qry_songs_recent = mysql_query("
+$qry_songs = mysql_query("
 	
 	select
 		s.id as songId,

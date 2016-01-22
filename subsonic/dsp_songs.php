@@ -1,6 +1,32 @@
 
-<h1>Recent songs</h1>
+<h1><?= $app->getTitle() ?></h1>
 
+	<form method="get" action="?action=<?= $action->getCode() ?>">
+		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
+		<input type="hidden" name="playlistId" value="<?= $playlistId ?>">
+		
+		
+		
+		<div class="row">
+			<div class="col-md-7">
+				<input id="search" name="search" placeholder="" class="form-control" type="text" value="<?=$search ?>">
+			</div>
+			
+			<div class="col-md-2">
+				<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
+			</div>
+			
+			<div class="col-md-1"></div>
+			
+			<div class="col-md-2">
+				<!--<div class="form-group">
+					<input type="checkbox" id="filter_all" name="all" value="1" <?= ''//($show_all == 1 ? 'checked="checked"' : '') ?>/>
+					<label for="filter_all">Also show deleted files</label>
+				</div>
+			</div>-->
+		</div>
+	</form>
+	
 <?php
 include 'dsp_songs_pager.php';
 ?>
@@ -21,7 +47,7 @@ include 'dsp_songs_pager.php';
 		
 		<tbody>
 		<?php 
-		while($song = mysql_fetch_array($qry_songs_recent)){
+		while($song = mysql_fetch_array($qry_songs)){
 			
 			?>
 			<tr>

@@ -1,5 +1,12 @@
 <?php
 
+if($action->getCode() == 'songs_recent'){
+	include 'queries/pr_get_songs_recent_total.php';
+}
+else if($action->getCode() == 'songs_recent'){
+	include 'queries/pr_get_songs_recent_total.php';
+}
+
 $sort = strtolower(saneInput('sort'));
 $sortorder = strtolower(saneInput('sortorder'));
 
@@ -59,6 +66,13 @@ if($morepages > 0 && $page > $max_pages / 2 ){
 // and if page nbr < 15, show last dots
 if($morepages > 0 && $page < $pages - $max_pages / 2 ){
 	$show_last_dots = true;
+}
+
+if($action->getCode() == 'songs_recent'){
+	include 'queries/pr_get_songs_recent.php';
+}
+else if($action->getCode() == 'songs_search'){
+	include 'queries/pr_get_songs_search.php';
 }
 
 ?>
