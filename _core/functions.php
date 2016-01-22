@@ -88,9 +88,9 @@ function saneInput($name, $type = 'string', $default = '', $caseSensitive = fals
 				break;
 			case 'intlist':
 			case 'integerlist':
-				if($post[$name] != ''){
-					$value = $post[$name];
-					$test = explode(',', $post[$name]);
+				if($get[$name] != ''){
+					$value = $get[$name];
+					$test = explode(',', $get[$name]);
 					for($i=0; $i<count($test); $i++){
 						if(!is_numeric($test[$i])){
 							$value = $default;
