@@ -1,6 +1,7 @@
 <?php
 	
 if($search != ''){
+	
 	$qry_songs = mysql_query("
 		
 		select
@@ -49,7 +50,7 @@ if($search != ''){
 			s.id desc
 			
 		limit
-			" . (($page - 1) * $perpage + 1) . ", " . $perpage . "
+			" . (($page - 1) * ($perpage + 1)) . ", " . $perpage . "
 			
 		", $conn);
 }
