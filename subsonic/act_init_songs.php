@@ -3,8 +3,8 @@
 if($action->getCode() == 'songs_recent'){
 	include 'queries/pr_get_songs_recent_total.php';
 }
-else if($action->getCode() == 'songs_recent'){
-	include 'queries/pr_get_songs_recent_total.php';
+else if($action->getCode() == 'songs_search'){
+	include 'queries/pr_get_songs_search_total.php';
 }
 
 $sort = strtolower(saneInput('sort'));

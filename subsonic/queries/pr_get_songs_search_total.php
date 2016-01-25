@@ -23,6 +23,6 @@ if($search != ''){
 	$songs_total = mysql_fetch_array($qry_songs_search_total);
 }
 else {
-	$songs_total = 0;
+	$songs_total = array('songcount' => 0);
 }
 ?>

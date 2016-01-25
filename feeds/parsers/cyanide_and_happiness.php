@@ -12,7 +12,7 @@ if(count($tmp) > 1){
 	$tmptitle = explode('/', $description);
 	$tmptitle = $tmptitle[count($tmptitle) - 1];
 	
-	$title = date('Y-m-d', time()) . ' - ' . $tmptitle;
+	$title = /*date('Y-m-d', time()) . ' - ' .*/ $tmptitle;
 	
 	$description = '<img src="' . $description . '">';
 	
