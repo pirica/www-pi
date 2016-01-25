@@ -39,8 +39,7 @@ $qry_songs = mysql_query("
 	order by
 		s.id desc
 		
-	limit
-		" . (($page - 1) * ($perpage + 1)) . ", " . $perpage . "
+	limit " . $perpage . " offset " . $offset . "
 		
 	", $conn);
 	

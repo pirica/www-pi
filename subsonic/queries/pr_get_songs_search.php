@@ -49,8 +49,7 @@ if($search != ''){
 		order by
 			s.id desc
 			
-		limit
-			" . (($page - 1) * ($perpage + 1)) . ", " . $perpage . "
+		limit " . $perpage . " offset " . $offset . "
 			
 		", $conn);
 }
