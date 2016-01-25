@@ -40,7 +40,7 @@ $qry_songs = mysql_query("
 		s.id desc
 		
 	limit
-		" . (($page - 1) * $perpage + 1) . ", " . $perpage . "
+		" . (($page - 1) * ($perpage + 1)) . ", " . $perpage . "
 		
 	", $conn);
 	
