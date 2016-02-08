@@ -7,6 +7,9 @@ $os = mysql_real_escape_string(saneInput('os'));
 if($hostname == ''){
 	$returnvalue = array('type' => 'error', 'message' => 'host name is required');
 }
+else if($id_user <= 0){
+	$returnvalue = array('type' => 'error', 'message' => 'user is required');
+}
 else {
 	$sql = "
 		select
@@ -18,7 +21,8 @@ else {
 		
 		from t_host h
 		where
-			h.active = 1
+			h.id_user = " . $id_user . "
+			and h.active = 1
 			and h.name = '" . $hostname . "'
 			and h.username = '" . $username . "'
 		";
@@ -27,8 +31,8 @@ else {
 		
 	if(mysql_num_rows($qry) == 0){
 		mysql_query("
-			insert into t_host (name, username, os)
-			values ('" . $hostname . "', '" . $username . "', '" . $os . "')
+			insert into t_host (id_user, name, username, os)
+			values (" . $id_user . ", '" . $hostname . "', '" . $username . "', '" . $os . "')
 			", $conn);
 		$qry = mysql_query($sql, $conn);
 		$returnvalue = array('type' => 'info', 'message' => 'host added', 'data' => mysql2json($qry));

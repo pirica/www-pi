@@ -10,10 +10,11 @@ $dpmod_newc_count = 0;
 $dpmod_nonc_count = 0;
 $dpmod_nonc_c_count = 0;
 
+$query_success = true;
 
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 1
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -31,7 +32,7 @@ mysql_query("
 $dpmod_newc_count = $dpmod_newc_count + mysql_affected_rows($conn);
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 0
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -49,7 +50,7 @@ mysql_query("
 $dpmod_nonc_count = $dpmod_nonc_count + mysql_affected_rows($conn);
 
 // update conflict = 0,date_previous_modified = date_last_modified where conflmict=1 + temp conflict = 0
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -69,7 +70,7 @@ $dpmod_nonc_c_count = $dpmod_nonc_c_count + mysql_affected_rows($conn);
 
 
 
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -86,7 +87,7 @@ mysql_query("
 	", $conn);
 	
 	
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_index
 	(
 		relative_directory,
@@ -127,7 +128,7 @@ mysql_query("
 				
 				
 // set as conflicting where t_file date modified is already greater than current index
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index fi
 	join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and f.active = 1 
 		and f.date_last_modified > fi.date_previous_modified
@@ -172,7 +173,11 @@ $qry = mysql_query("
 	", $conn);
 $data = mysql2json($qry);
 
-$returnvalue = array('data' => $data, 'logging' => $logging);
-
+if($query_success){
+	$returnvalue = array('data' => $data, 'logging' => $logging);
+}
+else {
+	$returnvalue = array('type' => 'error', 'logging' => $logging);
+}
 
 ?>

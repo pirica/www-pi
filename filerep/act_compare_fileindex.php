@@ -10,10 +10,12 @@ if(!isset($id_host)){
 	$id_share = saneInput('id_share', 'int', -1);
 	$logging = '';
 	$debug = 1;
+	
+	$query_success = true;
 }
 
 // either the file is date_last_modified on server or local: down- or upload accordingly
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -26,7 +28,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
-		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) not in (0, 3600, 7200)
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
@@ -43,7 +45,7 @@ $logging = $logging . ' up:' . mysql_affected_rows($conn);
 
 
 // either the file is date_last_modified on server or local: down- or upload accordingly
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -56,7 +58,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
-		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) not in (0, 3600, 7200)
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
@@ -72,7 +74,7 @@ $logging = $logging . ' updown:' . mysql_affected_rows($conn);
 
 
 // download conflict file's original version to compare locally
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -85,7 +87,7 @@ mysql_query("
 	from t_file f
 	join t_file_index fi on fi.relative_directory = f.relative_directory and f.filename = fi.filename and fi.id_share = f.id_share and fi.id_host = " . $id_host . "
 		and fi.date_last_modified <> f.date_last_modified
-		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) <> 3600
+		and abs( TIME_TO_SEC(TIMEDIFF(fi.date_last_modified, f.date_last_modified)) ) not in (0, 3600, 7200)
 	left join t_file_action fa on fa.source = concat(f.relative_directory,f.filename) and fa.id_share = f.id_share and fa.id_host = " . $id_host . "
 	where fa.id_file_action is null
 	and f.active = 1
@@ -189,7 +191,7 @@ $logging = $logging . ' delc:' . mysql_affected_rows($conn);
 */
 
 // file deleted server
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -240,7 +242,7 @@ $logging = $logging . ' conflict:' . mysql_affected_rows($conn);
 */
 
 // new file on server: download
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -263,7 +265,7 @@ $logging = $logging . ' downloadnew:' . mysql_affected_rows($conn);
 
 
 // new file on client: upload
-mysql_query("
+$query_success = $query_success && mysql_query("
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		null id_file,

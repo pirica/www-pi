@@ -48,7 +48,8 @@ $qry = mysql_query("
 		and hss.active = 1
 		and hss.id_host = " . $setting_server_id_host . " 
 	where
-		s.active = 1
+		s.id_user = " . $id_user . "
+		and s.active = 1
 		and s.external = 0
 	", $conn);
 	

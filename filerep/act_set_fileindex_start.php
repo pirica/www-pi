@@ -2,6 +2,7 @@
 set_time_limit(0);
 
 $logging = '';
+$query_success = true;
 
 $date_last_replicated = saneInput('date_last_replicated'); // seconds since epoch
 
@@ -18,7 +19,7 @@ if($date_last_replicated != ''){
 }
 
 // mark all files as not found first
-mysql_query("
+$query_success = $query_success && mysql_query("
 	update t_file_index
 	set
 		notfound = 1
@@ -30,7 +31,7 @@ mysql_query("
 	
 
 // clear all my actions
-mysql_query("
+$query_success = $query_success && mysql_query("
 	delete from t_file_action
 	where
 		(id_share = " . $id_share . " 
@@ -40,7 +41,7 @@ mysql_query("
 	
 	
 // clear all my actions
-mysql_query("
+$query_success = $query_success && mysql_query("
 	delete from t_file_index_temp
 	where
 		id_share = " . $id_share . " 
@@ -48,8 +49,13 @@ mysql_query("
 		
 	", $conn);
 	
-	
-$returnvalue = array('data' => [], 'logging' => $logging);
+
+if($query_success){
+	$returnvalue = array('data' => [], 'logging' => $logging);
+}
+else {
+	$returnvalue = array('type' => 'error', 'logging' => $logging);
+}
 
 
 ?>
