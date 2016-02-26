@@ -4,12 +4,12 @@
 <div>
 <?php
 
-for($i=0; $i<count($dirs); $i++)
+for($i=0; $i<count($comics); $i++)
 {
-	if($dirs[$i]['dir'] == 1)
+	if($comics[$i]['dir'] == 1)
 	{
 	?>
-		<a href="index.php?action=comic&amp;comic=<?= $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a>
+		<img src="image.php?src=<?= $comic . '/' . $comics[$i]['name'] ?>" /><br/>
 	<?php
 	}
 }
