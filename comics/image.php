@@ -1,6 +1,6 @@
 <?php
 require 'connections.php';
-require '../_core/functions.php';
+//require '../_core/functions.php';
 require '../_core/webinit.php';
 
 

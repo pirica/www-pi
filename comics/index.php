@@ -9,6 +9,7 @@ $comic = saneInput('comic', 'string', '');
 switch($action->getCode()){
 	
 	case 'comic':
+		$app->setTitle($comic);
 		
 		$comics = array();
 		if($comic != '')
@@ -35,6 +36,7 @@ switch($action->getCode()){
 		if($comic != '')
 		{
 			$fulldir .= $comic;
+			$app->setTitle($comic);
 		}
 		$dirs = array();
 		if(is_dir($fulldir))
