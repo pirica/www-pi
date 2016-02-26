@@ -1,13 +1,25 @@
 <?php
 include 'connections.php';
-//include 'functions.php';
+include 'functions.php';
 
 require '../_core/webinit.php';
+
+$comic = saneInput('comic', 'string', '');
 
 switch($action->getCode()){
 	
 	case 'comic':
-		include 'queries/pr_feeds.php';
+		
+		$comics = array();
+		if($comic != '')
+		{
+			$fulldir = $settings->val('comics_path', '') . $comic;
+			if(is_dir($fulldir))
+			{
+				list_dir($comics, $fulldir, 0, 1, 0);
+				usort($comics, "arraysort_compare");
+			}
+		}
 		
 		require '../_core/dsp_header.php';
 		require 'dsp_submenu.php';
@@ -20,10 +32,14 @@ switch($action->getCode()){
 	default:
 		
 		$fulldir = $settings->val('comics_path', '');
+		if($comic != '')
+		{
+			$fulldir .= $comic;
+		}
 		$dirs = array();
 		if(is_dir($fulldir))
 		{
-			list_dir($dirs, $fulldir, 0, 1, 0){
+			list_dir($dirs, $fulldir, 0, 1, 0);
 			usort($dirs, "arraysort_compare");
 		}
 		

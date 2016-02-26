@@ -1,22 +1,17 @@
 
 <h1>Comics overview</h1>
 	
+<div>
 <?php
 
-while($feed = mysql_fetch_array($qry_feed_overview))
+for($i=0; $i<count($dirs); $i++)
 {
+	if($dirs[$i]['dir'] == 1)
+	{
 	?>
-		<div class="panel panel-default">
-			<div class="panel-heading" id_feed="<?=$feed['id_feed']?>" entriesloaded="false">
-				<h3 class="panel-title"><?=$feed['title']?> <span class="title-entries">(<?=$feed['entries']?>)</span></h3>
-			</div>
-			
-			<div class="panel-body closed">
-				<ul class="list-group">
-					<!-- entries go here -->
-				</ul>
-			</div>
-		</div>
+		<a href="index.php?action=comic&amp;comic=<?= $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a>
 	<?php
+	}
 }
 ?>
+</div>
