@@ -18,23 +18,47 @@ else
 <div>
 <?php
 
-for($i=0; $i<count($dirs); $i++)
+/*
+for($i=0; $i<count($files); $i++)
 {
-	if($dirs[$i]['dir'] == 1)
+	if($files[$i]['dir'] == 1)
 	{
 		if($map == '')
 		{
 		?>
-			<a href="index.php?action=main&amp;map=<?= $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a><br/>
+			<a href="index.php?action=main&amp;map=<?= $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
 		<?php
 		}
 		else
 		{
 		?>
-			<a href="index.php?action=map&amp;map=<?= $map . '/' . $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a><br/>
+			<a href="index.php?action=main&amp;map=<?= $map . '/' . $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
 		<?php
 		}
 	}
 }
+*/
+
+
+for($i=0; $i<count($files); $i++)
+{
+	if($files[$i]['dir'] == 1)
+	{
+	?>
+		<a href="index.php?action=main&amp;map=<?= $map . '/' . $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
+	<?php
+	}
+}
+
+for($i=0; $i<count($files); $i++)
+{
+	if($files[$i]['dir'] == 0)
+	{
+	?>
+		<img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" /><br/>
+	<?php
+	}
+}
 ?>
+
 </div>
