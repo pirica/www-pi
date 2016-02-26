@@ -1,5 +1,19 @@
 
-<h1>Comics overview</h1>
+
+<?php
+if($comic != '')
+{
+	?>
+	<h1><?= $comic ?></h1>
+	<?php
+}
+else 
+{
+	?>
+	<h1>Comics overview</h1>
+	<?php
+}
+?>
 	
 <div>
 <?php
@@ -17,7 +31,7 @@ for($i=0; $i<count($dirs); $i++)
 		else
 		{
 		?>
-			<a href="index.php?action=comic&amp;comic=<?= $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a><br/>
+			<a href="index.php?action=comic&amp;comic=<?= $comic . '/' . $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a><br/>
 		<?php
 		}
 	}

@@ -1,6 +1,8 @@
 <?php
-require 'connection.php';
+require 'connections.php';
 require '../_core/functions.php';
+require '../_core/webinit.php';
+
 
 $src = saneInput('src', 'string', '');
 $fa = explode('/',$src);
