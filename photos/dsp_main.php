@@ -18,28 +18,6 @@ else
 <div>
 <?php
 
-/*
-for($i=0; $i<count($files); $i++)
-{
-	if($files[$i]['dir'] == 1)
-	{
-		if($map == '')
-		{
-		?>
-			<a href="index.php?action=main&amp;map=<?= $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
-		<?php
-		}
-		else
-		{
-		?>
-			<a href="index.php?action=main&amp;map=<?= $map . '/' . $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
-		<?php
-		}
-	}
-}
-*/
-
-
 for($i=0; $i<count($files); $i++)
 {
 	if($files[$i]['dir'] == 1)
@@ -55,7 +33,7 @@ for($i=0; $i<count($files); $i++)
 	if($files[$i]['dir'] == 0)
 	{
 	?>
-		<img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" /><br/>
+		<img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/><br/>
 	<?php
 	}
 }
