@@ -11,7 +11,7 @@
 				foreach ($camera_log_menu_data as $log_date => $log_times) {
 					$subcount = count($log_times);
 					
-					$log_date_lbl = date($settings->val('menu_date_format', 'Ymd'), date_create_from_format("Ymd",$log_date));
+					$log_date_lbl = date_create_from_format("Ymd",$log_date)->format($settings->val('menu_date_format', 'Ymd'));
 				?>
 					<a href="#date<?= $log_date ?>" class="list-group-item <?= $log_date == $date && $time == 'all' ? 'active' : '' ?>" data-toggle="collapse" data-parent="#MainMenu" title="<?= $subcount ?> events"><?= $log_date_lbl ?> <span class="badge"><?= $subcount ?></span></a>
 					<div class="<?= $log_date == $date ? '' : 'collapse' ?>" id="date<?= $log_date ?>">

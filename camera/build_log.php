@@ -8,41 +8,42 @@ require dirname(__FILE__).'/../_core/appinit.php';
 
 $crondate = time();
 
-shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . '"');
-shell_exec ('sudo chmod 777 -R "' . $main_dir . '"');
+shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . date('Ymd', time() - (60*60*24)) . '"');
+shell_exec ('sudo chmod 777 -R "' . $main_dir . date('Ymd', time() - (60*60*24)) . '"');
 
+shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . date('Ymd') . '"');
+shell_exec ('sudo chmod 777 -R "' . $main_dir . date('Ymd') . '"');
 	
 $qry_camera_log_del = mysql_query("
 	
 	select
-		cl.id_camera_log,
-		cl.date,
-		cl.name
+		cl.date
 		
 	from t_camera_log cl
 	where
 		cl.date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
-	order by
-		cl.name
+	group by
+		cl.date
 		
 		
 	");
 	
 while($logdel = mysql_fetch_array($qry_camera_log_del)){
-	unlink($main_dir . $logdel['date'] . '/' . $logdel['name']);
-	rmdir($main_dir . $logdel['date']);
+	shell_exec('rm -R ' . $main_dir . $logdel['date']);
 }
+
 mysql_query("
 	delete
 	from t_camera_log
 	where
 		date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
-	;
+	");
+	
+mysql_query("
 	delete
 	from t_camera_menu
 	where
 		date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
-	;
 	");
 
 // clear complete table at 3 AM
