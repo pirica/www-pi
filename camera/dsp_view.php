@@ -10,8 +10,10 @@
 				<?php
 				foreach ($camera_log_menu_data as $log_date => $log_times) {
 					$subcount = count($log_times);
+					
+					$log_date_lbl = date($settings->val('menu_date_format', 'Ymd'), date_create_from_format("Ymd",$log_date));
 				?>
-					<a href="#date<?= $log_date ?>" class="list-group-item <?= $log_date == $date && $time == 'all' ? 'active' : '' ?>" data-toggle="collapse" data-parent="#MainMenu" title="<?= $subcount ?> events"><?= $log_date ?> <span class="badge"><?= $subcount ?></span></a>
+					<a href="#date<?= $log_date ?>" class="list-group-item <?= $log_date == $date && $time == 'all' ? 'active' : '' ?>" data-toggle="collapse" data-parent="#MainMenu" title="<?= $subcount ?> events"><?= $log_date_lbl ?> <span class="badge"><?= $subcount ?></span></a>
 					<div class="<?= $log_date == $date ? '' : 'collapse' ?>" id="date<?= $log_date ?>">
 						<a href="?action=<?= $action->getCode() ?>&date=<?= $log_date ?>&time=all" class="list-group-item list-group-item-sub">All</a>
 						<?php
