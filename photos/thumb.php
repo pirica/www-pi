@@ -74,10 +74,12 @@ if(
 			
 			if($width > $height)
 			{
+				$width = $height;
 				$src_x = ($width - $height) / 2;
 			}
 			else if($width < $height)
 			{
+				$height = $width;
 				$src_y = ($height - $width) / 2;
 			}
 		}

@@ -30,7 +30,7 @@ for($i=0; $i<count($files); $i++)
 
 
 echo '<div class="row">';
-$counter = 0;
+$counter = 1;
 for($i=0; $i<count($files); $i++)
 {
 	if($files[$i]['dir'] == 0)
@@ -39,7 +39,7 @@ for($i=0; $i<count($files); $i++)
 		<div class="col-xs-6 col-md-3"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
 		<?php
 		
-		if($counter % == 0 && $counter > 0)
+		if($counter % 4 == 0 && $counter > 1)
 		{
 			echo '</div><div class="row">';
 		}
