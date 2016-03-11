@@ -22,21 +22,32 @@ for($i=0; $i<count($files); $i++)
 {
 	if($files[$i]['dir'] == 1)
 	{
-	?>
+		?>
 		<a href="index.php?action=main&amp;map=<?= $map . '/' . $files[$i]['name'] ?>"><?= $files[$i]['name'] ?></a><br/>
-	<?php
+		<?php
 	}
 }
 
+
+echo '<div class="row">';
+$counter = 0;
 for($i=0; $i<count($files); $i++)
 {
 	if($files[$i]['dir'] == 0)
 	{
-	?>
-		<img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/><br/>
-	<?php
+		?>
+		<div class="col-xs-6 col-md-3"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
+		<?php
+		
+		if($counter % == 0 && $counter > 0)
+		{
+			echo '</div><div class="row">';
+		}
+		
+		$counter++;
 	}
 }
+echo '</div>';
 ?>
 
 </div>
