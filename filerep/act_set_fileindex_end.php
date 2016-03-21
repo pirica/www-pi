@@ -126,7 +126,7 @@ $query_success = $query_success && mysql_query("
 		
 	", $conn);
 				
-				
+/*	
 // set as conflicting where t_file date modified is already greater than current index
 $query_success = $query_success && mysql_query("
 	update t_file_index fi
@@ -141,7 +141,7 @@ $query_success = $query_success && mysql_query("
 	", $conn);
 
 $conflictcount = $conflictcount + mysql_affected_rows($conn);
-
+*/
 
 $logging = $logging . ' confl:' . $conflictcount;
 

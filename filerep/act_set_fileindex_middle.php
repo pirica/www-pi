@@ -38,7 +38,7 @@ if($files !== null){
 				'" . mysql_real_escape_string($path) . "',
 				'" . mysql_real_escape_string($files[$i]->n) . "',
 				'" . mysql_real_escape_string($files[$i]->m) . "',
-				" . mysql_real_escape_string($files[$i]->c) . ",
+				0" . /*mysql_real_escape_string($files[$i]->c) .*/ ",
 				" . mysql_real_escape_string($files[$i]->e) . ",
 			
 				" . $id_share . ",

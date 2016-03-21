@@ -185,7 +185,7 @@ for ($i = 0; $i < $filelen; $i++) {
 	
 }
 
-
+/*
 // set as conflicting where t_file date modified is already greater than current index
 mysql_query("
 	update t_file_index fi
@@ -200,7 +200,7 @@ mysql_query("
 	", $conn);
 
 $conflictcount = $conflictcount + mysql_affected_rows($conn);
-
+*/
 
 $logging = $logging . ' mod:' . $modifiedcount;
 $logging = $logging . ' ins:' . $insertcount;
