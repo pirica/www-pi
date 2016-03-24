@@ -390,6 +390,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					set
 						f.date_last_modified = fit.date_last_modified,
 						f.active = fit.active,
+						f.date_deleted = case when fit.active = 0 and f.date_deleted is null then now() else f.date_deleted end,
 						f.size = fit.size
 					where
 						f.id_share = " . $id_share . " 
@@ -408,7 +409,8 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						filename,
 						date_last_modified,
 						size,
-						active
+						active,
+						date_deleted
 					)
 					select
 						fit.id_share,
@@ -416,7 +418,8 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						fit.filename,
 						fit.date_last_modified,
 						fit.size,
-						fit.active
+						fit.active,
+						case when fit.active = 0 then now() else null end
 						
 					from t_file_index_temp fit
 					left join t_file f
