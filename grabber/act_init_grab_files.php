@@ -24,6 +24,8 @@ mysql_query("
 		
 	", $conn);
 	
+mysql_query("truncate table t_grab_file_temp", $conn);
+	
 $qry_grabs = mysql_query("
 	
 	select
@@ -134,7 +136,9 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		echo ' -> ' . count($files) . " file URLs generated\n";
 		//var_dump($files);
 
+		$filecount = count($files);
 		
+		/*
 		$qry_grab_files = mysql_query("
 			
 			select
@@ -146,8 +150,6 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 				and gf.active = 1
 				
 			", $conn);
-		
-		$filecount = count($files);
 		
 		while ($grab_files = mysql_fetch_array($qry_grab_files)) {
 			for($i=0; $i<$filecount; $i++){
@@ -165,8 +167,8 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 			}
 			
 		}
+		*/
 
-		//$filecount = count($files);
 		$insertcount = 0;
 		$qry_insert = '';
 		
@@ -174,7 +176,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		for($i=0; $i<$filecount; $i++){
 			if($files[$i]['excluded'] == 0){
 				//if($qry_insert == ''){
-					$qry_insert = "insert into t_grab_file (id_grab, full_url, full_path) values ";
+					$qry_insert = "insert into t_grab_file_temp (id_grab, full_url, full_path) values ";
 					$qry_insert .= "(" . $grabs['id_grab'] . ", '" . mysql_real_escape_string($files[$i]['full_url']) . "', '" . mysql_real_escape_string($files[$i]['full_path']) . "')";
 				/*}
 				else {
@@ -211,4 +213,20 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 	
 }
 
+
+
+mysql_query("
+	
+	insert into t_grab_file (id_grab, full_url, full_path) 
+	select 
+		ff.id_grab, 
+		ff.full_url,  
+		ff.full_path 
+	from t_grab_file_temp ff 
+		left join t_grab_file gf on replace(gf.full_url, 'https://', 'http://') = replace(ff.full_url, 'https://', 'http://')
+	where  
+		gf.id_grab_file is null 
+	
+	", $conn);
+	
 ?>
