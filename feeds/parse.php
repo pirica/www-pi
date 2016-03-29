@@ -44,6 +44,7 @@ $qry_feeds = mysql_query("
 		f.title,
 		f.description,
 		f.parser,
+		ifnull(f.parse_max_items,-1) as parse_max_items,
 		count(fe.id_feed_entry) as entries
 	from t_feed f
 	left join t_feed_entry fe on fe.id_feed = f.id_feed and fe.is_read = 1 and fe.active = 1
@@ -293,27 +294,29 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								$description = explode('<p>', $description, 1)[0];
 							}*/
 							
-							mysql_query("
-								insert into t_feed_entry 
-								(
-									id_feed,
-									title,
-									link,
-									description,
-									pubdate
-								)
-								values
-								(
-									" . $feeds['id_feed'] . ",
-									'" . mysql_real_escape_string($title) . "',
-									'" . mysql_real_escape_string($link) . "',
-									'" . $description . "',
-									" . $pubdate . "
-								)
-								
-								", $conn);
-							
-							$items_ins++;
+							if($feeds['parse_max_items'] > 0 && $items_ins < $feeds['parse_max_items'])
+							{
+								mysql_query("
+									insert into t_feed_entry 
+									(
+										id_feed,
+										title,
+										link,
+										description,
+										pubdate
+									)
+									values
+									(
+										" . $feeds['id_feed'] . ",
+										'" . mysql_real_escape_string($title) . "',
+										'" . mysql_real_escape_string($link) . "',
+										'" . $description . "',
+										" . $pubdate . "
+									)
+									
+									", $conn);
+								$items_ins++;
+							}
 						}
 						
 						if(mysql_num_rows($qry_feed_entries) >= 1){
@@ -377,27 +380,29 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								$description = explode('<p>', $description, 1)[0];
 							}*/
 							
-							mysql_query("
-								insert into t_feed_entry 
-								(
-									id_feed,
-									title,
-									link,
-									description,
-									pubdate
-								)
-								values
-								(
-									" . $feeds['id_feed'] . ",
-									'" . mysql_real_escape_string($title) . "',
-									'" . mysql_real_escape_string($link) . "',
-									'" . $description . "',
-									" . $pubdate . "
-								)
-								
-								", $conn);
-							
-							$items_ins++;
+							if($feeds['parse_max_items'] > 0 && $items_ins < $feeds['parse_max_items'])
+							{
+								mysql_query("
+									insert into t_feed_entry 
+									(
+										id_feed,
+										title,
+										link,
+										description,
+										pubdate
+									)
+									values
+									(
+										" . $feeds['id_feed'] . ",
+										'" . mysql_real_escape_string($title) . "',
+										'" . mysql_real_escape_string($link) . "',
+										'" . $description . "',
+										" . $pubdate . "
+									)
+									
+									", $conn);
+								$items_ins++;
+							}
 						}
 						
 						if(mysql_num_rows($qry_feed_entries) >= 1){

@@ -18,7 +18,7 @@ $description .= '<img src="' . $doc->find('#aftercomic img')->attr('src') . '"><
 if (!isset($feeds)){
 	echo $title;
 	echo "<br>";
-	echo $description
+	echo $description;
 }
 
 ?>
