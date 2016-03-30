@@ -247,6 +247,11 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					{
 						$items++;
 						
+						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						{
+							break;
+						}
+						
 						$title = '';
 						$link = '';
 						$description = '';
@@ -294,29 +299,28 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								$description = explode('<p>', $description, 1)[0];
 							}*/
 							
-							if($feeds['parse_max_items'] > 0 && $items_ins < $feeds['parse_max_items'])
-							{
-								mysql_query("
-									insert into t_feed_entry 
-									(
-										id_feed,
-										title,
-										link,
-										description,
-										pubdate
-									)
-									values
-									(
-										" . $feeds['id_feed'] . ",
-										'" . mysql_real_escape_string($title) . "',
-										'" . mysql_real_escape_string($link) . "',
-										'" . $description . "',
-										" . $pubdate . "
-									)
-									
-									", $conn);
-								$items_ins++;
-							}
+							
+							mysql_query("
+								insert into t_feed_entry 
+								(
+									id_feed,
+									title,
+									link,
+									description,
+									pubdate
+								)
+								values
+								(
+									" . $feeds['id_feed'] . ",
+									'" . mysql_real_escape_string($title) . "',
+									'" . mysql_real_escape_string($link) . "',
+									'" . $description . "',
+									" . $pubdate . "
+								)
+								
+								", $conn);
+							$items_ins++;
+							
 						}
 						
 						if(mysql_num_rows($qry_feed_entries) >= 1){
@@ -333,6 +337,11 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					foreach($rss[$start_tag]['ITEM'] as $item)
 					{
 						$items++;
+						
+						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						{
+							break;
+						}
 						
 						$title = '';
 						$link = '';
@@ -380,29 +389,27 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								$description = explode('<p>', $description, 1)[0];
 							}*/
 							
-							if($feeds['parse_max_items'] > 0 && $items_ins < $feeds['parse_max_items'])
-							{
-								mysql_query("
-									insert into t_feed_entry 
-									(
-										id_feed,
-										title,
-										link,
-										description,
-										pubdate
-									)
-									values
-									(
-										" . $feeds['id_feed'] . ",
-										'" . mysql_real_escape_string($title) . "',
-										'" . mysql_real_escape_string($link) . "',
-										'" . $description . "',
-										" . $pubdate . "
-									)
-									
-									", $conn);
-								$items_ins++;
-							}
+							mysql_query("
+								insert into t_feed_entry 
+								(
+									id_feed,
+									title,
+									link,
+									description,
+									pubdate
+								)
+								values
+								(
+									" . $feeds['id_feed'] . ",
+									'" . mysql_real_escape_string($title) . "',
+									'" . mysql_real_escape_string($link) . "',
+									'" . $description . "',
+									" . $pubdate . "
+								)
+								
+								", $conn);
+							$items_ins++;
+							
 						}
 						
 						if(mysql_num_rows($qry_feed_entries) >= 1){
@@ -419,6 +426,11 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					foreach($rss[$start_tag]['ENTRY'] as $item)
 					{
 						$items++;
+						
+						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						{
+							break;
+						}
 						
 						$title = '';
 						$link = '';
@@ -467,6 +479,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 							}*/
 							
 							if($link != '' || $title != ''){
+								
 								mysql_query("
 									insert into t_feed_entry 
 									(
@@ -488,6 +501,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 									", $conn);
 								
 								$items_ins++;
+								
 							}
 						}
 						
