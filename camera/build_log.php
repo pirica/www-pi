@@ -6,6 +6,10 @@ require 'functions.php';
 
 require dirname(__FILE__).'/../_core/appinit.php';
 
+shell_exec('if [ ! -d ./captures ]; then ln -s ' . $main_dir . ' ./captures > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d ./captures_archive ]; then ln -s ' . $archive_dir . ' ./captures_archive > /dev/null 2>&1; fi');
+//shell_exec('unlink ./captures');
+
 $crondate = time();
 
 shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . date('Ymd', time() - (60*60*24)) . '"');
