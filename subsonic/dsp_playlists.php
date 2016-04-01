@@ -49,7 +49,7 @@ if(!$for_action){
 				}
 				else {
 				?>
-					<a href="index.php?action=do_add_playlist_entry&amp;playlistId=<?= $playlist['id'] ?>&amp;songId=<?= $songId ?>""><?= $playlist['name'] ?></a>
+					<a class="add-playlist-entry" data-playlistId="<?= $playlist['id'] ?>" href="index.php?action=do_add_playlist_entry&amp;playlistId=<?= $playlist['id'] ?>&amp;songId=<?= $songId ?>"><?= $playlist['name'] ?></a>
 				<?php
 				}
 				?>
