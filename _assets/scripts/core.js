@@ -1,4 +1,29 @@
 
+$().ready(function(){
+	getInfo();
+});
+
+function getInfo()
+{
+	$.ajax({
+		url: '/_core/index.php?action=status',
+		type: 'GET',
+		cache: false,
+		//dataType: 'json',
+		error: function(xhr, status, error) {
+			//location.href = ...
+		},
+		success: function(data, textStatus, jqXHR){
+			$('.bottombar').html(data);
+		}
+	});
+	
+	setTimeout(getInfo, 3000);
+}
+
+
+// =========	Core functions	=========
+
 function secondsToTimeRange(value)
 {
 	var intervals = [

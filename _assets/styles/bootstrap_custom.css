@@ -92,6 +92,20 @@ html,body {
 	color: #fff;
 }
 
+.modal
+{
+	text-align: center;
+}
+.modal-dialog
+{
+    display: inline-block;
+    width: auto;
+}
+.modal-content
+{
+	padding: 20px;
+}
+
 .checkbox {
 	margin-bottom: 15px;
 }

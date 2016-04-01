@@ -142,7 +142,7 @@ function list_dir(&$data, $fulldir, $modified_since = 0, $include_subdirs = 0, $
 					'size' => $size,
 					'modified' => $modified,
 					'dir' => $dir,
-					'checksum' => hash_file('md5', $fullfile)
+					'checksum' => '' //hash_file('md5', $fullfile)
 				);
 			}
 			
