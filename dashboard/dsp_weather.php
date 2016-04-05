@@ -39,6 +39,8 @@
   
   <!--<script src="../_assets/scripts/jquery-color/jquery.color.js"></script>-->
   
+<link href='styles/weather.css' rel='stylesheet' type='text/css'>
+  
   <script src='http://momentjs.com/downloads/moment.min.js'></script>
 
   <!--script src="http://assets.codepen.io/assets/common/stopExecutionOnTimeout-6c99970ade81e43be51fa877be0f7600.js"></script-->
