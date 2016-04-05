@@ -536,7 +536,8 @@ $().ready(function(){
 	  updateBasedOnNow();
 	  getLocation();
 	});
-
+	
+	$('#fullscreentoggler').click(toggleFullScreen);
 
 });
 
@@ -558,6 +559,7 @@ $().ready(function(){
   <div id="weather"></div>
 </div> 
 
+<div id="fullscreentoggler"></div>
 
 </body>
 
