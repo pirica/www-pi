@@ -3,7 +3,7 @@ include 'connection.php';
 //include 'functions.php';
 require 'functions.php';
 
-require '../_core/appinit.php';
+require '../_core/webinit.php';
 
 
 switch($action->getCode()){
@@ -16,7 +16,8 @@ switch($action->getCode()){
 	*/
 	
 	case 'weather':
-		$app->();
+		//$app->();
+		include 'dsp_weather.php';
 		break;
 		
 	// main: overview

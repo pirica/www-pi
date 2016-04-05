@@ -10,8 +10,8 @@
 
   <script>
     window.console = window.console || function(t) {};
-    window.open = function(){ console.log('window.open is disabled.'); };
-    window.print = function(){ console.log('window.print is disabled.'); };
+   // window.open = function(){ console.log('window.open is disabled.'); };
+  //  window.print = function(){ console.log('window.print is disabled.'); };
     // Support hover state for mobile.
     if (false) {
       window.ontouchstart = function(){};
@@ -20,7 +20,7 @@
 
   
 <link href='http://fonts.googleapis.com/css?family=Nixie+One|Yanone+Kaffeesatz:400,200,700,300' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="http://shoe.io/sandbox/backboneWeather/js/libs/skycons.js"></script>
+<script type="text/javascript" src="scripts/skycons.js"></script>
 	<script type="text/javascript" src="http://suncalc.net/scripts/suncalc.js"></script>
 
 
@@ -32,12 +32,12 @@
   <script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>
   -->
   
-  <script src="file:///C:/Users/wifle.PROSTEPS0/Documents/Dropbox/www%20pi/_assets/scripts/jquery/jquery-1.10.2.min.js"></script>
+  <script src="../_assets/scripts/jquery/jquery-1.10.2.min.js"></script>
   
-  <script src="file:///C:/Users/wifle.PROSTEPS0/Documents/Dropbox/www%20pi/_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>
+  <script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>
   <link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css'>
   
-  <!--<script src="file:///C:/Users/wifle.PROSTEPS0/Documents/Dropbox/www%20pi/_assets/scripts/jquery-color/jquery.color.js"></script>-->
+  <!--<script src="../_assets/scripts/jquery-color/jquery.color.js"></script>-->
   
   <script src='http://momentjs.com/downloads/moment.min.js'></script>
 
