@@ -36,14 +36,25 @@ html, body {
 	margin-left: -250px;
 }
 
-#slider 
+#slider-parent
 { 
-	width:75%; 
+	width:50%; 
 	margin-left:auto;
 	margin-right:auto; 
 	position:fixed;
-	bottom: 30px;
-	left: 12%;
+	bottom: -20px;
+	left: 25%;
+}
+
+#slider-parent:hover
+{ 
+	bottom: 20px;
+}
+
+#slider 
+{ 
+	width:100%; 
+	
 }
 
 #time
@@ -83,4 +94,5 @@ canvas
 	position: fixed;
 	top: 0;
 	right: 0;
+	cursor: pointer;
 }

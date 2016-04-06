@@ -5,7 +5,7 @@
 
   <meta charset="UTF-8">
 
-  <title>CodePen - Sky gradient based on time 2</title>
+  <title>Dashboard - Weather</title>
 
 
   <script>
@@ -50,6 +50,7 @@
  var lang = 'nl';
  var apikey = '74fe9f2731af7ec3a45c5e767a86883d';
  var city = 'Geel,be';
+ var weatherInterval = 300; // seconds
 var defaultLocation = {coords:{latitude:51.2,longitude:5}};
    
   // http://suncalc.net/
@@ -558,8 +559,8 @@ $().ready(function(){
 	getLocation();
 
 	// update every minute
-	var interval = setInterval(function(){updateBasedOnNow();},60 * 1000);
-	var interval2 = setInterval(function(){getLocation();},60 * 60 * 1000);
+	var interval = setInterval(function(){updateBasedOnNow();}, 60 * 1000);
+	var interval2 = setInterval(function(){getLocation();}, weatherInterval * 1000);
 	// update onClick
 	$("#gradInfo").click(function() {
 	  updateBasedOnNow();
@@ -579,7 +580,7 @@ $().ready(function(){
 <body>
 
 
-<div id="slider"></div>
+<div id="slider-parent"><div id="slider"></div></div>
 <div id="grad">
   <div id="gradInfo">
     <div id="time"></div>
