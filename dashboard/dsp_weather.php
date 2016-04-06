@@ -48,6 +48,7 @@
   <script>
  var local = 1;
  var lang = 'nl';
+ var apikey = '74fe9f2731af7ec3a45c5e767a86883d';
  var city = 'Geel,be';
 var defaultLocation = {coords:{latitude:51.2,longitude:5}};
    
@@ -463,6 +464,7 @@ function getWeather(lat,lon,callback)
 {
   var api = "http://api.openweathermap.org/data/2.5/weather";
   api += "?lang=" + lang; 
+  api += "?APPID=" + apikey; 
   if(local == 1 && city != ''){
 	api += "&q=" + city; 
   }
@@ -510,6 +512,33 @@ function updateWeatherIcon(icon)
 skycons.play();
 }
 
+
+function toggleFullScreen(event) {
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+
+
 $().ready(function(){
 
 	// generate the slider
@@ -540,6 +569,9 @@ $().ready(function(){
 	$('#fullscreentoggler').click(toggleFullScreen);
 
 });
+
+
+
 
   </script>
 </head>
