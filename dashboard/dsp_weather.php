@@ -464,7 +464,7 @@ function getWeather(lat,lon,callback)
 {
   var api = "http://api.openweathermap.org/data/2.5/weather";
   api += "?lang=" + lang; 
-  api += "?APPID=" + apikey; 
+  api += "&APPID=" + apikey; 
   if(local == 1 && city != ''){
 	api += "&q=" + city; 
   }
