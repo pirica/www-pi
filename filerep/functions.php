@@ -70,6 +70,7 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 			$size = -1;
 			$modifiedstr = '';
 			$file = '';
+			$modifier = '';
 			
 			$filestrarr = explode(' ', $filestr);
 			$fin = -1;
@@ -79,7 +80,10 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 					$fin++;
 					
 					switch($fin){
-						case 0: //drwxrwxrwx
+						case 0: //drwxrwxrwx, or in case of ftp mount: total
+							$modifier = $filestrarr[$fi];
+							break;
+							
 						case 1: //1
 						case 2: //root
 							break;
@@ -114,11 +118,11 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 			$fullfile = $fulldir . $file;
 			
 			// we got directories
-			if($file == '.' || $file == '..'){
+			if($file == '.' || $file == '..' || $modifier == 'total'){
 				$success = true;
 			}
 			
-			if($file != '.' && $file != '..'){
+			if($file != '.' && $file != '..' && $modifier != 'total' && $dir != 'l'){
 				$modified_ok = 0;
 				
 				if($dir == 'd'){
