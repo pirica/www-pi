@@ -62,7 +62,7 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 	$filearr = explode("\n", $str);
 	$count = count($filearr);
 	
-	for ($i = 1; $i < $count; $i++) {
+	for ($i = 0; $i < $count; $i++) {
 		$filestr = $filearr[$i];
 		if($filestr != ''){
 			$dir = substr($filestr, 0, 1);
@@ -118,11 +118,11 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 			$fullfile = $fulldir . $file;
 			
 			// we got directories
-			if($file == '.' || $file == '..' || $modifier == 'total'){
+			if($file == '.' || $file == '..' || $modifier == 'total' || $modifier == 'totaal'){
 				$success = true;
 			}
 			
-			if($file != '.' && $file != '..' && $modifier != 'total' && $dir != 'l'){
+			if($file != '.' && $file != '..' && $modifier != 'total' && $modifier != 'totaal' && $dir != 'l'){
 				$modified_ok = 0;
 				
 				if($dir == 'd'){
