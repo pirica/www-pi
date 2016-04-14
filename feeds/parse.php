@@ -45,6 +45,7 @@ $qry_feeds = mysql_query("
 		f.description,
 		f.parser,
 		ifnull(f.parse_max_items,-1) as parse_max_items,
+		f.feed_items,
 		count(fe.id_feed_entry) as entries
 	from t_feed f
 	left join t_feed_entry fe on fe.id_feed = f.id_feed and fe.is_read = 1 and fe.active = 1
@@ -514,7 +515,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		}
 		
 		// set "last checked"
-		mysql_query("update t_feed set date_last_checked = '" . mysql_real_escape_string(date('Y-m-d H:i:s', $date_start)) . "', date_end = now() where id_feed = " . $feeds['id_feed'] . "", $conn);
+		mysql_query("update t_feed set date_last_checked = '" . mysql_real_escape_string(date('Y-m-d H:i:s', $date_start)) . "', date_end = now(), feed_items = " . $items . " where id_feed = " . $feeds['id_feed'] . "", $conn);
 		
 		
 		//echo ' -> ' . $items . " items in feed\n";
