@@ -12,12 +12,10 @@ while($feed = mysql_fetch_array($qry_feed_overview))
 			</div>
 			
 			<div class="panel-body closed">
-				<ul class="list-group">
+				<div class="list-group">
 					<!-- entries go here -->
-				</ul>
-				<p>
-					<a class="btn btn-danger btn-mark-all-as-read" href="index.php?action=setfeedentry&entries=<?= $entries ?>&is_read=1">All read</a>
-				</p>
+				</div>
+				
 			</div>
 		</div>
 	<?php
