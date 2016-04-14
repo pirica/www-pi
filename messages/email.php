@@ -3,7 +3,7 @@ $debug = 0;
 if(isset($_GET['debug']) && $_GET['debug'] == 1){
 	$debug = 1;
 }
-//require 'connection.php';
+
 require 'functions.php';
 require dirname(__FILE__).'/../_core/appinit.php';
 
@@ -428,6 +428,7 @@ mysql_query("
 		e.fromaddress
 	from t_email e
 	join t_tracktrace_type ttt on e.tracking_code like concat(ttt.tracking_code, '%')
+		and ifnull(ttt.tracking_code,'') <> ''
 	left join t_tracktrace tt on tt.tracking_code = e.tracking_code
 	where ifnull(e.tracking_code,'') <> ''
 		and tt.id_tracktrace is null
