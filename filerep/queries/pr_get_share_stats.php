@@ -17,7 +17,7 @@ $qry_share_stats = mysql_query("
 	from t_share s
 		join t_host_share hs on hs.id_share = s.id_share
 			and hs.active = 1
-		join t_directory d on d.id_share = s.id_share
+		left join t_directory d on d.id_share = s.id_share
 			and d.active = 1
 	where
 		s.active = 1

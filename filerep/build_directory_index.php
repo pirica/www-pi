@@ -68,8 +68,11 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		
 
 	$id_share = -1;
+	
+	$all_shares = '-1';
 
 	while ($share = mysql_fetch_array($qry_shares)) {
+		$all_shares .= ',' . $share{'id_share'};
 		$id_share = $share{'id_share'};
 		$dir = $share{'server_directory'};
 		$date_last_replicated = $share{'date_last_replicated'};
@@ -156,6 +159,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				
 		where
 			d.id_directory is null
+			and d.id_share in (".$all_shares.")
 			
 		group by
 			f.id_share,
@@ -177,6 +181,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		where
 			d.active = 1
 			and di.id_directory_index is null
+			and d.id_share in (".$all_shares.")
 			
 		", $conn);
 	
