@@ -107,7 +107,7 @@ if($leases !== false){
 mysql_query("update t_host set check_is_online = 0", $conn);
 
 //$shell_nmap = shell_exec('nmap -sn 192.168.1.0/24');
-$shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139 192.168.1.0/24');
+$shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139,80,7001 192.168.1.0/24');
 /*outputs:
 Starting Nmap 6.00 ( http://nmap.org ) at 2014-10-06 14:41 CEST
 Nmap scan report for OpenWrt.lan (192.168.1.1)
@@ -177,7 +177,7 @@ $qry_hosts_status = mysql_query("
 	", $conn);
 	
 while ($hoststatus = mysql_fetch_array($qry_hosts_status)) {
-	$shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139 ' . $hoststatus['ip_address']);
+	$shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139,80,7001 ' . $hoststatus['ip_address']);
 	echo "<!--\n";
 	echo $shell_nmap;
 	echo "-->\n";
