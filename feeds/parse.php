@@ -247,7 +247,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					{
 						$items++;
 						
-						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						if($feeds['parse_max_items'] > 0 && $items >= $feeds['parse_max_items'])
 						{
 							break;
 						}
@@ -338,7 +338,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					{
 						$items++;
 						
-						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						if($feeds['parse_max_items'] > 0 && $items >= $feeds['parse_max_items'])
 						{
 							break;
 						}
@@ -427,7 +427,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					{
 						$items++;
 						
-						if($feeds['parse_max_items'] > 0 && $items < $feeds['parse_max_items'])
+						if($feeds['parse_max_items'] > 0 && $items >= $feeds['parse_max_items'])
 						{
 							break;
 						}
