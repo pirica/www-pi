@@ -18,9 +18,11 @@
 			<th>ID</th>
 			<th>Description</th>
 			<th># Files</th>
+			<th># Dirs</th>
 			<th># Hosts</th>
 			<th>Total size</th>
 			<th>Last modification</th>
+			<th>% Indexed</th>
 			<th>&nbsp;</th>
 		</tr>
 	</thead>
@@ -33,9 +35,11 @@
 			<td><?= $stat['id_share'] ?></td>
 			<td><a href="index.php?action=details&amp;id_share=<?= $stat['id_share'] ?>"><?=$stat['name'] ?></a></td>
 			<td><?= $stat['nbr_files'] ?></td>
+			<td><?= $stat['nbr_dirs'] ?></td>
 			<td><?= $stat['hosts_linked'] ?></td>
 			<td><?= formatFileSize($stat['total_file_size']) ?></td>
 			<td><?= $stat['max_date_last_modified'] ?></td>
+			<td><?= round(100 * $stat['dirs_checked'] / $stat['nbr_dirs'],1) ?> %</td>
 			
 			<td>
 				<a class="btn btn-primary" href="index.php?action=search&amp;id_share=<?=$stat['id_share'] ?>" title="Search in files">

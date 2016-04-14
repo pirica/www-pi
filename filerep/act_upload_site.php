@@ -13,9 +13,9 @@ echo ini_get('max_file_uploads');
 
 $server_directory = '';
 
-while($stat = mysql_fetch_array($qry_share_stats)){
-	if($stat['id_share'] == $id_share){
-		$server_directory = $stat['server_directory'];
+while($shares = mysql_fetch_array($qry_shares)){
+	if($shares['id_share'] == $id_share){
+		$server_directory = $shares['server_directory'];
 	}
 }
 
