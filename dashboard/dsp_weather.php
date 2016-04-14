@@ -46,6 +46,7 @@
   <!--script src="http://assets.codepen.io/assets/common/stopExecutionOnTimeout-6c99970ade81e43be51fa877be0f7600.js"></script-->
 
   <script>
+  var showLocationInfo = false;
  var local = 1;
  var lang = 'nl';
  var apikey = '74fe9f2731af7ec3a45c5e767a86883d';
@@ -455,8 +456,10 @@ function showWeather(response)
   ;
 
   $("#temp").html(fDegrees);
-  $("#weather").html(result); 
-
+  if(showLocationInfo){
+	$("#weather").html(result); 
+  }
+  
   console.log(response);
   console.log(result); 
 }
