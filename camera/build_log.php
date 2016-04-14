@@ -6,9 +6,9 @@ require 'functions.php';
 
 require dirname(__FILE__).'/../_core/appinit.php';
 
-shell_exec('if [ ! -d ./captures ]; then ln -s ' . $main_dir . ' ./captures > /dev/null 2>&1; fi');
-shell_exec('if [ ! -d ./captures_archive ]; then ln -s ' . $archive_dir . ' ./captures_archive > /dev/null 2>&1; fi');
-//shell_exec('unlink ./captures');
+shell_exec('if [ ! -d /var/www/camera/captures ]; then ln -s ' . $main_dir . ' /var/www/camera/captures > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d /var/www/camera/captures_archive ]; then ln -s ' . $archive_dir . ' /var/www/camera/captures_archive > /dev/null 2>&1; fi');
+//shell_exec('unlink /var/www/camera/captures');
 
 $crondate = time();
 
