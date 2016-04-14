@@ -39,7 +39,7 @@
 			<td><?= $stat['hosts_linked'] ?></td>
 			<td><?= formatFileSize($stat['total_file_size']) ?></td>
 			<td><?= $stat['max_date_last_modified'] ?></td>
-			<td><?= round(100 * $stat['dirs_checked'] / $stat['nbr_dirs'],1) ?> %</td>
+			<td><?= ($stat['nbr_dirs'] == 0 ? 0 : round(100 * $stat['dirs_checked'] / $stat['nbr_dirs'],1)) ?> %</td>
 			
 			<td>
 				<a class="btn btn-primary" href="index.php?action=search&amp;id_share=<?=$stat['id_share'] ?>" title="Search in files">
