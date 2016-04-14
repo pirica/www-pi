@@ -7,11 +7,11 @@ $str = file_get_contents($feeds['url']);
 
 
 $doc = phpQuery::newDocumentHTML($str);
-$title = $doc->find('#home_comic img')->attr('src');
+$title = $doc->find('.comic-display img')->attr('src');
 $title = explode('/', $title);
 $title = $title[count($title) - 1];
 $title = explode('.', $title)[0];
-$description = $doc->find('#home_comic')->html();
+$description = '<img src="' . $doc->find('.comic-display img')->attr('src') . '" alt="">';
 
 
 /*
