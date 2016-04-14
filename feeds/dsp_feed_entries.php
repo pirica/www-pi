@@ -22,6 +22,3 @@ while($entry = mysql_fetch_array($qry_feed_entries))
 	<?php 
 }
 ?>
-<p>
-	<a class="btn btn-danger btn-mark-all-as-read" href="index.php?action=setfeedentry&entries=<?= $entries ?>&is_read=1">All read</a>
-</p>
