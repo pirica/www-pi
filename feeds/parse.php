@@ -25,13 +25,13 @@ mysql_query("
 	", $conn);
 
 	
-// clean up entries older than a month
+// clean up entries older than a week
 mysql_query("
 	
 	delete from t_feed_entry
 	where
 		active = 0
-		and date_deleted < now() - interval 1 month
+		and date_deleted < now() - interval 1 week
 		
 	", $conn);
 	
