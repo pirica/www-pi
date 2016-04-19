@@ -67,7 +67,13 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	echo 'feed ' . $feeds['title'] . ' (ID:' .  $feeds['id_feed'] . ")\n";
 	echo ' -> started on ' . date('Y-m-d H:i:s', time()) . "\n";
 	
-	if($feeds['entries'] > 100){
+	$entries_to_keep = 100;
+	if($feeds['feed_items'] != '' && $feeds['feed_items'] > 0)
+	{
+		$entries_to_keep = $feeds['feed_items'] * 2;
+	}
+	
+	if($feeds['entries'] > $entries_to_keep){
 		
 		// delete read entries until 100 remain
 		$qry_feed_entries_del = mysql_query("
