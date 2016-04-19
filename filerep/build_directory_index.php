@@ -159,7 +159,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				
 		where
 			d.id_directory is null
-			and d.id_share in (".$all_shares.")
+			and f.id_share in (".$all_shares.")
 			
 		group by
 			f.id_share,
