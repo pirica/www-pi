@@ -10,7 +10,7 @@
 	for($i=1; $i<$dirparts_count-2; $i++){ // first and last item excluded, because empty anyway; second-to-last item also excluded, is current dir name
 		if($dirparts[$i] != ''){
 			$dircontent .= $dirparts[$i] . '/';
-			$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. $dircontent .'">'. $dirparts[$i] .'/</a>';// . "\r\n\t\t";
+			$str_currentdir = $str_currentdir . '<a href="?action=details&amp;id_share='. $id_share .'&amp;all=' . $show_all . '&amp;dir='. urlencode($dircontent) .'">'. $dirparts[$i] .'/</a>';// . "\r\n\t\t";
 		}
 	}
 ?>
@@ -58,7 +58,7 @@
 
 
 <p>
-	<a href="index.php?action=upload&amp;id_share=<?= $id_share ?>&amp;dir=<?= $currentdir['relative_directory'] ?>"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
+	<a href="index.php?action=upload&amp;id_share=<?= $id_share ?>&amp;dir=<?= urlencode($currentdir['relative_directory']) ?>"><i class="fa fa-lg fa-upload pull-right" title="Upload"></i></a>
 	<!-- data-toggle="modal" data-target="#myModal"-->
 	
 	<!--<a href="#">
@@ -68,7 +68,7 @@
 		</span>
 	</a>-->
 	
-	<a href="index.php?action=create_dir&amp;id_share=<?= $id_share ?>&amp;dir=<?= $currentdir['relative_directory'] ?>"><i class="fa fa-lg fa-plus pull-right" title="Create new directory"></i></a>
+	<a href="index.php?action=create_dir&amp;id_share=<?= $id_share ?>&amp;dir=<?= urlencode($currentdir['relative_directory']) ?>"><i class="fa fa-lg fa-plus pull-right" title="Create new directory"></i></a>
 	
 </p>
 
@@ -114,7 +114,7 @@
 			}
 		?></td>
 		<td><?php
-			echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $currentdir['relative_directory'] . '">.</a>';
+			echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($currentdir['relative_directory']) . '">.</a>';
 			
 		?></td>
 		<td><?= formatFileSize($currentdir['size']) ?></td>
@@ -125,7 +125,7 @@
 					echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 				}
 				else if($currentdir['can_reindex'] == 1){
-					echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $currentdir['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+					echo '<a href="#" class="act-dir-reindex hover" data-dir="'. urlencode($currentdir['relative_directory']) .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 				}
 				
 				// download
@@ -157,7 +157,7 @@
 				}
 			?></td>
 			<td><?php
-				echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $parentdir['relative_directory'] . '">..</a>';
+				echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($parentdir['relative_directory']) . '">..</a>';
 				
 			?></td>
 			<td><?= formatFileSize($parentdir['size']) ?></td>
@@ -168,7 +168,7 @@
 						echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 					}
 					else if($parentdir['can_reindex'] == 1){
-						echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $parentdir['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+						echo '<a href="#" class="act-dir-reindex hover" data-dir="'. urlencode($parentdir['relative_directory']) .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 					}
 					
 					// download
@@ -203,7 +203,7 @@
 				?></td>
 				<td><?php
 					if($file['is_directory'] == 1){
-						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '">' . $file['filename'] . '</a>';
+						echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory']) . '">' . $file['filename'] . '</a>';
 					}
 					else {
 						echo $file['filename'];
@@ -217,7 +217,7 @@
 							echo '<span class="fa fa-bolt red" title="Indexing..."></span>';
 						}
 						else if($file['can_reindex'] == 1){
-							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. $file['relative_directory'] .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
+							echo '<a href="#" class="act-dir-reindex hover" data-dir="'. urlencode($file['relative_directory']) .'"><span class="fa fa-bolt green" title="Force reindexing of directory"></span></a>';
 						}
 						
 						// download
@@ -255,7 +255,7 @@
 				<td>
 					<?php
 						if($file['is_directory'] == 1){
-							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . $file['filename'] . '</a>';
+							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory'] . $file['filename']) . '">' . $file['filename'] . '</a>';
 						}
 						else {
 							echo $file['filename'];
@@ -289,14 +289,14 @@
 						}
 						
 						//if($file['active'] == 1){
-							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
+							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory']) . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
 						/*}
 						else {
 							echo '<span class="fa"></span>';
 						}*/
 						
 						if($file['active'] == 0){
-							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . '"><span class="fa-stack fa-stack-small" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
+							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory']) . '"><span class="fa-stack fa-stack-small" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
 						}
 						else {
 							echo '<span class="fa"></span>';
