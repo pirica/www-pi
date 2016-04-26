@@ -46,8 +46,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				total_filesize_inactive = (select sum(ifnull(size,0)) from t_file where id_share = " . $id_share . " and active = 0),
 					
 				hosts_linked = (select count(id_host_share) from t_host_share where id_share = " . $id_share . " and id_host <> " . $setting_server_id_host . " and active = 1),
-				hosts_linked_inactive = (select count(id_host_share) from t_host_share where id_share = " . $id_share . " and id_host <> " . $setting_server_id_host . " and active = 0)
+				hosts_linked_inactive = (select count(id_host_share) from t_host_share where id_share = " . $id_share . " and id_host <> " . $setting_server_id_host . " and active = 0),
 				
+				total_directories = (select count(id_directory) from t_directory where id_share = " . $id_share . " and active = 1),
+				total_directories_inactive = (select count(id_directory) from t_directory where id_share = " . $id_share . " and active = 0)
 			where
 				id_share = " . $id_share . "
 			", $conn);
