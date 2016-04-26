@@ -238,7 +238,7 @@
 		if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 			$i++;
 			?>
-			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+			<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>" data-file="<?= $file['id_file'] ?>">
 				<td>
 					<?php
 						if($file['fontawesome'] != ''){

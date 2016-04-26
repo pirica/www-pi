@@ -85,6 +85,10 @@ switch($action->getCode()){
 		include 'queries/pr_set_directory_reindex.php';
 		break;
 	
+	case 'do_move_file':
+		$rename_to = saneInput('rename_to');
+		include 'queries/pr_set_file.php';
+		break;
 		
 	case 'downloadfile':
 		include 'act_download_file.php';

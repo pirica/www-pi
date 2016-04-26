@@ -100,16 +100,40 @@ $().ready(function(){
 	});
 	
 	$('.rename_to').blur(function(event){
+		var oldfile = $(this).parent().find('span.orig').text();
 		var newfile = $(this).val();
+		
 		$(this).parent().find('span.rename_to').text(newfile).removeClass('hidden');
 		$(this).parent().find('input').addClass('hidden');
-		if(newfile == '')
+		
+		if(oldfile != newfile)
 		{
-			$(this).parent().find('.orig').removeClass('renamed');
-		}
-		else
-		{
-			$(this).parent().find('.orig').addClass('renamed');
+			if(newfile == '')
+			{
+				$(this).parent().find('.orig').removeClass('renamed');
+			}
+			else
+			{
+				$(this).parent().find('.orig').addClass('renamed');
+			}
+			
+			var id_file = $(this).parents('tr').data('file');
+			$.ajax({
+				url: 'index.php?action=do_move_file' + 
+						'&id_file=' + id_file + 
+						'&id_share=' + id_share + 
+						'&rename_to=' + newfile + 
+					'',
+				type: 'GET',
+				cache: false,
+				dataType: 'json',
+				error: function(xhr, status, error) {
+					//location.href = ...
+				},
+				success: function(data, textStatus, jqXHR){
+					
+				}
+			});
 		}
 	});
 	

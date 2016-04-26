@@ -78,5 +78,11 @@ table tr:nth-child(even) td{
 
 .renamed
 {
+	display: block;
 	text-decoration: line-through;
+}
+input.rename_to
+{
+	padding: 5px;
+	width: 100%;
 }
