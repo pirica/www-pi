@@ -64,7 +64,10 @@ $qry_files = mysql_query("
 		
 		fi.glyphicon,
 		#ifnull(fi.fontawesome, 'fa-file-o') as fontawesome
-		ifnull(fi.fontawesome, '') as fontawesome
+		ifnull(fi.fontawesome, '') as fontawesome,
+		
+		f.rename_to,
+		f.move_to
 	
 	from t_file f
 	left join t_file_icon fi on fi.extension = SUBSTRING_INDEX(f.filename, '.', -1)

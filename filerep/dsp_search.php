@@ -120,7 +120,7 @@
 				if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 					$i++;
 					?>
-					<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>">
+					<tr class="<?=($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . ' ' . ($file['is_directory'] == 1 ? 'row-dir' : 'row-file') . '-' . ($file['active'] == 1 ? 'active' : 'inactive') ?>" data-file="<?= $file['id_file'] ?>">
 						<td>
 							<?php
 								if($file['fontawesome'] != ''){
@@ -144,13 +144,26 @@
 								}
 							?>
 						</td>
-						<td>
+						<td <?= ($file['is_directory'] == 1 ? '' : 'class="filename"') ?>>
 							<?php
 								if($file['is_directory'] == 1){
 									echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . $file['relative_directory'] . $file['filename'] . '">' . highlightWords($file['filename'], array($search)) . '</a>';
 								}
 								else {
-									echo highlightWords($file['filename'], array($search));
+									$rename_to = '';
+									if($file['rename_to'] == ''){
+										echo '<span class="orig">' . highlightWords($file['filename'], array($search)) . '</span>';
+										$rename_to = $file['filename'];
+									}
+									else {
+										echo '<span class="orig renamed">' . highlightWords($file['filename'], array($search)) . '</span>';
+										$rename_to = $file['rename_to'];
+										
+									}
+									echo '<span class="rename_to">' . $file['rename_to'] . '</span>';
+									echo '<input type="text" class="rename_to hidden" value="' . $rename_to . '" />';
+									
+									//echo highlightWords($file['filename'], array($search));
 								}
 							?>
 						</td>
