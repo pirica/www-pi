@@ -11,7 +11,7 @@ $qry_share_stats = mysql_query("
 		s.total_files as nbr_files,
 		s.total_filesize as total_file_size,
 		s.date_last_modified as max_date_last_modified,
-		count(d.id_directory) as nbr_dirs,
+		count(distinct d.id_directory) as nbr_dirs,
 		sum(case when d.date_last_checked is null then 0 else 1 end) as dirs_checked
 	
 	from t_share s

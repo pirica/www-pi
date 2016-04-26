@@ -80,6 +80,20 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		}
 		else {
 			
+			if($is_dir)
+			{
+				// set directory inactive
+				mysql_query("
+					update t_directory
+					set
+						active = 1
+					where
+						id_directory = " . $share['id_directory'] . "
+						and active = 0
+					", $conn);
+				
+			}
+			
 			// clear current index
 			mysql_query("
 				delete from t_file_index_temp 
@@ -90,10 +104,9 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					
 				", $conn);
 			
-						
-			/*
-			// get files per share (that already exist of cource)
-			$qry_files = mysql_query("
+			
+			// get files to move|rename
+			$qry_files_tomove = mysql_query("
 				select
 					f.id_file,
 					f.filename,
@@ -102,17 +115,52 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					f.version,
 					f.date_last_modified,
 					f.date_deleted,
-					f.active
+					f.active,
+					f.rename_to,
+					f.move_to
 				from t_file f
 				where
 					f.id_share = " . $id_share . "
-					#and replace(f.relative_directory, f.filename, '') = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
 					and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+					and f.active = 1
+					and (ifnull(f.rename_to,'') <> ''
+						or ifnull(f.move_to,'') <> '')
 				", $conn);
 			
-			echo " -> " . mysql_num_rows($qry_files) . " files for directory '" . $dir . "' in DB\n";
-			flush();
-			*/
+			// do file actions (move|rename)
+			while ($move_file = mysql_fetch_array($qry_files_tomove)) {
+				$move_filename_from = $share{'server_directory'} . $move_file['relative_directory'] . $move_file['filename'];
+				
+				$move_filename_to = $share{'server_directory'};
+				if($move_file['move_to'] != ''){
+					$move_filename_to .= $move_file['move_to'];
+				}
+				else {
+					$move_filename_to .= $move_file['relative_directory'];
+				}
+				if($move_file['rename_to'] != ''){
+					$move_filename_to .= $move_file['rename_to'];
+				}
+				else {
+					$move_filename_to .= $move_file['filename'];
+				}
+				if(file_exists($move_filename_from) && !file_exists($move_filename_to)){
+					echo 'moved: ' . $move_filename_from . ' to ' . $move_filename_to . "\n";
+					shell_exec('mv "' . $move_filename_from . '" "' . $move_filename_to . '"');
+					
+					mysql_query("
+						update t_file
+						set
+							rename_to = null,
+							move_to = null
+						where
+							id_file = " . $move_file['id_file'] . " 
+							and id_share = " . $id_share . " 
+							
+						", $conn);
+				}
+			}
+			
 			
 			// get inactive files to delete
 			$qry_files_inactive = mysql_query("
@@ -132,6 +180,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					and f.active = 0
 				", $conn);
 			
+			// delete inactive files
 			while ($inactive_file = mysql_fetch_array($qry_files_inactive)) {
 				$inactive_filename = $share{'server_directory'} . $inactive_file['relative_directory'] . $inactive_file['filename'];
 				if(file_exists($inactive_filename)){
@@ -215,168 +264,6 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						
 					}
 				}
-				
-				/*
-				$modifiedcount = 0;
-				
-				while ($dbfile = mysql_fetch_array($qry_files)) {
-					
-					$file_found = 0;
-					$file_valid = 0;
-					
-					// make db timestamp into unix time
-					$date_last_modified = $dbfile['date_last_modified'];
-					$date_last_modified = str_replace('-', '/', $date_last_modified);
-					$date_last_modified = explode('.', $date_last_modified)[0];
-					$date_last_modified = strtotime($date_last_modified);
-					
-					$filecount = count($files);
-					for ($i = 0; $i < $filecount; $i++) {
-						
-						//$extension = substr( $files[$i]['nativepath'], strrpos( $files[$i]['nativepath'], '.') );
-						$extarr = explode('.', $files[$i]['nativepath']);
-						$extension = '.' . $extarr[count($extarr) - 1];
-						
-						// file marked as deleted, ignore
-						if($extension == '.deleted'){
-							$file_found = 3;
-							break;
-						}
-						// file is being uploaded, ignore
-						else if(strpos($extension, '.filerep') !== false){
-							$file_found = 2;
-							
-							// if modification date some time in the past, delete (faulty upload)
-							// default: more than 1 day old
-							if(//$share{'id_share'} == 6 &&
-							$files[$i]['modified_cest'] < time() - (3600 * 24)){
-								echo " -> deleting temporary upload file " . $files[$i]['nativepath'] . "\n";
-								//unlink($files[$i]['nativepath']);
-							}
-							
-							break;
-						}
-						
-						// file found in db
-						else if($share{'server_directory'} . $dbfile['relative_directory'] . $dbfile['filename'] == $files[$i]['nativepath']){
-							$file_found = 1;
-							
-							// file deleted, but not yet on server
-							if($dbfile['active'] == 0){
-								$file_found = 4;
-								//if($share{'id_share'} == 6){
-									echo " -> deleting file " . $files[$i]['nativepath'] . "\n";
-									//shell_exec('mv "' . $files[$i]['nativepath'] . '" "' . $files[$i]['nativepath'] . '.deleted"');
-								//}
-								break;
-							}
-							// file is modified
-							else if($date_last_modified != $files[$i]['modified_cest']){
-								// update file in db
-								
-								$file_valid = 1;
-								
-								$modifiedcount++;
-								$modlog = 'old modification date: ' . $date_last_modified . ', new modification date: ' . $files[$i]['modified_cest'];
-								
-								mysql_query("
-									update t_file 
-									set
-										size = " . $files[$i]['size'] . ",
-										version = version + 1,
-										date_last_modified = '" . date('Y-m-d H:i:s', $files[$i]['modified_cest']) . "'
-									where
-										id_file = " . $dbfile['id_file'] . "
-									", $conn);
-									
-							}
-							else {
-								$file_valid = 2;
-							}
-							break;
-						}
-						
-					}
-					
-					// file found in db:
-					if($file_found > 0){
-						// remove from files list 
-						unset($files[$i]);
-						$files = array_values($files);
-						
-						if($file_found == 1){
-							// and mark as checked
-							mysql_query("
-								update t_file 
-								set date_last_checked = now(), active = 1
-								where
-									id_file = " . $dbfile['id_file'] . "
-								", $conn);
-						}
-					}
-					// file not found after index was reset (all files checked on dir)
-					else if($file_valid == 0 && $dbfile['active'] == 1 ){
-						
-						// mark as deleted
-						mysql_query("
-							update t_file 
-							set
-								date_deleted = now(),
-								active = 0
-							where
-								id_file = " . $dbfile['id_file'] . "
-							", $conn);
-						
-						
-					}
-					
-				}
-				
-				if($modifiedcount > 0){
-					echo " -> " . $modifiedcount . " files updated\n";
-				}
-				
-				// files not in db: add
-				$filecount = count($files);
-				
-				if($filecount > 0){
-					echo " -> " . $filecount . " new files found on disk\n";
-				}
-				
-				flush();
-				
-				for ($i = 0; $i < $filecount; $i++) {
-					
-					$reldir = $files[$i]['nativepath'];
-					$reldir = implode('', explode($share{'server_directory'}, $reldir, 2));
-					$filenamearr = explode('/', $reldir);
-					array_pop($filenamearr);
-					$reldir = implode('/', $filenamearr) . '/';
-					
-					mysql_query("
-						insert into t_file
-						(
-							id_share,
-							filename ,
-							relative_directory,
-							size,
-							version,
-							date_last_modified
-						)
-						values
-						(
-							" . $id_share . ",
-							'" . mysql_real_escape_string($files[$i]['name']) . "',
-							'" . mysql_real_escape_string($reldir) . "',
-							" . $files[$i]['size'] . ",
-							1,
-							'" . date('Y-m-d H:i:s', $files[$i]['modified_cest']) . "'
-						)
-						", $conn);
-					$new_id_file = mysql_insert_id($conn);
-					
-				}
-				*/
 				
 				
 				// update existing files
