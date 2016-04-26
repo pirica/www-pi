@@ -258,11 +258,9 @@
 							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory'] . $file['filename']) . '">' . $file['filename'] . '</a>';
 						}
 						else {
-							$class = '';
 							$rename_to = '';
 							if($file['rename_to'] == ''){
 								echo '<span class="orig">' . $file['filename'] . '</span>';
-								$class = 'hidden';
 								$rename_to = $file['filename'];
 							}
 							else {
@@ -271,7 +269,7 @@
 								
 							}
 							echo '<span class="rename_to">' . $file['rename_to'] . '</span>';
-							echo '<input type="text" class="rename_to ' . $class . '" value="' . $rename_to . '" />';
+							echo '<input type="text" class="rename_to hidden" value="' . $rename_to . '" />';
 						}
 					?>
 				</td>
