@@ -95,7 +95,7 @@ $().ready(function(){
 	
 	$('.filename').dblclick(function(event){
 		$(this).find('span.rename_to').addClass('hidden');
-		$(this).find('input').removeClass('hidden');
+		$(this).find('input').removeClass('hidden').focus();
 		
 	});
 	
