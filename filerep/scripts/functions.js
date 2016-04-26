@@ -100,7 +100,7 @@ $().ready(function(){
 	});
 	
 	$('.rename_to').blur(function(event){
-		var newfile = $(this).find('input').val();
+		var newfile = $(this).val();
 		$(this).parent().find('span.rename_to').text(newfile).removeClass('hidden');
 		$(this).parent().find('input').addClass('hidden');
 		if(newfile == '')

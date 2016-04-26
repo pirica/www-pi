@@ -259,16 +259,19 @@
 						}
 						else {
 							$class = '';
+							$rename_to = '';
 							if($file['rename_to'] == ''){
 								echo '<span class="orig">' . $file['filename'] . '</span>';
 								$class = 'hidden';
+								$rename_to = $file['filename'];
 							}
 							else {
 								echo '<span class="orig renamed">' . $file['filename'] . '</span>';
+								$rename_to = $file['rename_to'];
 								
 							}
 							echo '<span class="rename_to">' . $file['rename_to'] . '</span>';
-							echo '<input type="text" class="rename_to ' . $class . '" value="' . $file['rename_to'] . '" />';
+							echo '<input type="text" class="rename_to ' . $class . '" value="' . $rename_to . '" />';
 						}
 					?>
 				</td>
