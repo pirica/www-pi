@@ -103,11 +103,12 @@ $().ready(function(){
 		var oldfile = $(this).parent().find('span.orig').text();
 		var newfile = $(this).val();
 		
-		$(this).parent().find('span.rename_to').text(newfile).removeClass('hidden');
 		$(this).parent().find('input').addClass('hidden');
 		
 		if(oldfile != newfile)
 		{
+			$(this).parent().find('span.rename_to').text(newfile).removeClass('hidden');
+			
 			if(newfile == '')
 			{
 				$(this).parent().find('.orig').removeClass('renamed');
