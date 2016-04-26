@@ -134,6 +134,13 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				$move_filename_to = $share{'server_directory'};
 				if($move_file['move_to'] != ''){
 					$move_filename_to .= $move_file['move_to'];
+					
+					// create directory if not exists
+					$parts = explode('/', $move_filename_to, -1);
+					$dir = '';
+					foreach($parts as $part){
+						if(!is_dir($dir .= "/$part")) mkdir($dir);
+					}
 				}
 				else {
 					$move_filename_to .= $move_file['relative_directory'];

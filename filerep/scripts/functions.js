@@ -91,6 +91,28 @@ $().ready(function(){
 		$("#freemulitplefileuploader").uploadFile(freesettings);
 	}
 	
+	
+	
+	$('.filename').dblclick(function(event){
+		$(this).find('span.rename_to').addClass('hidden');
+		$(this).find('input').removeClass('hidden');
+		
+	});
+	
+	$('.rename_to').blur(function(event){
+		var newfile = $(this).find('input').val();
+		$(this).parent().find('span.rename_to').text(newfile).removeClass('hidden');
+		$(this).parent().find('input').addClass('hidden');
+		if(newfile == '')
+		{
+			$(this).parent().find('.orig').removeClass('renamed');
+		}
+		else
+		{
+			$(this).parent().find('.orig').addClass('renamed');
+		}
+	});
+	
 });
 
 

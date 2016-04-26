@@ -252,13 +252,23 @@
 						}
 					?>
 				</td>
-				<td>
+				<td class="filename">
 					<?php
 						if($file['is_directory'] == 1){
 							echo '<a href="?action=details&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory'] . $file['filename']) . '">' . $file['filename'] . '</a>';
 						}
 						else {
-							echo $file['filename'];
+							$class = '';
+							if($file['rename_to'] == ''){
+								echo '<span class="orig">' . $file['filename'] . '</span>';
+								$class = 'hidden';
+							}
+							else {
+								echo '<span class="orig renamed">' . $file['filename'] . '</span>';
+								
+							}
+							echo '<span class="rename_to">' . $file['rename_to'] . '</span>';
+							echo '<input type="text" class="rename_to ' . $class . '" value="' . $file['rename_to'] . '" />';
 						}
 					?>
 				</td>

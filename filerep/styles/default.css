@@ -76,3 +76,7 @@ table tr:nth-child(even) td{
 .row-file-active {}
 .row-file-inactive {color: #900; font-style: italic;}
 
+.renamed
+{
+	text-decoration: line-through;
+}
