@@ -196,7 +196,7 @@ for ($d = 0; $d < $dircount; $d++) {
 						mkdir($thumbs_dir . $dirs[$d]);
 					}
 					
-					$thumbWidth = 180; // setting
+					$thumbWidth = 320; // setting
 					$thumbnail = $thumbs_dir . $dirs[$d] . '/' . $dirs[$d] . '_' . $hours . $minutes . $seconds . '_' . $camera . '.jpg';
 
 					if(!file_exists($thumbnail) && (stripos($tmpfiles[$i], '.jpg') > 0 || stripos($tmpfiles[$i], '.jpeg') > 0))
