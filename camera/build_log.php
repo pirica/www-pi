@@ -199,7 +199,7 @@ for ($d = 0; $d < $dircount; $d++) {
 					$thumbWidth = 180; // setting
 					$thumbnail = $thumbs_dir . $dirs[$d] . '/' . $dirs[$d] . '_' . $hours . $minutes . $seconds . '_' . $camera . '.jpg';
 
-					if(!file_exists($thumbnail) && (stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0))
+					if(!file_exists($thumbnail) && (stripos($tmpfiles[$i], '.jpg') > 0 || stripos($tmpfiles[$i], '.jpeg') > 0))
 					{
 						
 						// load image and get image size
