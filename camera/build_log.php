@@ -291,5 +291,8 @@ mysql_query("
 mysql_query("delete from t_camera_log where status = 2", $conn);
 mysql_query("update t_camera_log set status = 0 where status = 1", $conn);
 
+shell_exec ('sudo chown nobody:nogroup -R "' . $thumbs_dir . date('Ymd') . '"');
+shell_exec ('sudo chmod 777 -R "' . $thumbs_dir . date('Ymd') . '"');
+	
 
 ?>
