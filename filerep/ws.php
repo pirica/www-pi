@@ -91,6 +91,11 @@ switch($method){
 	/* Files */
 	/* ===== */
 	
+	case 'getFileMoves':
+		include 'act_get_file_moves.php';
+		echo json_encode($returnvalue);
+		break;
+	
 	case 'getFileIndex':
 		include 'act_get_fileindex.php';
 		echo json_encode($returnvalue);

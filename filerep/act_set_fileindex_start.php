@@ -18,6 +18,15 @@ if($date_last_replicated != ''){
 		", $conn);
 }
 
+// remove all file move actions (should be done by now)
+mysql_query("
+	delete from t_file_move
+	where
+		id_share = " . $id_share . " 
+		and id_host = " . $id_host . " 
+		
+	", $conn);
+	
 // mark all files as not found first
 $query_success = $query_success && mysql_query("
 	update t_file_index
