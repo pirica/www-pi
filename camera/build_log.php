@@ -8,6 +8,7 @@ require dirname(__FILE__).'/../_core/appinit.php';
 
 shell_exec('if [ ! -d /var/www/camera/captures ]; then ln -s ' . $main_dir . ' /var/www/camera/captures > /dev/null 2>&1; fi');
 shell_exec('if [ ! -d /var/www/camera/captures_archive ]; then ln -s ' . $archive_dir . ' /var/www/camera/captures_archive > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d /var/www/camera/captures_thumbs ]; then ln -s ' . $thumbs_dir . ' /var/www/camera/captures_thumbs > /dev/null 2>&1; fi');
 //shell_exec('unlink /var/www/camera/captures');
 
 $crondate = time();
@@ -34,6 +35,7 @@ $qry_camera_log_del = mysql_query("
 	
 while($logdel = mysql_fetch_array($qry_camera_log_del)){
 	shell_exec('rm -R ' . $main_dir . $logdel['date']);
+	shell_exec('rm -R ' . $thumbs_dir . $logdel['date']);
 }
 
 mysql_query("
@@ -119,10 +121,12 @@ for ($d = 0; $d < $dircount; $d++) {
 					$current_image++;
 					
 					// name = 20150911_150439_picam1_00_x572-y286-w8-h40.jpg
+					// thumb = 20150911_150439_picam1.jpg
 					$camera = explode('_', $tmpfiles[$i])[2];
 					
 					$hourstr = $tmpfiles[$i];
 					$hourstr = explode('_', $hourstr)[1];
+					$datestr = explode('_', $hourstr)[0];
 					
 					$hours = substr($hourstr, 0, 2);
 					$minutes = substr($hourstr, 2, 2);
@@ -186,6 +190,48 @@ for ($d = 0; $d < $dircount; $d++) {
 						
 						$querydata = '';
 					}
+					
+					// Generate thumbs
+					if(!is_dir($thumbs_dir . $datestr)){
+						mkdir($thumbs_dir . $datestr);
+					}
+					
+					$thumbWidth = 180; // setting
+					$thumbnail = $thumbs_dir . $datestr . '/' . $datestr . '_' . $hourstr . '_' . $camera . '.jpg';
+
+					if(!file_exists($thumbnail) && (stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0))
+					{
+						
+						// load image and get image size
+						$img = imagecreatefromjpeg($main_dir . $datestr . '/' . $tmpfiles[$i]);
+						
+						$width = imagesx( $img );
+						$height = imagesy( $img );
+						
+						// calculate thumbnail size
+						if($width > $height)
+						{
+							$new_width = $thumbWidth;
+							$new_height = floor( $height * ( $thumbWidth / $width ) );
+						}
+						else 
+						{
+							$new_height = $thumbWidth;
+							$new_width = floor( $width * ( $thumbWidth / $height ) );
+						}
+						
+						// create a new temporary image
+						$tmp_img = imagecreatetruecolor( $new_width, $new_height );
+
+						// copy and resize old image into new image
+						imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
+						
+						// save thumbnail into a file
+						imagejpeg( $tmp_img, $thumbnail);
+						
+					}
+
+					
 				}
 			}
 			
