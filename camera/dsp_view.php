@@ -68,7 +68,7 @@
 						}
 						else if($thumbs == 1)
 						{
-							echo '<p><img src="captures/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
+							echo '<p><img src="captures_thumbs/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
 							echo $thumb_image . '</p>';
 						}
 						else 
