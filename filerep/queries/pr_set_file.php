@@ -33,6 +33,14 @@ mysql_query("
 	
 mysql_query("
 	
+	delete from t_file_move
+	where
+		id_file = " . $id_file . "
+		
+	", $conn);
+	
+mysql_query("
+	
 	insert into t_file_move
 	(
 		id_file,
