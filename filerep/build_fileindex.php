@@ -156,17 +156,6 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					shell_exec('mv "' . $move_filename_from . '" "' . $move_filename_to . '"');
 					
 					mysql_query("
-						update t_file
-						set
-							rename_to = null,
-							move_to = null
-						where
-							id_file = " . $move_file['id_file'] . " 
-							and id_share = " . $id_share . " 
-							
-						", $conn);
-						
-					mysql_query("
 						
 						delete from t_file_move
 						where
@@ -205,6 +194,17 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 							
 						", $conn);
 	
+					mysql_query("
+						update t_file
+						set
+							rename_to = null,
+							move_to = null
+						where
+							id_file = " . $move_file['id_file'] . " 
+							and id_share = " . $id_share . " 
+							
+						", $conn);
+						
 				}
 			}
 			
