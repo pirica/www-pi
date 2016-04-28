@@ -10,6 +10,7 @@ $date = saneInput('date', 'string', '');
 $time = saneInput('time', 'string', '');
 
 $archived = 0;
+$thumbs = 0;
 
 switch($action->getCode()){
 	/*
@@ -35,8 +36,12 @@ switch($action->getCode()){
 		
 		
 	case 'archive':
-		$archived = 1;
+	case 'thumbs':
 	case 'view':
+		
+		if($action->getCode() == 'archive') $archived = 1;
+		if($action->getCode() == 'thumbs') $thumbs = 1;
+		
 		include 'queries/pr_get_cameras.php';
 		include 'queries/pr_get_camera_log_menu'.($archived == 1 ? '_archived' : '').'.php';
 		if($date != ''){

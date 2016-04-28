@@ -38,6 +38,7 @@
 		if($date != ''){
 			$prev_hour_lbl = '';
 			$prev_time_value = -1;
+			$prev_image = '';
 			while($camera_log = mysql_fetch_array($qry_camera_log)){
 				if($prev_hour_lbl != $camera_log['hour_lbl']){
 					echo '<h4>' . $camera_log['hour_lbl'] . '</h4>';
@@ -52,21 +53,55 @@
 				$extarr = explode('.', $camera_log['name']);
 				$extension = '.' . $extarr[count($extarr) - 1];
 				
-				if($settings->val('captures_show_gifs', 0) == 0 && strtolower($extension) == '.jpg'){
-					//echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
-					echo '<p><img src="captures' . ($archived == 1 ? '_archive' : '') . '/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
-					echo $camera_log['name'] . '</p>';
-				}
+				$thumb_image_arr = explode('_', $camera_log['name']);
+				$thumb_image = $thumb_image_arr[0] . '' . $thumb_image_arr[1] . '' . $thumb_image_arr[2] . '.jpg';
 				
-				if($settings->val('captures_show_gifs', 0) == 1 && strtolower($extension) == '.gif'){
-					//echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
-					echo '<p><img src="captures' . ($archived == 1 ? '_archive' : '') . '/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
-					echo $camera_log['name'] . '</p>';
-				}
-				
-				if(strtolower($extension) == '.mp4' || strtolower($extension) == '.avi'){
-					//echo '<p><a href="video.php?src=' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
-					echo '<p><a href="captures' . ($archived == 1 ? '_archive' : '') . '/' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
+				if($thumbs == 0 || ($thumbs == 1 && $prev_image != $thumb_image)){
+					$prev_image = $thumb_image;
+					
+					if($settings->val('captures_show_gifs', 0) == 0 && strtolower($extension) == '.jpg'){
+						//echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						if($archived == 1)
+						{
+							echo '<p><img src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						}
+						else if($thumbs == 1)
+						{
+							echo '<p><img src="captures/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
+						}
+						else 
+						{
+							echo '<p><img src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						}
+						echo $camera_log['name'] . '</p>';
+					}
+					
+					if($settings->val('captures_show_gifs', 0) == 1 && strtolower($extension) == '.gif'){
+						//echo '<p><img src="image.php?src=' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						if($archived == 1)
+						{
+							echo '<p><img src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						}
+						else 
+						{
+							echo '<p><img src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+						}
+						echo $camera_log['name'] . '</p>';
+					}
+					
+					if(strtolower($extension) == '.mp4' || strtolower($extension) == '.avi'){
+						//echo '<p><a href="video.php?src=' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
+						if($archived == 1)
+						{
+							echo '<p><a href="captures_archive/' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
+						}
+						else 
+						{
+							echo '<p><a href="captures/' . $date . '/' . $camera_log['name'] . '">' . $camera_log['name'] . '</a></p>';
+						}
+						
+					}
+					
 				}
 				
 			}
