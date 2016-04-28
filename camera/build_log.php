@@ -192,18 +192,18 @@ for ($d = 0; $d < $dircount; $d++) {
 					}
 					
 					// Generate thumbs
-					if(!is_dir($thumbs_dir . $datestr)){
-						mkdir($thumbs_dir . $datestr);
+					if(!is_dir($thumbs_dir . $dirs[$d])){
+						mkdir($thumbs_dir . $dirs[$d]);
 					}
 					
 					$thumbWidth = 180; // setting
-					$thumbnail = $thumbs_dir . $datestr . '/' . $datestr . '_' . $hourstr . '_' . $camera . '.jpg';
+					$thumbnail = $thumbs_dir . $dirs[$d] . '/' . $dirs[$d] . '_' . $hours . $minutes . $seconds . '_' . $camera . '.jpg';
 
 					if(!file_exists($thumbnail) && (stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0))
 					{
 						
 						// load image and get image size
-						$img = imagecreatefromjpeg($main_dir . $datestr . '/' . $tmpfiles[$i]);
+						$img = imagecreatefromjpeg($main_dir . $dirs[$d] . '/' . $tmpfiles[$i]);
 						
 						$width = imagesx( $img );
 						$height = imagesy( $img );
