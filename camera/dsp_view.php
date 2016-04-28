@@ -54,7 +54,7 @@
 				$extension = '.' . $extarr[count($extarr) - 1];
 				
 				$thumb_image_arr = explode('_', $camera_log['name']);
-				$thumb_image = $thumb_image_arr[0] . '' . $thumb_image_arr[1] . '' . $thumb_image_arr[2] . '.jpg';
+				$thumb_image = $thumb_image_arr[0] . '_' . $thumb_image_arr[1] . '_' . $thumb_image_arr[2] . '.jpg';
 				
 				if($thumbs == 0 || ($thumbs == 1 && $prev_image != $thumb_image)){
 					$prev_image = $thumb_image;
@@ -64,16 +64,18 @@
 						if($archived == 1)
 						{
 							echo '<p><img src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo $camera_log['name'] . '</p>';
 						}
 						else if($thumbs == 1)
 						{
 							echo '<p><img src="captures/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
+							echo $thumb_image . '</p>';
 						}
 						else 
 						{
 							echo '<p><img src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo $camera_log['name'] . '</p>';
 						}
-						echo $camera_log['name'] . '</p>';
 					}
 					
 					if($settings->val('captures_show_gifs', 0) == 1 && strtolower($extension) == '.gif'){
