@@ -30,17 +30,19 @@ $actionsdata_count = count($actionsdata);
 			*/
 			?>
 				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="app<?= $actionsdata[$i][0]['id_app'] ?>">
-					<div class="row clearfix">
-						<form role="form" class="form-horizontal actions-form">
+					<form role="form" class="form-horizontal actions-form">
+						<div class="row clearfix">
 							<div class="col-sm-2"><h4>Code</h4></div>
 							<div class="col-sm-2"><h4>Page title</h4></div>
 							<div class="col-sm-2"><h4>Login required?</h4></div>
+						</div>
+						
+						<?php
+							$actionsdata_app_count = count($actionsdata[$i]);
 							
-							<?php
-								$actionsdata_app_count = count($actionsdata[$i]);
-								
-								for ($j=0; $j<$actionsdata_app_count; $j++) {
-									?>
+							for ($j=0; $j<$actionsdata_app_count; $j++) {
+								?>
+								<div class="row clearfix">
 									<div class="col-sm-2">
 										<?= $actionsdata[$i][$j]['code'] ?>
 									</div>
@@ -56,11 +58,11 @@ $actionsdata_count = count($actionsdata);
 											data-field="login_required" 
 											<?php if($actionsdata[$i][$j]['login_required'] == 1) { ?>checked<?php } ?>>
 									</div>
-									<?php
-								}
-							?>
-						</form>
-					</div>
+								</div>
+								<?php
+							}
+						?>
+					</form>
 				</div>
 			<?php
 		}
