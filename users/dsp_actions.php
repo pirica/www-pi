@@ -32,37 +32,33 @@ $actionsdata_count = count($actionsdata);
 				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="app<?= $actionsdata[$i][0]['id_app'] ?>">
 					<div class="row clearfix">
 						<form role="form" class="form-horizontal actions-form">
-							<table border="0" cellpadding="3" cellspacing="0">
-								<tr>
-									<th>Code</th>
-									<th>Page title</th>
-									<th>Login required?</th>
-								</tr>
-								<?php
-									$actionsdata_app_count = count($actionsdata[$i]);
-									
-									for ($j=0; $j<$actionsdata_app_count; $j++) {
-										?>
-										<tr>
-											<td><?= $actionsdata[$i][$j]['code'] ?></td>
-											<td>
-												<input id="page_title<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="text" 
-													data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
-													data-field="page_title" 
-													value="<?= $actionsdata[$i][$j]['page_title'] ?>">
-											</td>
-											<td>
-												<input id="login_required<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="checkbox" 
-													data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
-													data-field="login_required" 
-													<?php if($actionsdata[$i][$j]['login_required'] == 1) { ?>checked<?php } ?>>
-											</td>
-										</tr>
-										
-										<?php
-									}
-								?>
-							</table>
+							<div class="col-sm-2"><h4>Code</h4></div>
+							<div class="col-sm-2"><h4>Page title</h4></div>
+							<div class="col-sm-2"><h4>Login required?</h4></div>
+							
+							<?php
+								$actionsdata_app_count = count($actionsdata[$i]);
+								
+								for ($j=0; $j<$actionsdata_app_count; $j++) {
+									?>
+									<div class="col-sm-2">
+										<?= $actionsdata[$i][$j]['code'] ?>
+									</div>
+									<div class="col-sm-2">
+										<input id="page_title<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="text" 
+											data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
+											data-field="page_title" 
+											value="<?= $actionsdata[$i][$j]['page_title'] ?>">
+									</div>
+									<div class="col-sm-2">
+										<input id="login_required<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="checkbox" 
+											data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
+											data-field="login_required" 
+											<?php if($actionsdata[$i][$j]['login_required'] == 1) { ?>checked<?php } ?>>
+									</div>
+									<?php
+								}
+							?>
 						</form>
 					</div>
 				</div>
