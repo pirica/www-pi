@@ -4,6 +4,7 @@
 	<?php 
 	echo '<li class="' . ($action->getCode() == 'main' ? 'active' : '') . '"><a href="?action=main">Overview</a></li>';
 	echo '<li class="' . ($action->getCode() == 'view' ? 'active' : '') . '"><a href="?action=view">View captures</a></li>';
+	echo '<li class="' . ($action->getCode() == 'thumbs' ? 'active' : '') . '"><a href="?action=thumbs">View captures (thumbs)</a></li>';
 	echo '<li class="' . ($action->getCode() == 'archive' ? 'active' : '') . '"><a href="?action=archive">View archived</a></li>';
 	?>
 	

@@ -59,7 +59,7 @@ class Action
 		return ($this->_login_required == 1);
 	}
 	public function getAllowed() {
-		return true;//($this->_allowed == 1);
+		return $this->_allowed == 1;
 	}
 
 	private function getData() {
@@ -93,9 +93,9 @@ class Action
             $code = ($this->_code == '' ? $this->default_code : $this->_code);
 			$qry_action->bind_param('iiis', $this->_id_profile, $this->_id_app, $this->_id_app, $code);
 			$qry_action->execute();
-			//$qry_action->store_result();
+			$qry_action->store_result();
 			
-			//if ($qry_action->num_rows > 0) {
+			if ($qry_action->num_rows > 0) {
 				$qry_action->bind_result(
 					//$this->_id_app,
 					//$code,
@@ -126,7 +126,7 @@ class Action
 					
 				}
 				*/
-			/*}
+			}
 			else {
 				$this->_id_app_action = -1;
 				//$this->_id_app,
@@ -134,7 +134,7 @@ class Action
 				$this->_page_title = '';
 				$this->_login_required = 1;
 				$this->_allowed = 0;
-			}*/
+			}
 			
 		//}*/
 		return $this->_data;
@@ -147,15 +147,20 @@ class Action
 				id_app,
 				code
 			)
-			values
-			(
+			select
 				?,
 				?
-			)
+			from t_app_action
+			where
+				not exists (
+					select * from t_app_action where id_app = ? and code = ?
+				)
+			limit 1, 1
+			
 			");
 			
         $code = ($this->_code == '' ? $this->default_code : $this->_code);
-		$qry_action->bind_param('is', $this->_id_app, $code);
+		$qry_action->bind_param('isis', $this->_id_app, $code, $this->_id_app, $code);
 		$qry_action->execute();
 		
 	}
