@@ -8,6 +8,7 @@ class App
 	protected $_name;
 	protected $_info;
 	protected $_title;
+	protected $_mode;
 	
 	private $_db;
 	protected $_baseurl;
@@ -33,10 +34,22 @@ class App
 		$this->_menudatasubs = [];
 		$this->getMenuData();
 		
+		$this->_mode = 'normal';
 	}
 
 	public function getId() {
 		return $this->_id;
+	}
+	
+	
+	public function setMode($value) {
+		if($value == 'normal' || $value == 'dashboard'){
+			$this->_mode = $value;
+		}
+	}
+
+	public function getMode() {
+		return $this->_mode;
 	}
 	
 	
