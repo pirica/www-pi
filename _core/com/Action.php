@@ -81,7 +81,8 @@ class Action
 					aa.id_app_action,
 					aa.page_title,
 					aa.login_required,
-					case when (pa.allowed = 1 or p.full_access = 1) and (paa.allowed = 1 or p.full_access = 1) then 1 else 0 end as allowed
+					p.full_access,
+					ifnull(paa.allowed, pa.allowed) as allowed
 					
 				from t_app_action aa
 					join t_profile p on p.id_profile = ?
@@ -109,6 +110,7 @@ class Action
 				$_id_app_action,
 				$_page_title,
 				$_login_required,
+				$_full_access,
 				$_allowed
 			);
 			
@@ -118,6 +120,10 @@ class Action
 			$this->_page_title = $_page_title;
 			$this->_login_required = $_login_required;
 			$this->_allowed = $_allowed;
+			if($_full_access == 1)
+			{
+				$this->_allowed = 1;
+			}
 			
 		//}*/
 		return $this->_data;
