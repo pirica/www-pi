@@ -148,12 +148,12 @@ class Action
 				code
 			)
 			select
-				?,
+				nullif(?, -1),
 				?
 			from t_app_action
 			where
 				not exists (
-					select * from t_app_action where id_app = ? and code = ?
+					select * from t_app_action where ifnull(id_app,-1) = ? and code = ?
 				)
 			limit 1, 1
 			
