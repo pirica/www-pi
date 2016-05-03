@@ -56,10 +56,10 @@ class Action
 		return $this->_page_title;
 	}
 	public function getLoginRequired() {
-		return ($this->_login_required == 1);
+		return $this->_login_required;
 	}
 	public function getAllowed() {
-		return $this->_allowed == 1;
+		return $this->_allowed;
 	}
 
 	private function getData() {
@@ -185,7 +185,7 @@ class Action
 	} 
 	
 	public function _debug() {
-		//print_r($this->_data);
+		print_r($this);
 	}
 	
 }

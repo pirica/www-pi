@@ -14,7 +14,8 @@
 			//echo $app->getBaseUrl();
 			//$settings->_debug();
 			echo '=====' . "\n";
-			print_r($_SESSION);
+			print_r($_SESSION). "\n";
+			echo $action->_debug() . "\n";
 			echo '-->';
 		}
 	?>
