@@ -40,7 +40,7 @@ class Action
 		
 		// action still not found or could not add
 		if($this->_id_app_action == -1){
-			trigger_error('app action "' . $code . '" not defined!', E_USER_ERROR);
+			trigger_error('app action ' . $id_app . ':"' . $code . '" not defined!', E_USER_ERROR);
 		}
 		
 	}
@@ -65,6 +65,13 @@ class Action
 	private function getData() {
 		//if(count($this->_data) == 0){
 			$this->_data = [];
+			
+			$this->_id_app_action = -1;
+			//$this->_id_app,
+			//$code,
+			$this->_page_title = '';
+			$this->_login_required = 1;
+			$this->_allowed = 0;
 			
 			$qry_action = $this->_db->prepare("
 				select
@@ -95,46 +102,22 @@ class Action
 			$qry_action->execute();
 			$qry_action->store_result();
 			
-			if ($qry_action->num_rows > 0) {
-				$qry_action->bind_result(
-					//$this->_id_app,
-					//$code,
-					
-					$_id_app_action,
-					$_page_title,
-					$_login_required,
-					$_allowed
-				);
-				
-				$qry_action->fetch();
-				
-				$this->_id_app_action = $_id_app_action;
-				$this->_page_title = $_page_title;
-				$this->_login_required = $_login_required;
-				$this->_allowed = $_allowed;
-				
-				/*
-				while ($qry_action->fetch()) {
-					$this->_count++;
-					$this->_data[] = array(
-						'id_app_action' => $id_app_action,
-						'id_app' => $id_app,
-						'code' => $code,
-						'page_title' => $page_title,
-						'login_required' => $login_required
-					);
-					
-				}
-				*/
-			}
-			else {
-				$this->_id_app_action = -1;
+			$qry_action->bind_result(
 				//$this->_id_app,
 				//$code,
-				$this->_page_title = '';
-				$this->_login_required = 1;
-				$this->_allowed = 0;
-			}
+				
+				$_id_app_action,
+				$_page_title,
+				$_login_required,
+				$_allowed
+			);
+			
+			$qry_action->fetch();
+			
+			$this->_id_app_action = $_id_app_action;
+			$this->_page_title = $_page_title;
+			$this->_login_required = $_login_required;
+			$this->_allowed = $_allowed;
 			
 		//}*/
 		return $this->_data;
