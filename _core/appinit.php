@@ -11,6 +11,9 @@ require dirname(__FILE__).'/functions.php';
 
 require dirname(__FILE__).'/../users/sec-users.php';
 
+require_once dirname(__FILE__).'/../_core/components/phpfastcache/phpfastcache.php';
+
+
 $request_uri = '';
 // from command line
 //if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
@@ -22,9 +25,11 @@ $request_uri = '';
 }*/
 
 
-
 $app = new App($mysqli, $request_uri);
 $settings = new Settings($mysqli, $app->getId());
+
+phpFastCache::setup("storage","files");
+$cache = phpFastCache();
 
 /*
 sec_session_start();

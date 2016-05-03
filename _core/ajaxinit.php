@@ -11,6 +11,9 @@ require dirname(__FILE__).'/functions.php';
 
 require dirname(__FILE__).'/../users/sec-users.php';
 
+require_once dirname(__FILE__).'/../_core/components/phpfastcache/phpfastcache.php';
+
+
 $request_uri = '';
 // from command line
 //if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
@@ -25,6 +28,9 @@ $request_uri = '';
 
 $app = new App($mysqli, $request_uri);
 $settings = new Settings($mysqli, $app->getId());
+
+phpFastCache::setup("storage","files");
+$cache = phpFastCache();
 
 sec_session_start();
 
@@ -53,13 +59,13 @@ if ($loggedin){
 }
 
 if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)){
-	if ($action->getLoginRequired() && !$loggedin){
+	if ($action->getLoginRequired() == 1 && !$loggedin){
 		$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
 		$_SESSION['url_after_login'] = get_url_after_login();
 		
 		$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
 	}
-	else if ($action->getLoginRequired() && !$action->getAllowed()){
+	else if ($action->getLoginRequired() == 1 && $action->getAllowed() == 0){
 		$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
 		//$_SESSION['url_after_login'] = get_url_after_login();
 		
