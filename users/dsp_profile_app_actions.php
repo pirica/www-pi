@@ -22,7 +22,8 @@ $profiledata_count = count($profiledata);
 				<div class="tab-pane <?php if($i == 0){ ?>active<?php } ?>" id="profile<?= $profiledata[$i][0]['id_profile'] ?>">
 					<form role="form" class="form-horizontal profile-app-actions-form">
 						<div class="row clearfix">
-							<div class="col-sm-2"><h4>Action</h4></div>
+							<div class="col-sm-2"><h4>App</h4></div>
+							<div class="col-sm-4"><h4>Action</h4></div>
 							<div class="col-sm-2"><h4>Allowed?</h4></div>
 						</div>
 						
@@ -33,6 +34,9 @@ $profiledata_count = count($profiledata);
 								?>
 								<div class="row clearfix">
 									<div class="col-sm-2">
+										<?= $profiledata[$i][$j]['appname'] ?>
+									</div>
+									<div class="col-sm-4">
 										<?= $profiledata[$i][$j]['appcode'] ?>
 										<?= ($profiledata[$i][$j]['page_title'] == '' ? '' : '(' . $profiledata[$i][$j]['page_title'] . ')') ?>
 									</div>
