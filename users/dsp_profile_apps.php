@@ -2,7 +2,7 @@
 $profiledata_count = count($profiledata);
 ?>
 
-<h1>Actions</h1>
+<h1>Profile - Apps access</h1>
 
 <ul class="nav nav-tabs">
 	<?php

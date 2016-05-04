@@ -8,7 +8,7 @@ if(!in_array($field, array('allowed'))){
 	$field = '';
 }
 
-$qry_insert_profile_app = $mysqli->prepare("
+mysql_query("
 	insert into t_profile_app
 	(
 		id_profile,
@@ -28,27 +28,23 @@ $qry_insert_profile_app = $mysqli->prepare("
 		and p.full_access = 0
 		and pa.id_profile_app is null
 		
-	");
-$qry_insert_profile_app->execute();
+	", $conn_users);
 	
 $error = 0;
 if($id_app > 0 && $id_profile > 0 && $field != ''){
 	
-	$qry_save_profile_app = $mysqli->prepare("
+	mysql_query("
 		update t_profile_app
 		set
-			" . $field . " = ?
+			" . $field . " = '" . mysql_real_escape_string($value) . "'
 			
 		where
-			id_app = ?
-			and id_profile = ?
+			id_app = " . $id_app . "
+			and id_profile = " . $id_profile . "
 			and active = 1
 			
-		");
+		", $conn_users);
 		
-	$qry_save_profile_app->bind_param('sii', $value, $id_app, $id_profile);
-	$qry_save_profile_app->execute();
-	
 }
 
 ?>

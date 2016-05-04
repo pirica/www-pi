@@ -19,9 +19,14 @@
 
 include_once 'config.php';   // Needed because functions.php is not included
 
+
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 if ($mysqli->connect_error) {
     header("Location: dsp_error.php?err=Unable to connect to MySQL");
     exit();
 }
+
+$conn_users = mysql_connect(HOST, USER, PASSWORD) ;//or die("Unable to connect to MySQL");
+mysql_select_db(DATABASE, $conn_users) ;//or die("Could not select examples");
+
 ?>
