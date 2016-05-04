@@ -103,8 +103,9 @@ class Action
 					left join t_profile_app pa on pa.id_app = aa.id_app and pa.id_profile = p.id_profile
 					left join t_profile_app_action paa on paa.id_app_action = aa.id_app_action and paa.id_profile = p.id_profile
 					
-				where
-					ifnull(aa.id_app, " . $this->_id_app . ") = " . $this->_id_app . "
+				where " . 
+					($this->_id_app > 0 ? "aa.id_app = " . $this->_id_app : "aa.id_app is null") .
+					"
 					and aa.code = '" . mysql_real_escape_string($this->_code) . "'
 					and aa.active = 1
 					
