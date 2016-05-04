@@ -21,7 +21,12 @@ class Action
         $this->default_code = 'main';
         
 		$this->_db = $db;
-		$this->_id_app = $id_app;
+		if($id_app == ''){
+			$this->_id_app = $id_app;
+		}
+		else {
+			$this->_id_app = -1;
+		}
 		if($code == ''){
 			$this->_code = $code;
 		}
