@@ -63,13 +63,13 @@ if ($loggedin){
 
 if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)){
 	if ($action->getLoginRequired() == 1 && !$loggedin){
-		$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
+		$action = new Action($conn_users, $app->getId(), 'login', $id_profile);
 		$_SESSION['url_after_login'] = get_url_after_login();
 		
 		$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
 	}
 	else if ($action->getLoginRequired() == 1 && $action->getAllowed() == 0){
-		$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
+		$action = new Action($conn_users, $app->getId(), 'notallowed', $id_profile);
 		//$_SESSION['url_after_login'] = get_url_after_login();
 		
 		$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
