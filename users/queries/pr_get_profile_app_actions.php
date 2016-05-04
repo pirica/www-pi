@@ -7,8 +7,8 @@ $qry_mng_profile_apps = mysql_query("
 		p.description as profilename,
 		p.full_access,
 		
-		a.id_app,
-		a.description as appname,
+		ifnull(a.id_app,-1) as id_app,
+		ifnull(a.description,'Global') as appname,
 		
 		aa.id_app_action,
 		aa.code as appcode,
@@ -19,7 +19,7 @@ $qry_mng_profile_apps = mysql_query("
 		
 	from t_profile p
 		cross join t_app_action aa
-		join t_app a on a.id_app = aa.id_app
+		left join t_app a on a.id_app = aa.id_app
 		left join t_profile_app_action paa on paa.id_profile = p.id_profile and paa.id_app_action = aa.id_app_action
 		
 	where
