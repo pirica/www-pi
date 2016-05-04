@@ -48,7 +48,7 @@ $user = new User($mysqli, $app->getId(), $_SESSION);
 $loggedin = login_check($mysqli);
 $id_profile = $settings->val('default_profile_notloggedin', -1);
 
-$action = new Action($mysqli, $app->getId(), saneInput('action', 'string', ''), $id_profile);
+$action = new Action($conn_users, $app->getId(), saneInput('action', 'string', ''), $id_profile);
 
 $_SESSION['log'] .= '1:' . $action->getId() . '-' . $action->getCode() . '-' . $action->getAllowed() . "\n";
 
@@ -60,13 +60,13 @@ if ($loggedin){
 
 if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)){
 	if ($action->getLoginRequired() == 1 && !$loggedin){
-		$action = new Action($mysqli, $app->getId(), 'login', $id_profile);
+		$action = new Action($conn_users, $app->getId(), 'login', $id_profile);
 		$_SESSION['url_after_login'] = get_url_after_login();
 		
 		$_SESSION['log'] .= '2:' . $action->getId() . '-' . $action->getCode() . "\n";
 	}
 	else if ($action->getLoginRequired() == 1 && $action->getAllowed() == 0){
-		$action = new Action($mysqli, $app->getId(), 'notallowed', $id_profile);
+		$action = new Action($conn_users, $app->getId(), 'notallowed', $id_profile);
 		//$_SESSION['url_after_login'] = get_url_after_login();
 		
 		$_SESSION['log'] .= '3:' . $action->getId() . '-' . $action->getCode() . "\n";
