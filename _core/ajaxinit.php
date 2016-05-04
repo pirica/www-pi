@@ -47,6 +47,9 @@ $user = new User($mysqli, $app->getId(), $_SESSION);
 
 $loggedin = login_check($mysqli);
 $id_profile = $settings->val('default_profile_notloggedin', -1);
+if ($loggedin){
+	$id_profile = $_SESSION['id_profile'];
+}
 
 $action = new Action($conn_users, $app->getId(), saneInput('action', 'string', ''), $id_profile);
 
@@ -54,9 +57,6 @@ $_SESSION['log'] .= '1:' . $action->getId() . '-' . $action->getCode() . '-' . $
 
 $app->setTitle( $action->getPageTitle() );
 
-if ($loggedin){
-	$id_profile = $_SESSION['id_profile'];
-}
 
 if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)){
 	if ($action->getLoginRequired() == 1 && !$loggedin){
