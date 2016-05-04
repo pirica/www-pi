@@ -51,7 +51,7 @@ $user = new User($mysqli, $app->getId(), $_SESSION);
 $loggedin = login_check($mysqli);
 $id_profile = $settings->val('default_profile_notloggedin', -1);
 
-$action = new Action($mysqli, $app->getId(), saneInput('action', 'string', ''), $id_profile);
+$action = new Action($conn_users, $app->getId(), saneInput('action', 'string', ''), $id_profile);
 
 $_SESSION['log'] .= '1:' . $action->getId() . '-' . $action->getCode() . '-' . $action->getAllowed() . "\n";
 
