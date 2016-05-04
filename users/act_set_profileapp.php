@@ -33,7 +33,7 @@ mysql_query("
 $error = 0;
 if($id_app > 0 && $id_profile > 0 && $field != ''){
 	
-	$qry = "
+	mysql_query("
 		update t_profile_app
 		set
 			" . $field . " = '" . mysql_real_escape_string($value) . "'
@@ -41,11 +41,8 @@ if($id_app > 0 && $id_profile > 0 && $field != ''){
 		where
 			id_app = " . $id_app . "
 			and id_profile = " . $id_profile . "
-			and active = 1
 			
-		";
-	echo $qry;
-	mysql_query($qry, $conn_users);
+		", $conn_users);
 		
 }
 
