@@ -18,9 +18,16 @@ class Action
 	public $default_code;
 
 	public function __construct($db, $id_app, $code, $id_profile) {
+        $this->default_code = 'main';
+        
 		$this->_db = $db;
 		$this->_id_app = $id_app;
-		$this->_code = $code;
+		if($code == ''){
+			$this->_code = $code;
+		}
+		else {
+			$this->_code = $this->default_code;
+		}
 		$this->_id_profile = $id_profile;
 		
 		$this->_id_app_action = -1;
@@ -28,8 +35,6 @@ class Action
 		$this->_login_required = 1;
 		$this->_allowed = 0;
 		
-        $this->default_code = 'main';
-        
 		$this->getData();
 		
 		// action not found
@@ -73,8 +78,6 @@ class Action
 			$this->_login_required = 1;
 			$this->_allowed = 0;
 			
-			$code = ($this->_code == '' ? $this->default_code : $this->_code);
-			
 			$qry_action = mysql_query("
 				select
 					#aa.id_app,
@@ -98,7 +101,7 @@ class Action
 					
 				where
 					ifnull(aa.id_app, " . $this->_id_app . ") = " . $this->_id_app . "
-					and aa.code = '" . mysql_real_escape_string($code) . "'
+					and aa.code = '" . mysql_real_escape_string($this->_code) . "'
 					and aa.active = 1
 					
 				order by
@@ -120,8 +123,6 @@ class Action
 	}
 	
 	private function setData() {
-        $code = ($this->_code == '' ? $this->default_code : $this->_code);
-		
 		mysql_query("
 			insert into t_app_action
 			(
@@ -130,11 +131,11 @@ class Action
 			)
 			select
 				nullif(" . $this->_id_app . ", -1),
-				'" . mysql_real_escape_string($code) . "'
+				'" . mysql_real_escape_string($this->_code) . "'
 			from t_app_action
 			where
 				not exists (
-					select * from t_app_action where ifnull(id_app,-1) = " . $this->_id_app . " and code = '" . mysql_real_escape_string($code) . "'
+					select * from t_app_action where ifnull(id_app,-1) = " . $this->_id_app . " and code = '" . mysql_real_escape_string($this->_code) . "'
 				)
 			limit 1, 1
 			
