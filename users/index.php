@@ -80,6 +80,18 @@ switch($action->getCode()){
 	case 'do_setaction':
 		include 'act_set_action.php';
 		break;
+			
+	
+	case 'profileapps':
+		require 'queries/pr_get_profile_apps.php';
+		require '../_core/dsp_header.php';
+		require 'dsp_profile_apps.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_setprofileapp':
+		include 'act_set_profileapp.php';
+		break;
 		
 		
 	// main: overview
