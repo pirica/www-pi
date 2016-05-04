@@ -1,9 +1,9 @@
 <?php
 
-include 'connection.php';
-
 include_once '../users/sec-users.php';
 sec_session_start();
+
+include 'connection.php';
 
 if (login_check($mysqli)){
 

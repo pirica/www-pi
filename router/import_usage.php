@@ -1,8 +1,9 @@
 <?php
 set_time_limit(3600);
+require dirname(__FILE__).'/../_core/appinit.php';
+
 include "connection.php";
 require dirname(__FILE__).'/../messages/functions.php';
-require dirname(__FILE__).'/../_core/appinit.php';
 
 /*
 
@@ -154,6 +155,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 		
 		require 'queries/pr_get_hosts.php';
 		
+		// http://php.net/manual/en/ref.gmp.php 
 		$total_traffic = 0;
 		
 		while($host = mysql_fetch_array($qry_hosts)){

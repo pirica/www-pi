@@ -1,10 +1,10 @@
 <?php
 set_time_limit(0);
 
+require dirname(__FILE__).'/../_core/appinit.php';
+
 require 'connection.php';
 require 'functions.php';
-
-require dirname(__FILE__).'/../_core/appinit.php';
 
 shell_exec('if [ ! -d /var/www/camera/captures ]; then ln -s ' . $main_dir . ' /var/www/camera/captures > /dev/null 2>&1; fi');
 shell_exec('if [ ! -d /var/www/camera/captures_archive ]; then ln -s ' . $archive_dir . ' /var/www/camera/captures_archive > /dev/null 2>&1; fi');

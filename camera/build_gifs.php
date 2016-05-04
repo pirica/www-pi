@@ -1,11 +1,12 @@
 <?php
 set_time_limit(0);
 
+require dirname(__FILE__).'/../_core/appinit.php';
+
 require 'connection.php';
 require 'functions.php';
-require dirname(__FILE__).'/../_core/components/images/GIFEncoder.class.php';
 
-require dirname(__FILE__).'/../_core/appinit.php';
+require dirname(__FILE__).'/../_core/components/images/GIFEncoder.class.php';
 
 $qry_camera_log = mysql_query("
 		

@@ -4,9 +4,9 @@ if(isset($_GET['debug']) && $_GET['debug'] == 1){
 	$debug = 1;
 }
 
-require 'functions.php';
 require dirname(__FILE__).'/../_core/appinit.php';
 
+require 'functions.php';
 
 require 'com/Email_Reader.php';
 $emailhandle = New Email_reader(
