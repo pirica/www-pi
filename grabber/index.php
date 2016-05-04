@@ -1,8 +1,8 @@
 <?php
+require '../_core/webinit.php';
+
 include 'connections.php';
 include 'functions.php';
-
-require '../_core/webinit.php';
 
 $id_grab = saneInput('id_grab', 'int', -1);
 

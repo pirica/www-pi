@@ -1,8 +1,8 @@
 <?php
+require '../_core/webinit.php';
+
 include 'connections.php';
 include 'functions.php';
-
-require '../_core/webinit.php';
 
 $map = saneInput('map', 'string', '');
 

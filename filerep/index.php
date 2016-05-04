@@ -1,9 +1,9 @@
 <?php
+require '../_core/webinit.php';
+
 include 'connection.php';
 include 'functions.php';
 include 'act_settings.php';
-
-require '../_core/webinit.php';
 
 $id_share = saneInput('id_share', 'int', -1);
 $id_host = saneInput('id_host', 'int', -1);

@@ -1,8 +1,8 @@
 <?php
+require '../_core/webinit.php';
+
 include 'connection.php';
 require 'functions.php';
-
-require '../_core/webinit.php';
 
 $id_camera = saneInput('id_camera', 'int', -1);
 $camera = saneInput('camera');

@@ -1,8 +1,8 @@
 <?php
+require '../_core/webinit.php';
+
 require 'connection.php';
 require 'functions.php';
-
-require '../_core/webinit.php';
 
 switch($action->getCode()){
 	/*
