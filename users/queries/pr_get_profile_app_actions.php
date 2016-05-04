@@ -24,6 +24,7 @@ $qry_mng_profile_apps = mysql_query("
 		
 	where
 		p.active = 1
+		and aa.login_required = 1
 		
 	order by
 		p.description,
