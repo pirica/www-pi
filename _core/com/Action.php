@@ -94,8 +94,7 @@ class Action
 					
 					case
 						when p.full_access = 1 then 1
-						when pa.allowed = 1 then 1
-						when paa.allowed = 1 then 1
+						when pa.allowed = 1 and paa.allowed = 1 then 1
 						else 0
 					end as allowed
 					
