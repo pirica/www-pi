@@ -73,7 +73,9 @@ class Action
 			$this->_login_required = 1;
 			$this->_allowed = 0;
 			
-			$qry_action = $this->_db->prepare("
+			$code = ($this->_code == '' ? $this->default_code : $this->_code);
+			
+			$qry_action = mysql_query("
 				select
 					#aa.id_app,
 					#aa.code,
@@ -81,72 +83,62 @@ class Action
 					aa.id_app_action,
 					aa.page_title,
 					aa.login_required,
-					#case when (pa.allowed = 1 or p.full_access = 1) and (paa.allowed = 1 or p.full_access = 1) then 1 else 0 end as allowed
-					1 as allowed
+					case when (pa.allowed = 1 or p.full_access = 1) and (paa.allowed = 1 or p.full_access = 1) then 1 else 0 end as allowed
+					#1 as allowed
+					
+					case
+						when p.full_access = 1 then 1
+						when pa.allowed = 1 then 1
+						when paa.allowed = 1 then 1
+						else 0
+					end as allowed
 					
 				from t_app_action aa
-					join t_profile p on p.id_profile = ?
+					join t_profile p on p.id_profile = " . $this->_id_profile . "
 					left join t_profile_app pa on pa.id_app = aa.id_app and pa.id_profile = p.id_profile
 					left join t_profile_app_action paa on paa.id_app_action = aa.id_app_action and paa.id_profile = p.id_profile
 					
 				where
-					ifnull(aa.id_app,?) = ?
-					and aa.code = ?
+					ifnull(aa.id_app, " . $this->_id_app . ") = " . $this->_id_app . "
+					and aa.code = '" . mysql_real_escape_string($code) . "'
 					and aa.active = 1
 				order by
 					aa.id_app desc
 				limit 1
-				");
+				", $this->_db);
 				
-            $code = ($this->_code == '' ? $this->default_code : $this->_code);
-			$qry_action->bind_param('iiis', $this->_id_profile, $this->_id_app, $this->_id_app, $code);
-			$qry_action->execute();
-			$qry_action->store_result();
+            $_action = mysql_fetch_array($qry_action);
 			
-			$qry_action->bind_result(
-				//$this->_id_app,
-				//$code,
-				
-				$_id_app_action,
-				$_page_title,
-				$_login_required,
-				$_allowed
-			);
-			
-			$qry_action->fetch();
-			
-			$this->_id_app_action = $_id_app_action;
-			$this->_page_title = $_page_title;
-			$this->_login_required = $_login_required;
-			$this->_allowed = $_allowed;
+			$this->_id_app_action = $_action['id_app_action'];
+			$this->_page_title = $_action['page_title'];
+			$this->_login_required = $_action['login_required'];
+			$this->_allowed = $_action['allowed'];
 			
 		//}*/
 		return $this->_data;
 	}
 	
 	private function setData() {
-		$qry_action = $this->_db->prepare("
+        $code = ($this->_code == '' ? $this->default_code : $this->_code);
+		
+		mysql_query("
 			insert into t_app_action
 			(
 				id_app,
 				code
 			)
 			select
-				nullif(?, -1),
-				?
+				nullif(" . $this->_id_app . ", -1),
+				'" . mysql_real_escape_string($code) . "'
 			from t_app_action
 			where
 				not exists (
-					select * from t_app_action where ifnull(id_app,-1) = ? and code = ?
+					select * from t_app_action where ifnull(id_app,-1) = " . $this->_id_app . " and code = '" . mysql_real_escape_string($code) . "'
 				)
 			limit 1, 1
 			
-			");
+			", $this->_db);
 			
-        $code = ($this->_code == '' ? $this->default_code : $this->_code);
-		$qry_action->bind_param('isis', $this->_id_app, $code, $this->_id_app, $code);
-		$qry_action->execute();
-		
 	}
 	
 	/*
