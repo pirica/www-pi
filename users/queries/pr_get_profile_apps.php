@@ -1,6 +1,6 @@
 <?php
 
-$qry_mng_profile_apps = $mysqli->prepare("
+$qry_mng_profile_apps = mysql_query("
 	
 	select
 		p.id_profile,
@@ -23,43 +23,27 @@ $qry_mng_profile_apps = $mysqli->prepare("
 		p.description,
 		ifnull(a.sort_order, ifnull(a.id_app, -1))
 		
-	");
-	
-//$qry_mng_profile_apps->bind_param('s', $request_uri);
-$qry_mng_profile_apps->execute();
-$qry_mng_profile_apps->store_result();
-
-$qry_mng_profile_apps->bind_result(
-	$id_profile,
-	$profilename,
-	$full_access,
-	
-	$id_app,
-	$appname,
-	
-	$id_profile_app,
-	$allowed
-);
+	", $conn_users);
 	
 		
 $profiledata = [];
 
 $prev_id_profile = -2;
-while ($qry_mng_profile_apps->fetch()) {
-	if($prev_id_profile != $id_profile){
+while ($profile_apps = mysql_fetch_array($qry_mng_profile_apps)) {
+	if($prev_id_profile != $profile_apps['id_profile']){
 		$profiledata[] = [];
-		$prev_id_profile = $id_profile;
+		$prev_id_profile = $profile_apps['id_profile'];
 	}
 	$profiledata[count($profiledata) - 1][] = array(
-		'id_profile' => $id_profile,
-		'profilename' => $profilename,
-		'full_access' => $full_access,
+		'id_profile' => $profile_apps['id_profile'],
+		'profilename' => $profile_apps['profilename'],
+		'full_access' => $profile_apps['full_access'],
 		
-		'id_app' => $id_app,
-		'appname' => $appname,
+		'id_app' => $profile_apps['id_app'],
+		'appname' => $profile_apps['appname'],
 		
-		'id_profile_app' => $id_profile_app,
-		'allowed' => $allowed
+		'id_profile_app' => $profile_apps['id_profile_app'],
+		'allowed' => $profile_apps['allowed']
 	);
 }
 
