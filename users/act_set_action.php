@@ -1,5 +1,5 @@
 <?php
-$id_app = saneInput('id_app', 'int', -1);
+$id_app = saneInput('id_app', 'int', 0);
 $code = saneInput('code', 'string');
 $field = saneInput('field', 'string');
 $value = saneInput('value', 'string');
@@ -9,24 +9,21 @@ if(!in_array($field, array('page_title', 'login_required'))){
 }
 
 $error = 0;
-if($id_app > 0 && $code != ''){
+if(($id_app > 0 || $id_app == -1) && $code != ''){
 	
 	
-	$qry_save_action = $mysqli->prepare("
+	mysql_query("
 		update t_app_action
 		set
-			" . $field . " = ?
+			" . $field . " = '" . mysql_real_escape_string($value) . "'
 			
 		where
-			id_app = ?
-			and code = ?
+			ifnull(id_app,-1) = " . $id_app . "
+			and code = '" . mysql_real_escape_string($code) . "'
 			and active = 1
 			
-		");
+		", $conn_users);
 		
-	$qry_save_action->bind_param('sis', $value, $id_app, $code);
-	$qry_save_action->execute();
-	
 }
 
 ?>

@@ -2,7 +2,8 @@
 var 
 	settingsForm = false,
 	actionsForm = false,
-	profileAppsForm = false
+	profileAppsForm = false,
+	profileAppActionsForm = false
 ;
 
 $().ready(function(){
@@ -10,6 +11,7 @@ $().ready(function(){
 	settingsForm = $('.settings-form').length > 0;
 	actionsForm = $('.actions-form').length > 0;
 	profileAppsForm = $('.profile-apps-form').length > 0;
+	profileAppActionsForm = $('.profile-apps-form').length > 0;
 	
 	if(settingsForm){
 		$('.settings-form input[type=text]').focusout(function() {
@@ -46,6 +48,19 @@ $().ready(function(){
 		});
 		$('.profile-apps-form select').change(function() {
 			updateProfileApp(this, $(this).find('option:selected').val());
+		});
+		
+	}
+	
+	if(profileAppActionsForm){
+		$('.profile-app-actions-form input[type=text]').focusout(function() {
+			updateProfileAppAction(this, $(this).val());
+		});
+		$('.profile-app-actions-form input[type=checkbox]').change(function() {
+			updateProfileAppAction(this, ($(this).is(":checked") ? 1 : 0));
+		});
+		$('.profile-app-actions-form select').change(function() {
+			updateProfileAppAction(this, $(this).find('option:selected').val());
 		});
 		
 	}
@@ -111,6 +126,31 @@ function updateProfileApp(el, val){
 		url: 'index.php?action=do_setprofileapp' + 
 				'&id_profile=' + id_profile + 
 				'&id_app=' + id_app + 
+				'&field=' + field + 
+				'&value=' + val + 
+			'',
+		type: 'GET',
+		cache: false,
+		dataType: 'json',
+		error: function(xhr, status, error) {
+			//location.href = ...
+		},
+		success: function(data, textStatus, jqXHR){
+			
+		}
+	});
+}
+
+function updateProfileAppAction(el, val){
+	var 
+		id_profile = $(el).parents('.tab-pane').attr('id').replace('profile', ''),
+		id_app_action = $(el).data('id_app_action'),
+		field = $(el).data('field')
+	;
+	$.ajax({
+		url: 'index.php?action=do_setprofileapp' + 
+				'&id_profile=' + id_profile + 
+				'&id_app_action=' + id_app_action + 
 				'&field=' + field + 
 				'&value=' + val + 
 			'',

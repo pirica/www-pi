@@ -99,8 +99,9 @@ if(isset($_GET['newmenu'])) {
 								<li class="disabled"><a href="#">My stats</a></li>
 								<li class="divider"></li>
 								<li><a href="../users/index.php?action=settings">Settings</a></li>
-								<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
 								<li><a href="../users/index.php?action=actions">Actions</a></li>
+								<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
+								<li><a href="../users/index.php?action=profileappactions">Profiles - Actions</a></li>
 								<li class="divider"></li>
 								<li><a href="../users/index.php?action=logout">Log out</a></li>
 							</ul>
@@ -169,6 +170,8 @@ if(isset($_GET['newmenu'])) {
 					<li><a href="../users/index.php?action=settings">Settings</a></li>
 					<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
 					<li><a href="../users/index.php?action=actions">Actions</a></li>
+					<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
+					<li><a href="../users/index.php?action=profileappactions">Profiles - Actions</a></li>
 					<li class="divider"></li>
 					<li><a href="../users/index.php?action=logout">Log out</a></li>
 				</ul>

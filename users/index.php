@@ -94,6 +94,18 @@ switch($action->getCode()){
 		break;
 		
 		
+	case 'profileappactions':
+		require 'queries/pr_get_profile_app_actions.php';
+		require '../_core/dsp_header.php';
+		require 'dsp_profile_app_actions.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
+	case 'do_setprofileappaction':
+		include 'act_set_profileappaction.php';
+		break;
+	
+		
 	// main: overview
 	default:
 		include '../_core/dsp_header.php';

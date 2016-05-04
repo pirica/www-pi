@@ -14,21 +14,18 @@ if(/*$id_app > 0 &&*/ $code != ''){
 			break;
 	}
 	
-	$qry_save_setting = $mysqli->prepare("
+	mysql_query("
 		update t_setting
 		set
-			value = ?
+			value = '" . mysql_real_escape_string($value) . "'
 			
 		where
-			id_app = ?
-			and code = ?
+			id_app = " . $id_app . "
+			and code = '" . mysql_real_escape_string($code) . "'
 			and active = 1
 			
-		");
+		", $conn_users);
 		
-	$qry_save_setting->bind_param('sis', $value, $id_app, $code);
-	$qry_save_setting->execute();
-	
 }
 
 ?>
