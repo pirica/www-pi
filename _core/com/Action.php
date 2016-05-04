@@ -22,16 +22,16 @@ class Action
         
 		$this->_db = $db;
 		if($id_app == ''){
-			$this->_id_app = $id_app;
-		}
-		else {
 			$this->_id_app = -1;
 		}
+		else {
+			$this->_id_app = $id_app;
+		}
 		if($code == ''){
-			$this->_code = $code;
+			$this->_code = $this->default_code;
 		}
 		else {
-			$this->_code = $this->default_code;
+			$this->_code = $code;
 		}
 		$this->_id_profile = $id_profile;
 		
