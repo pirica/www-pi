@@ -11,7 +11,7 @@ $().ready(function(){
 	settingsForm = $('.settings-form').length > 0;
 	actionsForm = $('.actions-form').length > 0;
 	profileAppsForm = $('.profile-apps-form').length > 0;
-	profileAppActionsForm = $('.profile-apps-form').length > 0;
+	profileAppActionsForm = $('.profile-app-actions-form').length > 0;
 	
 	if(settingsForm){
 		$('.settings-form input[type=text]').focusout(function() {
@@ -148,7 +148,7 @@ function updateProfileAppAction(el, val){
 		field = $(el).data('field')
 	;
 	$.ajax({
-		url: 'index.php?action=do_setprofileapp' + 
+		url: 'index.php?action=do_setprofileappaction' + 
 				'&id_profile=' + id_profile + 
 				'&id_app_action=' + id_app_action + 
 				'&field=' + field + 
