@@ -23,7 +23,8 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			d.active,
 			s.id_share,
 			s.name,
-			s.server_directory
+			s.server_directory,
+			s.readonly
 			
 		from t_directory d
 		join t_share s on s.id_share = d.id_share
@@ -105,134 +106,140 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				", $conn);
 			
 			
-			// get files to move|rename
-			$qry_files_tomove = mysql_query("
-				select
-					f.id_file,
-					f.filename,
-					f.relative_directory,
-					f.size,
-					f.version,
-					f.date_last_modified,
-					f.date_deleted,
-					f.active,
-					f.rename_to,
-					f.move_to
-				from t_file f
-				where
-					f.id_share = " . $id_share . "
-					and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
-					and f.active = 1
-					and (ifnull(f.rename_to,'') <> ''
-						or ifnull(f.move_to,'') <> '')
-				", $conn);
-			
-			// do file actions (move|rename)
-			while ($move_file = mysql_fetch_array($qry_files_tomove)) {
-				$move_filename_from = $share{'server_directory'} . $move_file['relative_directory'] . $move_file['filename'];
+			if($share['readonly'] != 1)
+			{
+				// get files to move|rename
+				$qry_files_tomove = mysql_query("
+					select
+						f.id_file,
+						f.filename,
+						f.relative_directory,
+						f.size,
+						f.version,
+						f.date_last_modified,
+						f.date_deleted,
+						f.active,
+						f.rename_to,
+						f.move_to
+					from t_file f
+					where
+						f.id_share = " . $id_share . "
+						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.active = 1
+						and (ifnull(f.rename_to,'') <> ''
+							or ifnull(f.move_to,'') <> '')
+					", $conn);
 				
-				$move_filename_to = $share{'server_directory'};
-				if($move_file['move_to'] != ''){
-					$move_filename_to .= $move_file['move_to'];
+				// do file actions (move|rename)
+				while ($move_file = mysql_fetch_array($qry_files_tomove)) {
+					$move_filename_from = $share{'server_directory'} . $move_file['relative_directory'] . $move_file['filename'];
 					
-					// create directory if not exists
-					$parts = explode('/', $move_filename_to, -1);
-					$dir = '';
-					foreach($parts as $part){
-						if(!is_dir($dir .= "/$part")) mkdir($dir);
+					$move_filename_to = $share{'server_directory'};
+					if($move_file['move_to'] != ''){
+						$move_filename_to .= $move_file['move_to'];
+						
+						// create directory if not exists
+						$parts = explode('/', $move_filename_to, -1);
+						$dir = '';
+						foreach($parts as $part){
+							if(!is_dir($dir .= "/$part")) mkdir($dir);
+						}
 					}
-				}
-				else {
-					$move_filename_to .= $move_file['relative_directory'];
-				}
-				if($move_file['rename_to'] != ''){
-					$move_filename_to .= $move_file['rename_to'];
-				}
-				else {
-					$move_filename_to .= $move_file['filename'];
-				}
-				if(file_exists($move_filename_from) && !file_exists($move_filename_to)){
-					echo 'moved: ' . $move_filename_from . ' to ' . $move_filename_to . "\n";
-					shell_exec('mv "' . $move_filename_from . '" "' . $move_filename_to . '"');
-					
-					mysql_query("
+					else {
+						$move_filename_to .= $move_file['relative_directory'];
+					}
+					if($move_file['rename_to'] != ''){
+						$move_filename_to .= $move_file['rename_to'];
+					}
+					else {
+						$move_filename_to .= $move_file['filename'];
+					}
+					if(file_exists($move_filename_from) && !file_exists($move_filename_to)){
+						echo 'moved: ' . $move_filename_from . ' to ' . $move_filename_to . "\n";
+						shell_exec('mv "' . $move_filename_from . '" "' . $move_filename_to . '"');
 						
-						delete from t_file_move
-						where
-							id_file = " . $move_file['id_file'] . "
+						mysql_query("
 							
-						", $conn);
-						
-					mysql_query("
-						
-						insert into t_file_move
-						(
-							id_file,
-							id_share,
-							id_host,
-							active,
-							date_action,
-							action,
-							source,
-							target
-						)
-						select
-							f.id_file,
-							f.id_share,
-							hs.id_host,
-							1 as active,
-							now() as date_action,
-							'move' as action,
-							concat(f.relative_directory, f.filename) as source,
-							concat(f.relative_directory, f.rename_to) as target
-						from t_file f
-						join t_host_share hs on hs.id_share = f.id_share and hs.active = 1
-						where
-							f.id_file = " . $move_file['id_file'] . "
-							and f.id_share = " . $id_share . "
-							and f.active = 1
+							delete from t_file_move
+							where
+								id_file = " . $move_file['id_file'] . "
+								
+							", $conn);
 							
-						", $conn);
-	
-					mysql_query("
-						update t_file
-						set
-							rename_to = null,
-							move_to = null
-						where
-							id_file = " . $move_file['id_file'] . " 
-							and id_share = " . $id_share . " 
+						mysql_query("
 							
-						", $conn);
-						
+							insert into t_file_move
+							(
+								id_file,
+								id_share,
+								id_host,
+								active,
+								date_action,
+								action,
+								source,
+								target
+							)
+							select
+								f.id_file,
+								f.id_share,
+								hs.id_host,
+								1 as active,
+								now() as date_action,
+								'move' as action,
+								concat(f.relative_directory, f.filename) as source,
+								concat(f.relative_directory, f.rename_to) as target
+							from t_file f
+							join t_host_share hs on hs.id_share = f.id_share and hs.active = 1
+							where
+								f.id_file = " . $move_file['id_file'] . "
+								and f.id_share = " . $id_share . "
+								and f.active = 1
+								
+							", $conn);
+		
+						mysql_query("
+							update t_file
+							set
+								rename_to = null,
+								move_to = null
+							where
+								id_file = " . $move_file['id_file'] . " 
+								and id_share = " . $id_share . " 
+								
+							", $conn);
+							
+					}
 				}
 			}
 			
 			
-			// get inactive files to delete
-			$qry_files_inactive = mysql_query("
-				select
-					f.id_file,
-					f.filename,
-					f.relative_directory,
-					f.size,
-					f.version,
-					f.date_last_modified,
-					f.date_deleted,
-					f.active
-				from t_file f
-				where
-					f.id_share = " . $id_share . "
-					and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
-					and f.active = 0
-				", $conn);
-			
-			// delete inactive files
-			while ($inactive_file = mysql_fetch_array($qry_files_inactive)) {
-				$inactive_filename = $share{'server_directory'} . $inactive_file['relative_directory'] . $inactive_file['filename'];
-				if(file_exists($inactive_filename)){
-					echo 'removed: ' . $inactive_filename . "\n";
-					shell_exec('mv "' . $inactive_filename . '" "' . $inactive_filename . '.deleted"');
+			if($share['readonly'] != 1)
+			{
+				// get inactive files to delete
+				$qry_files_inactive = mysql_query("
+					select
+						f.id_file,
+						f.filename,
+						f.relative_directory,
+						f.size,
+						f.version,
+						f.date_last_modified,
+						f.date_deleted,
+						f.active
+					from t_file f
+					where
+						f.id_share = " . $id_share . "
+						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.active = 0
+					", $conn);
+				
+				// delete inactive files
+				while ($inactive_file = mysql_fetch_array($qry_files_inactive)) {
+					$inactive_filename = $share{'server_directory'} . $inactive_file['relative_directory'] . $inactive_file['filename'];
+					if(file_exists($inactive_filename)){
+						echo 'removed: ' . $inactive_filename . "\n";
+						shell_exec('mv "' . $inactive_filename . '" "' . $inactive_filename . '.deleted"');
+					}
 				}
 			}
 			

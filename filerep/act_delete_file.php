@@ -9,7 +9,8 @@ $qry_file = mysql_query("
 		f.active,
 		f.filename,
 		f.relative_directory,
-		s.server_directory
+		s.server_directory,
+		s.readonly
 	from t_file f
 	join t_share s on s.id_share = f.id_share
 		and s.active = 1
@@ -21,7 +22,7 @@ $dbfile = mysql_fetch_array($qry_file);
 
 $file = $dbfile['server_directory'] . $dbfile['relative_directory'] . $dbfile['filename'];
 
-if($dbfile['active'] == $active){
+if($dbfile['active'] == $active && $dbfile['readonly'] != 1){
 	if($active == 1){
 		rename($file, $file . '.deleted');
 		
