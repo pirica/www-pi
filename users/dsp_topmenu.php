@@ -8,23 +8,24 @@ if(isset($_GET['newmenu'])) {
 ?>
 
 <div class="topmenu">
-	<nav class="navbar">
+	<nav role="navigation" class="navbar navbar-default navbar-static-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<button data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed" type="button" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Bpi home server</a>
+				<a href="index.html" class="navbar-brand">metisMenu</a>
 			</div>
-			<div id="navbar" class="navbar-collapse collapse">
+			
+			<div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
 				<ul class="nav navbar-nav">
-					<!--
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#">About</a></li>
-					<li><a href="#">Contact</a></li>
+					<li class="active"><a href="index.html">Vertical Menu</a></li>
+					<li><a href="metisFolder.html">Folder View</a></li>
+					<li><a href="hover.html">Hover Option For Desktop</a></li>
+					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
 						<ul class="dropdown-menu">
@@ -32,101 +33,32 @@ if(isset($_GET['newmenu'])) {
 							<li><a href="#">Another action</a></li>
 							<li><a href="#">Something else here</a></li>
 							<li role="separator" class="divider"></li>
-							<li class="dropdown-header">Nav header</li>
 							<li><a href="#">Separated link</a></li>
+							<li role="separator" class="divider"></li>
 							<li><a href="#">One more separated link</a></li>
 						</ul>
 					</li>
-					-->
 					
-					<?php
-					if(isset($loggedin) && $loggedin === true){
-						while ($qry_apps->fetch()) {
-							
-							$class = '';
-							if($is_current == 1){
-								$class .= ' active';
-							}
-							
-							if($show_in_topmenu == 1){
-							?>
-								<li class="<?= $class ?>"><a href="<?= $relative_url ?>"><?= $description ?></a></li>
-							<?php
-							}
-						}
-					}
-					else {
-						while ($qry_apps->fetch()) {
-							
-							$class = '';
-							if($is_current == 1){
-								$class .= ' active';
-							}
-							
-							if($login_required == 1) {
-								$class .= ' disabled';
-								$relative_url = "#";
-							}
-							
-							if($show_in_topmenu == 1){
-							?>
-								<li class="<?= $class ?>"><a href="<?= $relative_url ?>"><?= $description ?></a></li>
-							<?php
-							}
-						}
-					}
-					?>
+					<li><a href="zurb.html">Foundation | Zurb</a></li>
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">One more separated link</a></li>
+						</ul>
+					</li>
+					<li><a href="animate.html">Animate</a></li>
+					<li><a href="event.html">Event</a></li>
 					
 				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<!--
-					<li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-					<li><a href="../navbar-static-top/">Static top</a></li>
-					<li><a href="../navbar-fixed-top/">Fixed top</a></li>
-					-->
-					
-					<?php
-					if(isset($loggedin) && $loggedin === true){
-					?>
-						<li class="dropdown pull-right">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="fa fa-user"></i>
-								<span class="user"><?= $_SESSION['username_safe'] ?></span>
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu pull-right" role="menu">
-								<li class="disabled"><a href="#">My profile</a></li>
-								<li class="disabled"><a href="#">My stats</a></li>
-								<li class="divider"></li>
-								<li><a href="../users/index.php?action=settings">Settings</a></li>
-								<li><a href="../users/index.php?action=actions">Actions</a></li>
-								<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
-								<li><a href="../users/index.php?action=profileappactions">Profiles - Actions</a></li>
-								<li class="divider"></li>
-								<li><a href="../users/index.php?action=logout">Log out</a></li>
-							</ul>
-						</li>
-					<?php
-					}
-					else {
-					?>
-						<li class="dropdown pull-right">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="fa fa-user"></i>
-								<span class="user">(Not logged in) </span>
-								<span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu pull-right" role="menu">
-								<li><a href="../users/index.php?action=login">Log in</a></li>
-								<!--<li><a href="../users/index.php?action=register">Register</a></li>-->
-							</ul>
-						</li>
-					<?php
-					}
-					?>
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div><!--/.container-fluid -->
+			</div>
+		</div>
 	</nav>
 </div>
 
