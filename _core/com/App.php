@@ -19,6 +19,9 @@ class App
 	// boolean to include Video.js player's scripts/css
 	public $videojs = false;
 
+	// boolean to include jQuery UI scripts/css
+	public $jqueryui = false;
+	
 	public function __construct($db, $url) {
 		$this->_db = $db;
 		$this->_baseurl = $url;

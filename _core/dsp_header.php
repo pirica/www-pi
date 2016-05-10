@@ -77,6 +77,11 @@
 			echo '<script type="text/javascript" src="../_assets/scripts/videojs.js"></script>';
 		}
 		
+		if($app->jqueryui === true)
+		{
+			echo '<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">';
+			echo '<script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>';
+		}
 	?>
 </head>
 <body>
