@@ -3,10 +3,10 @@
 $qry_tableeditor = mysql_query("
 	
 	select
-		te.id_tableeditor
-		te.id_app
-		te.tablename
-		te.tableid
+		te.id_tableeditor,
+		te.id_app,
+		te.tablename,
+		te.tableid,
 		te.action,
 		a.database
 		
@@ -25,13 +25,13 @@ $tableeditor_fields_overview = $tableeditor['tableid'];
 $qry_tableeditor_fields = mysql_query("
 	
 	select
-		tef.id_tableeditor_field
-		tef.id_tableeditor
-		tef.fieldname
-		tef.fieldtype
-		tef.maxlength
-		tef.sort_order
-		tef.required
+		tef.id_tableeditor_field,
+		tef.id_tableeditor,
+		tef.fieldname,
+		tef.fieldtype,
+		tef.maxlength,
+		tef.sort_order,
+		tef.required,
 		tef.show_in_overview
 		
 	from t_tableeditor_field tef
