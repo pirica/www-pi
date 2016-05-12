@@ -30,8 +30,6 @@ echo '</h1>';
 	<input type="hidden" name="mode" value="save"/>
 	<input type="hidden" name="id" value="<?= $id ?>"/>
 	
-	<td><?= $tableentry[$tableeditor['tableid']] ?></td>
-	
 	<?php
 	mysql_data_seek($qry_tableeditor_fields, 0);
 	while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
@@ -96,9 +94,9 @@ echo '</h1>';
 	
 	<div class="form-group">
 	<?php
-	if($error == 1){
+	/*if($error == 1){
 		echo '<div class="alert alert-danger">Some required fields are incorrect</div>';
-	}
+	}*/
 	?>
 	</div>
 	
