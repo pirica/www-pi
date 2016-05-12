@@ -20,7 +20,9 @@ $qry_tableeditor = mysql_query("
 	", $conn_users);
 	
 $tableeditor = mysql_fetch_array($qry_tableeditor);
+
 $tableeditor_fields_overview = $tableeditor['tableid'];
+$tableeditor_fields_entry = $tableeditor['tableid'];
 
 $qry_tableeditor_fields = mysql_query("
 	
@@ -44,19 +46,38 @@ $qry_tableeditor_fields = mysql_query("
 	
 	", $conn_users);
 	
-	
-
 while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 {
 	if($tableeditor_field['show_in_overview'] == 1)
 	{
 		$tableeditor_fields_overview = $tableeditor_fields_overview . ',' . $tableeditor_field['fieldname'];
 	}
-	
+	$tableeditor_fields_entry = $tableeditor_fields_entry . ',' . $tableeditor_field['fieldname'];
 }
 
 if($mode == 'edit')
 {
+	
+	if($id > 0)
+	{
+		$qry_tableeditor_entry = mysql_query("
+			select
+				" . $tableeditor_fields_entry . "
+			from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			where	
+				" . $tableeditor['tableid'] . " = " . $id . "
+			
+			", $conn_users);
+	}
+	else 
+	{
+		$qry_tableeditor_entry = mysql_query("
+			select
+				-1 " . str_replace(',', ", '' ", $tableeditor_fields_entry) . "
+			
+			", $conn_users);
+	}
+	$tableentry = mysql_fetch_array($qry_tableeditor_entry);
 	
 }
 else 

@@ -81,6 +81,7 @@ if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER
 if($action->getEditorId() > 0)
 {
 	$mode = saneInput('mode');
+	$id = saneInput('id', 'int', -1);
 	
 	require dirname(__FILE__).'/../users/act_init_tableeditor.php';
 	
@@ -88,6 +89,12 @@ if($action->getEditorId() > 0)
 	{
 		require dirname(__FILE__).'/../_core/dsp_header.php';
 		require dirname(__FILE__).'/../users/dsp_tableeditor_edit.php';
+		require dirname(__FILE__).'/../_core/dsp_footer.php';
+	}
+	else if($mode == 'delete')
+	{
+		require dirname(__FILE__).'/../_core/dsp_header.php';
+		require dirname(__FILE__).'/../users/dsp_tableeditor_delete.php';
 		require dirname(__FILE__).'/../_core/dsp_footer.php';
 	}
 	else 

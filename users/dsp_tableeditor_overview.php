@@ -7,9 +7,9 @@ echo '<h1>' . $tableeditor['tablename'] . '</h1>';
 
 
 <p>
-	<a class="btn btn-primary" href="index.php?action=setfeed&amp;id_feed=-1">
+	<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=delete&amp;id=-1">
 		<span class="glyphicon glyphicon-plus"></span>
-		Add new item
+		Add new entry
 	</a>
 </p>
 
