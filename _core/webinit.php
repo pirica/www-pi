@@ -93,9 +93,7 @@ if($action->getEditorId() > 0)
 	}
 	else if($mode == 'delete')
 	{
-		require dirname(__FILE__).'/../_core/dsp_header.php';
 		require dirname(__FILE__).'/../users/dsp_tableeditor_delete.php';
-		require dirname(__FILE__).'/../_core/dsp_footer.php';
 	}
 	else 
 	{
