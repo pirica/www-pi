@@ -15,6 +15,8 @@ class Action
 	private $_login_required;
 	private $_allowed;
 	
+	private $_id_tableeditor;
+	
 	public $default_code;
 
 	public function __construct($db, $id_app, $code, $id_profile) {
@@ -39,6 +41,8 @@ class Action
 		$this->_page_title = '';
 		$this->_login_required = 1;
 		$this->_allowed = 0;
+		
+		$this->_id_tableeditor = -1;
 		
 		$this->getData();
 		
@@ -71,6 +75,10 @@ class Action
 	public function getAllowed() {
 		return $this->_allowed;
 	}
+	
+	public function getEditorId() {
+		return $this->_id_tableeditor;
+	}
 
 	private function getData() {
 		//if(count($this->_data) == 0){
@@ -82,6 +90,8 @@ class Action
 			$this->_page_title = '';
 			$this->_login_required = 1;
 			$this->_allowed = 0;
+			
+			$this->_id_tableeditor = -1;
 			
 			$qry_action = mysql_query("
 				select
@@ -96,12 +106,15 @@ class Action
 						when p.full_access = 1 then 1
 						when pa.allowed = 1 and paa.allowed = 1 then 1
 						else 0
-					end as allowed
+					end as allowed,
+					
+					te.id_tableeditor
 					
 				from t_app_action aa
 					join t_profile p on p.id_profile = " . $this->_id_profile . "
 					left join t_profile_app pa on pa.id_app = aa.id_app and pa.id_profile = p.id_profile
 					left join t_profile_app_action paa on paa.id_app_action = aa.id_app_action and paa.id_profile = p.id_profile
+					left join t_tableeditor te on te.action = aa.code and te.id_app = aa.id_app and te.active = 1
 					
 				where " . 
 					($this->_id_app > 0 ? "aa.id_app = " . $this->_id_app : "aa.id_app is null") .
@@ -121,6 +134,8 @@ class Action
 				$this->_page_title = $_action['page_title'];
 				$this->_login_required = $_action['login_required'];
 				$this->_allowed = $_action['allowed'];
+				
+				$this->_id_tableeditor = $_action['id_tableeditor'];
 			}
 			
 		//}*/

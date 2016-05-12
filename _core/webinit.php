@@ -77,23 +77,47 @@ if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER
 	}
 }
 
-
-switch($action->getCode()){
-
-	case 'login':
+// custom table editor
+if($action->getEditorId() > 0)
+{
+	$mode = saneInput('mode');
+	
+	require dirname(__FILE__).'/../users/act_init_tableeditor.php';
+	
+	if($mode == 'edit')
+	{
 		require dirname(__FILE__).'/../_core/dsp_header.php';
-		require dirname(__FILE__).'/../users/dsp_loginform.php';
+		require dirname(__FILE__).'/../users/dsp_tableeditor_edit.php';
 		require dirname(__FILE__).'/../_core/dsp_footer.php';
-		exit();
-		break;
-		
-	case 'notallowed':
+	}
+	else 
+	{
 		require dirname(__FILE__).'/../_core/dsp_header.php';
-		require dirname(__FILE__).'/../users/dsp_notallowed.php';
+		require dirname(__FILE__).'/../users/dsp_tableeditor_overview.php';
 		require dirname(__FILE__).'/../_core/dsp_footer.php';
-		exit();
-		break;
-		
+	}
+	exit();
+	
+}
+else 
+{
+	switch($action->getCode()){
+
+		case 'login':
+			require dirname(__FILE__).'/../_core/dsp_header.php';
+			require dirname(__FILE__).'/../users/dsp_loginform.php';
+			require dirname(__FILE__).'/../_core/dsp_footer.php';
+			exit();
+			break;
+			
+		case 'notallowed':
+			require dirname(__FILE__).'/../_core/dsp_header.php';
+			require dirname(__FILE__).'/../users/dsp_notallowed.php';
+			require dirname(__FILE__).'/../_core/dsp_footer.php';
+			exit();
+			break;
+			
+	}
 }
 
 ?>
