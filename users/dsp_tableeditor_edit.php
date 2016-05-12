@@ -45,7 +45,7 @@ echo '</h1>';
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fieldname'] ?></label>
 						<div class="col-sm-3">
-							<input id="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
+							<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
 								<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
 						</div>
 						<?php
@@ -71,7 +71,7 @@ echo '</h1>';
 						}
 					?>
 					<div class="col-sm-<?= $colsize ?>">
-						<input id="tef_<?= $tableeditor_field['fieldname'] ?>" type="text" class="form-control" 
+						<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="text" class="form-control" 
 							value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
 					</div>
 					<?php

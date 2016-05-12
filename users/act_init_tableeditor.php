@@ -50,9 +50,9 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 {
 	if($tableeditor_field['show_in_overview'] == 1)
 	{
-		$tableeditor_fields_overview = $tableeditor_fields_overview . ',' . $tableeditor_field['fieldname'];
+		$tableeditor_fields_overview .= ',' . $tableeditor_field['fieldname'];
 	}
-	$tableeditor_fields_entry = $tableeditor_fields_entry . ',' . $tableeditor_field['fieldname'];
+	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
 }
 
 if($mode == 'edit')
@@ -89,5 +89,60 @@ else
 		
 		", $conn_users);
 }
+
+if($mode == 'save')
+{
+	mysql_data_seek($qry_tableeditor_fields, 0);
+	
+	if($id > 0)
+	{
+		$qry_update = "";
+		
+		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+		{
+			$qry_update .= ($qry_update == '' ? '' : ',');
+			$qry_update .= $tableeditor_field['fieldname'] . " = '" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+		}
+		
+		mysql_query("
+			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			set " .
+				$qry_update . 
+			" where	
+				" . $tableeditor['tableid'] . " = " . $id . "
+				
+			", $conn_users);
+			
+	}
+	else
+	{
+		$qry_insert_fields = "";
+		$qry_insert_values = "";
+		
+		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+		{
+			$qry_insert_fields .= ($qry_insert_fields == '' ? '' : ',');
+			$qry_insert_values .= ($qry_insert_values == '' ? '' : ',');
+			
+			$qry_insert_fields .= $tableeditor_field['fieldname'];
+			$qry_insert_values .= "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+		}
+		
+		mysql_query("
+			insert into " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			(
+				" .	$qry_insert_fields . "
+			)
+			values
+			(
+				" .	$qry_insert_values . "
+			)
+			", $conn_users);
+			
+
+	}
+	
+}
+
 
 ?>
