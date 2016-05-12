@@ -120,7 +120,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'do_upload':
-		include 'queries/pr_get_share_stats.php';
+		include 'queries/pr_get_shares.php';
 		include 'act_upload_site.php';
 		break;
 	
@@ -151,7 +151,7 @@ switch($action->getCode()){
 		$id_share = 9;
 		$dir = '/uploads/';
 		
-		include 'queries/pr_get_share_stats.php';
+		include 'queries/pr_get_shares.php';
 		include 'act_upload_site.php';
 		
 		require '../messages/functions.php';
@@ -192,7 +192,7 @@ switch($action->getCode()){
 	
 	case 'do_create_dir':
 		$newdir = saneInput('newdir');
-		include 'queries/pr_get_share_stats.php';
+		include 'queries/pr_get_shares.php';
 		include 'act_create_dir.php';
 		break;
 	

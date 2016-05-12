@@ -18,7 +18,9 @@ $qry_share_stats = mysql_query("
 			and d.active = 1
 	where
 		s.active = 1
-		
+		" .
+		($_SESSION['full_access'] == 1 ? '' : " and s.id_user = " . $_SESSION['user_id'] )
+		. "
 	group by
 		s.id_share,
 		s.name,
