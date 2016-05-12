@@ -95,6 +95,14 @@ if($action->getEditorId() > 0)
 	{
 		require dirname(__FILE__).'/../users/dsp_tableeditor_delete.php';
 	}
+	else if($mode == 'save')
+	{
+		goto_action($action->getCode(), false);
+	}
+	else if($mode == 'dodelete')
+	{
+		goto_action($action->getCode(), false);
+	}
 	else 
 	{
 		require dirname(__FILE__).'/../_core/dsp_header.php';

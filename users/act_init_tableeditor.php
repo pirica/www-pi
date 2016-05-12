@@ -110,6 +110,17 @@ if($mode == 'save')
 }
 
 
+if($mode == 'dodelete')
+{
+	mysql_query("
+		delete from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+		where	
+			" . $tableeditor['tableid'] . " = " . $id . "
+		
+		", $conn_users);
+}
+
+
 if($mode == 'edit')
 {
 	
@@ -145,15 +156,5 @@ else
 		", $conn_users);
 }
 
-
-if($mode == 'dodelete')
-{
-	mysql_query("
-		delete from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
-		where	
-			" . $tableeditor['tableid'] . " = " . $id . "
-		
-		", $conn_users);
-}
 
 ?>
