@@ -8,6 +8,7 @@ $qry_tableeditor = mysql_query("
 		te.tablename,
 		te.tableid,
 		te.action,
+		te.use_active_flag,
 		a.database
 		
 	from t_tableeditor te
@@ -23,6 +24,7 @@ $tableeditor = mysql_fetch_array($qry_tableeditor);
 
 $tableeditor_fields_overview = $tableeditor['tableid'];
 $tableeditor_fields_entry = $tableeditor['tableid'];
+
 
 $qry_tableeditor_fields = mysql_query("
 	
@@ -112,12 +114,26 @@ if($mode == 'save')
 
 if($mode == 'dodelete')
 {
-	mysql_query("
-		delete from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
-		where	
-			" . $tableeditor['tableid'] . " = " . $id . "
-		
-		", $conn_users);
+	if($tableeditor['use_active_flag'] == 1)
+	{
+		mysql_query("
+			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			set active = 0
+			where	
+				" . $tableeditor['tableid'] . " = " . $id . "
+			
+			", $conn_users);
+
+	}
+	else
+	{
+		mysql_query("
+			delete from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			where	
+				" . $tableeditor['tableid'] . " = " . $id . "
+			
+			", $conn_users);
+	}
 }
 
 
