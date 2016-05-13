@@ -105,6 +105,7 @@ $qry_tableeditor_fields = mysql_query("
 		tef.fieldtype,
 		tef.maxlength,
 		tef.sort_order,
+		tef.tooltip,
 		tef.required,
 		tef.show_in_overview,
 		tef.show_in_editor,

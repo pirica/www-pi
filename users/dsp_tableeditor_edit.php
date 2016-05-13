@@ -53,9 +53,9 @@ if(
 										<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
 								</div>
 								<?php
-									/*if($tableeditor_field['tooltip'] != ''){
+									if($tableeditor_field['tooltip'] != ''){
 										echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
-									}*/
+									}
 								?>
 							</div>
 						<?php
@@ -79,9 +79,9 @@ if(
 									value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
 							</div>
 							<?php
-								/*if($tableeditor_field['tooltip'] != ''){
+								if($tableeditor_field['tooltip'] != ''){
 									echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
-								}*/
+								}
 							?>
 						</div>
 						<?php
