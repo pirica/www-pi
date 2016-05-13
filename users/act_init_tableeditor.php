@@ -64,13 +64,13 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		
 		if($tableeditor_field['id_tableeditor_lookup'] > 0)
 		{
-			$tableeditor_fields_overview .= ',' . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'] . " as " . $tableeditor_field['lookup_description'];
+			$tableeditor_fields_overview .= ',' . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'] . " as `" . $tableeditor_field['lookup_description'] . "`";
 			
-			$tableeditor_sql_lookups .= "left join " . $tableeditor_field['lookup_tablename'] . " on " . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . $tableeditor_field['fieldname'];
+			$tableeditor_sql_lookups .= "left join " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . " on " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . $tableeditor_field['fieldname'];
 		}
 		else
 		{
-			$tableeditor_fields_overview .= ',' . $tableeditor_field['fieldname'];
+			$tableeditor_fields_overview .= ',' . ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_field['fieldname'];
 		}
 	}
 	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
@@ -188,7 +188,7 @@ else
 			" . $tableeditor_fields_overview . "
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 		" . $tableeditor_sql_lookups . "
-		" . ($tableeditor['use_active_flag'] == 1 ? 'where active = 1' : '') . "
+		" . ($tableeditor['use_active_flag'] == 1 ? 'where ' . $tableeditor['tablename'] . '.active = 1' : '') . "
 		
 		", $conn_users);
 }
