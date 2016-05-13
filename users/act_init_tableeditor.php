@@ -150,9 +150,9 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 	if($tableeditor_field['sorting_sortorder'] != '' && $tableeditor_field['sorting_sortorder'] != 0)
 	{
 		$tableeditor_sql_orderby_fields[] = array(
-			order: abs($tableeditor_field['sorting_sortorder']),
-			field: $tableeditor['tablename'],
-			direction: $tableeditor_field['sorting_sortorder'] > 0 ? 'asc' : 'desc'
+			'order': abs($tableeditor_field['sorting_sortorder']),
+			'field': $tableeditor['tablename'],
+			'direction': $tableeditor_field['sorting_sortorder'] > 0 ? 'asc' : 'desc'
 		);
 	}
 	
