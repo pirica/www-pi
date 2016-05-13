@@ -163,7 +163,7 @@ function cmp($a, $b)
 {
     return strcmp($a->order, $b->order);
 }
-$tableeditor_sql_orderby_fields_len = array_len($tableeditor_sql_orderby_fields);
+$tableeditor_sql_orderby_fields_len = count($tableeditor_sql_orderby_fields);
 if($tableeditor_sql_orderby_fields_len > 0)
 {
 	usort($tableeditor_sql_orderby_fields, "cmp");
