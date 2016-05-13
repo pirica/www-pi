@@ -151,7 +151,7 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 	{
 		$tableeditor_sql_orderby_fields[] = array(
 			'order' => abs($tableeditor_field['sorting_sortorder']),
-			'field' => $tableeditor['tablename'],
+			'field' => $tableeditor['fieldname'],
 			'direction' => $tableeditor_field['sorting_sortorder'] > 0 ? 'asc' : 'desc'
 		);
 	}
@@ -167,10 +167,16 @@ $tableeditor_sql_orderby_fields_len = count($tableeditor_sql_orderby_fields);
 if($tableeditor_sql_orderby_fields_len > 0)
 {
 	usort($tableeditor_sql_orderby_fields, "cmp");
-	$tableeditor_sql_orderby .= 'order by';
 	
 	for($i = 0; $i < $tableeditor_sql_orderby_fields_len; $i++)
 	{
+		if($tableeditor_sql_orderby == '')
+		{
+			$tableeditor_sql_orderby .= 'order by';
+		}
+		else {
+			$tableeditor_sql_orderby .= ',';
+		}
 		$tableeditor_sql_orderby .= ' ' . $tableeditor_sql_orderby_fields[$i]['field'] . ' ' . $tableeditor_sql_orderby_fields[$i]['direction'];
 	}
 }
