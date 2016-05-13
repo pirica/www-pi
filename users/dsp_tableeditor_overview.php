@@ -1,7 +1,7 @@
 
 <?php
 
-echo '<h1>' . $tableeditor['tablename'] . '</h1>';
+echo '<h1>' . $tableeditor['tabledescription'] . 's</h1>';
 
 ?>
 

@@ -10,10 +10,10 @@ else
 {
 	echo 'Create new ';
 }
-echo $tableeditor['tablename'];
+echo strtolower($tableeditor['tabledescription']);
 if($id > 0)
 {
-	echo '';
+	echo 's';
 }
 else 
 {

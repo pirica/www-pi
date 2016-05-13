@@ -9,7 +9,9 @@ $qry_tableeditor = mysql_query("
 		te.tableid,
 		te.action,
 		te.use_active_flag,
-		a.database
+		a.database,
+		
+		ifnull(nullif(te.description, ''), te.tablename) as tabledescription
 		
 	from t_tableeditor te
 		join t_app a on a.id_app = te.id_app
