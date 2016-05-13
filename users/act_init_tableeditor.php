@@ -145,13 +145,15 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 			
 			if($mode == 'edit')
 			{
-				$tableeditor_field['lookup_data'] = mysql_query("
+				$sql = "
 					select 
 						" . $tableeditor_field['lookup_idfield'] . " as id,
 						" . $tableeditor_field['lookup_description'] . " as description
 					from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
 					order by " . $tableeditor_field['lookup_description'] . "
-					", $conn_users);
+					";
+				echo '<!--' . $sql . '-->';
+				$tableeditor_field['lookup_data'] = mysql_query($sql, $conn_users);
 			}
 		}
 		else
