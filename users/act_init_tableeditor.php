@@ -1,5 +1,65 @@
 <?php
 
+/*
+
+set @db = 'router';
+set @table = 't_category';
+
+select 'insert into users.t_tableeditor (id_app, tablename, description, tableid, action, use_active_flag) values ( appid'
+union
+select
+	concat(', ''' , t.table_name , ''', ''' , replace(t.table_name,'_',' ') , ''', ')
+from  information_schema.tables t
+where t.table_name = @table
+and t.table_schema = @db
+union
+select
+	concat('''' , c.column_name , ''', ''action''', ',')
+from  information_schema.tables t
+join information_schema.columns c on c.table_schema = t.table_schema and c.table_name = t.table_name and c.extra = 'auto_increment'
+where t.table_name = @table
+and t.table_schema = @db
+union
+select
+	case when ifnull(c.column_name,'') = '' then 0 else 1 end
+from  information_schema.tables t
+left join information_schema.columns c on c.table_schema = t.table_schema and c.table_name = t.table_name and c.column_name = 'active'
+where t.table_name = @table
+and t.table_schema = @db
+union
+select ')'
+;
+
+
+select concat('insert into users.t_tableeditor_field (id_tableeditor, fieldname, fieldtype, maxlength, id_tableeditor_lookup, sort_order, required, show_in_overview, show_in_editor) values (',
+ifnull(e.id_tableeditor,-1), ',',
+'''', c.column_name, ''',',
+'''', c.data_type, ''',',
+case when c.data_type = 'varchar' then c.CHARACTER_MAXIMUM_LENGTH else 'null' end, ',',
+'null', ',',
+c.ORDINAL_POSITION, ',',
+'0,1,1);'
+)
+from  information_schema.tables t
+join information_schema.columns c on c.table_schema = t.table_schema and c.table_name = t.table_name
+left join users.t_tableeditor e on e.tablename = t.table_name
+where t.table_name = @table
+and t.table_schema = @db
+and c.column_name <> 'active'
+and c.extra <> 'auto_increment'
+;
+
+
+
+select
+	*
+from  information_schema.tables t
+join information_schema.columns c on c.table_schema = t.table_schema and c.table_name = t.table_name
+where t.table_name = 't_host'
+
+
+*/
+
 $qry_tableeditor = mysql_query("
 	
 	select
@@ -8,7 +68,12 @@ $qry_tableeditor = mysql_query("
 		te.tablename,
 		te.tableid,
 		te.action,
+		
 		te.use_active_flag,
+		te.enable_create,
+		te.enable_edit,
+		te.enable_delete,
+		
 		a.database,
 		
 		ifnull(nullif(te.description, ''), te.tablename) as tabledescription
@@ -28,6 +93,8 @@ $tableeditor_fields_overview = $tableeditor['tableid'];
 $tableeditor_fields_entry = $tableeditor['tableid'];
 
 $tableeditor_sql_lookups = '';
+$tableeditor_sql_orderby = '';
+$tableeditor_sql_orderby_fields = array();
 
 $qry_tableeditor_fields = mysql_query("
 	
@@ -40,6 +107,8 @@ $qry_tableeditor_fields = mysql_query("
 		tef.sort_order,
 		tef.required,
 		tef.show_in_overview,
+		tef.show_in_editor,
+		tef.sorting_sortorder,
 		
 		ifnull(nullif(tel.description, ''), ifnull(nullif(tef.description, ''), replace(tef.fieldname, '_', ' '))) as fielddescription,
 		
@@ -77,7 +146,33 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 			$tableeditor_fields_overview .= ',' . ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_field['fieldname'] . " as `" . $tableeditor_field['fielddescription'] . "`";
 		}
 	}
+	
+	if($tableeditor_field['sorting_sortorder'] != '' && $tableeditor_field['sorting_sortorder'] != 0)
+	{
+		$tableeditor_sql_orderby_fields[] = array(
+			order: abs($tableeditor_field['sorting_sortorder']),
+			field: $tableeditor['tablename'],
+			direction: $tableeditor_field['sorting_sortorder'] > 0 ? 'asc' : 'desc'
+		);
+	}
+	
 	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
+}
+
+function cmp($a, $b)
+{
+    return strcmp($a->order, $b->order);
+}
+$tableeditor_sql_orderby_fields_len = array_len($tableeditor_sql_orderby_fields);
+if($tableeditor_sql_orderby_fields_len > 0)
+{
+	usort($tableeditor_sql_orderby_fields, "cmp");
+	$tableeditor_sql_orderby .= 'order by';
+	
+	for($i = 0; i < $tableeditor_sql_orderby_fields_len; $i++)
+	{
+		$tableeditor_sql_orderby .= ' ' . $tableeditor_sql_orderby_fields[$i]['field'] . ' ' . $tableeditor_sql_orderby_fields[$i]['direction'];
+	}
 }
 
 if($mode == 'save')
@@ -135,7 +230,7 @@ if($mode == 'save')
 }
 
 
-if($mode == 'dodelete')
+if($mode == 'dodelete' && $tableeditor['enable_delete'] == 1)
 {
 	if($tableeditor['use_active_flag'] == 1)
 	{
@@ -193,7 +288,7 @@ else
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 		" . $tableeditor_sql_lookups . "
 		" . ($tableeditor['use_active_flag'] == 1 ? 'where ' . $tableeditor['tablename'] . '.active = 1' : '') . "
-		
+		" . $tableeditor_sql_orderby . "
 		";
 		
 	//echo '<!--' . $sql . '-->';
