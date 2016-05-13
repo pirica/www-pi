@@ -117,7 +117,8 @@ $qry_tableeditor_fields = mysql_query("
 		tel.description as lookup_description,
 		tel.tablename as lookup_tablename,
 		tel.idfield as lookup_idfield,
-		tel.labelfield as lookup_labelfield
+		tel.labelfield as lookup_labelfield,
+		'' as lookup_data
 		
 	from t_tableeditor_field tef
 		left join t_tableeditor_lookup tel on tel.id_tableeditor_lookup = tef.id_tableeditor_lookup
@@ -141,6 +142,17 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 			$tableeditor_fields_overview .= ',' . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'] . " as `" . $tableeditor_field['fielddescription'] . "`";
 			
 			$tableeditor_sql_lookups .= " left join " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . " on " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "." . $tableeditor_field['fieldname'];
+			
+			if($mode == 'edit')
+			{
+				$tableeditor_field['lookup_data'] = mysql_query("
+					select 
+						" . $tableeditor_field['lookup_idfield'] . " as id,
+						" . $tableeditor_field['lookup_description'] . " as description
+					from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
+					order by " . $tableeditor_field['lookup_description'] . "
+					", $conn_users);
+			}
 		}
 		else
 		{

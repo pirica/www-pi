@@ -38,45 +38,20 @@ if(
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
-				switch($tableeditor_field['fieldtype'])
+				if($tableeditor_field['id_tableeditor_lookup'] > 0 && $tableeditor_field['lookup_data'] != '')
 				{
-					case 'bool':
-					case 'boolean':
-					case 'bit':
-					case 'checkbox':
-					case 'check':
-						?>
-							<div class="form-group">
-								<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
-								<div class="col-sm-3">
-									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
-										<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
-								</div>
-								<?php
-									if($tableeditor_field['tooltip'] != ''){
-										echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
-									}
-								?>
-							</div>
-						<?php
-						break;
-						
-					default:
-						?>
-						
+					?>
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
-							<?php
-								if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
-									$colsize = 3;
-								}
-								else {
-									$colsize = 9;
-								}
-							?>
-							<div class="col-sm-<?= $colsize ?>">
-								<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="text" class="form-control" 
-									value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
+							<div class="col-sm-3">
+								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
+									<?php
+										while($lookupdata = mysql_fetch_array($tableeditor_field['lookup_data']))
+										{
+											echo '<option value="' . $lookupdata['id'] . '" ' . ($lookupdata['id'] == $tableentry[$tableeditor_field['fieldname']] ? 'selected="selected"' : '') . '>' . $lookupdata['description'] . '</option>';
+										}
+									?>
+								</select>
 							</div>
 							<?php
 								if($tableeditor_field['tooltip'] != ''){
@@ -84,7 +59,57 @@ if(
 								}
 							?>
 						</div>
-						<?php
+					<?php
+				}
+				else {
+					switch($tableeditor_field['fieldtype'])
+					{
+						case 'bool':
+						case 'boolean':
+						case 'bit':
+						case 'checkbox':
+						case 'check':
+							?>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
+									<div class="col-sm-3">
+										<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
+											<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
+									</div>
+									<?php
+										if($tableeditor_field['tooltip'] != ''){
+											echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
+										}
+									?>
+								</div>
+							<?php
+							break;
+							
+						default:
+							?>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
+								<?php
+									if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
+										$colsize = 3;
+									}
+									else {
+										$colsize = 9;
+									}
+								?>
+								<div class="col-sm-<?= $colsize ?>">
+									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="text" class="form-control" 
+										value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
+								</div>
+								<?php
+									if($tableeditor_field['tooltip'] != ''){
+										echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
+									}
+								?>
+							</div>
+							<?php
+					}
 				}
 			}
 		}
