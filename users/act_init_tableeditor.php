@@ -161,7 +161,7 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 
 function cmp($a, $b)
 {
-    return strcmp($a->order, $b->order);
+    return strcmp($a['order'], $b['order']);
 }
 $tableeditor_sql_orderby_fields_len = count($tableeditor_sql_orderby_fields);
 if($tableeditor_sql_orderby_fields_len > 0)
@@ -169,7 +169,7 @@ if($tableeditor_sql_orderby_fields_len > 0)
 	usort($tableeditor_sql_orderby_fields, "cmp");
 	$tableeditor_sql_orderby .= 'order by';
 	
-	for($i = 0; i < $tableeditor_sql_orderby_fields_len; $i++)
+	for($i = 0; $i < $tableeditor_sql_orderby_fields_len; $i++)
 	{
 		$tableeditor_sql_orderby .= ' ' . $tableeditor_sql_orderby_fields[$i]['field'] . ' ' . $tableeditor_sql_orderby_fields[$i]['direction'];
 	}
