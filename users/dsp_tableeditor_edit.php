@@ -5,18 +5,13 @@ echo '<h1>';
 if($id > 0)
 {
 	echo 'Edit entry for ';
-}
-else 
-{
-	echo 'Create new ';
-}
-echo strtolower($tableeditor['tabledescription']);
-if($id > 0)
-{
+	echo strtolower(substr($tableeditor['tabledescription'], 0, -1) . (substr($tableeditor['tabledescription'], -1) == 'y' ? 'ie' : substr($tableeditor['tabledescription'], -1)));
 	echo 's';
 }
 else 
 {
+	echo 'Create new ';
+	echo strtolower($tableeditor['tabledescription']);
 	echo ' entry';
 }
 echo '</h1>';
