@@ -148,6 +148,7 @@ if($mode == 'edit')
 			from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			where	
 				" . $tableeditor['tableid'] . " = " . $id . "
+				" . ($tableeditor['use_active_flag'] == 1 ? 'and active = 1' : '') . "
 			
 			", $conn_users);
 	}
