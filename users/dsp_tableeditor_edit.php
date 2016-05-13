@@ -43,7 +43,7 @@ echo '</h1>';
 			case 'check':
 				?>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fieldname'] ?></label>
+						<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 						<div class="col-sm-3">
 							<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
 								<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
@@ -61,7 +61,7 @@ echo '</h1>';
 				?>
 				
 				<div class="form-group">
-					<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fieldname'] ?></label>
+					<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 					<?php
 						if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
 							$colsize = 3;
