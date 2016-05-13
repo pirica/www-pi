@@ -1,7 +1,7 @@
 
 <?php
 
-echo '<h1>' . substring($tableeditor['tabledescription'], 0, -1) . (substr($tableeditor['tabledescription'], -1, 1) == 'y' ? 'ie' : substr($tableeditor['tabledescription'], -1, 1)) . 's</h1>';
+echo '<h1>' . substr($tableeditor['tabledescription'], 0, -1) . (substr($tableeditor['tabledescription'], -1) == 'y' ? 'ie' : substr($tableeditor['tabledescription'], -1)) . 's</h1>';
 
 ?>
 
