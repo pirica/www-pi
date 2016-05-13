@@ -38,7 +38,7 @@ if(
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
-				if($tableeditor_field['id_tableeditor_lookup'] > 0 && $tableeditor_field['lookup_data'] != '')
+				if($tableeditor_field['id_tableeditor_lookup'] > 0)
 				{
 					?>
 						<div class="form-group">
@@ -46,7 +46,17 @@ if(
 							<div class="col-sm-3">
 								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
 									<?php
-										while($lookupdata = mysql_fetch_array($tableeditor_field['lookup_data']))
+										$sql = "
+											select 
+												" . $tableeditor_field['lookup_idfield'] . " as id,
+												" . $tableeditor_field['lookup_labelfield'] . " as description
+											from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
+											order by " . $tableeditor_field['lookup_labelfield'] . "
+											";
+										//echo '<!--' . $sql . '-->';
+										$tableeditor_lookup_data = mysql_query($sql, $conn_users);
+										
+										while($lookupdata = mysql_fetch_array($tableeditor_lookup_data))
 										{
 											echo '<option value="' . $lookupdata['id'] . '" ' . ($lookupdata['id'] == $tableentry[$tableeditor_field['fieldname']] ? 'selected="selected"' : '') . '>' . $lookupdata['description'] . '</option>';
 										}

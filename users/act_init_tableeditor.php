@@ -143,18 +143,6 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 			
 			$tableeditor_sql_lookups .= " left join " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . " on " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "." . $tableeditor_field['fieldname'];
 			
-			if($mode == 'edit')
-			{
-				$sql = "
-					select 
-						" . $tableeditor_field['lookup_idfield'] . " as id,
-						" . $tableeditor_field['lookup_labelfield'] . " as description
-					from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
-					order by " . $tableeditor_field['lookup_labelfield'] . "
-					";
-				//echo '<!--' . $sql . '-->';
-				$tableeditor_field['lookup_data'] = mysql_query($sql, $conn_users);
-			}
 		}
 		else
 		{
