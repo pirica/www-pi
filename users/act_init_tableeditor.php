@@ -66,7 +66,7 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		{
 			$tableeditor_fields_overview .= ',' . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'] . " as `" . $tableeditor_field['lookup_description'] . "`";
 			
-			$tableeditor_sql_lookups .= "left join " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . " on " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . $tableeditor_field['fieldname'];
+			$tableeditor_sql_lookups .= " left join " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . " on " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . $tableeditor_field['fieldname'];
 		}
 		else
 		{
@@ -183,14 +183,18 @@ if($mode == 'edit')
 }
 else 
 {
-	$qry_overview = mysql_query("
+	$sql = "
 		select
 			" . $tableeditor_fields_overview . "
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 		" . $tableeditor_sql_lookups . "
 		" . ($tableeditor['use_active_flag'] == 1 ? 'where ' . $tableeditor['tablename'] . '.active = 1' : '') . "
 		
-		", $conn_users);
+		";
+		
+	echo '<!--' . $sql . '-->';
+	$qry_overview = mysql_query($sql, $conn_users);
+	
 }
 
 
