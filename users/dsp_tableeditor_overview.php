@@ -5,14 +5,19 @@ echo '<h1>' . substr($tableeditor['tabledescription'], 0, -1) . (substr($tableed
 
 ?>
 
-
-<p>
-	<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=-1">
-		<span class="glyphicon glyphicon-plus"></span>
-		Add new entry
-	</a>
-</p>
-
+<?php
+if($tableeditor['enable_create'] == 1)
+{
+?>
+	<p>
+		<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=-1">
+			<span class="glyphicon glyphicon-plus"></span>
+			Add new entry
+		</a>
+	</p>
+<?php
+}
+?>
 
 <table class="table">
 	<thead>
@@ -28,8 +33,20 @@ echo '<h1>' . substr($tableeditor['tabledescription'], 0, -1) . (substr($tableed
 				}
 			}
 			?>
-			<th>Edit</th>
-			<th>Delete</th>
+			<?php
+			if($tableeditor['enable_edit'] == 1)
+			{
+			?>
+				<th>Edit</th>
+			<?php
+			}
+			if($tableeditor['enable_delete'] == 1)
+			{
+			?>
+				<th>Delete</th>
+			<?php
+			}
+			?>
 		</tr>
 	</thead>
 	
@@ -52,18 +69,30 @@ echo '<h1>' . substr($tableeditor['tabledescription'], 0, -1) . (substr($tableed
 			}
 			?>
 			
-			<td>
-				<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=<?= $item[$tableeditor['tableid']] ?>">
-					<span class="glyphicon glyphicon-edit"></span>
-					Edit
-				</a>
-			</td>
-			<td>
-				<a class="btn btn-danger btn-delete-grab" href="index.php?action=<?= $action->getCode() ?>&amp;mode=delete&amp;id=<?= $item[$tableeditor['tableid']] ?>" data-toggle="modal" data-target="#myModal">
-					<span class="glyphicon glyphicon-remove"></span>
-					Delete
-				</a>
-			</td>
+			<?php
+			if($tableeditor['enable_edit'] == 1)
+			{
+			?>
+				<td>
+					<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=<?= $item[$tableeditor['tableid']] ?>">
+						<span class="glyphicon glyphicon-edit"></span>
+						Edit
+					</a>
+				</td>
+			<?php
+			}
+			if($tableeditor['enable_delete'] == 1)
+			{
+			?>
+				<td>
+					<a class="btn btn-danger btn-delete-grab" href="index.php?action=<?= $action->getCode() ?>&amp;mode=delete&amp;id=<?= $item[$tableeditor['tableid']] ?>" data-toggle="modal" data-target="#myModal">
+						<span class="glyphicon glyphicon-remove"></span>
+						Delete
+					</a>
+				</td>
+			<?php
+			}
+			?>
 		</tr>
 		
 	<?php 
