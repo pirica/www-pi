@@ -148,11 +148,11 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 				$sql = "
 					select 
 						" . $tableeditor_field['lookup_idfield'] . " as id,
-						" . $tableeditor_field['lookup_description'] . " as description
+						" . $tableeditor_field['lookup_labelfield'] . " as description
 					from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
-					order by " . $tableeditor_field['lookup_description'] . "
+					order by " . $tableeditor_field['lookup_labelfield'] . "
 					";
-				echo '<!--' . $sql . '-->';
+				//echo '<!--' . $sql . '-->';
 				$tableeditor_field['lookup_data'] = mysql_query($sql, $conn_users);
 			}
 		}
