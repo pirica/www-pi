@@ -18,7 +18,10 @@ function getInfo()
 		}
 	});
 	
-	setTimeout(getInfo, 30000);
+	if(desktop == 1)
+	{
+		setTimeout(getInfo, 30000);
+	}
 }
 
 

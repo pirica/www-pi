@@ -49,7 +49,9 @@
 		
 		echo $app->getHeaderScripts();
 		
-		//echo '<script type="text/javascript">var id_grab = ' . $id_grab . ';</script>';
+		echo '<script type="text/javascript">';
+		echo 'var desktop = ' . (isset($_SESSION['desktop']) ? $_SESSION['desktop'] : 0) . ';';
+		echo '</script>';
 		
 		switch($action->getCode()){
 			case 'login':
