@@ -25,6 +25,7 @@ $tableeditor = mysql_fetch_array($qry_tableeditor);
 $tableeditor_fields_overview = $tableeditor['tableid'];
 $tableeditor_fields_entry = $tableeditor['tableid'];
 
+$tableeditor_sql_lookups = '';
 
 $qry_tableeditor_fields = mysql_query("
 	
@@ -36,9 +37,17 @@ $qry_tableeditor_fields = mysql_query("
 		tef.maxlength,
 		tef.sort_order,
 		tef.required,
-		tef.show_in_overview
+		tef.show_in_overview,
+		
+		tel.id_tableeditor_lookup,
+		tel.description as lookup_description,
+		tel.tablename as lookup_tablename,
+		tel.idfield as lookup_idfield,
+		tel.labelfield as lookup_labelfield
 		
 	from t_tableeditor_field tef
+		left join t_tableeditor_lookup tel on tel.id_tableeditor_lookup = tef.id_tableeditor_lookup
+			and tel.active = 1
 	where
 		tef.id_tableeditor = " . $action->getEditorId() . "
 		and tef.active = 1
@@ -52,7 +61,17 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 {
 	if($tableeditor_field['show_in_overview'] == 1)
 	{
-		$tableeditor_fields_overview .= ',' . $tableeditor_field['fieldname'];
+		
+		if($tableeditor_field['id_tableeditor_lookup'] > 0)
+		{
+			$tableeditor_fields_overview .= ',' . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'] . " as " . $tableeditor_field['lookup_description'];
+			
+			$tableeditor_sql_lookups .= "left join " . $tableeditor_field['lookup_tablename'] . " on " . $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_idfield'] . " = " . $tableeditor_field['fieldname'];
+		}
+		else
+		{
+			$tableeditor_fields_overview .= ',' . $tableeditor_field['fieldname'];
+		}
 	}
 	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
 }
@@ -168,6 +187,7 @@ else
 		select
 			" . $tableeditor_fields_overview . "
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+		" . $tableeditor_sql_lookups . "
 		" . ($tableeditor['use_active_flag'] == 1 ? 'where active = 1' : '') . "
 		
 		", $conn_users);
