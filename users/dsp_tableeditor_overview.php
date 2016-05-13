@@ -24,7 +24,14 @@ echo '<h1>' . $tableeditor['tablename'] . '</h1>';
 			{
 				if($tableeditor_field['show_in_overview'] == 1)
 				{
-					echo '<th>' . $tableeditor_field['fieldname'] . '</th>';
+					if($tableeditor_field['id_tableeditor_lookup'] > 0)
+					{
+						echo '<th>' . $tableeditor_field['lookup_description'] . '</th>';
+					}
+					else
+					{
+						echo '<th>' . $tableeditor_field['fieldname'] . '</th>';
+					}
 				}
 			}
 			?>
@@ -47,7 +54,14 @@ echo '<h1>' . $tableeditor['tablename'] . '</h1>';
 			{
 				if($tableeditor_field['show_in_overview'] == 1)
 				{
-					echo '<td>' . $item[$tableeditor_field['fieldname']] . '</td>';
+					if($tableeditor_field['id_tableeditor_lookup'] > 0)
+					{
+						echo '<td>' . $item[$tableeditor_field['lookup_description']] . '</td>';
+					}
+					else
+					{
+						echo '<td>' . $item[$tableeditor_field['fieldname']] . '</td>';
+					}
 				}
 			}
 			?>
