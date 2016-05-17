@@ -89,7 +89,8 @@ if(isset($_GET['newmenu'])) {
 					}*/
 					
 					if($menu['show_in_topmenu'] == 1){
-						if(false)
+						
+						if($menu['menu_actions'] == 0)
 						{
 							?>
 								<li class="<?= $class ?>"><a href="<?= $relative_url ?>"><?= $description ?></a></li>
@@ -98,11 +99,18 @@ if(isset($_GET['newmenu'])) {
 						else
 						{
 							?>
-								<li class="<?= $class ?>"><a href="<?= $relative_url ?>" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
+								<li class="<?= $class ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
 									<ul class="nav collapse" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
-										<li><a href="#">Link 2.1</a></li>
-										<li><a href="#">Link 2.2</a></li>
-										<li><a href="#">Link 2.3</a></li>
+										<?php
+											mysql_data_seek($qry_actions, 0);
+											while($menu_action = mysql_fetch_array($qry_actions))
+											{
+												if($menu_action['id_app'] == $menu['id_app'])
+												{
+													echo '<li><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
+												}
+											}
+										?>
 									</ul>
 								</li>
 							<?php
@@ -115,75 +123,6 @@ if(isset($_GET['newmenu'])) {
 	</nav>
 </div>
 
-<!--
-<div class="topmenu">
-	<nav role="navigation" class="navbar navbar-default navbar-static-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed" type="button" aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a href="index.html" class="navbar-brand">metisMenu</a>
-			</div>
-			
-			<div id="bs-example-navbar-collapse-1" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">Vertical Menu</a></li>
-					<li><a href="metisFolder.html">Folder View</a></li>
-					<li><a href="hover.html">Hover Option For Desktop</a></li>
-					
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
-						</ul>
-					</li>
-					
-					<li><a href="zurb.html">Foundation | Zurb</a></li>
-					
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">Action</a></li>
-							<li><a href="#">Another action</a></li>
-							<li><a href="#">Something else here</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">Separated link</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">One more separated link</a></li>
-						</ul>
-					</li>
-					<li><a href="animate.html">Animate</a></li>
-					<li><a href="event.html">Event</a></li>
-					
-				</ul>
-				
-				<ul class="nav navbar-nav pull-right">
-					<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="fa fa-user"></i>
-						<span class="user">(Not logged in) </span>
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu pull-right" role="menu">
-						<li><a href="../users/index.php?action=login">Log in</a></li>
-					</ul>
-				</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-</div>
--->
 
 <?php
 // */
