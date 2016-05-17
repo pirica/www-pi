@@ -94,11 +94,12 @@
 	include '../users/dsp_topmenu.php';
 	?>
 	
+	<!--
 	<ol class="breadcrumb">
 		<li><a href="?action=main">Home</a></li>
 		
 		<?php
-			switch($action->getCode()){
+			/*switch($action->getCode()){
 				case 'setgrab':
 					echo '<li class="active">Edit grab</li>';
 					break;
@@ -107,10 +108,11 @@
 					echo '<li><a href="?action=setgrab&amp;id_grab=' . $id_grab . '">Edit grab</a></li>';
 					echo '<li class="active">Edit counter</li>';
 					break;
-			}
+			}*/
 			
 		?>
 	</ol>
+	-->
 	
 	<div class="container">
 	
