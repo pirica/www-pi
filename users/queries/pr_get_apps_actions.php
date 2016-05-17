@@ -34,7 +34,7 @@ $qry_apps = mysql_query("
 	order by
 		ifnull(a.sort_order, a.id_app)
 		
-	");
+	", $conn_users);
 	
 	
 $qry_actions = mysql_query("
@@ -58,7 +58,7 @@ $qry_actions = mysql_query("
 		ifnull(s.code,'Main')
 		
 		
-	");
+	", $conn_users);
 	
 	
 ?>

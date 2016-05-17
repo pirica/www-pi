@@ -80,25 +80,33 @@ if(isset($_GET['newmenu'])) {
 						$class .= ' active';
 					}
 					
-					if(isset($loggedin) && $loggedin === true){
+					/*if(isset($loggedin) && $loggedin === true){
 						
 					}
 					else if($menu['login_required'] == 1) {
 						$class .= ' disabled';
 						$relative_url = "#";
-					}
+					}*/
 					
 					if($menu['show_in_topmenu'] == 1){
-					?>
-						<li class="<?= $class ?>"><a href="<?= $relative_url ?>"><?= $description ?></a>
-						<li class="<?= $class ?>"><a href="<?= $relative_url ?>" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
-							<ul class="nav collapse" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
-								<li><a href="#">Link 2.1</a></li>
-								<li><a href="#">Link 2.2</a></li>
-								<li><a href="#">Link 2.3</a></li>
-							</ul>
-						</li>
-					<?php
+						if(false)
+						{
+							?>
+								<li class="<?= $class ?>"><a href="<?= $relative_url ?>"><?= $description ?></a></li>
+							<?php
+						}
+						else
+						{
+							?>
+								<li class="<?= $class ?>"><a href="<?= $relative_url ?>" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
+									<ul class="nav collapse" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
+										<li><a href="#">Link 2.1</a></li>
+										<li><a href="#">Link 2.2</a></li>
+										<li><a href="#">Link 2.3</a></li>
+									</ul>
+								</li>
+							<?php
+						}
 					}
 				}
 				?>
