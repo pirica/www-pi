@@ -76,6 +76,7 @@ if(isset($_GET['newmenu'])) {
 					$description = $menu['description'];
 					
 					$class = '';
+					
 					if($menu['is_current'] == 1){
 						$class .= ' active';
 					}
@@ -102,12 +103,18 @@ if(isset($_GET['newmenu'])) {
 								<li class="<?= $class ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
 									<ul class="nav collapse" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
 										<?php
+											$class = '';
+											
 											mysql_data_seek($qry_actions, 0);
+											
 											while($menu_action = mysql_fetch_array($qry_actions))
 											{
 												if($menu_action['id_app'] == $menu['id_app'] && $menu_action['show_in_menu'] == 1)
 												{
-													echo '<li><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
+													if($menu['is_current'] == 1 && $menu_action['code'] == $action->getCode()){
+														$class .= ' active';
+													}
+													echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
 												}
 											}
 										?>
