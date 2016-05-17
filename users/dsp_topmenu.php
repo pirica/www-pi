@@ -105,7 +105,7 @@ if(isset($_GET['newmenu'])) {
 											mysql_data_seek($qry_actions, 0);
 											while($menu_action = mysql_fetch_array($qry_actions))
 											{
-												if($menu_action['id_app'] == $menu['id_app'])
+												if($menu_action['id_app'] == $menu['id_app'] && $menu_action['show_in_menu'] == 1)
 												{
 													echo '<li><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
 												}
