@@ -108,7 +108,7 @@ if(isset($_GET['newmenu'])) {
 						{
 							$class .= ' subs';
 							?>
-								<li class="<?= $class ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="false"><?= $description ?></a>
+								<li class="<?= $class ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="<?= ($menu['is_current'] == 1 ? 'true' : 'false') ?>"><?= $description ?></a>
 									<ul class="nav collapse" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
 										<?php
 											$class = '';
