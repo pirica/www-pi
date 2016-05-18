@@ -86,29 +86,69 @@ html,body {
 }
 
 
-.topmenu .navbar li  a
+.topmenu1 .navbar li  a
 {
 	color: #fff;
 }
-.topmenu .navbar li.disabled  a
+.topmenu1 .navbar li.disabled  a
 {
     color: #666;
 }
 
+.topmenu1 .navbar li  ul li a
+{
+	color: #000;
+}
+.topmenu1 .navbar li  ul li.disabled  a
+{
+    color: #666;
+}
 
-.topmenu1 .navbar .navbar-nav.active a,
-.topmenu1 .navbar .navbar-nav.active a:hover,
-.topmenu1 .navbar .navbar-nav.active a:focus,
-.topmenu2 .navbar .navbar-nav.active a,
-.topmenu2 .navbar .navbar-nav.active a:hover,
-.topmenu2 .navbar .navbar-nav.active a:focus  {
+.topmenu1 .navbar .navbar-nav .active a,
+.topmenu1 .navbar .navbar-nav .active a:hover,
+.topmenu1 .navbar .navbar-nav .active a:focus  {
     background-color: #FFFFFF;
     border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
     color: #000;
 }
 
+.topmenu2 .navbar .navbar-nav .active a,
+.topmenu2 .navbar .navbar-nav .active a:hover,
+.topmenu2 .navbar .navbar-nav .active a:focus  {
+    background-color: #FFFFFF;
+    border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
+    color: #000;
+}
+
+.topmenu2 .navbar .navbar-nav li ul li a,
+.topmenu2 .navbar .navbar-nav li ul li a:hover,
+.topmenu2 .navbar .navbar-nav li ul li a:focus  {
+    color: #999;
+    line-height: 1.2;
+    margin-left: 20px;
+}
+
+.topmenu2 .navbar .navbar-nav li ul .active a,
+.topmenu2 .navbar .navbar-nav li ul .active a:hover,
+.topmenu2 .navbar .navbar-nav li ul .active a:focus  {
+	background-color: #080808;
+	color: #fff;
+}
+
 .topmenu1 .navbar-brand {
 	color: #fff;
+}
+
+.topmenu2 .nav-apps .subs a::after
+{
+	content: '\f0da';
+	float: right;
+	font-family: FontAwesome;
+	color: #666;
+}
+.topmenu2 .nav-apps .subs a.collapsed::after
+{
+	content: '\f0d7';
 }
 
 
