@@ -8,7 +8,7 @@ if(isset($_GET['newmenu'])) {
 
 ?>
 
-<div class="topmenu2">
+<div class="topmenu1">
 	<nav class="navbar navbar-default navbar-inverse" role="navigation">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
@@ -25,7 +25,7 @@ if(isset($_GET['newmenu'])) {
 		if(isset($loggedin) && $loggedin === true)
 		{
 			?>
-			<ul class="nav navbar-nav nav-user">
+			<ul class="nav navbar-nav nav-user pull-right">
 				<li class="dropdown pull-right">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 						<i class="fa fa-user"></i>
@@ -67,6 +67,13 @@ if(isset($_GET['newmenu'])) {
 		}
 		?>
 
+	</nav>
+</div>
+
+
+<div class="topmenu2">
+	<nav class="navbar navbar-default navbar-inverse" role="navigation">
+		
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav nav-apps">

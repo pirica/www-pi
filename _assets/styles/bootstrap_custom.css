@@ -8,6 +8,7 @@ html,body {
 
 .container {
 	overflow: auto;
+	margin-top: 20px;
 	padding-bottom: 50px; /* this needs to be bigger than footer height*/
 	/*width:auto;*/
 }
@@ -57,17 +58,23 @@ html,body {
 
 */
 
-.topmenu2 .navbar
+.topmenu2
 {
-	max-width:300px;
-	margin-right: 0;
-	margin-left: 0;
-}	
-
-.topmenu2  .nav-user
-{
-	float: right;
+	float: left;
+    width: 300px;
 }
+
+.topmenu1 .navbar, .topmenu2 .navbar
+{
+	border-radius: 0;
+	margin-bottom: 0;
+}
+
+.topmenu1 .navbar
+{
+	padding-left: 320px;
+}
+
 .topmenu2 .nav-apps
 {
 	display: block;
@@ -77,6 +84,33 @@ html,body {
 {
 	float: none;
 }
+
+
+.topmenu .navbar li  a
+{
+	color: #fff;
+}
+.topmenu .navbar li.disabled  a
+{
+    color: #666;
+}
+
+
+.topmenu1 .navbar .navbar-nav.active a,
+.topmenu1 .navbar .navbar-nav.active a:hover,
+.topmenu1 .navbar .navbar-nav.active a:focus,
+.topmenu2 .navbar .navbar-nav.active a,
+.topmenu2 .navbar .navbar-nav.active a:hover,
+.topmenu2 .navbar .navbar-nav.active a:focus  {
+    background-color: #FFFFFF;
+    border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
+    color: #000;
+}
+
+.topmenu1 .navbar-brand {
+	color: #fff;
+}
+
 
 
 .topmenu {
