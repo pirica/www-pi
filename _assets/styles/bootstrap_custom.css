@@ -112,14 +112,6 @@ html,body {
     color: #000;
 }
 
-.topmenu2 .navbar .navbar-nav .active a,
-.topmenu2 .navbar .navbar-nav .active a:hover,
-.topmenu2 .navbar .navbar-nav .active a:focus  {
-    background-color: #FFFFFF;
-    border-color: #DDDDDD #DDDDDD rgba(0, 0, 0, 0);
-    color: #000;
-}
-
 .topmenu2 .navbar .navbar-nav li ul li a,
 .topmenu2 .navbar .navbar-nav li ul li a:hover,
 .topmenu2 .navbar .navbar-nav li ul li a:focus  {
@@ -139,14 +131,14 @@ html,body {
 	color: #fff;
 }
 
-.topmenu2 .nav-apps .subs a::after
+.topmenu2 .nav-apps .subs > a::after
 {
 	content: '\f0da';
 	float: right;
 	font-family: FontAwesome;
 	color: #666;
 }
-.topmenu2 .nav-apps .subs a.collapsed::after
+.topmenu2 .nav-apps .subs > a.collapsed::after
 {
 	content: '\f0d7';
 }
