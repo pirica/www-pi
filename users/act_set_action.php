@@ -4,7 +4,7 @@ $code = saneInput('code', 'string');
 $field = saneInput('field', 'string');
 $value = saneInput('value', 'string');
 
-if(!in_array($field, array('page_title', 'login_required'))){
+if(!in_array($field, array('page_title', 'login_required', 'show_in_menu', 'sort_order'))){
 	$field = '';
 }
 
