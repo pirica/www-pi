@@ -56,7 +56,7 @@ $qry_actions = mysql_query("
 		count(aad.id_app_action_data) as menu_subs
 		
 	from users.t_app_action aa
-		left join t_app_action_data aad on aad.id_app = aa.id_app and aad.code = aa.code and aad.active >= 1
+		left join users.t_app_action_data aad on aad.id_app = aa.id_app and aad.code = aa.code and aad.active >= 1
 	
 	where
 		aa.active = 1
