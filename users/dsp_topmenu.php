@@ -36,11 +36,6 @@ if(isset($_GET['newmenu'])) {
 						<li class="disabled"><a href="#">My profile</a></li>
 						<li class="disabled"><a href="#">My stats</a></li>
 						<li class="divider"></li>
-						<li><a href="../users/index.php?action=settings">Settings</a></li>
-						<li><a href="../users/index.php?action=actions">Actions</a></li>
-						<li><a href="../users/index.php?action=profileapps">Profiles - Apps</a></li>
-						<li><a href="../users/index.php?action=profileappactions">Profiles - Actions</a></li>
-						<li class="divider"></li>
 						<li><a href="../users/index.php?action=logout">Log out</a></li>
 					</ul>
 				</li>
@@ -122,7 +117,24 @@ if(isset($_GET['newmenu'])) {
 													if($menu['is_current'] == 1 && $menu_action['code'] == $action->getCode()){
 														$class .= ' active';
 													}
-													echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
+													
+													if($menu_action['menu_subs'] == 0)
+													{
+														echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
+													}
+													else
+													{
+														echo '<li class="' . $class . '"><a href="#" id="btnsubmenu'. $menu_action['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $menu_action['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $menu_action['page_title'] . '</a>';
+														echo '<ul class="nav collapse " id="subsubmenu'. $menu_action['id_app_action'] .'" role="menu" aria-labelledby="btnsubmenu'. $menu_action['id_app_action'] .'">';
+														while($menu_action_data = mysql_fetch_array($qry_actions_data))
+														{
+															if($menu_action_data['id_app'] == $menu_action['id_app'] && $menu_action_data['code'] == $menu_action['code'])
+															{
+																echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '&'.$menu_action_data['url'].'">' . $menu_action_data['description'] . '</a></li>';
+															}
+														}
+														echo '</ul></li>';
+													}
 												}
 											}
 										?>

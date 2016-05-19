@@ -27,7 +27,7 @@ if(
 {
 ?>
 
-	<form id="frm-edit" class="form-horizontal" method="post" action="index.php?action=<?= $action->getCode() ?>&amp;mode=save&amp;id=<?= $id ?>">
+	<form id="frmTableeditor" class="form-horizontal" method="post" action="index.php?action=<?= $action->getCode() ?>&amp;mode=save&amp;id=<?= $id ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>"/>
 		<input type="hidden" name="mode" value="save"/>
 		<input type="hidden" name="id" value="<?= $id ?>"/>
@@ -72,6 +72,9 @@ if(
 					<?php
 				}
 				else {
+					
+					$input_type = 'text';
+					
 					switch($tableeditor_field['fieldtype'])
 					{
 						case 'bool':
@@ -95,6 +98,9 @@ if(
 							<?php
 							break;
 							
+						case 'int':
+						case 'integer':
+							$input_type = 'number';
 						default:
 							?>
 							
@@ -109,7 +115,7 @@ if(
 									}
 								?>
 								<div class="col-sm-<?= $colsize ?>">
-									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="text" class="form-control" 
+									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="<?= $input_type ?>" class="form-control" 
 										value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
 								</div>
 								<?php
@@ -127,8 +133,8 @@ if(
 		
 		
 		<div class="form-group">
-			<!--label class="control-label" for="singlebutton">Save</label-->
-			<button id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="Save">Save</button>
+			<!--label class="control-label" for="btnSaveTableeditor">Save</label-->
+			<button id="btnSaveTableeditor" name="btnSaveTableeditor" class="btn btn-primary" type="submit" value="Save">Save</button>
 		</div>
 
 		

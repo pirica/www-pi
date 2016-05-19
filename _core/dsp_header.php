@@ -34,6 +34,7 @@
 	
 	<script src="../_assets/scripts/jquery/jquery.validate.js"></script>
 	<script src="../_assets/scripts/jquery/additional-methods.js"></script>
+	<script src="../_assets/scripts/jquery/inputmask.min.js"></script>
 	
 	
 	<script type="text/javascript" src="../_assets/scripts/bootstrap/daterangepicker/moment.js"></script>

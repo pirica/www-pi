@@ -31,10 +31,13 @@ $qry_apps = mysql_query("
 		join users.t_profile p on p.id_profile = " . $id_profile . "
 		left join users.t_profile_app pa on pa.id_app = a.id_app and pa.id_profile = p.id_profile
 		left join users.t_app_action aa on aa.id_app = a.id_app and aa.show_in_menu = 1
+	
 	where
 		pa.allowed = 1 or p.full_access = 1
+		
 	group by
 		a.id_app
+		
 	order by
 		ifnull(a.sort_order, a.id_app)
 		
@@ -49,11 +52,38 @@ $qry_actions = mysql_query("
 		aa.code,
 		ifnull(nullif(aa.page_title,''), aa.code) as page_title,
 		aa.login_required,
-		aa.show_in_menu
+		aa.show_in_menu,
+		count(aad.id_app_action_data) as menu_subs
 		
 	from users.t_app_action aa
+		left join t_app_action_data aad on aad.id_app = aa.id_app and aad.code = aa.code and aad.active >= 1
+	
 	where
 		aa.active = 1
+	
+	group by
+		aa.id_app_action
+		
+	order by
+		aa.sort_order,
+		ifnull(aa.code,'Main')
+		
+		
+	", $conn_users);
+	
+$qry_actions_data = mysql_query("
+	
+	select
+		ifnull(aa.id_app, -1) as id_app,
+		aa.id_app_action_data,
+		aa.code,
+		aa.url,
+		aa.description
+		
+	from users.t_app_action_data aa
+	
+	where
+		aa.active >= 1
 		
 	order by
 		aa.sort_order,
