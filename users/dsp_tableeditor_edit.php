@@ -85,11 +85,13 @@ if(
 						case 'checkbox':
 						case 'check':
 							?>
-								<div class="form-group">
+								<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">
 									<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 									<div class="col-sm-3">
 										<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
-											<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>>
+											<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>
+											<?= $tableeditor_field['required'] == 1 ? 'required="required"' : '' ?>
+										>
 									</div>
 									<?php
 										if($tableeditor_field['tooltip'] != ''){
@@ -106,7 +108,7 @@ if(
 						default:
 							?>
 							
-							<div class="form-group <?= $tableentry[$tableeditor_field['required']] == 1 ? 'required' : '' ?>">
+							<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">
 								<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 								<?php
 									if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
@@ -119,7 +121,7 @@ if(
 								<div class="col-sm-<?= $colsize ?>">
 									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="<?= $input_type ?>" class="form-control" 
 										value="<?= $tableentry[$tableeditor_field['fieldname']] ?>"
-										<?= $tableentry[$tableeditor_field['required']] == 1 ? 'required="required"' : '' ?>
+										<?= $tableeditor_field['required'] == 1 ? 'required="required"' : '' ?>
 									>
 								</div>
 								<?php
