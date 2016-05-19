@@ -127,6 +127,19 @@ var rEmail  = "^[a-zA-Z0-9-_\+~]+(\.[a-zA-Z0-9-_\+~]+)*@([a-zA-Z_0-9-]+\.)+[a-zA
 var rNumber = /^\-?\d+$/;
 var rPhone  = "\\+?[0-9.\\-\\(\\) ]+";
 
+var tTitleError = 'Error';
+var tTitleWarning = 'Warning';
+var tTitleInfo = 'Info';
+
+var tErrorAlertMessage = 'An error has occured';
+
+var tErrRequired = 'Please fill in all required fields';
+var tErrAmount = 'Please enter a valid amount';
+var tErrNumber = 'Please enter a valid number';
+var tErrDate = 'Please enter a valid date';
+var tErrEmail = 'Please enter a valid email address';
+var tErrPhone = 'Please enter a valid phone number';
+
 // create input masks for all relevant input fields
 function formatInputs()
 {
@@ -238,6 +251,12 @@ function validateAmount(oForm)
 		}
 	});
 
+	// set feedback
+	if(bValid == false)
+	{
+		showAlert('error', tErrAmount, false);
+	}
+
 	return bValid;
 }
 
@@ -262,6 +281,12 @@ function validateNumber(oForm)
 			$(this).closest('.control-group').addClass('success');
 		}
 	});
+
+	// set feedback
+	if(bValid == false)
+	{
+		showAlert('error', tErrNumber, false);
+	}
 
 	return bValid;
 }
