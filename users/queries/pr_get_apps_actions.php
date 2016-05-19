@@ -43,54 +43,96 @@ $qry_apps = mysql_query("
 		
 	", $conn_users);
 	
+
 	
-$qry_actions = mysql_query("
+$array_actions = $cache->get("topmenu_actions");
+
+if($array_actions == null) {
 	
-	select
-		ifnull(aa.id_app, -1) as id_app,
-		aa.id_app_action,
-		aa.code,
-		ifnull(nullif(aa.page_title,''), aa.code) as page_title,
-		aa.login_required,
-		aa.show_in_menu,
-		count(aad.id_app_action_data) as menu_subs
+	$qry_actions = mysql_query("
 		
-	from users.t_app_action aa
-		left join users.t_app_action_data aad on aad.id_app = aa.id_app and aad.code = aa.code and aad.active >= 1
+		select
+			ifnull(aa.id_app, -1) as id_app,
+			aa.id_app_action,
+			aa.code,
+			ifnull(nullif(aa.page_title,''), aa.code) as page_title,
+			aa.login_required,
+			aa.show_in_menu,
+			count(aad.id_app_action_data) as menu_subs
+			
+		from users.t_app_action aa
+			left join users.t_app_action_data aad on aad.id_app = aa.id_app and aad.code = aa.code and aad.active >= 1
+		
+		where
+			aa.active = 1
+		
+		group by
+			aa.id_app_action
+			
+		order by
+			aa.sort_order,
+			ifnull(aa.code,'Main')
+			
+			
+		", $conn_users);
 	
-	where
-		aa.active = 1
+	$array_actions = array();
+	while($menu_action = mysql_fetch_array($qry_actions))
+	{
+		$array_actions[] = array(
+			'id_app' => $menu_action['id_app'],
+			'id_app_action' => $menu_action['id_app_action'],
+			'code' => $menu_action['code'],
+			'page_title' => $menu_action['page_title'],
+			'login_required' => $menu_action['login_required'],
+			'show_in_menu' => $menu_action['show_in_menu'],
+			'menu_subs' => $menu_action['menu_subs']
+		);
+	}
 	
-	group by
-		aa.id_app_action
-		
-	order by
-		aa.sort_order,
-		ifnull(aa.code,'Main')
-		
-		
-	", $conn_users);
+	$cache->set("topmenu_actions", $array_actions, 8 * 60 * 60);
+}
+
 	
-$qry_actions_data = mysql_query("
+
+$array_actions_data = $cache->get("topmenu_actions_data");
+
+if($array_actions_data == null) {
 	
-	select
-		ifnull(aa.id_app, -1) as id_app,
-		aa.id_app_action_data,
-		aa.code,
-		aa.url,
-		aa.description
+	$qry_actions_data = mysql_query("
 		
-	from users.t_app_action_data aa
+		select
+			ifnull(aa.id_app, -1) as id_app,
+			aa.id_app_action_data,
+			aa.code,
+			aa.url,
+			aa.description
+			
+		from users.t_app_action_data aa
+		
+		where
+			aa.active >= 1
+			
+		order by
+			aa.sort_order,
+			ifnull(aa.code,'Main')
+			
+			
+		", $conn_users);
 	
-	where
-		aa.active >= 1
-		
-	order by
-		aa.sort_order,
-		ifnull(aa.code,'Main')
-		
-		
-	", $conn_users);
+	$array_actions_data = array();
+	while($menu_action = mysql_fetch_array($qry_actions_data))
+	{
+		$array_actions_data[] = array(
+			'id_app' => $menu_action['id_app'],
+			'id_app_action_data' => $menu_action['id_app_action_data'],
+			'code' => $menu_action['code'],
+			'url' => $menu_action['url'],
+			'description' => $menu_action['description']
+		);
+	}
 	
+	$cache->set("topmenu_actions_data", $array_actions_data, 8 * 60 * 60);
+}
 	
 ?>

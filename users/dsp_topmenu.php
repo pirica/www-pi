@@ -2,7 +2,7 @@
 
 
 // /*
-if(isset($_GET['newmenu'])) {
+if(!isset($_GET['oldmenu'])) {
 	
 	include 'queries/pr_get_apps_actions.php';
 
@@ -108,29 +108,32 @@ if(isset($_GET['newmenu'])) {
 										<?php
 											$class = '';
 											
-											mysql_data_seek($qry_actions, 0);
+											$array_actions_length = count($array_actions);
 											
-											while($menu_action = mysql_fetch_array($qry_actions))
+											for($i=0; $i<$array_actions_length; $i++)
 											{
-												if($menu_action['id_app'] == $menu['id_app'] && $menu_action['show_in_menu'] == 1)
+												if($array_actions[$i]['id_app'] == $menu['id_app'] && $array_actions[$i]['show_in_menu'] == 1)
 												{
-													if($menu['is_current'] == 1 && $menu_action['code'] == $action->getCode()){
+													if($menu['is_current'] == 1 && $array_actions[$i]['code'] == $action->getCode()){
 														$class .= ' active';
 													}
 													
-													if($menu_action['menu_subs'] == 0)
+													if($array_actions[$i]['menu_subs'] == 0)
 													{
-														echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '">' . $menu_action['page_title'] . '</a></li>';
+														echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '">' . $array_actions[$i]['page_title'] . '</a></li>';
 													}
 													else
 													{
-														echo '<li class="subs ' . $class . '"><a href="#" id="btnsubmenu'. $menu_action['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $menu_action['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $menu_action['page_title'] . '</a>';
-														echo '<ul class="nav collapse " id="subsubmenu'. $menu_action['id_app_action'] .'" role="menu" aria-labelledby="btnsubmenu'. $menu_action['id_app_action'] .'">';
-														while($menu_action_data = mysql_fetch_array($qry_actions_data))
+														echo '<li class="subs ' . $class . '"><a href="#" id="btnsubmenu'. $array_actions[$i]['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $array_actions[$i]['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $array_actions[$i]['page_title'] . '</a>';
+														echo '<ul class="nav collapse " id="subsubmenu'. $array_actions[$i]['id_app_action'] .'" role="menu" aria-labelledby="btnsubmenu'. $array_actions[$i]['id_app_action'] .'">';
+														
+														$array_actions_data_length = count($array_actions_data);
+														
+														for($j=0; $j<$array_actions_data_length; $j++)
 														{
-															if($menu_action_data['id_app'] == $menu_action['id_app'] && $menu_action_data['code'] == $menu_action['code'])
+															if($array_actions_data[$j]['id_app'] == $array_actions[$i]['id_app'] && $array_actions_data[$j]['code'] == $array_actions[$i]['code'])
 															{
-																echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $menu_action['code'] . '&'.$menu_action_data['url'].'">' . $menu_action_data['description'] . '</a></li>';
+																echo '<li class="' . $class . '"><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '&'.$array_actions_data[$j]['url'].'">' . $array_actions_data[$j]['description'] . '</a></li>';
 															}
 														}
 														echo '</ul></li>';

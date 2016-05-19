@@ -112,6 +112,12 @@ html,body {
     color: #000;
 }
 
+.topmenu2 .navbar .navbar-nav > li > a,
+.topmenu2 .navbar .navbar-nav > li > a:hover,
+.topmenu2 .navbar .navbar-nav > li > a:focus  {
+    color: #fff;
+}
+
 .topmenu2 .navbar .navbar-nav li ul li a,
 .topmenu2 .navbar .navbar-nav li ul li a:hover,
 .topmenu2 .navbar .navbar-nav li ul li a:focus  {
