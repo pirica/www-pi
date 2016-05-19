@@ -26,7 +26,9 @@ if(
 )
 {
 ?>
-
+	
+	<div class="alertContainer"></div>
+	
 	<form id="frmTableeditor" class="form-horizontal" method="post" action="index.php?action=<?= $action->getCode() ?>&amp;mode=save&amp;id=<?= $id ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>"/>
 		<input type="hidden" name="mode" value="save"/>
@@ -104,7 +106,7 @@ if(
 						default:
 							?>
 							
-							<div class="form-group">
+							<div class="form-group <?= $tableentry[$tableeditor_field['required']] == 1 ? 'required' : '' ?>">
 								<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 								<?php
 									if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
@@ -116,7 +118,9 @@ if(
 								?>
 								<div class="col-sm-<?= $colsize ?>">
 									<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="<?= $input_type ?>" class="form-control" 
-										value="<?= $tableentry[$tableeditor_field['fieldname']] ?>">
+										value="<?= $tableentry[$tableeditor_field['fieldname']] ?>"
+										<?= $tableentry[$tableeditor_field['required']] == 1 ? 'required="required"' : '' ?>
+									>
 								</div>
 								<?php
 									if($tableeditor_field['tooltip'] != ''){
