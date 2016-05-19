@@ -258,6 +258,13 @@ html,body {
 	padding: 20px;
 }
 
+
+.alertContainer span {
+	display: inline-block;
+	width: 60px;
+}
+
+
 .checkbox {
 	margin-bottom: 15px;
 }
