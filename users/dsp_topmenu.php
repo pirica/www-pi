@@ -45,7 +45,7 @@ if(!isset($_GET['oldmenu'])) {
 		else
 		{
 			?>
-			<ul class="nav navbar-nav nav-user">
+			<ul class="nav navbar-nav nav-user pull-right">
 				<li class="dropdown pull-right">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 						<i class="fa fa-user"></i>
