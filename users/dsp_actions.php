@@ -35,6 +35,8 @@ $actionsdata_count = count($actionsdata);
 							<div class="col-sm-2"><h4>Code</h4></div>
 							<div class="col-sm-2"><h4>Page title</h4></div>
 							<div class="col-sm-2"><h4>Login required?</h4></div>
+							<div class="col-sm-2"><h4>Show in menu?</h4></div>
+							<div class="col-sm-2"><h4>Menu sort order</h4></div>
 						</div>
 						
 						<?php
@@ -58,9 +60,21 @@ $actionsdata_count = count($actionsdata);
 											data-field="login_required" 
 											<?php if($actionsdata[$i][$j]['login_required'] == 1) { ?>checked<?php } ?>>
 									</div>
+									<div class="col-sm-2">
+										<input id="show_in_menu<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="checkbox" 
+											data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
+											data-field="show_in_menu" 
+											<?php if($actionsdata[$i][$j]['show_in_menu'] == 1) { ?>checked<?php } ?>>
+									</div>
+									<div class="col-sm-2">
+										<input id="sort_order<?= $actionsdata[$i][$j]['id_app_action'] ?>" type="text" 
+											data-code="<?= $actionsdata[$i][$j]['code'] ?>" 
+											data-field="sort_order" 
+											value="<?= $actionsdata[$i][$j]['sort_order'] ?>">
+									</div>
 								</div>
 								<?php
-							}
+							}	
 						?>
 					</form>
 				</div>

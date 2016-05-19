@@ -9,7 +9,9 @@ $qry_mng_actions = $mysqli->prepare("
 		s.id_app_action,
 		s.code,
 		s.page_title,
-		s.login_required
+		s.login_required,
+		s.show_in_menu,
+		s.sort_order
 		
 	from t_app_action s
 	left join t_app a on a.id_app = s.id_app
@@ -33,7 +35,9 @@ $qry_mng_actions->bind_result(
 	$id_app_action,
 	$code,
 	$page_title,
-	$login_required
+	$login_required,
+	$show_in_menu,
+	$sort_order
 );
 	
 		
@@ -60,7 +64,9 @@ while ($qry_mng_actions->fetch()) {
 		'id_app_action' => $id_app_action,
 		'code' => $code,
 		'page_title' => $page_title,
-		'login_required' => $login_required
+		'login_required' => $login_required,
+		'show_in_menu' => $show_in_menu,
+		'sort_order' => $sort_order
 	);
 }
 
