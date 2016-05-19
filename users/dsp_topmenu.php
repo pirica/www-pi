@@ -124,7 +124,7 @@ if(isset($_GET['newmenu'])) {
 													}
 													else
 													{
-														echo '<li class="' . $class . '"><a href="#" id="btnsubmenu'. $menu_action['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $menu_action['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $menu_action['page_title'] . '</a>';
+														echo '<li class="subs ' . $class . '"><a href="#" id="btnsubmenu'. $menu_action['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $menu_action['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $menu_action['page_title'] . '</a>';
 														echo '<ul class="nav collapse " id="subsubmenu'. $menu_action['id_app_action'] .'" role="menu" aria-labelledby="btnsubmenu'. $menu_action['id_app_action'] .'">';
 														while($menu_action_data = mysql_fetch_array($qry_actions_data))
 														{
