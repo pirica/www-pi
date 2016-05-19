@@ -456,9 +456,7 @@ function showAlert(sType, sMessage, bUnhandled, timeout)
 	}
 
 	// wrap in error element
-	var oError = $(wrapElement('<span>' + sTitle + '</span>' + sMessage, 'div'))
-				.addClass('popupAlert fade alert alert-' + sType)
-				.prepend('<a href="#" class="close" data-dismiss="alert">x</a>');
+	var oError = $('<div class="popupAlert fade alert alert-' + sType + '"><span>' + sTitle + '</span>' + sMessage + ' <a href="#" class="close" data-dismiss="alert">x</a></div>');
 
 	// output to browser
 	$('.alertContainer').append(oError);
