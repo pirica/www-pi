@@ -38,7 +38,7 @@ mysql_query("
 		join users.t_app_action aa on aa.id_app = a.id_app and aa.code = 'camera'
 	
 	where
-		a.id_app = " . $app->getId() . "
+		a.relative_url = '/camera'
 		
 	union
 	
@@ -57,7 +57,7 @@ mysql_query("
 		join router.t_camera c on 1 = 1
 		
 	where
-		a.id_app = " . $app->getId() . "
+		a.relative_url = '/camera'
 		
 	order by
 		sort_order,

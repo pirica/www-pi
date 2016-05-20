@@ -93,9 +93,13 @@ if($array_actions == null) {
 	$cache->set("topmenu_actions", $array_actions, 8 * 60 * 60);
 }
 
-	
+$cache_name = "topmenu_actions_data";
+if(isset($_SESSION['user_id']))
+{
+	$cache_name = "topmenu_actions_data_" . $_SESSION['user_id'];
+}
 
-$array_actions_data = $cache->get("topmenu_actions_data");
+$array_actions_data = $cache->get($cache_name);
 
 if($array_actions_data == null) {
 	
@@ -112,10 +116,11 @@ if($array_actions_data == null) {
 		
 		where
 			aa.active >= 1
+			and ifnull(aa.id_user, " . $_SESSION['user_id'] . ") = " . $_SESSION['user_id'] . "
 			
 		order by
 			aa.sort_order,
-			ifnull(aa.code,'Main')
+			aa.description
 			
 			
 		", $conn_users);
@@ -132,7 +137,7 @@ if($array_actions_data == null) {
 		);
 	}
 	
-	$cache->set("topmenu_actions_data", $array_actions_data, 8 * 60 * 60);
+	$cache->set($cache_name, $array_actions_data, 8 * 60 * 60);
 }
 	
 ?>
