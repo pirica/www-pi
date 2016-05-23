@@ -94,9 +94,11 @@ if($array_actions == null) {
 }
 
 $cache_name = "topmenu_actions_data";
+$userid = -1;
 if(isset($_SESSION['user_id']))
 {
 	$cache_name = "topmenu_actions_data_" . $_SESSION['user_id'];
+	$userid = $_SESSION['user_id'];
 }
 
 $array_actions_data = $cache->get($cache_name);
@@ -116,7 +118,7 @@ if($array_actions_data == null) {
 		
 		where
 			aa.active >= 1
-			and ifnull(aa.id_user, " . $_SESSION['user_id'] . ") = " . $_SESSION['user_id'] . "
+			and ifnull(aa.id_user, " . $userid . ") = " . $userid . "
 			
 		order by
 			aa.sort_order,
