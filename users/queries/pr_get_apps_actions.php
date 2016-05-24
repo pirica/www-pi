@@ -93,6 +93,8 @@ if($array_actions == null) {
 	$cache->set("topmenu_actions", $array_actions, 8 * 60 * 60);
 }
 
+
+
 $cache_name = "topmenu_actions_data";
 $userid = -1;
 if(isset($_SESSION['user_id']))

@@ -38,3 +38,8 @@ label.error {
 .btn-mark-as-read {
 	float: right;
 }
+
+.list-group-item img
+{
+	max-width: 100%;
+}

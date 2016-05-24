@@ -30,7 +30,7 @@ switch($action->getCode()){
 		include 'queries/pr_feeds.php';
 		
 		require '../_core/dsp_header.php';
-		require 'dsp_submenu.php';
+		//require 'dsp_submenu.php';
 		include 'dsp_feeds.php';
 		require '../_core/dsp_footer.php';
 		break;
@@ -42,7 +42,7 @@ switch($action->getCode()){
 		$error = 0;
 		
 		require '../_core/dsp_header.php';
-		require 'dsp_submenu.php';
+		//require 'dsp_submenu.php';
 		include 'dsp_edit.php';
 		require '../_core/dsp_footer.php';
 		
@@ -168,7 +168,7 @@ switch($action->getCode()){
 		include 'queries/pr_feed_overview.php';
 		
 		require '../_core/dsp_header.php';
-		require 'dsp_submenu.php';
+		//require 'dsp_submenu.php';
 		include 'dsp_main.php';
 		require '../_core/dsp_footer.php';
 	

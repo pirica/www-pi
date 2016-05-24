@@ -89,7 +89,7 @@ $qry_tableeditor = mysql_query("
 	
 $tableeditor = mysql_fetch_array($qry_tableeditor);
 
-$tableeditor_fields_overview = $tableeditor['tableid'];
+$tableeditor_fields_overview = ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor['tableid'];
 $tableeditor_fields_entry = $tableeditor['tableid'];
 
 $tableeditor_sql_lookups = '';
