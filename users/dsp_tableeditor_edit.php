@@ -46,7 +46,7 @@ if(
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 							<div class="col-sm-3">
-								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
+								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
 									<?php
 										$sql = "
 											select 
