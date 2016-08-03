@@ -68,8 +68,8 @@ if(
 											while($lookupdata = mysql_fetch_array($tableeditor_lookup_data))
 											{
 												$array_lookupdata[] = array(
-													'id' => $tableeditor_field['lookup_idfield'],
-													'description' => $tableeditor_field['lookup_labelfield']
+													'id' => $lookupdata['id'],
+													'description' => $lookupdata['description']
 												);
 											}
 											
