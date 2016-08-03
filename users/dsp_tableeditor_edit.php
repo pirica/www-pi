@@ -48,20 +48,44 @@ if(
 							<div class="col-sm-3">
 								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
 									<?php
-										$sql = "
-											select 
-												" . $tableeditor_field['lookup_idfield'] . " as id,
-												" . $tableeditor_field['lookup_labelfield'] . " as description
-											from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
-											order by " . $tableeditor_field['lookup_labelfield'] . "
-											";
-										//echo '<!--' . $sql . '-->';
-										$tableeditor_lookup_data = mysql_query($sql, $conn_users);
 										
-										while($lookupdata = mysql_fetch_array($tableeditor_lookup_data))
-										{
-											echo '<option value="' . $lookupdata['id'] . '" ' . ($lookupdata['id'] == $tableentry[$tableeditor_field['fieldname']] ? 'selected="selected"' : '') . '>' . $lookupdata['description'] . '</option>';
+										$cache_name = "tef_" . $tableeditor_field['lookup_tablename'];
+										$array_lookupdata = $cache->get($cache_name);
+
+										if($array_lookupdata == null || $tableeditor_field['lookup_cache'] == 0) {
+											
+											$sql = "
+												select 
+													" . $tableeditor_field['lookup_idfield'] . " as id,
+													" . $tableeditor_field['lookup_labelfield'] . " as description
+												from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor_field['lookup_tablename'] . "
+												order by " . $tableeditor_field['lookup_labelfield'] . "
+												";
+											//echo '<!--' . $sql . '-->';
+											$tableeditor_lookup_data = mysql_query($sql, $conn_users);
+											
+											$array_lookupdata = array();
+											while($lookupdata = mysql_fetch_array($tableeditor_lookup_data))
+											{
+												$array_lookupdata[] = array(
+													'id' => $tableeditor_field['lookup_idfield'],
+													'description' => $tableeditor_field['lookup_labelfield']
+												);
+											}
+											
+											if($tableeditor_field['lookup_cache'] > 0)
+											{
+												$cache->set($cache_name, $array_lookupdata, $tableeditor_field['lookup_cache'] * 60);
+											}
 										}
+										
+										$array_lookupdata_count = count($array_lookupdata);
+										
+										for($i=0; $i<$array_lookupdata_count; $i++)
+										{
+											echo '<option value="' . $array_lookupdata[$i]['id'] . '" ' . ($array_lookupdata[$i]['id'] == $tableentry[$tableeditor_field['fieldname']] ? 'selected="selected"' : '') . '>' . $array_lookupdata[$i]['description'] . '</option>';
+										}
+										
 									?>
 								</select>
 							</div>

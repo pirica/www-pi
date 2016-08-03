@@ -4,7 +4,8 @@ include "connections.php";
 include "functions.php";
 
 $values = [];
-$site = file_get_contents('http://www.electrosluts.com/site/shoots.jsp');
+//$site = file_get_contents('http://www.electrosluts.com/site/shoots.jsp');
+$site = file_get_contents('http://www.kink.com/channel/electrosluts');
 
 $target = 'href="/site/shoot.jsp?shootId=';
 
@@ -27,6 +28,16 @@ while($index !== false && $index > -1){
    echo 'item found: ' . $item . "<br>\n";
 }
 
+
+$target = 'href="/shoot/';
+
+$index = stripos($site, $target);
+while($index !== false && $index > -1){
+	$item = substr($site, $index+strlen($target), 5);
+	$values[] = $item;
+	$index = stripos($site, $target, $index + strlen($target) + 1);
+   echo 'item found: ' . $item . "<br>\n";
+}
 
 
 $v = count($values);

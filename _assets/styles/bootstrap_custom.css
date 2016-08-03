@@ -144,14 +144,14 @@ html,body {
 
 .topmenu2 .nav-apps .subs > a::after
 {
-	content: '\f0da';
+	content: '\f0d7';
 	float: right;
 	font-family: FontAwesome;
 	color: #666;
 }
 .topmenu2 .nav-apps .subs > a.collapsed::after
 {
-	content: '\f0d7';
+	content: '\f0da';
 }
 
 

@@ -89,13 +89,13 @@ if(!isset($_GET['oldmenu'])) {
 						if($menu['menu_actions'] == 0)
 						{
 							?>
-								<li class="<?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="<?= $relative_url ?>"><?= $description ?></a></li>
+								<li class="<?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="<?= $relative_url ?>"><?= htmlentities($description) ?></a></li>
 							<?php
 						}
 						else
 						{
 							?>
-								<li class="subs <?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="<?= ($menu['is_current'] == 1 ? 'true' : 'false') ?>" class="<?= ($menu['is_current'] == 1 ? '' : 'collapsed') ?>"><?= $description ?></a>
+								<li class="subs <?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="<?= ($menu['is_current'] == 1 ? 'true' : 'false') ?>" class="<?= ($menu['is_current'] == 1 ? '' : 'collapsed') ?>"><?= htmlentities($description) ?></a>
 									<ul class="nav collapse <?= ($menu['is_current'] == 1 ? 'in' : '') ?>" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
 										<?php
 											$array_actions_length = count($array_actions);
@@ -106,11 +106,11 @@ if(!isset($_GET['oldmenu'])) {
 												{
 													if($array_actions[$i]['menu_subs'] == 0)
 													{
-														echo '<li class="' . ($menu['is_current'] == 1 && $array_actions[$i]['code'] == $action->getCode() ? 'active' : '') . '"><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '">' . $array_actions[$i]['page_title'] . '</a></li>';
+														echo '<li class="' . ($menu['is_current'] == 1 && $array_actions[$i]['code'] == $action->getCode() ? 'active' : '') . '"><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '">' . htmlentities($array_actions[$i]['page_title']) . '</a></li>';
 													}
 													else
 													{
-														echo '<li class="subs ' . ($menu['is_current'] == 1 && $array_actions[$i]['code'] == $action->getCode() ? 'active' : '') . '"><a href="#" id="btnsubmenu'. $array_actions[$i]['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $array_actions[$i]['id_app_action'] .'" aria-expanded="false" class="collapsed">' . $array_actions[$i]['page_title'] . '</a>';
+														echo '<li class="subs ' . ($menu['is_current'] == 1 && $array_actions[$i]['code'] == $action->getCode() ? 'active' : '') . '"><a href="#" id="btnsubmenu'. $array_actions[$i]['id_app_action'] .'" data-toggle="collapse" data-target="#subsubmenu'. $array_actions[$i]['id_app_action'] .'" aria-expanded="false" class="collapsed">' . htmlentities($array_actions[$i]['page_title']) . '</a>';
 														echo '<ul class="nav collapse " id="subsubmenu'. $array_actions[$i]['id_app_action'] .'" role="menu" aria-labelledby="btnsubmenu'. $array_actions[$i]['id_app_action'] .'">';
 														
 														$array_actions_data_length = count($array_actions_data);
@@ -119,7 +119,7 @@ if(!isset($_GET['oldmenu'])) {
 														{
 															if($array_actions_data[$j]['id_app'] == $array_actions[$i]['id_app'] && $array_actions_data[$j]['code'] == $array_actions[$i]['code'])
 															{
-																echo '<li><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '&'.$array_actions_data[$j]['url'].'">' . $array_actions_data[$j]['description'] . '</a></li>';
+																echo '<li><a href="' . $relative_url . '?action=' . $array_actions[$i]['code'] . '&'.$array_actions_data[$j]['url'].'">' . htmlentities($array_actions_data[$j]['description']) . '</a></li>';
 															}
 														}
 														echo '</ul></li>';

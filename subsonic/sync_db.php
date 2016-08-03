@@ -224,6 +224,14 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 }
 
 
+	mysql_query("
+			insert into genres (description)
+			select distinct genre from songs s
+			left join genres g on g.description = s.genre
+			where s.genre <> ''
+			and g.id is null
+		");
+
 /*
 $qry_users = mysql_query("select count(*) as usercount from users where active = 1");
 $users = mysql_fetch_array($qry_users);

@@ -118,6 +118,7 @@ $qry_tableeditor_fields = mysql_query("
 		tel.tablename as lookup_tablename,
 		tel.idfield as lookup_idfield,
 		tel.labelfield as lookup_labelfield,
+		tel.cache as lookup_cache,
 		'' as lookup_data
 		
 	from t_tableeditor_field tef
@@ -194,8 +195,11 @@ if($mode == 'save')
 		
 		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		{
-			$qry_update .= ($qry_update == '' ? '' : ',');
-			$qry_update .= $tableeditor_field['fieldname'] . " = '" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			if($tableeditor_field['show_in_editor'] == 1)
+			{
+				$qry_update .= ($qry_update == '' ? '' : ',');
+				$qry_update .= $tableeditor_field['fieldname'] . " = '" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			}
 		}
 		
 		mysql_query("
@@ -215,11 +219,14 @@ if($mode == 'save')
 		
 		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		{
-			$qry_insert_fields .= ($qry_insert_fields == '' ? '' : ',');
-			$qry_insert_values .= ($qry_insert_values == '' ? '' : ',');
-			
-			$qry_insert_fields .= $tableeditor_field['fieldname'];
-			$qry_insert_values .= "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			if($tableeditor_field['show_in_editor'] == 1)
+			{
+				$qry_insert_fields .= ($qry_insert_fields == '' ? '' : ',');
+				$qry_insert_values .= ($qry_insert_values == '' ? '' : ',');
+				
+				$qry_insert_fields .= $tableeditor_field['fieldname'];
+				$qry_insert_values .= "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			}
 		}
 		
 		mysql_query("

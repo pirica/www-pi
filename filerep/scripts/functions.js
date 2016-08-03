@@ -123,7 +123,7 @@ $().ready(function(){
 				url: 'index.php?action=do_move_file' + 
 						'&id_file=' + id_file + 
 						'&id_share=' + id_share + 
-						'&rename_to=' + newfile + 
+						'&rename_to=' + encodeURIComponent(newfile) + 
 					'',
 				type: 'GET',
 				cache: false,
