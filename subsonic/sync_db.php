@@ -289,7 +289,7 @@ mysql_query("
 */
 
 
-$export_dir = $settings->val('export_songs', '');
+$export_dir = $settings->val('export_directory', '');
 $songs_dir = $settings->val('songs_directory', '');
 
 $is_dir = $export_dir != '';
