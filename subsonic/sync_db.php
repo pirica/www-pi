@@ -288,4 +288,89 @@ mysql_query("
 	", $conn);
 */
 
+
+$export_dir = $settings->val('export_songs', '');
+$songs_dir = $settings->val('songs_directory', '');
+
+$is_dir = $export_dir != '';
+try {
+	$is_dir = is_dir($export_dir);
+}
+catch(Exception $e){}
+
+if($is_dir && substr($export_dir, -1, 1) != '/'){
+	$export_dir = $export_dir . '/';
+}
+if($songs_dir != '' && substr($songs_dir, -1, 1) != '/'){
+	$songs_dir = $songs_dir . '/';
+}
+
+if($settings->val('export_songs', 0) == 1 && $is_dir)
+{
+	// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
+	$qry_songs = mysql_query("
+		select
+			id,
+			path,
+			filename,
+			relative_directory,
+			export,
+			active
+		from songs
+		where
+			export <> 0
+			or active = 0
+		");
+		
+	while($song = mysql_fetch_array($qry_songs)){
+		/*
+		if active = 1 and export = 1
+			if file not exists
+				if file.deleted exists
+					delete? + unflag
+				else
+					copy
+		
+		else
+			if file exists
+				delete + unflag
+		*/
+		
+		if($song['active'] == 1 && $song['export'] == 1)
+		{
+			if(!file_exists($export_dir . $song['filename']))
+			{
+				if(file_exists($export_dir . $song['filename'] . '.deleted'))
+				{
+					unlink($export_dir . $song['filename'] . '.deleted');
+				}
+				else
+				{
+					copy($songs_dir . $song['path'], $export_dir . $song['filename']);
+				}
+			}
+		}
+		else 
+		{
+			if(file_exists($export_dir . $song['filename']))
+			{
+				unlink($export_dir . $song['filename']);
+			}
+		}
+		
+	}
+	
+	// unflag deleted
+	mysql_query("
+		update songs
+		set
+			export = 0
+		where
+			export = -1
+			or active = 0
+		");
+	
+}
+
+
 ?>
