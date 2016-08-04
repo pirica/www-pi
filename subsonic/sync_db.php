@@ -310,16 +310,21 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 	// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
 	$qry_songs = mysql_query("
 		select
-			id,
-			path,
-			filename,
-			relative_directory,
-			export,
-			active
-		from songs
+			s.id,
+			s.path,
+			s.filename,
+			s.relative_directory,
+			s.export,
+			s.active,
+			mg.description as genre
+		
+		from songs s
+			left join genres g on g.description = s.genre and s.genre <> ''
+			join mainGenres mg on mg.id = ifnull(s.maingenreid, g.maingenreid)
+		
 		where
-			export <> 0
-			or active = 0
+			s.export <> 0
+			or s.active = 0
 		");
 		
 	while($song = mysql_fetch_array($qry_songs)){
@@ -336,25 +341,36 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 				delete + unflag
 		*/
 		
+		$is_genre_dir = false;
+		try {
+			$is_genre_dir = is_dir($export_dir . $song['genre']);
+		}
+		catch(Exception $e){}
+		
+		if(!$is_genre_dir)
+		{
+			mkdir($export_dir . $song['genre']);
+		}
+		
 		if($song['active'] == 1 && $song['export'] == 1)
 		{
-			if(!file_exists($export_dir . $song['filename']))
+			if(!file_exists($export_dir . $song['genre'] . '/' . $song['filename']))
 			{
-				if(file_exists($export_dir . $song['filename'] . '.deleted'))
+				if(file_exists($export_dir . $song['genre'] . '/' . $song['filename'] . '.deleted'))
 				{
-					unlink($export_dir . $song['filename'] . '.deleted');
+					unlink($export_dir . $song['genre'] . '/' . $song['filename'] . '.deleted');
 				}
 				else
 				{
-					copy($songs_dir . $song['path'], $export_dir . $song['filename']);
+					copy($songs_dir . $song['path'], $export_dir . $song['genre'] . '/' . $song['filename']);
 				}
 			}
 		}
 		else 
 		{
-			if(file_exists($export_dir . $song['filename']))
+			if(file_exists($export_dir . $song['genre'] . '/' . $song['filename']))
 			{
-				unlink($export_dir . $song['filename']);
+				unlink($export_dir . $song['genre'] . '/' . $song['filename']);
 			}
 		}
 		
