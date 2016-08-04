@@ -8,8 +8,8 @@ if (!isset($feeds)){
 
 $doc = phpQuery::newDocumentHTML($str);
 
-$title = $doc->find('#comicbody img')->attr('title');
-$description = '<img src="http://www.smbc-comics.com/' . $doc->find('#comicbody img')->attr('src') . '"><br>';
+$title = $doc->find('#cc-comicbody img')->attr('title');
+$description = '<img src="' . $doc->find('#cc-comicbody img')->attr('src') . '"><br>';
 
 $description .= '<img src="' . $doc->find('#aftercomic img')->attr('src') . '"><br>';
 
