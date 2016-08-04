@@ -407,6 +407,10 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 			{
 				unlink($genre_dir . '/' . $song['filename']);
 			}
+			else if(file_exists($genre_dir. '/' . $song['filename'] . '.deleted'))
+			{
+				unlink($genre_dir . '/' . $song['filename'] . '.deleted');
+			}
 		}
 		
 	}
