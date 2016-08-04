@@ -323,7 +323,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 			join mainGenres mg on mg.id = ifnull(s.maingenreid, g.maingenreid)
 		
 		where
-			s.export <> 0
+			ifnull(s.export,0) <> 0
 			or s.active = 0
 		");
 		
@@ -341,36 +341,39 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 				delete + unflag
 		*/
 		
+		$genre_dir = $export_dir . $song['genre'];
 		$is_genre_dir = false;
 		try {
-			$is_genre_dir = is_dir($export_dir . $song['genre']);
+			$is_genre_dir = is_dir($genre_dir);
 		}
 		catch(Exception $e){}
 		
-		if(!$is_genre_dir)
+		if($is_genre_dir !== true)
 		{
-			mkdir($export_dir . $song['genre']);
+			mkdir($genre_dir);
+			shell_exec ('sudo chown nobody:nogroup -R "' . $genre_dir . '"');
+			shell_exec ('sudo chmod 777 -R "' . $genre_dir . '"');
 		}
 		
 		if($song['active'] == 1 && $song['export'] == 1)
 		{
-			if(!file_exists($export_dir . $song['genre'] . '/' . $song['filename']))
+			if(!file_exists($genre_dir . '/' . $song['filename']))
 			{
-				if(file_exists($export_dir . $song['genre'] . '/' . $song['filename'] . '.deleted'))
+				if(file_exists($genre_dir. '/' . $song['filename'] . '.deleted'))
 				{
-					unlink($export_dir . $song['genre'] . '/' . $song['filename'] . '.deleted');
+					unlink($genre_dir . '/' . $song['filename'] . '.deleted');
 				}
 				else
 				{
-					copy($songs_dir . $song['path'], $export_dir . $song['genre'] . '/' . $song['filename']);
+					copy($songs_dir . $song['path'], $genre_dir . '/' . $song['filename']);
 				}
 			}
 		}
 		else 
 		{
-			if(file_exists($export_dir . $song['genre'] . '/' . $song['filename']))
+			if(file_exists($genre_dir . '/' . $song['filename']))
 			{
-				unlink($export_dir . $song['genre'] . '/' . $song['filename']);
+				unlink($genre_dir . '/' . $song['filename']);
 			}
 		}
 		
