@@ -307,6 +307,50 @@ if($songs_dir != '' && substr($songs_dir, -1, 1) != '/'){
 
 if($settings->val('export_songs', 0) == 1 && $is_dir)
 {
+	
+	// check and create genre dirs
+	$qry_genres = mysql_query("
+		select distinct
+			mg.description as genre
+		
+		from songs s
+			left join genres g on g.description = s.genre and s.genre <> ''
+			join mainGenres mg on mg.id = ifnull(s.maingenreid, g.maingenreid)
+		
+		where
+			ifnull(s.export,0) <> 0
+			or s.active = 0
+		");
+		
+	while($genre = mysql_fetch_array($qry_genres)){
+		/*
+		if active = 1 and export = 1
+			if file not exists
+				if file.deleted exists
+					delete? + unflag
+				else
+					copy
+		
+		else
+			if file exists
+				delete + unflag
+		*/
+		
+		$genre_dir = $export_dir . $genre['genre'];
+		$is_genre_dir = false;
+		try {
+			$is_genre_dir = is_dir($genre_dir);
+		}
+		catch(Exception $e){}
+		
+		if($is_genre_dir !== true)
+		{
+			mkdir($genre_dir);
+		}
+		shell_exec ('sudo chown nobody:nogroup -R "' . $genre_dir . '"');
+		shell_exec ('sudo chmod 777 -R "' . $genre_dir . '"');
+	}
+		
 	// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
 	$qry_songs = mysql_query("
 		select
@@ -342,18 +386,6 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 		*/
 		
 		$genre_dir = $export_dir . $song['genre'];
-		$is_genre_dir = false;
-		try {
-			$is_genre_dir = is_dir($genre_dir);
-		}
-		catch(Exception $e){}
-		
-		if($is_genre_dir !== true)
-		{
-			mkdir($genre_dir);
-			shell_exec ('sudo chown nobody:nogroup -R "' . $genre_dir . '"');
-			shell_exec ('sudo chmod 777 -R "' . $genre_dir . '"');
-		}
 		
 		if($song['active'] == 1 && $song['export'] == 1)
 		{
