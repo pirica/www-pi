@@ -163,7 +163,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 					$relative_directory = '/' . implode('/', $paths) . '/';
 					
 					mysql_query("
-						replace into songs
+						insert into songs
 						(
 							id,
 							parentId,
@@ -187,8 +187,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							albumId,
 							active
 						)
-						values 
-						(
+						select
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
 							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
@@ -210,7 +209,74 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
 							1
+						from songs s1
+						left join songs s2 on s2.id = " . $music_directories[$mdi]->id . "
+						where s2.id is null
+						limit 1,1
+						
+						");
+						
+					mysql_query("
+						replace into songs
+						(
+							id,
+							parentId,
+							title,
+							album,
+							artist,
+							track,
+							year,
+							genre,
+							size,
+							contentType,
+							suffix,
+							duration,
+							bitRate,
+							path,
+							filename,
+							relative_directory,
+							isVideo,
+							created,
+							type,
+							albumId,
+							active,
+							
+							mainGenreId,
+							export,
+							title_custom,
+							artist_custom
 						)
+						select
+							" . $music_directories[$mdi]->id . ",
+							" . $music_directories[$mdi]->parent . ",
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
+							" . (property_exists($music_directories[$mdi], 'track') ? $music_directories[$mdi]->track : '-1') . ",
+							" . (property_exists($music_directories[$mdi], 'year') ? $music_directories[$mdi]->year : '-1') . ",
+							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
+							" . (property_exists($music_directories[$mdi], 'size') ? $music_directories[$mdi]->size : '-1') . ",
+							'" . mysql_real_escape_string($music_directories[$mdi]->contentType) . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->suffix) . "',
+							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
+							" . (property_exists($music_directories[$mdi], 'bitRate') ? $music_directories[$mdi]->bitRate : '-1') . ",
+							'" . mysql_real_escape_string($music_directories[$mdi]->path) . "',
+							'" . mysql_real_escape_string($filename) . "',
+							'" . mysql_real_escape_string($relative_directory) . "',
+							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
+							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
+							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
+							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
+							1
+							
+							mainGenreId,
+							export,
+							title_custom,
+							artist_custom
+							
+						from songs 
+						where id = " . $music_directories[$mdi]->id . "
+						
 						");
 						
 				}
@@ -221,9 +287,10 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	
 	mysql_query("update songs set active = 0 where active = 2");
 	
-}
-
-
+	mysql_query("update songs set artist_custom = replace(LEFT(filename, INSTR(replace(filename,'_', ' ')," - ")-1) ,'_', ' ')  where type = 'music' and active = 1 and replace(filename,'_', ' ') like '% - %' and ifnull(artist_custom,'') = '' ");
+	// select filename, replace(LEFT(filename, INSTR(replace(filename,'_', ' ')," - ")-1) ,'_', ' ') as artist from songs where type = 'music' and active = 1 and replace(filename,'_', ' ') like '% - %'  order by 1
+	// select  artist_custom, count(id) from songs where type = 'music' and active = 1 and artist_custom <> '' group by  artist_custom
+	
 	mysql_query("
 			insert into genres (description)
 			select distinct genre from songs s
@@ -231,6 +298,10 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			where s.genre <> ''
 			and g.id is null
 		");
+	
+}
+
+
 
 /*
 $qry_users = mysql_query("select count(*) as usercount from users where active = 1");
