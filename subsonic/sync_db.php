@@ -267,7 +267,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
 							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
-							1
+							1,
 							
 							mainGenreId,
 							export,
