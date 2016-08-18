@@ -8,10 +8,12 @@ class Settings
 	private $_db;
 	private $_id_app;
 	private $_count = 0;
+	private $_cache;
 
-	public function __construct($db, $id_app) {
+	public function __construct($db, $id_app, $cache) {
 		$this->_db = $db;
 		$this->_id_app = $id_app;
+		$this->_cache = $cache;
 		
 		$this->getData();
 		
@@ -22,9 +24,13 @@ class Settings
 	}
 	
 	public function getData() {
-		//if(count($this->_data) == 0){
+		
+		$data = $this->_cache->get("settings");
+
+		if($data == null) {
+			
 			$this->_count = 0;
-			$this->_data = [];
+			$data = [];
 			
 			$qry_settings = $this->_db->prepare("
 				select
@@ -41,15 +47,16 @@ class Settings
 					
 				from t_setting s
 				where
-					(s.id_app = ? or s.id_app = -1)
-					and s.active = 1
+					#(s.id_app = ? or s.id_app = -1)
+					#and 
+					s.active = 1
 					
 				order by
 					ifnull(s.sort_order, s.id_setting)
 					
 				");
 				
-			$qry_settings->bind_param('i', $this->_id_app);
+			//$qry_settings->bind_param('i', $this->_id_app);
 			$qry_settings->execute();
 			$qry_settings->store_result();
 
@@ -69,7 +76,7 @@ class Settings
 			
 			while ($qry_settings->fetch()) {
 				$this->_count++;
-				$this->_data[] = array(
+				$data[] = array(
 					'id_app' => $id_app,
 					'code' => $code,
 					'value' => $value,
@@ -84,7 +91,17 @@ class Settings
 				
 			}
 			
-		//}*/
+			$this->_cache->set("settings", $data, 3600 * 8);
+			
+			$this->_data = $data;
+			
+		}
+		else
+		{
+			$this->_data = $data;
+			
+			$this->_count = count($data);
+		}
 		return $this->_data;
 	}
 	
@@ -115,7 +132,7 @@ class Settings
 		$value_found = 0;
 		
 		for($i=0; $i<$this->_count; $i++) {
-			if($this->_data[$i]['code'] == $code){
+			if(($this->_data[$i]['id_app'] == $this->_id_app || $this->_data[$i]['id_app'] == -1) && $this->_data[$i]['code'] == $code){
 				$return_value = $this->_data[$i]['value'];
 				$value_found = 1;
 			}
@@ -140,6 +157,12 @@ class Settings
 			);
 		}
 		return $return_value;
+	}
+	
+	
+	public function clearCache()
+	{
+		$this->_cache->delete("settings");
 	}
 	
 	/*

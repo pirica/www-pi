@@ -26,11 +26,11 @@ $request_uri = '';
 
 
 
-$app = new App($mysqli, $request_uri);
-$settings = new Settings($mysqli, $app->getId());
-
 phpFastCache::setup("storage","files");
 $cache = phpFastCache();
+
+$app = new App($mysqli, $request_uri);
+$settings = new Settings($mysqli, $app->getId(), $cache);
 
 sec_session_start();
 

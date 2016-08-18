@@ -26,6 +26,7 @@ if(/*$id_app > 0 &&*/ $code != ''){
 			
 		", $conn_users);
 		
+	$settings->clearCache();
 }
 
 ?>
