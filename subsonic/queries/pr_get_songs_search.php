@@ -33,10 +33,12 @@ if($search != ''){
 			
 		from songs s
 		left join playlistEntries pe on pe.songId = s.id
+		left join playlistEntriesToAdd pea on pea.songId = s.id
 		
 		where
 			s.isVideo = 0
 			and pe.id is null
+			and pea.id is null
 			and (
 				ifnull(s.title,'') like '%" . mysql_real_escape_string($search) . "%'
 				or ifnull(s.album,'') like '%" . mysql_real_escape_string($search) . "%'

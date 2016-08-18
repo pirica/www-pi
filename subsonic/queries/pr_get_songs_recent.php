@@ -31,10 +31,12 @@ $qry_songs = mysql_query("
 		
 	from songs s
 	left join playlistEntries pe on pe.songId = s.id
+	left join playlistEntriesToAdd pea on pea.songId = s.id
 	
 	where
 		s.isVideo = 0
 		and pe.id is null
+		and pea.id is null
 		
 	order by
 		s.id desc

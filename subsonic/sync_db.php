@@ -10,6 +10,21 @@ include 'connection.php';
 include 'act_init_subsonic.php';
 
 
+if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5){
+	$qry_entries = mysql_query("
+		select
+			id,
+			playlistId,
+			songId
+		from playlistEntriesToAdd
+		");
+	
+	while($entry = mysql_fetch_array($qry_entries)){
+		$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
+		mysql_query("delete from playlistEntriesToAdd where id = " . $entry['id']);
+	}
+}
+
 $playlists = $subsonic->getPlaylists();
 $c_playlists = count($playlists);
 
@@ -73,6 +88,19 @@ if($c_playlists > 0){
 	mysql_query("update playlists set active = 0 where active = 2");
 	
 }
+
+/*
+
+if setting "remove double entries"
+	
+	query "get double entries"
+	ordered by first or last, by index desc
+		
+		$subsonic->updatePlaylistRemove($playlistId, $playlistSongIndex);
+		mysql_query("delete from playlistEntries where id = " . $entry['id']);
+		
+
+*/
 
 
 $qry_indexes = mysql_query("select count(*) as indexcount from indexes");

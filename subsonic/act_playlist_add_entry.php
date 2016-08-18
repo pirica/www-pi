@@ -4,6 +4,7 @@ $error = 0;
 
 if($playlistId > 0 && $songId != ''){
 	
+	/*
 	include 'act_init_subsonic.php';
 	
 	$songIds = explode(',', $songId);
@@ -29,6 +30,24 @@ if($playlistId > 0 && $songId != ''){
 				" . $playlistId . ",
 				" . $playlist_entries[$pei]->id . ",
 				" . $pei . "
+			)
+			");
+	}
+	*/
+	
+	$songIds = explode(',', $songId);
+	
+	for($i=0; $i<count($songIds); $i++){
+		mysql_query("
+			insert into playlistEntriesToAdd
+			(
+				playlistId,
+				songId
+			)
+			values 
+			(
+				" . $playlistId . ",
+				" . $songIds[$i] . "
 			)
 			");
 	}
