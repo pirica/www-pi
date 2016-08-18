@@ -53,7 +53,7 @@ if($playlistId > 0 && $songId != ''){
 	}
 	
 	
-	goto_action('playlists');
+	//goto_action('playlists');
 }
 
 ?>
