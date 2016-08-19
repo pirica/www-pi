@@ -181,7 +181,8 @@ if($tableeditor_sql_orderby_fields_len > 0)
 		else {
 			$tableeditor_sql_orderby .= ',';
 		}
-		$tableeditor_sql_orderby .= ' ' . $tableeditor_sql_orderby_fields[$i]['field'] . ' ' . $tableeditor_sql_orderby_fields[$i]['direction'];
+		$tableeditor_sql_orderby .= ' ' . ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_sql_orderby_fields[$i]['field'] . ' ' . $tableeditor_sql_orderby_fields[$i]['direction'];
+		
 	}
 }
 
@@ -307,9 +308,12 @@ else
 		" . $tableeditor_sql_orderby . "
 		";
 		
-	//echo '<!--' . $sql . '-->';
 	$qry_overview = mysql_query($sql, $conn_users);
 	
+	if($qry_overview === false)
+	{
+		echo '<!--' . $sql . '-->';
+	}
 }
 
 
