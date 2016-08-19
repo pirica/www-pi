@@ -72,7 +72,7 @@ $().ready(function(){
 				},
 				success: function(data, textStatus, jqXHR){
 					if(typeof data.title !== undefined){
-						var f = (''+data.filename.replace(/\r|\n|\t/g, ''));
+						var f = (''+data.title.replace(/\r|\n|\t/g, ''));
 						if(f.replace(/ /g, '') != ''){
 							$('#frm-edit #feed_title').val(f);
 						}
