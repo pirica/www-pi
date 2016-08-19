@@ -27,13 +27,13 @@ else {
 		</legend-->
 
 		<div class="form-group">
-			<label for="feed_title">Title</label>
-			<input id="feed_title" name="feed_title" placeholder="" class="form-control" type="text" value="<?=$feed_title?>">
+			<label for="feed_url">URL</label>
+			<input id="feed_url" name="feed_url" placeholder="" class="form-control" type="text" value="<?=$feed_url?>">
 		</div>
 		
 		<div class="form-group">
-			<label for="feed_url">URL</label>
-			<input id="feed_url" name="feed_url" placeholder="" class="form-control" type="text" value="<?=$feed_url?>">
+			<label for="feed_title">Title <i class="fa fa-spinner fa-spin hidden"></i></label>
+			<input id="feed_title" name="feed_title" placeholder="" class="form-control" type="text" value="<?=$feed_title?>">
 		</div>
 		
 		<div class="form-group">

@@ -48,6 +48,42 @@ $().ready(function(){
 		$('#feed_refresh_lbl').html( minutesToTimeRange($('#feed_refresh').val()) );
 	});
 	
+	
+	// enter feed title when url is changed
+	$('#frm-edit #feed_url').change(function(){
+		var u = $('#frm-edit #feed_url').val();
+		
+		var f = u.split('/');
+		f = f[f.length - 1];
+		
+		//if(u.toLowerCase().indexOf("youtube.com") > 0){
+		if(u != ''){
+			$('#feed_title').parent().find('.fa-spin').removeClass('hidden');
+			$.ajax({
+				url: 'index.php?action=js_check_feed' + 
+						'&u=' + u + 
+					'',
+				type: 'GET',
+				cache: false,
+				dataType: 'json',
+				error: function(xhr, status, error) {
+					//location.href = ...
+					$('#feed_title').parent().find('.fa-spin').addClass('hidden');
+				},
+				success: function(data, textStatus, jqXHR){
+					if(typeof data.title !== undefined){
+						var f = (''+data.filename.replace(/\r|\n|\t/g, ''));
+						if(f.replace(/ /g, '') != ''){
+							$('#frm-edit #feed_title').val(f);
+						}
+					}
+					$('#feed_title').parent().find('.fa-spin').addClass('hidden');
+				}
+			});
+		}
+	});
+	
+	
 	//initHandlers();
 	
 });

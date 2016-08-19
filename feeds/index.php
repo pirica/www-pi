@@ -160,6 +160,59 @@ switch($action->getCode()){
 		break;
 	
 	
+	
+	case 'js_check_feed':
+		include "class.myrssparser.php"; 
+		include "class.myatomparser.php"; 
+		
+		$url = saneInput('u', 'string', '');
+		$title = '';
+		
+		try
+		{
+			if(strpos($url, 'feed.atom') !== false){
+				$rss_parser = new myAtomParser($url);
+				$rss = $rss_parser->getRawOutput();
+			}
+			else {
+				$rss_parser = new myRSSParser($url);
+				$rss = $rss_parser->getRawOutput();
+			}
+			
+			$start_tag = key($rss);
+			
+			// loop over rss items
+			if($start_tag == 'RSS')
+			{
+				foreach($rss['RSS']["CHANNEL"] as $channel)
+				{
+					$title = $channel['TITLE'];
+					
+				}
+			}
+			// loop over rss items
+			else if($start_tag == 'RDF:RDF')
+			{
+				$title = $rss[$start_tag]['TITLE'];
+				
+			}
+			// loop over atom items
+			else if($start_tag == 'FEED')
+			{
+				$title = $rss[$start_tag]['TITLE'];
+			}
+			
+		}
+		catch(Exception $e){}
+			
+		echo json_encode(array(
+			"title" => $title
+		));
+		
+		break;
+	
+	
+	
 	// main: overview
 	default:
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
