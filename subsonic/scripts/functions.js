@@ -55,7 +55,8 @@ function addPlaylistEntries(event)
 			//location.href = ...
 		},
 		success: function(data, textStatus, jqXHR){
-			location.reload();
+			//location.reload();
+			$('#myModal').modal('hide');
 		}
 	});
 }

@@ -29,7 +29,7 @@ function getInfo()
 		}
 	});
 	
-	if(desktop == 1)
+	if(typeof desktop !== 'undefined' && desktop == 1)
 	{
 		setTimeout(getInfo, 30000);
 	}

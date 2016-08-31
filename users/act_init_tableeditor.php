@@ -5,7 +5,7 @@
 set @db = 'router';
 set @table = 't_category';
 
-select 'insert into users.t_tableeditor (id_app, tablename, description, tableid, action, use_active_flag) values ( appid'
+select 'insert into users.t_tableeditor (id_app, tablename, description, tableid, action, use_active_flag, enable_create, enable_edit, enable_delete) values ( appid'
 union
 select
 	concat(', ''' , t.table_name , ''', ''' , replace(t.table_name,'_',' ') , ''', ')
@@ -27,7 +27,7 @@ left join information_schema.columns c on c.table_schema = t.table_schema and c.
 where t.table_name = @table
 and t.table_schema = @db
 union
-select ')'
+select ', 1, 1, 1)'
 ;
 
 
