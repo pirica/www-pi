@@ -153,22 +153,7 @@ FROM t_file WHERE id_share = 1 and active = 1
 and filename like '%-%'
 and replace(filename,'_',' ') not like '% - %'
 ;
-SELECT 
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-) as moves
-FROM t_file WHERE id_share = 1 and active = 1
-and filename like '%_%'
-;
-SELECT 
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-) as moves
-FROM t_file WHERE id_share = 1 and active = 1
-and filename like '%www%'
-;
+
 SELECT 
 concat(
 	'mv ".', relative_directory, filename, '" ',
@@ -176,41 +161,6 @@ concat(
 ) as moves
 FROM t_file WHERE id_share = 1 and active = 1
 and filename like '%  %'
-;
-SELECT 
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-) as moves
-FROM t_file WHERE id_share = 1 and active = 1
-and filename not like '%-%'
-;
-SELECT 
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-) as moves
-FROM t_file WHERE id_share = 1 and active = 1
-and filename like '%!%'
-;
-SELECT 
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-) as moves
-FROM t_file WHERE id_share = 1 and active = 1
-and (filename like '%´%' or filename like '%`%' or filename like '%"%')
-;
-
-SELECT
-concat(
-	'mv ".', relative_directory, filename, '" ',
-	'".', relative_directory, replace(replace(replace(filename,'_',' '),'[','('),']',')'), '"'
-)
-#* 
-FROM t_file WHERE id_share = 1 and active = 1
-and (filename like '%mix%' or filename like '%rmx%')
-and filename not like '%(%'
 ;
 
 
@@ -256,8 +206,8 @@ concat(
 ) as moves
 FROM t_file WHERE id_share = 1 and active = 1
 and filename like '%mp3'
-and filename like '%1%'
-and filename not like '01. %'
+and filename like '%10%'
+and filename not like '10. %'
 and relative_directory like '%/%/%/%'
 ;
 
