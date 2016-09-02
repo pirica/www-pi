@@ -346,27 +346,29 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 		insert into artists (description, songs)
 		select artist_custom, count(s.id) from songs s
 		left join artists a on a.description = s.artist_custom
-		where s.artist_custom <> ''
+		where s.active = 1 
+		and s.artist_custom <> ''
 		and a.id is null
 		group by s.artist_custom
 	");
 	
-	mysql_query("
+	/*mysql_query("
 		update artists a
 		join songs s on a.description = s.artist_custom
 		set
 			a.songs = count(s.id)
 		group by s.artist_custom
-		");
+		");*/
 	
-	mysql_query("
+	/*mysql_query("
 		update artists a
 		left join songs s on a.description = s.artist_custom
 		set
 			a.active = 0
 		where
-			s.id is null
-		");
+			a.active = 1
+			and s.id is null
+		");*/
 		
 	// select filename, replace(LEFT(filename, INSTR(replace(filename,'_', ' ')," - ")-1) ,'_', ' ') as artist from songs where type = 'music' and active = 1 and replace(filename,'_', ' ') like '% - %'  order by 1
 	// select  artist_custom, count(id) from songs where type = 'music' and active = 1 and artist_custom <> '' group by  artist_custom
