@@ -89,13 +89,13 @@ if(!isset($_GET['oldmenu'])) {
 						if($menu['menu_actions'] == 0)
 						{
 							?>
-								<li class="<?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="<?= $relative_url ?>"><?= htmlentities($description) ?></a></li>
+								<li class="<?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="<?= $relative_url ?>"><?= ($menu['fa_icon'] == '' ? '' : '<i class="fa fa-'.$menu['fa_icon'].'"></i> ') ?><?= htmlentities($description) ?></a></li>
 							<?php
 						}
 						else
 						{
 							?>
-								<li class="subs <?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="<?= ($menu['is_current'] == 1 ? 'true' : 'false') ?>" class="<?= ($menu['is_current'] == 1 ? '' : 'collapsed') ?>"><?= htmlentities($description) ?></a>
+								<li class="subs <?= $menu['is_current'] == 1 ? 'active' : '' ?>"><a href="#" id="btnmenu<?= $menu['id_app'] ?>" data-toggle="collapse" data-target="#submenu<?= $menu['id_app'] ?>" aria-expanded="<?= ($menu['is_current'] == 1 ? 'true' : 'false') ?>" class="<?= ($menu['is_current'] == 1 ? '' : 'collapsed') ?>"><?= ($menu['fa_icon'] == '' ? '' : '<i class="fa fa-'.$menu['fa_icon'].'"></i> ') ?><?= htmlentities($description) ?></a>
 									<ul class="nav collapse <?= ($menu['is_current'] == 1 ? 'in' : '') ?>" id="submenu<?= $menu['id_app'] ?>" role="menu" aria-labelledby="btnmenu<?= $menu['id_app'] ?>">
 										<?php
 											$array_actions_length = count($array_actions);

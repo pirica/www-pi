@@ -24,6 +24,7 @@ $qry_apps = mysql_query("
 		a.show_in_topmenu,
 		a.login_required,
 		count(aa.id_app_action) as menu_actions,
+		a.fa_icon,
 		
 		case when '" . mysql_real_escape_string($request_uri) . "' = a.relative_url then 1 else 0 end as is_current
 		
