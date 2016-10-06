@@ -16,11 +16,11 @@ if(isset($_POST['feed_url'])){
 if(isset($_POST['feed_refresh']) && $_POST['feed_refresh'] != '' && is_numeric($_POST['feed_refresh']) && $_POST['feed_refresh'] > 0){
 	$feed_refresh = $_POST['feed_refresh'];
 }
-if(isset($_POST['parser'])){
-	$feed_parser = $_POST['parser'];
+if(isset($_POST['feed_parser'])){
+	$feed_parser = $_POST['feed_parser'];
 }
-if(isset($_POST['parse_max_items']) && $_POST['parse_max_items'] != '' && is_numeric($_POST['parse_max_items']) && $_POST['parse_max_items'] > 0){
-	$feed_parse_max_items = $_POST['parse_max_items'];
+if(isset($_POST['feed_parse_max_items']) && $_POST['feed_parse_max_items'] != '' && is_numeric($_POST['feed_parse_max_items']) && $_POST['feed_parse_max_items'] > 0){
+	$feed_parse_max_items = $_POST['feed_parse_max_items'];
 }
 
 
