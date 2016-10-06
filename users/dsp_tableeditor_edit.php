@@ -112,7 +112,7 @@ if(
 								<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">
 									<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 									<div class="col-sm-3">
-										<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" 
+										<input id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" type="checkbox" value="1"
 											<?php if($tableentry[$tableeditor_field['fieldname']] == 1) { ?>checked<?php } ?>
 											<?= $tableeditor_field['required'] == 1 ? 'required="required"' : '' ?>
 										>
