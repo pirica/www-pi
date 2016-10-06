@@ -8,6 +8,8 @@ $qry_feeds = mysql_query("
 		f.url,
 		f.refresh,
 		f.date_last_checked,
+		f.parser,
+		f.parse_max_items,
 		
 		f.open_url,
 		f.desktop_only,

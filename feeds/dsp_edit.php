@@ -42,6 +42,16 @@ else {
 			<input id="feed_refresh" name="feed_refresh" placeholder="" class="form-control" type="text" value="<?=$feed_refresh?>">
 		</div>
 		
+		<div class="form-group">
+			<label for="feed_parser">Custom feed parser</label>
+			<input id="feed_parser" name="feed_parser" placeholder="" class="form-control" type="text" value="<?=$feed_parser?>">
+		</div>
+		
+		<div class="form-group">
+			<label for="feed_parse_max_items">Max. number of feed items to parse (empty for all)</label>
+			<input id="feed_parse_max_items" name="feed_parse_max_items" placeholder="" class="form-control" type="text" value="<?=$feed_parse_max_items?>">
+		</div>
+		
 		
 		
 		<div class="form-group">
