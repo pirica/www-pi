@@ -116,6 +116,8 @@ html,body {
 .topmenu2 .navbar .navbar-nav > li > a:hover,
 .topmenu2 .navbar .navbar-nav > li > a:focus  {
     color: #fff;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 
 .topmenu2 .navbar .navbar-nav li ul li a,
@@ -124,6 +126,7 @@ html,body {
     color: #999;
     line-height: 1.2;
     margin-left: 20px;
+	padding: 8px 15px;
 }
 .topmenu2 .navbar .navbar-nav > li > ul > li > ul > li > a ,
 .topmenu2 .navbar .navbar-nav > li > ul > li > ul > li > a:hover, 
@@ -152,6 +155,11 @@ html,body {
 .topmenu2 .nav-apps .subs > a.collapsed::after
 {
 	content: '\f0da';
+}
+
+.topmenu1 .nav .fa,
+.topmenu2 .nav .fa {
+    color: #f33;
 }
 
 
