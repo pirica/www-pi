@@ -133,7 +133,10 @@ switch($action->getCode()){
 		$app->setHeaderScripts('<link href="styles/uploadfile.css" rel="stylesheet">');
 		$app->setHeaderScripts('<script src="../_assets/scripts/jquery/jquery.uploadfile.js"></script>');
 		
-		$app->setHeaderScripts('<script type="text/javascript">var upload_max_filesize = ' . revertFileSize('256M') . ', max_file_uploads = ' . ini_get('max_file_uploads') . ';</script>' . "\n");
+		$app->setHeaderScripts('<script type="text/javascript">' . 
+				'var upload_max_filesize = ' . revertFileSize($settings->val('freeupload_max_filesize', '256M')) . ', ' . 
+				'max_file_uploads = ' . ini_get('max_file_uploads') . 
+			';</script>' . "\n");
 		
 		include '../_core/dsp_header_minimal.php';
 		include 'dsp_free_upload.php';
