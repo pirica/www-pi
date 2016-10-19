@@ -219,8 +219,15 @@ if($mode == 'save')
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
+				$_fieldvalue = "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+				
+				if($tableeditor_field['id_tableeditor_lookup'] > 0 && $_POST['tef_' . $tableeditor_field['fieldname']] == '')
+				{
+					$_fieldvalue = "NULL";
+				}
+				
 				$qry_update .= ($qry_update == '' ? '' : ',');
-				$qry_update .= $tableeditor_field['fieldname'] . " = '" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+				$qry_update .= $tableeditor_field['fieldname'] . " = " . $_fieldvalue;
 			}
 		}
 		
@@ -241,13 +248,20 @@ if($mode == 'save')
 		
 		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		{
+			$_fieldvalue = "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			
+			if($tableeditor_field['id_tableeditor_lookup'] > 0 && $_POST['tef_' . $tableeditor_field['fieldname']] == '')
+			{
+				$_fieldvalue = "NULL";
+			}
+			
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
 				$qry_insert_fields .= ($qry_insert_fields == '' ? '' : ',');
 				$qry_insert_values .= ($qry_insert_values == '' ? '' : ',');
 				
 				$qry_insert_fields .= $tableeditor_field['fieldname'];
-				$qry_insert_values .= "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+				$qry_insert_values .= $_fieldvalue;
 			}
 		}
 		
