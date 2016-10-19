@@ -6,6 +6,17 @@ echo '<h1>' . substr($tableeditor['tabledescription'], 0, -1) . (substr($tableed
 ?>
 
 <?php
+if($tableeditor['enable_search'] == 1)
+	{
+	?>
+		<form method="get" action="">
+			Search:
+			<input type="text" name="searchvalue" value="<?= $searchvalue ?>" />
+			<input type="submit" value="Search" />
+		</form>
+	<?php
+	}
+	
 if($tableeditor['enable_create'] == 1)
 {
 ?>

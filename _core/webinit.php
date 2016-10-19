@@ -80,9 +80,6 @@ if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER
 // custom table editor
 if($action->getEditorId() > 0)
 {
-	$mode = saneInput('mode');
-	$id = saneInput('id', 'int', -1);
-	
 	require dirname(__FILE__).'/../users/act_init_tableeditor.php';
 	
 	if($mode == 'edit')

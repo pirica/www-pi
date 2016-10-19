@@ -60,6 +60,12 @@ where t.table_name = 't_host'
 
 */
 
+$mode = saneInput('mode');
+$id = saneInput('id', 'int', -1);
+$parentid = saneInput('parentid', 'int', -1);
+$searchvalue = saneInput('searchvalue');
+
+
 $qry_tableeditor = mysql_query("
 	
 	select
@@ -68,11 +74,13 @@ $qry_tableeditor = mysql_query("
 		te.tablename,
 		te.tableid,
 		te.action,
+		te.parentid,
 		
 		te.use_active_flag,
 		te.enable_create,
 		te.enable_edit,
 		te.enable_delete,
+		te.enable_search,
 		
 		a.database,
 		
@@ -93,6 +101,7 @@ $tableeditor_fields_overview = ($tableeditor['tablename'] == '' ? '' : $tableedi
 $tableeditor_fields_entry = $tableeditor['tableid'];
 
 $tableeditor_sql_lookups = '';
+$tableeditor_sql_search = '';
 $tableeditor_sql_orderby = '';
 $tableeditor_sql_orderby_fields = array();
 
@@ -110,6 +119,7 @@ $qry_tableeditor_fields = mysql_query("
 		tef.show_in_overview,
 		tef.show_in_editor,
 		tef.sorting_sortorder,
+		tef.is_searchfield,
 		
 		ifnull(nullif(tel.description, ''), ifnull(nullif(tef.description, ''), replace(tef.fieldname, '_', ' '))) as fielddescription,
 		
@@ -135,6 +145,8 @@ $qry_tableeditor_fields = mysql_query("
 	
 while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 {
+	$_tablename = ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_field['fieldname'];
+	
 	if($tableeditor_field['show_in_overview'] == 1)
 	{
 		
@@ -147,8 +159,16 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 		}
 		else
 		{
-			$tableeditor_fields_overview .= ',' . ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_field['fieldname'] . " as `" . $tableeditor_field['fielddescription'] . "`";
+			$tableeditor_fields_overview .= ',' . $_tablename . " as `" . $tableeditor_field['fielddescription'] . "`";
 		}
+	}
+	
+	
+	$non_searchable_fields = ',bool,boolean,bit,checkbox,check,int,integer,';
+	
+	if($tableeditor_field['is_searchfield'] == 1 && strpos($non_searchable_fields, ','.$tableeditor_field['fieldtype'].',') === false)
+	{
+		$tableeditor_sql_search .= ($tableeditor_sql_search == '' ? 'and (' : 'or ') . $_tablename . " like '%" . $searchvalue . "%'";
 	}
 	
 	if($tableeditor_field['sorting_sortorder'] != '' && $tableeditor_field['sorting_sortorder'] != 0)
@@ -162,6 +182,7 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 	
 	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
 }
+$tableeditor_sql_search .= ($tableeditor_sql_search == '' ? '' : ')')
 
 function cmp($a, $b)
 {
@@ -233,10 +254,12 @@ if($mode == 'save')
 		mysql_query("
 			insert into " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			(
+				" . ($tableeditor['parentid'] == '' ? '' : $tableeditor['parentid'] . ',') . "
 				" .	$qry_insert_fields . "
 			)
 			values
 			(
+				" . ($tableeditor['parentid'] == '' ? '' : $parentid . ',') . "
 				" .	$qry_insert_values . "
 			)
 			", $conn_users);
@@ -283,6 +306,7 @@ if($mode == 'edit')
 			from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			where	
 				" . $tableeditor['tableid'] . " = " . $id . "
+				" . ($tableeditor['parentid'] == '' ? '' : 'and ' . $tableeditor['parentid'] . ' = ' . $parentid) . "
 			
 			", $conn_users);
 	}
@@ -304,7 +328,9 @@ else
 			" . $tableeditor_fields_overview . "
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 		" . $tableeditor_sql_lookups . "
-		" . ($tableeditor['use_active_flag'] == 1 ? 'where ' . $tableeditor['tablename'] . '.active = 1' : '') . "
+		where 1 = 1
+		" . ($tableeditor['use_active_flag'] == 1 ? 'and ' . $tableeditor['tablename'] . '.active = 1' : '') . "
+		" . $tableeditor_sql_search . "
 		" . $tableeditor_sql_orderby . "
 		";
 		
