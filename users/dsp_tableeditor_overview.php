@@ -10,6 +10,9 @@ if($tableeditor['enable_search'] == 1)
 	{
 	?>
 		<form method="get" action="">
+			<input type="hidden" name="action" value="<?= $action->getCode() ?>" />
+			<input type="hidden" name="parentid" value="<?= $parentid ?>" />
+			
 			Search:
 			<input type="text" name="searchvalue" value="<?= $searchvalue ?>" />
 			<input type="submit" value="Search" />
