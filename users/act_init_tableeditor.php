@@ -182,7 +182,7 @@ while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
 	
 	$tableeditor_fields_entry .= ',' . $tableeditor_field['fieldname'];
 }
-$tableeditor_sql_search .= ($tableeditor_sql_search == '' ? '' : ')')
+$tableeditor_sql_search .= ($tableeditor_sql_search == '' ? '' : ')');
 
 function cmp($a, $b)
 {
