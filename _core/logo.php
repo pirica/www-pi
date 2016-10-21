@@ -5,7 +5,7 @@
 $color = '00ff00';
 
 $logo = '/var/www/_assets/images/dome.png';
-$logo_dir = '/var/docs/localdome_assets/logo';
+$logo_dir = '/var/docs/localdome_assets/logo/';
 $logo_name = 'logo_' . $color . '.png';
 
 // create directory if not exists
@@ -16,7 +16,7 @@ foreach($parts as $part){
 }
 
 
-if(!file_exists($logo_dir) . '/' . $logo_name)
+if(!file_exists($logo_dir) . $logo_name)
 {
 	
 	$image = imagecreatefrompng($logo);
@@ -37,7 +37,7 @@ if(!file_exists($logo_dir) . '/' . $logo_name)
 	imagefill($image, 190, 170, hexdec($color));
 	imagefill($image, 350, 170, hexdec($color));
 
-	imagepng($image, $logo_dir . '/' . $logo_name);
+	imagepng($image, $logo_dir . $logo_name);
 
 }
 
@@ -47,6 +47,6 @@ header('Content-disposition: inline; filename="' . $logo_name . '"');
 header('Cache-control: max-age=' . (60*60*24*30));
 header('Expires: ' . gmdate(DATE_RFC1123, time()+60*60*24*30));
 
-readfile($logo_dir . '/' . $logo_name);
+readfile($logo_dir . $logo_name);
 
 ?>
