@@ -11,6 +11,20 @@ include 'act_init_subsonic.php';
 
 
 if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5){
+	/*
+	$qry_entries = mysql_query("
+		select
+			id,
+			playlistId,
+			songId
+		from playlistEntriesToRemove
+		");
+	
+	while($entry = mysql_fetch_array($qry_entries)){
+		$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
+		mysql_query("delete from playlistEntriesToRemove where id = " . $entry['id']);
+	}
+	*/
 	$qry_entries = mysql_query("
 		select
 			id,
@@ -352,27 +366,47 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 		group by s.artist_custom
 	");
 	
-	/*mysql_query("
-		update artists a
-		join songs s on a.description = s.artist_custom
+	// update nbr of songs per artist
+	mysql_query("update artists set songs = 0");
+	mysql_query("
+		update artists
 		set
-			a.songs = count(s.id)
-		group by s.artist_custom
-		");*/
+			songs = (
+				select count(id) 
+				from songs
+				where songs.artist_custom = artists.description
+				group by songs.artist_custom
+			)
+		");
 	
-	/*mysql_query("
-		update artists a
-		left join songs s on a.description = s.artist_custom
-		set
-			a.active = 0
-		where
-			a.active = 1
-			and s.id is null
-		");*/
+	if($settings->val('auto_delete_artists', 0) == 1)
+	{
+		// reactivate artists with any song (by setting)
+		mysql_query("
+			update artists
+			set
+				active = 1
+			where
+				active = 0
+				and songs > 0
+			");
+			
+		// delete artists without any song (by setting)
+		mysql_query("
+			update artists
+			set
+				active = 0
+			where
+				active = 1
+				and songs = 0
+			");
+	}
 		
 	// select filename, replace(LEFT(filename, INSTR(replace(filename,'_', ' ')," - ")-1) ,'_', ' ') as artist from songs where type = 'music' and active = 1 and replace(filename,'_', ' ') like '% - %'  order by 1
 	// select  artist_custom, count(id) from songs where type = 'music' and active = 1 and artist_custom <> '' group by  artist_custom
 	
+	
+	// insert/update genres
 	mysql_query("
 		insert into genres (description)
 		select distinct genre from songs s
@@ -380,6 +414,42 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 		where s.genre <> ''
 		and g.id is null
 	");
+	
+	// update nbr of songs per genre
+	mysql_query("update genres set songs = 0");
+	mysql_query("
+		update genres
+		set
+			songs = (
+				select count(id) 
+				from songs
+				where songs.genre = genres.description
+				group by songs.genre
+			)
+		");
+		
+	if($settings->val('auto_delete_genres', 0) == 1)
+	{
+		// reactivate genres with any song (by setting)
+		mysql_query("
+			update genres
+			set
+				active = 1
+			where
+				active = 0
+				and songs > 0
+			");
+			
+		// delete genres without any song (by setting)
+		mysql_query("
+			update genres
+			set
+				active = 0
+			where
+				active = 1
+				and songs = 0
+			");
+	}
 	
 }
 
