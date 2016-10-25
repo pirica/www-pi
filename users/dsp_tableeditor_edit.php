@@ -43,10 +43,12 @@ if(
 				if($tableeditor_field['id_tableeditor_lookup'] > 0)
 				{
 					?>
-						<div class="form-group">
+						<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">
 							<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
 							<div class="col-sm-3">
-								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control">
+								<select id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control"
+									<?= $tableeditor_field['required'] == 1 ? 'required="required"' : '' ?>
+								>
 									<option value=""></option>
 									<?php
 										
