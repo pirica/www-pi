@@ -25,8 +25,13 @@ if (isset($_POST['email'], $_POST['p'])) {
 	if(isset($_POST['rememberme']) && $_POST['rememberme'] == 1){
 		$rememberme = true;
 	}
-		
-    if (login($email, $password, $mysqli, $rememberme) == true) {
+	
+	$url_after_login = '';
+	if(isset($_POST['url_after_login'])){
+		$url_after_login = $_POST['url_after_login'];
+	}
+	
+    if (login($email, $password, $mysqli, $rememberme, $url_after_login) == true) {
 		// Login success 
         header("Location: index.php?action=loggedin");
         exit();

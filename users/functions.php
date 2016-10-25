@@ -60,7 +60,7 @@ function sec_session_start() {
 	
 }
 
-function login($email, $password_plain, $mysqli, $rememberme = false) {
+function login($email, $password_plain, $mysqli, $rememberme = false, $url_after_login = '') {
     // Using prepared statements means that SQL injection is not possible. 
     if ($stmt = $mysqli->prepare("
 			SELECT
@@ -135,8 +135,8 @@ function login($email, $password_plain, $mysqli, $rememberme = false) {
 						setcookie('sessiontimeout', '', 0, $cookieParams["path"], $cookieParams["domain"], SECURE, /*$httponly =*/ true);
 					}
 					
-					if(isset($_SESSION['url_after_login'])){
-						header("Location: " . $_SESSION['url_after_login']);
+					if($url_after_login != ''){
+						header("Location: " . $url_after_login);
 						exit();
 					}
                     // Login successful. 

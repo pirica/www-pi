@@ -8,7 +8,11 @@ if (isset($_GET['error'])) {
 ?> 
 
 <form class="form-horizontal login-form" action="../users/index.php?action=do_login" method="post" name="login_form"> 		
-	
+	<?php
+		if($app->getId() > 0){
+			echo '<input type="hidden" name="url_after_login" value="' . get_url_after_login() . '">';
+		}
+	?>
 	<div class="form-group">
 		<label for="email">Email</label>
 		<input id="email" name="email" class="form-control" type="text">
