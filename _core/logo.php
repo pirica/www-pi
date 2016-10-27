@@ -6,6 +6,16 @@ $width = 400;
 $color = '00ff00';
 $bgcolor = '222222';
 
+if(isset($_GET['width']) && $_GET['width'] != '' && is_numeric($_GET['width']) && $_GET['width'] > 0){
+	$width = $_GET['width'];
+}
+if(isset($_GET['color']) && $_GET['color'] != '' && (strlen($_GET['color']) == 6 || strlen($_GET['color']) == 3) && ctype_xdigit($_GET['color'])){
+	$color = $_GET['color'];
+}
+if(isset($_GET['bgcolor']) && $_GET['bgcolor'] != '' && (strlen($_GET['bgcolor']) == 6 || strlen($_GET['bgcolor']) == 3) && ctype_xdigit($_GET['bgcolor'])){
+	$bgcolor = $_GET['bgcolor'];
+}
+
 $logo_dir = '/var/docs/localdome_assets/logo/';
 $logo_name = 'logo_' . $color . '_' . $bgcolor . '_' . $width . '.png';
 
