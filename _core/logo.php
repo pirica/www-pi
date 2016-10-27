@@ -2,11 +2,12 @@
 
 //require 'appinit.php';
 
+$width = 400;
 $color = '00ff00';
+$bgcolor = '222222';
 
-$logo = '/var/www/_assets/images/dome.png';
 $logo_dir = '/var/docs/localdome_assets/logo/';
-$logo_name = 'logo_' . $color . '.png';
+$logo_name = 'logo_' . $color . '_' . $bgcolor . '_' . $width . '.png';
 
 // create directory if not exists
 $parts = explode('/', $logo_dir, -1);
@@ -15,30 +16,63 @@ foreach($parts as $part){
 	if(!is_dir($dir .= "/$part")) mkdir($dir);
 }
 
-
 if(!file_exists($logo_dir) . $logo_name)
 {
 	
-	$image = imagecreatefrompng($logo);
+	$color = hexdec($color);
+	$bgcolor = hexdec($bgcolor);
 	
-	imagefill($image, 160, 30, hexdec($color));
-	imagefill($image, 230, 30, hexdec($color));
+	$image = imagecreatetruecolor(400, 200);
+	imagefilledrectangle($image, 0, 0, 400, 200, $bgcolor);
 	
-	imagefill($image, 100, 70, hexdec($color));
-	imagefill($image, 200, 70, hexdec($color));
-	imagefill($image, 300, 70, hexdec($color));
+	//imageantialias($image, true);
 	
-	imagefill($image, 60, 120, hexdec($color));
-	imagefill($image, 150, 120, hexdec($color));
-	imagefill($image, 220, 120, hexdec($color));
-	imagefill($image, 340, 120, hexdec($color));
+	imagefilledpolygon($image, array(101,42,	141,22,		187,15,		187,42), 4, $color);
+	imagefilledpolygon($image, array(201,15,	259,22,		295,42,		201,42), 4, $color);
 	
-	imagefill($image, 70, 170, hexdec($color));
-	imagefill($image, 190, 170, hexdec($color));
-	imagefill($image, 350, 170, hexdec($color));
+	imagefilledpolygon($image, array(84,55,		140,55,		140,95,		51,95), 4, $color);
+	imagefilledpolygon($image, array(152,55,	237,55,		237,95,		152,95), 4, $color);
+	imagefilledpolygon($image, array(255,55,	310,55,		342,95,		255,95), 4, $color);
+	
+	imagefilledpolygon($image, array(45,107,	77,107,		77,142,		27,142), 4, $color);
+	imagefilledpolygon($image, array(91,107,	186,107,	186,142,	91,142), 4, $color);
+	imagefilledpolygon($image, array(200,107,	303,107,	303,130,	294,123,	283,117,	 269,117,	258,123,	250,130,	242,142,	200,142), 10, $color);
+	imagefilledpolygon($image, array(319,107,	348,107,	364,142,	319,142), 4, $color);
+	
+	imagefilledpolygon($image, array(23,154,	132,154,	132,187,	11,187), 4, $color);
+	imagefilledpolygon($image, array(147,154,	235,154,	223,187,	147,187), 4, $color);
+	imagefilledpolygon($image, array(315,154,	369,154,	382,187,	325,187), 4, $color);
+	
+	
+	if($width != 400)
+	{
+		
+		$old_width = 400;
+		$old_height = 200;
+		
+		// calculate thumbnail size
+		//if($old_width > $old_height)
+		{
+			$new_width = $width;
+			$new_height = floor( $old_height * ( $width / $old_width ) );
+		}
+		/*else 
+		{
+			$new_height = $width;
+			$new_width = floor( $old_width * ( $width / $old_height ) );
+		}*/
+		
+		// create a new temporary image
+		$tmp_img = imagecreatetruecolor( $new_width, $new_height );
 
+		// copy and resize old image into new image
+		imagecopyresized( $tmp_img, $image, 0, 0, 0, 0, $new_width, $new_height, $old_width, $old_height );
+		$image = $tmp_img;
+		
+	}
+	
 	imagepng($image, $logo_dir . $logo_name);
-
+	
 }
 
 header("Content-Type: image/png");
