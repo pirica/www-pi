@@ -90,7 +90,7 @@
 	<style type="text/css">
 		.theme
 		{
-			<?= ($app->getThemeColor() != 'color: #' . $app->getThemeColor() . ' !important;' ? '') ?>
+			<?= ($app->getThemeColor() != '' ? 'color: #' . $app->getThemeColor() . ' !important;' : '') ?>
 		}
 	</style>
 </head>
