@@ -144,6 +144,14 @@ html,body {
 .topmenu1 .navbar-brand {
 	color: #fff;
 }
+.topmenu1 .navbar-logo {
+	color: #fff;
+	float: left;
+	font-size: 18px;
+	line-height: 20px;
+	padding: 12px 15px;
+	width: 300px;
+}
 
 .topmenu2 .nav-apps .subs > a::after
 {
@@ -190,19 +198,6 @@ html,body {
 
 .topmenu .navbar .navbar-text {
     float: left;
-}
-
-.topmenu .navbar-brand {
-	color: #fff;
-}
-
-.topmenu .navbar-logo {
-	color: #fff;
-	float: left;
-	font-size: 18px;
-	line-height: 20px;
-	padding: 12px 15px;
-	width: 300px;
 }
 
 /* desktop */
