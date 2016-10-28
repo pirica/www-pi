@@ -4,7 +4,7 @@
 	<ul class="nav nav-tabs">
 		<li class="dropdown pull-right">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="fa fa-user"></i>
+				<i class="fa fa-user theme"></i>
 				<span class="user">(Not logged in) </span>
 				<span class="caret"></span>
 			</a>

@@ -18,7 +18,11 @@ if(!isset($_GET['oldmenu'])) {
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Wikke.net</a>
+			<a class="navbar-logo" href="#">
+				<img src="/_core/logo.php?bgcolor=222&color=<?= $app->getThemeColor() ?>&width=64" alt="" />
+				<span>Localdome</span>
+			</a>
+			<a class="navbar-brand" href="#"><?= $app->getName() ?></a>
 		</div>
 		
 		<?php
@@ -28,7 +32,7 @@ if(!isset($_GET['oldmenu'])) {
 			<ul class="nav navbar-nav nav-user pull-right">
 				<li class="dropdown pull-right">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="fa fa-user"></i>
+						<i class="fa fa-user theme"></i>
 						<span class="user"><?= $_SESSION['username_safe'] ?></span>
 						<span class="caret"></span>
 					</a>
@@ -48,7 +52,7 @@ if(!isset($_GET['oldmenu'])) {
 			<ul class="nav navbar-nav nav-user pull-right">
 				<li class="dropdown pull-right">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="fa fa-user"></i>
+						<i class="fa fa-user theme"></i>
 						<span class="user">(Not logged in) </span>
 						<span class="caret"></span>
 					</a>

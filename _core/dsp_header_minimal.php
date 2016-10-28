@@ -78,6 +78,13 @@
 		}
 		
 	?>
+	
+	<style type="text/css">
+		.theme
+		{
+			<?= ($app->getThemeColor() != 'color: #' . $app->getThemeColor() . ';' ? '') ?>
+		}
+	</style>
 </head>
 <body>
 	

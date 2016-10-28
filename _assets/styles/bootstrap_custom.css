@@ -72,7 +72,7 @@ html,body {
 
 .topmenu1 .navbar
 {
-	padding-left: 320px;
+	padding-left: 10px;
 }
 
 .topmenu2 .nav-apps
@@ -196,6 +196,14 @@ html,body {
 	color: #fff;
 }
 
+.topmenu .navbar-logo {
+	color: #fff;
+	float: left;
+	font-size: 18px;
+	line-height: 20px;
+	padding: 12px 15px;
+	width: 300px;
+}
 
 /* desktop */
 @media (min-width: 1000px)

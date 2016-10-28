@@ -9,6 +9,7 @@ class App
 	protected $_info;
 	protected $_title;
 	protected $_mode;
+	protected $_theme_color;
 	
 	private $_db;
 	protected $_baseurl;
@@ -82,6 +83,12 @@ class App
 		return $this->_baseurl;
 	}
 	
+	
+	public function getThemeColor() {
+		return $this->_theme_color;
+	}
+	
+	
 	public function getMenuData() {
 		if(count($this->_menudata) == 0){
 			$qry_apps = $this->_db->prepare("
@@ -93,6 +100,7 @@ class App
 					a.show_in_overview,
 					a.show_in_topmenu,
 					a.login_required,
+					a.theme_color,
 					
 					case when ? = a.relative_url then 1 else 0 end as is_current,
                     
@@ -122,6 +130,7 @@ class App
 				$show_in_overview,
 				$show_in_topmenu,
 				$login_required,
+				$theme_color,
 				$is_current,
                 $id_menu,
                 $menu_code,
@@ -137,6 +146,7 @@ class App
 					'show_in_overview' => $show_in_overview,
 					'show_in_topmenu' => $show_in_topmenu,
 					'login_required' => $login_required,
+					'theme_color' => $theme_color,
 					'is_current' => $is_current,
                     'id_menu' => $id_menu,
                     'menu_code' => $menu_code,
@@ -161,6 +171,7 @@ class App
 					$this->_id = $id_app;
 					$this->_name = $description;
 					$this->_info = $info;
+					$this->_theme_color = $theme_color;
 					
 					$this->_menudatasubs[count($this->_menudatasubs)-1]['is_current'] = 1;
 				}

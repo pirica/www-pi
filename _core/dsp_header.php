@@ -86,6 +86,13 @@
 			echo '<script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>';
 		}
 	?>
+	
+	<style type="text/css">
+		.theme
+		{
+			<?= ($app->getThemeColor() != 'color: #' . $app->getThemeColor() . ' !important;' ? '') ?>
+		}
+	</style>
 </head>
 <body>
 	
