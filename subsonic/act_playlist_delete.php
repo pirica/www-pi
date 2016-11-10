@@ -8,14 +8,14 @@ if($playlistId > 0){
 	
 	$subsonic->deletePlaylist($playlistId);
 	
-	mysql_query("
+	mysqli_query($conn, "
 		delete from playlistEntries
 		where
 			playlistId = " . $playlistId . "
 			;
 		");
 	
-	mysql_query("
+	mysqli_query($conn, "
 		delete from playlists
 		where
 			id = " . $playlistId . "

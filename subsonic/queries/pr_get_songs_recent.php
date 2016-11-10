@@ -1,6 +1,6 @@
 <?php
 	
-$qry_songs = mysql_query("
+$qry_songs = mysqli_query($conn, "
 	
 	select
 		s.id as songId,
@@ -43,6 +43,6 @@ $qry_songs = mysql_query("
 		
 	limit " . $perpage . " offset " . $offset . "
 		
-	", $conn);
+	");
 	
 ?>

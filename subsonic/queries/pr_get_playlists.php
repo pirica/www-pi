@@ -1,6 +1,6 @@
 <?php
 	
-$qry_playlists = mysql_query("
+$qry_playlists = mysqli_query($conn, "
 	
 	select
 		p.id,
@@ -17,6 +17,6 @@ $qry_playlists = mysql_query("
 	order by
 		p.name
 		
-	", $conn);
+	");
 	
 ?>

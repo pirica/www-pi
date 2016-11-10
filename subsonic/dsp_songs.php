@@ -47,7 +47,7 @@ include 'dsp_songs_pager.php';
 		
 		<tbody>
 		<?php 
-		while($song = mysql_fetch_array($qry_songs)){
+		while($song = mysqli_fetch_array($qry_songs)){
 			
 			?>
 			<tr>

@@ -13,7 +13,7 @@ if($playlist_description != ''){
 	$c_playlists = count($playlists);
 	
 	for($pi=0; $pi<$c_playlists; $pi++){
-		mysql_query("
+		mysqli_query($conn, "
 			replace into playlists
 			(
 				id,
@@ -29,13 +29,13 @@ if($playlist_description != ''){
 			values 
 			(
 				" . $playlists[$pi]->id . ",
-				'" . mysql_real_escape_string($playlists[$pi]->name) . "',
-				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
-				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
+				'" . mysqli_real_escape_string($conn, $playlists[$pi]->name) . "',
+				'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
+				'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
 				" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
 				" . $playlists[$pi]->songCount . ",
 				" . $playlists[$pi]->duration . ",
-				'" . mysql_real_escape_string($playlists[$pi]->created) . "',
+				'" . mysqli_real_escape_string($conn, $playlists[$pi]->created) . "',
 				1
 			)
 			");

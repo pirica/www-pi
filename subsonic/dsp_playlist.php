@@ -15,7 +15,7 @@
 	
 	<tbody>
 	<?php 
-	while($entries = mysql_fetch_array($qry_playlist_entries)){
+	while($entries = mysqli_fetch_array($qry_playlist_entries)){
 		
 		?>
 		<tr>

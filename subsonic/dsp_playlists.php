@@ -35,7 +35,7 @@ if(!$for_action){
 	
 	<tbody>
 	<?php 
-	while($playlist = mysql_fetch_array($qry_playlists)){
+	while($playlist = mysqli_fetch_array($qry_playlists)){
 		
 		?>
 		<tr>

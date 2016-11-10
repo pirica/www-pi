@@ -1,7 +1,7 @@
 <?php
 
 if($search != ''){
-	$qry_songs_search_total = mysql_query("
+	$qry_songs_search_total = mysqli_query($conn, "
 		
 		select
 			count(s.id) as songcount
@@ -10,17 +10,17 @@ if($search != ''){
 		where
 			s.isVideo = 0
 			and (
-				ifnull(s.title,'') like '%" . mysql_real_escape_string($search) . "%'
-				or ifnull(s.album,'') like '%" . mysql_real_escape_string($search) . "%'
-				or ifnull(s.artist,'') like '%" . mysql_real_escape_string($search) . "%'
-				or ifnull(s.path,'') like '%" . mysql_real_escape_string($search) . "%'
-				or ifnull(s.filename,'') like '%" . mysql_real_escape_string($search) . "%'
-				or ifnull(s.relative_directory,'') like '%" . mysql_real_escape_string($search) . "%'
+				ifnull(s.title,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
+				or ifnull(s.album,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
+				or ifnull(s.artist,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
+				or ifnull(s.path,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
+				or ifnull(s.filename,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
+				or ifnull(s.relative_directory,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 			)
 		
-		", $conn);
+		");
 
-	$songs_total = mysql_fetch_array($qry_songs_search_total);
+	$songs_total = mysqli_fetch_array($qry_songs_search_total);
 }
 else {
 	$songs_total = array('songcount' => 0);

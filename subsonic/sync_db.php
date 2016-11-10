@@ -12,7 +12,7 @@ include 'act_init_subsonic.php';
 
 if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5){
 	/*
-	$qry_entries = mysql_query("
+	$qry_entries = mysqli_query($conn, "
 		select
 			id,
 			playlistId,
@@ -20,12 +20,12 @@ if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("
 		from playlistEntriesToRemove
 		");
 	
-	while($entry = mysql_fetch_array($qry_entries)){
+	while($entry = mysqli_fetch_array($qry_entries)){
 		$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
-		mysql_query("delete from playlistEntriesToRemove where id = " . $entry['id']);
+		mysqli_query($conn, "delete from playlistEntriesToRemove where id = " . $entry['id']);
 	}
 	*/
-	$qry_entries = mysql_query("
+	$qry_entries = mysqli_query($conn, "
 		select
 			id,
 			playlistId,
@@ -33,9 +33,9 @@ if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("
 		from playlistEntriesToAdd
 		");
 	
-	while($entry = mysql_fetch_array($qry_entries)){
+	while($entry = mysqli_fetch_array($qry_entries)){
 		$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
-		mysql_query("delete from playlistEntriesToAdd where id = " . $entry['id']);
+		mysqli_query($conn, "delete from playlistEntriesToAdd where id = " . $entry['id']);
 	}
 }
 
@@ -43,14 +43,14 @@ $playlists = $subsonic->getPlaylists();
 $c_playlists = count($playlists);
 
 if($c_playlists > 0){
-	mysql_query("delete from playlistEntries");
-	mysql_query("truncate table playlistEntries");
-	//mysql_query("truncate table playlists");
+	mysqli_query($conn, "delete from playlistEntries");
+	mysqli_query($conn, "truncate table playlistEntries");
+	//mysqli_query($conn, "truncate table playlists");
 	
-	mysql_query("update playlists set active = 2");
+	mysqli_query($conn, "update playlists set active = 2");
 	
 	for($pi=0; $pi<$c_playlists; $pi++){
-		mysql_query("
+		mysqli_query($conn, "
 			replace into playlists
 			(
 				id,
@@ -66,13 +66,13 @@ if($c_playlists > 0){
 			values 
 			(
 				" . $playlists[$pi]->id . ",
-				'" . mysql_real_escape_string($playlists[$pi]->name) . "',
-				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
-				'" . mysql_real_escape_string(property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
+				'" . mysqli_real_escape_string($conn, $playlists[$pi]->name) . "',
+				'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
+				'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
 				" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
 				" . $playlists[$pi]->songCount . ",
 				" . $playlists[$pi]->duration . ",
-				'" . mysql_real_escape_string($playlists[$pi]->created) . "',
+				'" . mysqli_real_escape_string($conn, $playlists[$pi]->created) . "',
 				1
 			)
 			");
@@ -82,7 +82,7 @@ if($c_playlists > 0){
 		$c_playlist_entries = count($playlist_entries);
 		
 		for($pei=0; $pei<$c_playlist_entries; $pei++){
-			mysql_query("
+			mysqli_query($conn, "
 				insert into playlistEntries
 				(
 					playlistId,
@@ -99,7 +99,7 @@ if($c_playlists > 0){
 		}
 	}
 	
-	mysql_query("update playlists set active = 0 where active = 2");
+	mysqli_query($conn, "update playlists set active = 0 where active = 2");
 	
 }
 
@@ -111,21 +111,21 @@ if setting "remove double entries"
 	ordered by first or last, by index desc
 		
 		$subsonic->updatePlaylistRemove($playlistId, $playlistSongIndex);
-		mysql_query("delete from playlistEntries where id = " . $entry['id']);
+		mysqli_query($conn, "delete from playlistEntries where id = " . $entry['id']);
 		
 
 */
 
 
-$qry_indexes = mysql_query("select count(*) as indexcount from indexes");
-$indexes = mysql_fetch_array($qry_indexes);
+$qry_indexes = mysqli_query($conn, "select count(*) as indexcount from indexes");
+$indexes = mysqli_fetch_array($qry_indexes);
 
 if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 
-	mysql_query("truncate table indexes");
-	//mysql_query("truncate table songs");
+	mysqli_query($conn, "truncate table indexes");
+	//mysqli_query($conn, "truncate table songs");
 	
-	mysql_query("update songs set active = 2");
+	mysqli_query($conn, "update songs set active = 2");
 	
 	
 	$indexes = $subsonic->getIndexes();
@@ -137,7 +137,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 		
 		
 		for($iai=0; $iai<$c_indexes_artists; $iai++){
-			mysql_query("
+			mysqli_query($conn, "
 				insert into indexes
 				(
 					id,
@@ -148,7 +148,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				(
 					" . $indexes_artists[$iai]->id . ",
 					0,
-					'" . mysql_real_escape_string($indexes_artists[$iai]->name) . "'
+					'" . mysqli_real_escape_string($conn, $indexes_artists[$iai]->name) . "'
 				)
 				");
 			
@@ -158,7 +158,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 
 	$rowcount = 1;
 	while($rowcount > 0){
-		$qry_indexes = mysql_query("
+		$qry_indexes = mysqli_query($conn, "
 			select
 				id
 			from indexes
@@ -166,9 +166,9 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				checked = 0
 			");
 			
-		$rowcount = mysql_affected_rows($conn);
+		$rowcount = mysqli_affected_rows($conn);
 		
-		mysql_query("
+		mysqli_query($conn, "
 			update indexes
 			set
 				checked = 1
@@ -176,7 +176,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				checked = 0
 			");
 			
-		while($index = mysql_fetch_array($qry_indexes)){
+		while($index = mysqli_fetch_array($qry_indexes)){
 			
 			$music_directories = $subsonic->getMusicDirectory($index['id']);
 			$c_music_directories = count($music_directories);
@@ -184,7 +184,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			for($mdi=0; $mdi<$c_music_directories; $mdi++){
 				
 				if($music_directories[$mdi]->isDir){
-					mysql_query("
+					mysqli_query($conn, "
 						insert into indexes
 						(
 							id,
@@ -195,7 +195,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						(
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->title) . "'
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->title) . "'
 						)
 						");
 				}
@@ -204,7 +204,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 					$filename = array_pop($paths);
 					$relative_directory = '/' . implode('/', $paths) . '/';
 					
-					mysql_query("
+					mysqli_query($conn, "
 						insert into songs
 						(
 							id,
@@ -232,23 +232,23 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						select
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
 							" . (property_exists($music_directories[$mdi], 'track') ? $music_directories[$mdi]->track : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'year') ? $music_directories[$mdi]->year : '-1') . ",
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
 							" . (property_exists($music_directories[$mdi], 'size') ? $music_directories[$mdi]->size : '-1') . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->contentType) . "',
-							'" . mysql_real_escape_string($music_directories[$mdi]->suffix) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->contentType) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->suffix) . "',
 							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'bitRate') ? $music_directories[$mdi]->bitRate : '-1') . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->path) . "',
-							'" . mysql_real_escape_string($filename) . "',
-							'" . mysql_real_escape_string($relative_directory) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->path) . "',
+							'" . mysqli_real_escape_string($conn, $filename) . "',
+							'" . mysqli_real_escape_string($conn, $relative_directory) . "',
 							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
-							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->created) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->type) . "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
 							1
 						from songs s1
@@ -258,7 +258,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						
 						");
 						
-					mysql_query("
+					mysqli_query($conn, "
 						replace into songs
 						(
 							id,
@@ -291,23 +291,23 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 						select
 							" . $music_directories[$mdi]->id . ",
 							" . $music_directories[$mdi]->parent . ",
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'title') ? $music_directories[$mdi]->title : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'album') ? $music_directories[$mdi]->album : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'artist') ? $music_directories[$mdi]->artist : '') . "',
 							" . (property_exists($music_directories[$mdi], 'track') ? $music_directories[$mdi]->track : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'year') ? $music_directories[$mdi]->year : '-1') . ",
-							'" . mysql_real_escape_string(property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
+							'" . mysqli_real_escape_string($conn, property_exists($music_directories[$mdi], 'genre') ? $music_directories[$mdi]->genre : '') . "',
 							" . (property_exists($music_directories[$mdi], 'size') ? $music_directories[$mdi]->size : '-1') . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->contentType) . "',
-							'" . mysql_real_escape_string($music_directories[$mdi]->suffix) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->contentType) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->suffix) . "',
 							" . (property_exists($music_directories[$mdi], 'duration') ? $music_directories[$mdi]->duration : '-1') . ",
 							" . (property_exists($music_directories[$mdi], 'bitRate') ? $music_directories[$mdi]->bitRate : '-1') . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->path) . "',
-							'" . mysql_real_escape_string($filename) . "',
-							'" . mysql_real_escape_string($relative_directory) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->path) . "',
+							'" . mysqli_real_escape_string($conn, $filename) . "',
+							'" . mysqli_real_escape_string($conn, $relative_directory) . "',
 							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
-							'" . mysql_real_escape_string($music_directories[$mdi]->created) . "',
-							'" . mysql_real_escape_string($music_directories[$mdi]->type) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->created) . "',
+							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->type) . "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
 							1,
 							
@@ -327,9 +327,9 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 		}
 	}
 	
-	mysql_query("update songs set active = 0 where active = 2");
+	mysqli_query($conn, "update songs set active = 0 where active = 2");
 	
-	mysql_query("
+	mysqli_query($conn, "
 		update songs 
 		set
 			artist_custom = replace(
@@ -342,7 +342,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			#and ifnull(artist_custom,'') = '' 
 	");
 	
-	mysql_query("
+	mysqli_query($conn, "
 		update songs 
 		set
 			artist_custom = replace(
@@ -356,7 +356,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	");
 	
 	// insert/update artists
-	mysql_query("
+	mysqli_query($conn, "
 		insert into artists (description, songs)
 		select artist_custom, count(s.id) from songs s
 		left join artists a on a.description = s.artist_custom
@@ -367,8 +367,8 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	");
 	
 	// update nbr of songs per artist
-	mysql_query("update artists set songs = 0");
-	mysql_query("
+	mysqli_query($conn, "update artists set songs = 0");
+	mysqli_query($conn, "
 		update artists
 		set
 			songs = (
@@ -382,7 +382,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	if($settings->val('auto_delete_artists', 0) == 1)
 	{
 		// reactivate artists with any song (by setting)
-		mysql_query("
+		mysqli_query($conn, "
 			update artists
 			set
 				active = 1
@@ -392,7 +392,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			");
 			
 		// delete artists without any song (by setting)
-		mysql_query("
+		mysqli_query($conn, "
 			update artists
 			set
 				active = 0
@@ -407,7 +407,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	
 	
 	// insert/update genres
-	mysql_query("
+	mysqli_query($conn, "
 		insert into genres (description)
 		select distinct genre from songs s
 		left join genres g on g.description = s.genre
@@ -416,8 +416,8 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	");
 	
 	// update nbr of songs per genre
-	mysql_query("update genres set songs = 0");
-	mysql_query("
+	mysqli_query($conn, "update genres set songs = 0");
+	mysqli_query($conn, "
 		update genres
 		set
 			songs = (
@@ -431,7 +431,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 	if($settings->val('auto_delete_genres', 0) == 1)
 	{
 		// reactivate genres with any song (by setting)
-		mysql_query("
+		mysqli_query($conn, "
 			update genres
 			set
 				active = 1
@@ -441,7 +441,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 			");
 			
 		// delete genres without any song (by setting)
-		mysql_query("
+		mysqli_query($conn, "
 			update genres
 			set
 				active = 0
@@ -456,8 +456,8 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 
 
 /*
-$qry_users = mysql_query("select count(*) as usercount from users where active = 1");
-$users = mysql_fetch_array($qry_users);
+$qry_users = mysqli_query($conn, "select count(*) as usercount from users where active = 1");
+$users = mysqli_fetch_array($qry_users);
 
 if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
 */
@@ -466,9 +466,9 @@ if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic
 	$usernames = '';
 
 	for($ui=0; $ui<$c_users; $ui++){
-		$usernames .= ($usernames == '' ? '' : ',') . "'" . mysql_real_escape_string($users[$ui]->username) . "'"; 
+		$usernames .= ($usernames == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $users[$ui]->username) . "'"; 
 		
-		mysql_query("
+		mysqli_query($conn, "
 			replace into users
 			(
 				username,
@@ -478,23 +478,23 @@ if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic
 			)
 			values 
 			(
-				'" . mysql_real_escape_string($users[$ui]->username) . "',
+				'" . mysqli_real_escape_string($conn, $users[$ui]->username) . "',
 				1,
 				
-				'" . (property_exists($users[$ui], 'email') ? mysql_real_escape_string($users[$ui]->email) : '') . "'
+				'" . (property_exists($users[$ui], 'email') ? mysqli_real_escape_string($conn, $users[$ui]->email) : '') . "'
 			)
 			");
 			
 	}
 
-	mysql_query("update users set active = 0 where username not in (" . $usernames . ") and active = 1");
+	mysqli_query($conn, "update users set active = 0 where username not in (" . $usernames . ") and active = 1");
 
 //}
 
 
 /*
 // update filerep
-mysql_query("
+mysqli_query($conn, "
 	update filerep.t_file
 	set
 		ss_on_playlist = 0
@@ -508,7 +508,7 @@ mysql_query("
 	set
 		f.ss_on_playlist = 1
 	;
-	", $conn);
+	");
 */
 
 
@@ -532,7 +532,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 {
 	
 	// check and create genre dirs
-	$qry_genres = mysql_query("
+	$qry_genres = mysqli_query($conn, "
 		select distinct
 			mg.description as genre
 		
@@ -545,7 +545,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 			or s.active = 0
 		");
 		
-	while($genre = mysql_fetch_array($qry_genres)){
+	while($genre = mysqli_fetch_array($qry_genres)){
 		/*
 		if active = 1 and export = 1
 			if file not exists
@@ -575,7 +575,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 	}
 		
 	// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
-	$qry_songs = mysql_query("
+	$qry_songs = mysqli_query($conn, "
 		select
 			s.id,
 			s.path,
@@ -594,7 +594,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 			or s.active = 0
 		");
 		
-	while($song = mysql_fetch_array($qry_songs)){
+	while($song = mysqli_fetch_array($qry_songs)){
 		/*
 		if active = 1 and export = 1
 			if file not exists
@@ -639,7 +639,7 @@ if($settings->val('export_songs', 0) == 1 && $is_dir)
 	}
 	
 	// unflag deleted
-	mysql_query("
+	mysqli_query($conn, "
 		update songs
 		set
 			export = 0

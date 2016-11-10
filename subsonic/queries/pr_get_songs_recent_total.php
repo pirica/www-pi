@@ -1,6 +1,6 @@
 <?php
 	
-$qry_songs_recent_total = mysql_query("
+$qry_songs_recent_total = mysqli_query($conn, "
 	
 	select
 		count(s.id) as songcount
@@ -9,8 +9,8 @@ $qry_songs_recent_total = mysql_query("
 	where
 		s.isVideo = 0
 	
-	", $conn);
+	");
 
-$songs_total = mysql_fetch_array($qry_songs_recent_total);
+$songs_total = mysqli_fetch_array($qry_songs_recent_total);
 
 ?>

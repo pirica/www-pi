@@ -15,7 +15,7 @@
 	</div>
 	
 	<?php
-	while($playlist = mysql_fetch_array($qry_playlists)){
+	while($playlist = mysqli_fetch_array($qry_playlists)){
 	?>
 		<div class="col-xs-4 col-md-2">
 			<div class="thumbnail">

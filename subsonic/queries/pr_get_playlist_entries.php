@@ -1,6 +1,6 @@
 <?php
 	
-$qry_playlist_entries = mysql_query("
+$qry_playlist_entries = mysqli_query($conn, "
 	
 	select
 		pe.id,
@@ -80,6 +80,6 @@ $qry_playlist_entries = mysql_query("
 	order by
 		label
 		
-	", $conn);
+	");
 	
 ?>

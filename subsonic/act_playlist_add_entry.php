@@ -12,13 +12,13 @@ if($playlistId > 0 && $songId != ''){
 		$subsonic->updatePlaylistAdd($playlistId, $songIds[$i]);
 	}
 	
-	mysql_query("delete from playlistEntries where playlistId = " . $playlistId);
+	mysqli_query($conn, "delete from playlistEntries where playlistId = " . $playlistId);
 	
 	$playlist_entries = $subsonic->getPlaylist( $playlistId );
 	$c_playlist_entries = count($playlist_entries);
 	
 	for($pei=0; $pei<$c_playlist_entries; $pei++){
-		mysql_query("
+		mysqli_query($conn, "
 			insert into playlistEntries
 			(
 				playlistId,
@@ -38,7 +38,7 @@ if($playlistId > 0 && $songId != ''){
 	$songIds = explode(',', $songId);
 	
 	for($i=0; $i<count($songIds); $i++){
-		mysql_query("
+		mysqli_query($conn, "
 			insert into playlistEntriesToAdd
 			(
 				playlistId,
