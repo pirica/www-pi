@@ -1,6 +1,6 @@
 <?php
 	
-$qry_camera_log = mysql_query("
+$qry_camera_log = mysqli_query($conn, "
 	
 	select
 		cl.id_camera_log_archive,

@@ -1,6 +1,6 @@
 <?php
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	insert into t_camera_log_archive
 	(
@@ -27,7 +27,7 @@ mysql_query("
 		
 	");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	delete from t_camera_log
 	where

@@ -8,7 +8,7 @@ require 'functions.php';
 
 require dirname(__FILE__).'/../_core/components/images/GIFEncoder.class.php';
 
-$qry_camera_log = mysql_query("
+$qry_camera_log = mysqli_query($conn, "
 		
 		select
 			cl.id_camera_log,
@@ -41,7 +41,7 @@ $thumbWidth = 320;
 
 $gifname = '';
 
-while($camera_log = mysql_fetch_array($qry_camera_log)){
+while($camera_log = mysqli_fetch_array($qry_camera_log)){
 	$extarr = explode('.', $camera_log['name']);
 	$extension = '.' . $extarr[count($extarr) - 1];
 	

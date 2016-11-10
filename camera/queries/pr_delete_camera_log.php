@@ -1,6 +1,6 @@
 <?php
 
-mysql_query("
+mysqli_query($conn, "
 	
 	delete from t_camera_log
 	where

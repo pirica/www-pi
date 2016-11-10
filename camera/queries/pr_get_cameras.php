@@ -1,6 +1,6 @@
 <?php
 	
-$qry_cameras = mysql_query("
+$qry_cameras = mysqli_query($conn, "
 	
 	select
 		c.id_camera,

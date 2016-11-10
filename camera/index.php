@@ -61,7 +61,7 @@ switch($action->getCode()){
 		include 'queries/pr_get_camera_log.php';
 		//include 'act_view.php';
 		
-		while($camera_log = mysql_fetch_array($qry_camera_log)){
+		while($camera_log = mysqli_fetch_array($qry_camera_log)){
 			if($camera_log['date'] == $date && ($time == 'all' || $camera_log['hour_lbl'] == $time)){
 				if (!is_dir($archive_dir . $date)) {
 					mkdir($archive_dir . $date, 0777);
@@ -80,7 +80,7 @@ switch($action->getCode()){
 		include 'queries/pr_get_camera_log.php';
 		//include 'act_view.php';
 		
-		while($camera_log = mysql_fetch_array($qry_camera_log)){
+		while($camera_log = mysqli_fetch_array($qry_camera_log)){
 			if($camera_log['date'] == $date && ($time == 'all' || $camera_log['hour_lbl'] == $time)){
 				// delete files
 				unlink($main_dir . $date . $camera_log['name']);

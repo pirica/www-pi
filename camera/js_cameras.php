@@ -1,6 +1,6 @@
 <?php
 $result = [];
-while($cam = mysql_fetch_array($qry_cameras)){ 
+while($cam = mysqli_fetch_array($qry_cameras)){ 
 	
 	$result[] = array(
 		'id_camera' => $cam['id_camera'],

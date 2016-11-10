@@ -1,6 +1,6 @@
 <?php
 	
-$qry_camera_log_menu = mysql_query("
+$qry_camera_log_menu = mysqli_query($conn, "
 	
 	select
 		cm.date,
@@ -18,7 +18,7 @@ $qry_camera_log_menu = mysql_query("
 	
 $camera_log_menu_data = [];
 
-while($camera_log_menu = mysql_fetch_array($qry_camera_log_menu)){
+while($camera_log_menu = mysqli_fetch_array($qry_camera_log_menu)){
 	$camera_log_menu_data[$camera_log_menu['date']][] = $camera_log_menu;
 }
 	

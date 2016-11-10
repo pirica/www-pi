@@ -19,7 +19,7 @@ shell_exec ('sudo chmod 777 -R "' . $main_dir . date('Ymd', time() - (60*60*24))
 shell_exec ('sudo chown nobody:nogroup -R "' . $main_dir . date('Ymd') . '"');
 shell_exec ('sudo chmod 777 -R "' . $main_dir . date('Ymd') . '"');
 	
-$qry_camera_log_del = mysql_query("
+$qry_camera_log_del = mysqli_query($conn, "
 	
 	select
 		cl.date
@@ -33,19 +33,19 @@ $qry_camera_log_del = mysql_query("
 		
 	");
 	
-while($logdel = mysql_fetch_array($qry_camera_log_del)){
+while($logdel = mysqli_fetch_array($qry_camera_log_del)){
 	shell_exec('rm -R ' . $main_dir . $logdel['date']);
 	shell_exec('rm -R ' . $thumbs_dir . $logdel['date']);
 }
 
-mysql_query("
+mysqli_query($conn, "
 	delete
 	from t_camera_log
 	where
 		date < date_format(now() - interval " . $settings->val('captures_days_kept', 30) . " day, '%Y%m%d')
 	");
 	
-mysql_query("
+mysqli_query($conn, "
 	delete
 	from t_camera_menu
 	where
@@ -54,7 +54,7 @@ mysql_query("
 
 // clear complete table at 3 AM
 /*if(date("H", $crondate) == 3 && date("i", $crondate) < 10){
-	mysql_query("truncate table t_camera_log", $conn);
+	mysqli_query($conn, "truncate table t_camera_log", $conn);
 }*/
 
 $dirs = [date('Ymd', time() - (60*60*24)), date('Ymd')];
@@ -84,7 +84,7 @@ sort($dirs);
 $tmpfiles = [];
 //$filecount = 0;
 
-mysql_query("
+mysqli_query($conn, "
 	update t_camera_log
 	set status = 2
 	where
@@ -159,20 +159,20 @@ for ($d = 0; $d < $dircount; $d++) {
 					$querydata .= ($querydata == '' ? '' : ',');
 					$querydata .= "
 						(
-							'".mysql_real_escape_string($dirs[$d])."',
-							'".mysql_real_escape_string($hour_lbl)."',
-							'".mysql_real_escape_string($prev_time_lbl)."',
+							'".mysqli_real_escape_string($conn, $dirs[$d])."',
+							'".mysqli_real_escape_string($conn, $hour_lbl)."',
+							'".mysqli_real_escape_string($conn, $prev_time_lbl)."',
 							".$timeval.",
 							".$timeval_gif.",
-							'".mysql_real_escape_string($tmpfiles[$i])."',
+							'".mysqli_real_escape_string($conn, $tmpfiles[$i])."',
 							1,
-							'".mysql_real_escape_string($camera)."'
+							'".mysqli_real_escape_string($conn, $camera)."'
 						)
 						";
 					
 					if($i > 0 && $i % 100 == 0){
 							
-						mysql_query("
+						mysqli_query($conn, "
 							insert into t_camera_log
 							(
 								date,
@@ -186,7 +186,7 @@ for ($d = 0; $d < $dircount; $d++) {
 							)
 							values
 							" . $querydata . "
-							", $conn);
+							");
 						
 						$querydata = '';
 					}
@@ -236,7 +236,7 @@ for ($d = 0; $d < $dircount; $d++) {
 			}
 			
 			if($querydata != ''){
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_camera_log
 					(
 						date,
@@ -250,14 +250,14 @@ for ($d = 0; $d < $dircount; $d++) {
 					)
 					values
 					" . $querydata . "
-					", $conn);
+					");
 			}
 			
 		}
 	}
 }
 
-mysql_query("
+mysqli_query($conn, "
 	replace into t_camera_menu
 	(
 		date_hour_lbl,
@@ -285,11 +285,11 @@ mysql_query("
 		cl.date,
 		cl.hour_lbl
 
-	", $conn);
+	");
 
 
-mysql_query("delete from t_camera_log where status = 2", $conn);
-mysql_query("update t_camera_log set status = 0 where status = 1", $conn);
+mysqli_query($conn, "delete from t_camera_log where status = 2");
+mysqli_query($conn, "update t_camera_log set status = 0 where status = 1");
 
 shell_exec ('sudo chown nobody:nogroup -R "' . $thumbs_dir . date('Ymd') . '"');
 shell_exec ('sudo chmod 777 -R "' . $thumbs_dir . date('Ymd') . '"');

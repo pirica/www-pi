@@ -1,6 +1,6 @@
 <?php
 
-mysql_query("
+mysqli_query($conn, "
 	update t_app_action_data
 	set
 		active = 2
@@ -9,7 +9,7 @@ mysql_query("
 		and code = 'camera'
 	");
 
-mysql_query("
+mysqli_query($conn, "
 	SET @rank=0;
 
 	replace into t_app_action_data
@@ -65,7 +65,7 @@ mysql_query("
 		
 	");
 	
-mysql_query("
+mysqli_query($conn, "
 	update t_app_action_data
 	set
 		active = 0

@@ -5,7 +5,7 @@ $cameracount = 0;
 
 $camera = [];
 
-while($cam = mysql_fetch_array($qry_cameras)){ 
+while($cam = mysqli_fetch_array($qry_cameras)){ 
 	if($cam['id_camera'] == $id_camera){
 		$camera = $cam;
 		

@@ -39,7 +39,7 @@
 			$prev_hour_lbl = '';
 			$prev_time_value = -1;
 			$prev_image = '';
-			while($camera_log = mysql_fetch_array($qry_camera_log)){
+			while($camera_log = mysqli_fetch_array($qry_camera_log)){
 				if($prev_hour_lbl != $camera_log['hour_lbl']){
 					echo '<h4>' . $camera_log['hour_lbl'] . '</h4>';
 					echo '<p>';
