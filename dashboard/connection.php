@@ -9,7 +9,6 @@ require '/etc/mysql/conf.php';
 $main_dir = '/media/usbdrive2/motion/';
 $archive_dir = '/media/usbdrive2/motion_archive/';
 
-$conn = mysql_connect($mysql_host, $mysql_user, $mysql_pw) ;//or die("Unable to connect to MySQL");
-mysql_select_db($mysql_dbn, $conn) ;//or die("Could not select examples");
+$conn = mysqli_connect($mysql_host, $mysql_user, $mysql_pw, $mysql_dbn) ;//or die("Unable to connect to MySQL");
 
 ?>
