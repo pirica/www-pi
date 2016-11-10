@@ -33,7 +33,7 @@
 	
 	<tbody>
 	<?php 
-	while($grab = mysql_fetch_array($qry_grabs)){ 
+	while($grab = mysqli_fetch_array($qry_grabs)){ 
 		
 		$files_ok = $grab['files_done'] + $grab['files_notfound'] + $grab['files_empty'] + $grab['files_excluded'];
 		$files_fx = $grab['files_exist'];

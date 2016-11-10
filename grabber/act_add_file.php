@@ -74,7 +74,7 @@ $grab_full_path = $grab_path . $grab_filename;
 
 
 if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_grab_file
 		(
 			id_grab,
@@ -86,26 +86,26 @@ if($id_grab > 0 && $grab_url != '' && $grab_full_path != ''){
 		values
 		(
 			" . $id_grab . ",
-			'" . mysql_real_escape_string($grab_url) . "',
-			'" . mysql_real_escape_string($grab_referer) . "',
-			'" . mysql_real_escape_string($grab_full_path) . "',
-			'" . mysql_real_escape_string($grab_type) . "'
+			'" . mysqli_real_escape_string($conn, $grab_url) . "',
+			'" . mysqli_real_escape_string($conn, $grab_referer) . "',
+			'" . mysqli_real_escape_string($conn, $grab_full_path) . "',
+			'" . mysqli_real_escape_string($conn, $grab_type) . "'
 		)
-		", $conn);
+		");
 		
-		$id_grab_file = mysql_insert_id($conn);
+		$id_grab_file = mysqli_insert_id($conn);
 		
 	if($grab_filename == ''){
 		
 		$grab_full_path = $grab_path . 'download_' . $id_grab_file . '.tmp';
 		
-		mysql_query("
+		mysqli_query($conn, "
 			update t_grab_file
 			set
-				full_path = '" . mysql_real_escape_string($grab_full_path) . "'
+				full_path = '" . mysqli_real_escape_string($conn, $grab_full_path) . "'
 			where
 				id_grab_file = " . $id_grab_file . "
-			", $conn);
+			");
 	}
 }
 ?>

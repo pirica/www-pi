@@ -63,19 +63,19 @@ if(substr($grab_path, -1, 1) != '/'){
 
 
 if($id_grab > 0){
-	mysql_query("
+	mysqli_query($conn, "
 		update t_grab
 		set
-			description = '" . mysql_real_escape_string($grab_description) . "',
-			url = '" . mysql_real_escape_string($grab_url) . "',
-			path = '" . mysql_real_escape_string($grab_path) . "',
-			filename = '" . mysql_real_escape_string($grab_filename) . "',
+			description = '" . mysqli_real_escape_string($conn, $grab_description) . "',
+			url = '" . mysqli_real_escape_string($conn, $grab_url) . "',
+			path = '" . mysqli_real_escape_string($conn, $grab_path) . "',
+			filename = '" . mysqli_real_escape_string($conn, $grab_filename) . "',
 			
 			max_grabbers = " . $grab_max_grabbers . ",
-			excluded = '" . mysql_real_escape_string($grab_excluded) . "',
+			excluded = '" . mysqli_real_escape_string($conn, $grab_excluded) . "',
 			excluded_size = " . $grab_excluded_size . ",
 			always_retry = " . $grab_always_retry . ",
-			script_completion = '" . mysql_real_escape_string($grab_script_completion) . "',
+			script_completion = '" . mysqli_real_escape_string($conn, $grab_script_completion) . "',
 			remove_completed_after_days = " . $grab_remove_completed_after_days . ",
 			remove_inactive_after_months = " . $grab_remove_inactive_after_months . ",
 			keep_diskspace_free = " . $grab_keep_diskspace_free . ",
@@ -84,10 +84,10 @@ if($id_grab > 0){
 		where
 			id_grab = " . $id_grab . "
 			and id_user = " . $_SESSION['user_id'] . "
-		", $conn);
+		");
 }
 else {
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_grab
 		(
 			id_user,
@@ -109,21 +109,21 @@ else {
 		values
 		(
 			" . $_SESSION['user_id'] . ",
-			'" . mysql_real_escape_string($grab_description) . "',
-			'" . mysql_real_escape_string($grab_url) . "',
-			'" . mysql_real_escape_string($grab_path) . "',
-			'" . mysql_real_escape_string($grab_filename) . "',
+			'" . mysqli_real_escape_string($conn, $grab_description) . "',
+			'" . mysqli_real_escape_string($conn, $grab_url) . "',
+			'" . mysqli_real_escape_string($conn, $grab_path) . "',
+			'" . mysqli_real_escape_string($conn, $grab_filename) . "',
 			
 			" . $grab_max_grabbers . ",
-			'" . mysql_real_escape_string($grab_excluded) . "',
+			'" . mysqli_real_escape_string($conn, $grab_excluded) . "',
 			" . $grab_excluded_size . ",
 			" . $grab_always_retry . ",
-			'" . mysql_real_escape_string($grab_script_completion) . "',
+			'" . mysqli_real_escape_string($conn, $grab_script_completion) . "',
 			" . $grab_remove_completed_after_days . ",
 			" . $grab_remove_inactive_after_months . ",
 			" . $grab_keep_diskspace_free . ",
 			" . $grab_scheduled . "
 		)
-		", $conn);
+		");
 }
 ?>

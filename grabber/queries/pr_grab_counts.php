@@ -1,6 +1,6 @@
 <?php
 	
-$qry_grab_counts = mysql_query("
+$qry_grab_counts = mysqli_query($conn, "
 	
 	select
 		gc.id_grab_counter,
@@ -30,6 +30,6 @@ $qry_grab_counts = mysql_query("
 	order by
 		ifnull(gc.sort_order, gc.id_grab_counter)
 	
-	", $conn);
+	");
 	
 ?>

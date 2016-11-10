@@ -11,7 +11,7 @@ $file = saneInput('file');
 if($url != '' && $grab != '' && $file != ''){
 	
 	
-	$qry_grabs = mysql_query("
+	$qry_grabs = mysqli_query($conn, "
 		select
 			g.id_grab,
 			g.path,
@@ -24,14 +24,14 @@ if($url != '' && $grab != '' && $file != ''){
 			g.active = 1
 			and g.description like '" . $grab . "'
 			
-		", $conn);
+		");
 
-	while ($grabs = mysql_fetch_array($qry_grabs)) {
+	while ($grabs = mysqli_fetch_array($qry_grabs)) {
 		if($grabs['id_grab_file'] > 0){
 			echo 'exists:' . $grabs['status'];
 		}
 		else {
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_grab_file
 				(
 					id_grab,

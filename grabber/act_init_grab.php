@@ -24,7 +24,7 @@ $grab_files_todo = 0;
 $grab_eta = '';
 $grab_eta_rounded = '';
 		
-while($grab = mysql_fetch_array($qry_grabs)){
+while($grab = mysqli_fetch_array($qry_grabs)){
 	if($grab['id_grab'] == $id_grab){
 		$grab_description = $grab['description'];
 		$grab_url = $grab['url'];

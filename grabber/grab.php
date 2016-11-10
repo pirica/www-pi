@@ -7,7 +7,7 @@ include 'functions.php';
 
 
 
-$qry_grabs = mysql_query("
+$qry_grabs = mysqli_query($conn, "
 	
 	select
 		g.id_grab,
@@ -84,15 +84,15 @@ $qry_grabs = mysql_query("
 		)
 		
 	
-	", $conn);
+	");
 	
-while ($grabs = mysql_fetch_array($qry_grabs)) {
+while ($grabs = mysqli_fetch_array($qry_grabs)) {
 	
 	echo "Grab " . $grabs['description'] . " (ID:" .  $grabs['id_grab'] . ")<br>\n";
 	echo " -> started on " . date('Y-m-d H:i:s', time()) . "<br>\n";
 	
 	// mark as 'running'
-	mysql_query("update t_grab set running = 1 where id_grab = " . $grabs['id_grab'], $conn);
+	mysqli_query($conn, "update t_grab set running = 1 where id_grab = " . $grabs['id_grab']);
 	
 	
 	$disk_free_space = @disk_free_space($grabs['path']);
@@ -111,7 +111,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		$pct_free = $disk_free_space / $disk_total_space * 100;
 	}
 	
-	mysql_query("update t_grab set diskspace_free = " . $pct_free . " where id_grab = " . $grabs['id_grab'], $conn);
+	mysqli_query($conn, "update t_grab set diskspace_free = " . $pct_free . " where id_grab = " . $grabs['id_grab']);
 	
 	// not enough disk space
 	if($disk_total_space > 0 && $pct_free <= $grabs['keep_diskspace_free']){
@@ -127,7 +127,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		}
 		
 		// get batch of files
-		$qry_grab_files = mysql_query("
+		$qry_grab_files = mysqli_query($conn, "
 			
 			select
 				gf.id_grab_file,
@@ -157,14 +157,14 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 			
 			limit 0, " . $grabs['max_grabbers'] . "
 			
-			", $conn);
+			");
 		
 		// completed
-		if(mysql_num_rows($qry_grab_files) == 0){
+		if(mysqli_num_rows($qry_grab_files) == 0){
 			// if now completed (date = null)
 			if($grabs['date_completed'] === NULL){
 				// update when completed
-				mysql_query("update t_grab set date_completed = now() where id_grab = " . $grabs['id_grab'], $conn);
+				mysqli_query("update t_grab set date_completed = now() where id_grab = " . $grabs['id_grab'], $conn);
 				
 				if($grabs['script_completion'] != ''){
 					// and execute any scripts on completion
@@ -189,16 +189,16 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		else {
 			if($grabs['date_completed'] !== NULL){
 				// clear completed
-				mysql_query("update t_grab set date_completed = NULL where id_grab = " . $grabs['id_grab'], $conn);
+				mysqli_query($conn, "update t_grab set date_completed = NULL where id_grab = " . $grabs['id_grab']);
 			}
 			
-			while ($grabfile = mysql_fetch_array($qry_grab_files)) {
+			while ($grabfile = mysqli_fetch_array($qry_grab_files)) {
 
 				$status = '';
 				$status_info = '';
 				
 				// update in db  -- 'OK', 'NF', 'TO', 'FE', 'FX', E, P	-- ok, not found, timeout, file empty, file exists, error, processing
-				mysql_query("
+				mysqli_query($conn, "
 					
 					update t_grab_file
 					set
@@ -209,7 +209,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 					where
 						id_grab_file = " . $grabfile['id_grab_file'] . "
 					
-				", $conn);
+				");
 				
 				// check if file exists - don't need to download twice
 				if(!file_exists($grabfile['full_path'])){
@@ -327,26 +327,26 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 					}
 					
 					// update in db  -- 'OK', 'NF', 'TO', 'FE', 'FX', E, P, X	-- ok, not found, timeout, file empty, file exists, error, processing, excluded
-					mysql_query("
+					mysqli_query($conn, "
 						
 						update t_grab_file
 						set
-							status = '" . mysql_real_escape_string($status) . "',
-							status_info = '" . mysql_real_escape_string($status_info) . "',
+							status = '" . mysqli_real_escape_string($conn, $status) . "',
+							status_info = '" . mysqli_real_escape_string($conn, $status_info) . "',
 							date_modified = now(),
 							filesize = " . $filesize . "
 							
 						where
 							id_grab_file = " . $grabfile['id_grab_file'] . "
 						
-						", $conn);
+						");
 					
 				}
 				else {
 					echo "File exists: " . $grabfile['full_path'] . "<br>\n";
 					
 					// update in db  -- 'OK', 'NF', 'TO', 'FE', 'FX', E, P, X	-- ok, not found, timeout, file empty, file exists, error, processing, excluded
-					mysql_query("
+					mysqli_query($conn, "
 						
 						update t_grab_file
 						set
@@ -357,7 +357,7 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 						where
 							id_grab_file = " . $grabfile['id_grab_file'] . "
 						
-						", $conn);
+						");
 					
 				}
 				
@@ -371,7 +371,7 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 	
 	// remove completed
 	if($grabs['remove_completed_after_days'] > -1){
-		mysql_query("
+		mysqli_query($conn, "
 			update t_grab_file
 			set
 				active = 0,
@@ -383,12 +383,12 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 				and ifnull(status,'') not in ('', 'N', 'P')
 				and ifnull(date_modified, '1970-01-01') < (now() - interval " . $grabs['remove_completed_after_days'] . " day)
 				
-			", $conn);
+			");
 	}
 	
 	// delete inactive
 	if($grabs['remove_inactive_after_months'] > -1){
-		mysql_query("
+		mysqli_query($conn, "
 			delete from t_grab_file
 			where
 				id_grab = " . $grabs['id_grab'] . "
@@ -396,11 +396,11 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 				and ifnull(status,'') not in ('', 'N', 'P')
 				and ifnull(date_deleted, '1970-01-01') < (now() - interval " . $grabs['remove_inactive_after_months'] . " month)
 				
-			", $conn);
+			");
 	}
 	
 	// unmark as 'running'
-	mysql_query("update t_grab set running = 0, date_last_run = now() where id_grab = " . $grabs['id_grab'], $conn);
+	mysqli_query($conn, "update t_grab set running = 0, date_last_run = now() where id_grab = " . $grabs['id_grab']);
 	
 	
 	echo " -> completed on " . date('Y-m-d H:i:s', time()) . "<br>\n";

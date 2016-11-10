@@ -36,7 +36,7 @@
 	
 	<tbody>
 	<?php 
-	while($grabfile = mysql_fetch_array($qry_grab_files)){ 
+	while($grabfile = mysqli_fetch_array($qry_grab_files)){ 
 	?>
 		<tr>
 			<td><?=$grabfile['full_url'] ?></td>

@@ -181,7 +181,7 @@
 				
 				<tbody>
 				<?php 
-				while($grabcount = mysql_fetch_array($qry_grab_counts)){ 
+				while($grabcount = mysqli_fetch_array($qry_grab_counts)){ 
 				?>
 					<tr>
 						<td><?=$grabcount['id_grab_counter'] ?></td>

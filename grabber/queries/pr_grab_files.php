@@ -1,6 +1,6 @@
 <?php
 	
-$qry_grab_files = mysql_query("
+$qry_grab_files = mysqli_query($conn, "
 	
 	select
 		gf.id_grab_file,
@@ -16,11 +16,11 @@ $qry_grab_files = mysql_query("
 	from t_grab_file gf
 	where
 		gf.id_grab = " . $id_grab . "
-		and ifnull(gf.status,'') = " . ($status == '' || $status == '*' ? "ifnull(gf.status,'')" : "'" . mysql_real_escape_string($status) . "'") . "
+		and ifnull(gf.status,'') = " . ($status == '' || $status == '*' ? "ifnull(gf.status,'')" : "'" . mysqli_real_escape_string($conn, $status) . "'") . "
 		and (
-			gf.full_url like '%" . mysql_real_escape_string($search) . "%'
+			gf.full_url like '%" . mysqli_real_escape_string($conn, $search) . "%'
 			or
-			gf.full_path like '%" . mysql_real_escape_string($search) . "%'
+			gf.full_path like '%" . mysqli_real_escape_string($conn, $search) . "%'
 		)
 		
 	order by
@@ -28,6 +28,6 @@ $qry_grab_files = mysql_query("
 	
 	limit " . $perpage . " offset " . $offset . "
 	
-	", $conn);
+	");
 	
 ?>

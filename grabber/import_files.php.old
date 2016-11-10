@@ -58,7 +58,7 @@ for($f = 0; $f < $filecount; $f++){
 				$valarr = explode('/', $line);
 				$valpath = $fulldir . '/' . $files[$f]['set'] . '/' . $valarr[count($valarr)-1];
 				
-				$qry_grabs = mysql_query("
+				$qry_grabs = mysqli_query($conn, "
 					select
 						g.id_grab,
 						ifnull(gf.id_grab_file,0) as id_grab_file
@@ -68,12 +68,12 @@ for($f = 0; $f < $filecount; $f++){
 						g.active = 1
 						and g.description like '%flickr%'
 						
-					", $conn);
+					");
 
-				$grabs = mysql_fetch_array($qry_grabs);
+				$grabs = mysqli_fetch_array($qry_grabs);
 				
 				if($grabs['id_grab_file'] <= 0){
-					mysql_query("
+					mysqli_query($conn, "
 						insert into t_grab_file
 						(
 							id_grab,
@@ -85,7 +85,7 @@ for($f = 0; $f < $filecount; $f++){
 							'" . $line . "',
 							'" . $valpath . "'
 						)
-						", $conn);
+						");
 					
 					$ins++;
 					

@@ -1,6 +1,6 @@
 <?php
 
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_grab
 	set
@@ -10,6 +10,6 @@ mysql_query("
 		id_grab = " . $id_grab . "
 		and id_user = " . $_SESSION['user_id'] . "
 	
-	", $conn);
+	");
 	
 ?>

@@ -43,14 +43,14 @@ if(isset($_POST['counter_listvalues'])){
 if($id_grab_counter > 0){
 	switch($counter_type){
 		case 'date':
-			mysql_query("
+			mysqli_query($conn, "
 				update t_grab_counter
 				set
-					type = '" . mysql_real_escape_string($counter_type) . "',
-					field = '" . mysql_real_escape_string($counter_field) . "',
+					type = '" . mysqli_real_escape_string($conn, $counter_type) . "',
+					field = '" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
-					datefrom = '" . mysql_real_escape_string($counter_datefrom) . "',
-					dateto = '" . mysql_real_escape_string($counter_dateto) . "',
+					datefrom = '" . mysqli_real_escape_string($conn, $counter_datefrom) . "',
+					dateto = '" . mysqli_real_escape_string($conn, $counter_dateto) . "',
 					
 					intfrom = null,
 					intto = null,
@@ -59,15 +59,15 @@ if($id_grab_counter > 0){
 					
 				where
 					id_grab_counter = " . $id_grab_counter . "
-				", $conn);
+				");
 			break;
 			
 		case 'int':
-			mysql_query("
+			mysqli_query($conn, "
 				update t_grab_counter
 				set
-					type = '" . mysql_real_escape_string($counter_type) . "',
-					field = '" . mysql_real_escape_string($counter_field) . "',
+					type = '" . mysqli_real_escape_string($conn, $counter_type) . "',
+					field = '" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
 					datefrom = null,
 					dateto = null,
@@ -79,15 +79,15 @@ if($id_grab_counter > 0){
 					
 				where
 					id_grab_counter = " . $id_grab_counter . "
-				", $conn);
+				");
 			break;
 			
 		case 'list':
-			mysql_query("
+			mysqli_query($conn, "
 				update t_grab_counter
 				set
-					type = '" . mysql_real_escape_string($counter_type) . "',
-					field = '" . mysql_real_escape_string($counter_field) . "',
+					type = '" . mysqli_real_escape_string($conn, $counter_type) . "',
+					field = '" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
 					datefrom = null,
 					dateto = null,
@@ -95,18 +95,18 @@ if($id_grab_counter > 0){
 					intfrom = null,
 					intto = null,
 					
-					listvalues = '" . mysql_real_escape_string($counter_listvalues) . "'
+					listvalues = '" . mysqli_real_escape_string($conn, $counter_listvalues) . "'
 					
 				where
 					id_grab_counter = " . $id_grab_counter . "
-				", $conn);
+				");
 			break;
 	}
 }
 else {
 	switch($counter_type){
 		case 'date':
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_grab_counter
 				(
 					id_grab,
@@ -125,11 +125,11 @@ else {
 				values
 				(
 					" . $id_grab . ",
-					'" . mysql_real_escape_string($counter_type) . "',
-					'" . mysql_real_escape_string($counter_field) . "',
+					'" . mysqli_real_escape_string($conn, $counter_type) . "',
+					'" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
-					'" . mysql_real_escape_string($counter_datefrom) . "',
-					'" . mysql_real_escape_string($counter_dateto) . "',
+					'" . mysqli_real_escape_string($conn, $counter_datefrom) . "',
+					'" . mysqli_real_escape_string($conn, $counter_dateto) . "',
 					
 					null,
 					null,
@@ -137,11 +137,11 @@ else {
 					null
 					
 				)
-				", $conn);
+				");
 			break;
 			
 		case 'int':
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_grab_counter
 				(
 					id_grab,
@@ -160,8 +160,8 @@ else {
 				values
 				(
 					" . $id_grab . ",
-					'" . mysql_real_escape_string($counter_type) . "',
-					'" . mysql_real_escape_string($counter_field) . "',
+					'" . mysqli_real_escape_string($conn, $counter_type) . "',
+					'" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
 					null,
 					null,
@@ -172,11 +172,11 @@ else {
 					null
 					
 				)
-				", $conn);
+				");
 			break;
 			
 		case 'list':
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_grab_counter
 				(
 					id_grab,
@@ -195,8 +195,8 @@ else {
 				values
 				(
 					" . $id_grab . ",
-					'" . mysql_real_escape_string($counter_type) . "',
-					'" . mysql_real_escape_string($counter_field) . "',
+					'" . mysqli_real_escape_string($conn, $counter_type) . "',
+					'" . mysqli_real_escape_string($conn, $counter_field) . "',
 					
 					null,
 					null,
@@ -204,10 +204,10 @@ else {
 					null,
 					null,
 					
-					'" . mysql_real_escape_string($counter_listvalues) . "'
+					'" . mysqli_real_escape_string($conn, $counter_listvalues) . "'
 					
 				)
-				", $conn);
+				");
 			break;
 	}
 	

@@ -3,7 +3,7 @@ set_time_limit(3600);
 include 'connections.php';
 include 'functions.php';
 
-mysql_query("
+mysqli_query($conn, "
 	
 	insert into t_grab_file (id_grab, full_url, full_path) 
 	select 
@@ -22,11 +22,11 @@ mysql_query("
 		case when ff.url_original = 'null' then ff.url_large else ff.url_original end,  
 		concat(g.path, ff.imageset, '/', ff.filename)
 		
-	", $conn);
+	");
 	
-mysql_query("truncate table t_grab_file_temp", $conn);
+mysqli_query($conn, "truncate table t_grab_file_temp");
 	
-$qry_grabs = mysql_query("
+$qry_grabs = mysqli_query($conn, "
 	
 	select
 		g.id_grab,
@@ -40,19 +40,19 @@ $qry_grabs = mysql_query("
 		and g.enabled = 1
 		#and ifnull(g.files_building, 0) = 0
 		
-	", $conn);
+	");
 
-while ($grabs = mysql_fetch_array($qry_grabs)) {
+while ($grabs = mysqli_fetch_array($qry_grabs)) {
 	
 	echo 'Grab ' . $grabs['description'] . ' (ID:' .  $grabs['id_grab'] . ")\n";
 	echo ' -> started on ' . date('Y-m-d H:i:s', time()) . "\n";
 	
 	// mark as 'files building'
-	mysql_query("update t_grab set files_building = 1 where id_grab = " . $grabs['id_grab'] . "", $conn);
+	mysqli_query($conn, "update t_grab set files_building = 1 where id_grab = " . $grabs['id_grab'] . "");
 	
 	
 	// generate new file records
-	$qry_grab_counters = mysql_query("
+	$qry_grab_counters = mysqli_query($conn, "
 		
 		select
 			gc.id_grab_counter,
@@ -85,12 +85,12 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 		order by
 			ifnull(gc.sort_order, gc.id_grab_counter)
 			
-		", $conn);
+		");
 	
 	$grab_counters = [];
 	$files = [];
 	$totalcount = 1;
-	while ($grab_counter = mysql_fetch_array($qry_grab_counters)) {
+	while ($grab_counter = mysqli_fetch_array($qry_grab_counters)) {
 		$grab_counters[] = $grab_counter;
 		//if($grab_counters['count'] > 0){
 			$totalcount *= $grab_counter['count'];
@@ -138,59 +138,19 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 
 		$filecount = count($files);
 		
-		/*
-		$qry_grab_files = mysql_query("
-			
-			select
-				gf.full_url
-				
-			from t_grab_file gf
-			where
-				gf.id_grab = " . $grabs['id_grab'] . "
-				and gf.active = 1
-				
-			", $conn);
-		
-		while ($grab_files = mysql_fetch_array($qry_grab_files)) {
-			for($i=0; $i<$filecount; $i++){
-				
-				// url already exists
-				//if($grab_files['full_url'] == $files[$i]['full_url']){
-				if(str_replace('https://', 'http://', $grab_files['full_url']) == str_replace('https://', 'http://', $files[$i]['full_url'])){
-					// remove from files list 
-					//unset($files[$i]);
-					//$files = array_values($files);
-					$files[$i]['excluded'] = 1;
-					break;
-				}
-				
-			}
-			
-		}
-		*/
-
 		$insertcount = 0;
 		$qry_insert = '';
 		
 		// generate files
 		for($i=0; $i<$filecount; $i++){
-			//if($files[$i]['excluded'] == 0){
-				//if($qry_insert == ''){
-					$qry_insert = "insert into t_grab_file_temp (id_grab, full_url, full_path) values ";
-					$qry_insert .= "(" . $grabs['id_grab'] . ", '" . mysql_real_escape_string($files[$i]['full_url']) . "', '" . mysql_real_escape_string($files[$i]['full_path']) . "')";
-				/*}
-				else {
-					$qry_insert .= ",
-						(" . $grabs['id_grab'] . ", '" . mysql_real_escape_string($files[$i]['full_url']) . "', '" . mysql_real_escape_string($files[$i]['full_path']) . "')";
-				}*/
-				
-				$insertcount++;
-				
-				//if(($i % 100 == 1 || $i == $filecount - 1) && $qry_insert != ''){
-					mysql_query($qry_insert, $conn);
-					$qry_insert = '';
-				//}
-			//}
+			$qry_insert = "insert into t_grab_file_temp (id_grab, full_url, full_path) values ";
+			$qry_insert .= "(" . $grabs['id_grab'] . ", '" . mysqli_real_escape_string($conn, $files[$i]['full_url']) . "', '" . mysqli_real_escape_string($conn, $files[$i]['full_path']) . "')";
+			
+			$insertcount++;
+			
+			mysqli_query($conn, $qry_insert);
+			$qry_insert = '';
+			
 		}
 		
 		echo ' -> ' . $insertcount . " file URLs inserted\n";
@@ -201,7 +161,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 	}
 	
 	// unmark as 'files building'
-	mysql_query("update t_grab set files_building = 0 where id_grab = " . $grabs['id_grab'] . "", $conn);
+	mysqli_query($conn, "update t_grab set files_building = 0 where id_grab = " . $grabs['id_grab'] . "");
 	
 	
 	// update grab stats
@@ -215,7 +175,7 @@ while ($grabs = mysql_fetch_array($qry_grabs)) {
 
 
 
-mysql_query("
+mysqli_query($conn, "
 	
 	insert into t_grab_file (id_grab, full_url, full_path) 
 	select 
@@ -227,6 +187,6 @@ mysql_query("
 	where  
 		gf.id_grab_file is null 
 	
-	", $conn);
+	");
 	
 ?>

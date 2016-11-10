@@ -1,6 +1,6 @@
 <?php
 	
-$qry_grabs = mysql_query("
+$qry_grabs = mysqli_query($conn, "
 	
 	select
 		g.id_grab,
@@ -91,6 +91,6 @@ $qry_grabs = mysql_query("
 		g.files_error,
 		g.files_excluded
 		
-	", $conn);
+	");
 	
 ?>

@@ -13,7 +13,7 @@ $counter_intto = '';
 
 $counter_listvalues = '';
 
-while($counter = mysql_fetch_array($qry_grab_counts)){
+while($counter = mysqli_fetch_array($qry_grab_counts)){
 	if($counter['id_grab_counter'] == $id_grab_counter){
 		$counter_type = $counter['type'];
 		$counter_field = $counter['field'];
