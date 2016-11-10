@@ -1,5 +1,5 @@
 
-<h1>Playlist "<?=  ?>"</h1>
+<h1>Playlist "<?= $playlist['name'] ?>"</h1>
 
 <table class="table">
 	<thead>

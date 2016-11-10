@@ -31,7 +31,7 @@ switch($action->getCode()){
 			'id' => -1,
 			'name' => ''
 		);
-		while($_playlist = mysql_fetch_array($qry_playlists)){
+		while($_playlist = mysqli_fetch_array($qry_playlists)){
 			if($_playlist['id'] == $playlistId){
 				$playlist = $_playlist;
 			}
