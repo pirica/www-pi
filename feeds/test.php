@@ -41,7 +41,7 @@ foreach($rss['FEED']['ENTRY'] as $item)
 					
 					$found = 0;
 					// loop over feed items
-					/*while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+					/*while (($feedentry = mysqli_fetch_array($qry_feed_entries)) && $found == 0) 
 					{
                         if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
 							$found = 1;

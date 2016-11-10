@@ -12,7 +12,7 @@ $date_start = time();
 
 
 // clean up entries for inactive feeds
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_feed_entry
 	set
@@ -22,21 +22,21 @@ mysql_query("
 		id_feed in (select id_feed from t_feed where active = 0)
 		and active = 1
 		
-	", $conn);
+	");
 
 	
 // clean up entries older than a week
-mysql_query("
+mysqli_query($conn, "
 	
 	delete from t_feed_entry
 	where
 		active = 0
 		and date_deleted < now() - interval 1 week
 		
-	", $conn);
+	");
 	
 
-$qry_feeds = mysql_query("
+$qry_feeds = mysqli_query($conn, "
 	
 	select
 		f.id_feed,
@@ -59,9 +59,9 @@ $qry_feeds = mysql_query("
 		f.title,
 		f.description
 		
-	", $conn);
+	");
 
-while ($feeds = mysql_fetch_array($qry_feeds)) 
+while ($feeds = mysqli_fetch_array($qry_feeds)) 
 {
 	
 	echo 'feed ' . $feeds['title'] . ' (ID:' .  $feeds['id_feed'] . ")\n";
@@ -76,7 +76,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	if($feeds['entries'] > $entries_to_keep){
 		
 		// delete read entries until 100 remain
-		$qry_feed_entries_del = mysql_query("
+		$qry_feed_entries_del = mysqli_query($conn, "
 			
 			select
 				fe.id_feed_entry
@@ -89,13 +89,13 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			order by
 				fe.id_feed_entry
 				
-			", $conn);
+			");
 		
 		$remaining_entries = $feeds['entries'];
 		
-		while (($feedentrydel = mysql_fetch_array($qry_feed_entries_del)) && $remaining_entries > 100)
+		while (($feedentrydel = mysqli_fetch_array($qry_feed_entries_del)) && $remaining_entries > 100)
 		{
-			mysql_query("
+			mysqli_query($conn, "
 				
 				update t_feed_entry
 				set
@@ -104,7 +104,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 				where
 					id_feed_entry = " . $feedentrydel['id_feed_entry'] . "
 					
-				", $conn);
+				");
 			
 			$remaining_entries--;
 		}
@@ -114,7 +114,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 	}
 	
 	// get current entries
-	$qry_feed_entries = mysql_query("
+	$qry_feed_entries = mysqli_query($conn, "
 		
 		select
 			fe.id_feed_entry,
@@ -128,12 +128,12 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			fe.id_feed = " . $feeds['id_feed'] . "
 			and fe.active = 1
 			
-		", $conn);
+		");
 		
 	$err = 0;
 	
 	// set "start"
-	mysql_query("update t_feed set date_start = now() where id_feed = " . $feeds['id_feed'] . "", $conn);
+	mysqli_query($conn, "update t_feed set date_start = now() where id_feed = " . $feeds['id_feed'] . "");
 	
 	
 	try
@@ -179,7 +179,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 			
 			$found = 0;
 			// loop over feed items
-			while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+			while (($feedentry = mysqli_fetch_array($qry_feed_entries)) && $found == 0) 
 			{
 				if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title))
 				{
@@ -214,7 +214,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					$description = explode('<p>', $description, 1)[0];
 				}*/
 				
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_feed_entry 
 					(
 						id_feed,
@@ -226,19 +226,19 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 					values
 					(
 						" . $feeds['id_feed'] . ",
-						'" . mysql_real_escape_string($title) . "',
-						'" . mysql_real_escape_string($link) . "',
+						'" . mysqli_real_escape_string($conn, $title) . "',
+						'" . mysqli_real_escape_string($conn, $link) . "',
 						'" . $description . "',
 						" . $pubdate . "
 					)
 					
-					", $conn);
+					");
 				
 				$items_ins++;
 			}
 			
-			if(mysql_num_rows($qry_feed_entries) >= 1){
-				mysql_data_seek($qry_feed_entries, 0);
+			if(mysqli_num_rows($qry_feed_entries) >= 1){
+				mysqli_data_seek($qry_feed_entries, 0);
 			}
 			
 		}
@@ -271,7 +271,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 						
 						$found = 0;
 						// loop over feed items
-						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+						while (($feedentry = mysqli_fetch_array($qry_feed_entries)) && $found == 0) 
 						{
 							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title))
 							{
@@ -307,7 +307,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 							}*/
 							
 							
-							mysql_query("
+							mysqli_query($conn, "
 								insert into t_feed_entry 
 								(
 									id_feed,
@@ -319,19 +319,19 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								values
 								(
 									" . $feeds['id_feed'] . ",
-									'" . mysql_real_escape_string($title) . "',
-									'" . mysql_real_escape_string($link) . "',
+									'" . mysqli_real_escape_string($conn, $title) . "',
+									'" . mysqli_real_escape_string($conn, $link) . "',
 									'" . $description . "',
 									" . $pubdate . "
 								)
 								
-								", $conn);
+								");
 							$items_ins++;
 							
 						}
 						
-						if(mysql_num_rows($qry_feed_entries) >= 1){
-							mysql_data_seek($qry_feed_entries, 0);
+						if(mysqli_num_rows($qry_feed_entries) >= 1){
+							mysqli_data_seek($qry_feed_entries, 0);
 						}
 					}
 				}
@@ -362,7 +362,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 						
 						$found = 0;
 						// loop over feed items
-						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+						while (($feedentry = mysqli_fetch_array($qry_feed_entries)) && $found == 0) 
 						{
 							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
 								$found = 1;
@@ -396,7 +396,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								$description = explode('<p>', $description, 1)[0];
 							}*/
 							
-							mysql_query("
+							mysqli_query($conn, "
 								insert into t_feed_entry 
 								(
 									id_feed,
@@ -408,19 +408,19 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 								values
 								(
 									" . $feeds['id_feed'] . ",
-									'" . mysql_real_escape_string($title) . "',
-									'" . mysql_real_escape_string($link) . "',
+									'" . mysqli_real_escape_string($conn, $title) . "',
+									'" . mysqli_real_escape_string($conn, $link) . "',
 									'" . $description . "',
 									" . $pubdate . "
 								)
 								
-								", $conn);
+								");
 							$items_ins++;
 							
 						}
 						
-						if(mysql_num_rows($qry_feed_entries) >= 1){
-							mysql_data_seek($qry_feed_entries, 0);
+						if(mysqli_num_rows($qry_feed_entries) >= 1){
+							mysqli_data_seek($qry_feed_entries, 0);
 						}
 					}
 				}
@@ -451,7 +451,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 						
 						$found = 0;
 						// loop over feed items
-						while (($feedentry = mysql_fetch_array($qry_feed_entries)) && $found == 0) 
+						while (($feedentry = mysqli_fetch_array($qry_feed_entries)) && $found == 0) 
 						{
 							if(($link != '' && $feedentry['link'] == $link) || ($title != '' && $feedentry['title'] == $title)){
 								$found = 1;
@@ -487,7 +487,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 							
 							if($link != '' || $title != ''){
 								
-								mysql_query("
+								mysqli_query($conn, "
 									insert into t_feed_entry 
 									(
 										id_feed,
@@ -499,21 +499,21 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 									values
 									(
 										" . $feeds['id_feed'] . ",
-										'" . mysql_real_escape_string($title) . "',
-										'" . mysql_real_escape_string($link) . "',
+										'" . mysqli_real_escape_string($conn, $title) . "',
+										'" . mysqli_real_escape_string($conn, $link) . "',
 										'" . $description . "',
 										" . $pubdate . "
 									)
 									
-									", $conn);
+									");
 								
 								$items_ins++;
 								
 							}
 						}
 						
-						if(mysql_num_rows($qry_feed_entries) >= 1){
-							mysql_data_seek($qry_feed_entries, 0);
+						if(mysqli_num_rows($qry_feed_entries) >= 1){
+							mysqli_data_seek($qry_feed_entries, 0);
 						}
 					}
 				}
@@ -521,7 +521,7 @@ while ($feeds = mysql_fetch_array($qry_feeds))
 		}
 		
 		// set "last checked"
-		mysql_query("update t_feed set date_last_checked = '" . mysql_real_escape_string(date('Y-m-d H:i:s', $date_start)) . "', date_end = now(), feed_items = " . $items . " where id_feed = " . $feeds['id_feed'] . "", $conn);
+		mysqli_query($conn, "update t_feed set date_last_checked = '" . mysqli_real_escape_string($conn, date('Y-m-d H:i:s', $date_start)) . "', date_end = now(), feed_items = " . $items . " where id_feed = " . $feeds['id_feed'] . "");
 		
 		
 		//echo ' -> ' . $items . " items in feed\n";

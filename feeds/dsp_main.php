@@ -3,7 +3,7 @@
 	
 <?php
 
-while($feed = mysql_fetch_array($qry_feed_overview))
+while($feed = mysqli_fetch_array($qry_feed_overview))
 {
 	?>
 		<div class="panel panel-default">

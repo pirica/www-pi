@@ -132,7 +132,7 @@ switch($action->getCode()){
 		}
 		
 		if($is_read == 1){
-			mysql_query("
+			mysqli_query($conn, "
 				update t_feed_entry
 				set
 					is_read = 1,
@@ -143,10 +143,10 @@ switch($action->getCode()){
 					id_feed_entry in (" . $feed_entries . ")
 					and ifnull(is_read,0) = 0
 					
-				", $conn) or die(mysql_error());
+				");
 		}
 		else if($is_read == 0){
-			mysql_query("
+			mysqli_query($conn, "
 				update t_feed_entry
 				set
 					is_read = 0,
@@ -155,7 +155,7 @@ switch($action->getCode()){
 				where
 					id_feed_entry in (" . $feed_entries . ")
 					
-				", $conn) or die(mysql_error());
+				");
 		}
 		break;
 	

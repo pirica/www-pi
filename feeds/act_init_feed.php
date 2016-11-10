@@ -6,7 +6,7 @@ $feed_refresh = '';
 $feed_parser = '';
 $feed_parse_max_items = '';
 
-while($feed = mysql_fetch_array($qry_feeds)){
+while($feed = mysqli_fetch_array($qry_feeds)){
 	if($feed['id_feed'] == $id_feed){
 		$feed_title = $feed['title'];
 		$feed_url = $feed['url'];

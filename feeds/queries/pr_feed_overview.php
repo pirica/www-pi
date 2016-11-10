@@ -1,6 +1,6 @@
 <?php
 	
-$qry_feed_overview = mysql_query("
+$qry_feed_overview = mysqli_query($conn, "
 	
 	select
 		f.id_feed,
@@ -27,6 +27,6 @@ $qry_feed_overview = mysql_query("
 	order by
 		f.title asc
 		
-	", $conn) or die(mysql_error());
+	");
 	
 ?>

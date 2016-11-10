@@ -1,7 +1,7 @@
 <ul>
 	<?php
 	$entries = '';
-	while($entry = mysql_fetch_array($qry_feed_entries))
+	while($entry = mysqli_fetch_array($qry_feed_entries))
 	{
 		$entries .= ($entries == '' ? '' : ',') . $entry['id_feed_entry'];
 		?>

@@ -30,7 +30,7 @@
 	
 	<tbody>
 	<?php 
-	while($feed = mysql_fetch_array($qry_feeds)){
+	while($feed = mysqli_fetch_array($qry_feeds)){
 	?>
 		<tr>
 			<td><?= $feed['id_feed'] ?></td>

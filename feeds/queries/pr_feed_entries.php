@@ -1,6 +1,6 @@
 <?php
 	
-$qry_feed_entries = mysql_query("
+$qry_feed_entries = mysqli_query($conn, "
 	
 	select
 		f.id_feed,
@@ -30,6 +30,6 @@ $qry_feed_entries = mysql_query("
 		fe.pubdate asc,
 		fe.id_feed_entry asc
 		
-	", $conn) or die(mysql_error());
+	");
 	
 ?>
