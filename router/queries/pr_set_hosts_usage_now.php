@@ -10,19 +10,19 @@ $night_start_sql = '0000';
 $night_end_sql = '1000';
 
 
-//mysql_query("truncate table t_usage_now");
+//mysqli_query($conn, "truncate table t_usage_now");
 $date_clearance = time();
 //$range_clearance_end_sql = date("Ym" . $tm_start0, strtotime('-2 month', $date_clearance));
 $range_clearance_end_sql = date("Ymd", strtotime('-1 month', $date_clearance));
 
-mysql_query("
+mysqli_query($conn, "
 	delete from t_usage_now
 	where
 		DATE_FORMAT(date_usage, '%Y%m%d') < '" . $range_clearance_end_sql . "'
-", $conn);
+");
 
 
-mysql_query("
+mysqli_query($conn, "
 	
 	insert into t_usage_now
 	(
@@ -73,9 +73,9 @@ mysql_query("
 	where
 		u.usagekey is null
 	
-", $conn);
+");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	replace into t_usage_now (usagekey, mac_address, date_usage, downloaded, uploaded, downloaded_telemeter, uploaded_telemeter)
 	select
@@ -117,7 +117,7 @@ mysql_query("
 		hu.mac_address,
 		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')
 	
-", $conn);
+");
 
 	
 ?>

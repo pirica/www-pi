@@ -45,7 +45,7 @@ if($leases !== false){
 			$ip = $line[2];
 			$host = $line[3];
 			
-			$qry_health_check = mysql_query("
+			$qry_health_check = mysqli_query($conn, "
 				select
 					mac_address,
 					ip_address,
@@ -54,9 +54,9 @@ if($leases !== false){
 					t_host
 				where
 					active = 1
-				", $conn);
+				");
 				
-			$qry_check = mysql_query("
+			$qry_check = mysqli_query($conn, "
 				select
 					mac_address,
 					ip_address,
@@ -64,14 +64,14 @@ if($leases !== false){
 				from 
 					t_host
 				where
-					mac_address = '" . mysql_real_escape_string($mac) . "'
-					and ip_address = '" . mysql_real_escape_string($ip) . "'
+					mac_address = '" . mysqli_real_escape_string($conn, $mac) . "'
+					and ip_address = '" . mysqli_real_escape_string($conn, $ip) . "'
 					and active = 1
-				", $conn);
+				");
 				
-			if(mysql_num_rows($qry_health_check) > 0 && mysql_num_rows($qry_check) == 0){
+			if(mysqli_num_rows($qry_health_check) > 0 && mysqli_num_rows($qry_check) == 0){
 				
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_host
 					(
 						ip_address,
@@ -81,12 +81,12 @@ if($leases !== false){
 					)
 					values
 					(
-						'" . mysql_real_escape_string($ip) . "',
-						'" . mysql_real_escape_string($mac) . "',
-						'" . mysql_real_escape_string($host) . "',
+						'" . mysqli_real_escape_string($conn, $ip) . "',
+						'" . mysqli_real_escape_string($conn, $mac) . "',
+						'" . mysqli_real_escape_string($conn, $host) . "',
 						'" . date('Y-m-d H:i:s', time()) . "'
 					)
-					", $conn);
+					");
 				
 				if($send_newhost_messages == 1){
 					$msg = 'New host detected: Name=' . $host . ', IP=' . $ip . ', MAC=' . $mac;
@@ -104,7 +104,7 @@ if($leases !== false){
 
 
 	
-mysql_query("update t_host set check_is_online = 0", $conn);
+mysqli_query($conn, "update t_host set check_is_online = 0");
 
 //$shell_nmap = shell_exec('nmap -sn 192.168.1.0/24');
 $shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139,80,7001 192.168.1.0/24');
@@ -140,15 +140,15 @@ for ($i = 0; $i < $c; $i++) {
 		else {
             if($output == 1) echo "\tIP: " . $ip . "<br>\n";
 			if( strpos($line, 'host is up') !== false ){
-				mysql_query("
+				mysqli_query($conn, "
 					update t_host
 					set
 						check_is_online = 1
 					where
-						ip_address = '" . mysql_real_escape_string($ip) . "'
+						ip_address = '" . mysqli_real_escape_string($conn, $ip) . "'
 						and active = 1
 					
-					", $conn);
+					");
 			}
 			$ip = '';
 		}
@@ -158,7 +158,7 @@ for ($i = 0; $i < $c; $i++) {
 
 
 // check each presumed offline again to make sure
-$qry_hosts_status = mysql_query("
+$qry_hosts_status = mysqli_query($conn, "
 	select
 		h.id_host,
 		h.ip_address,
@@ -174,31 +174,31 @@ $qry_hosts_status = mysql_query("
 			#(h.is_online = 0 and h.check_is_online = 1)
 		)
 	
-	", $conn);
+	");
 	
-while ($hoststatus = mysql_fetch_array($qry_hosts_status)) {
+while ($hoststatus = mysqli_fetch_array($qry_hosts_status)) {
 	$shell_nmap = shell_exec('nmap -sP -PA22,25,3389,139,80,7001 ' . $hoststatus['ip_address']);
 	echo "<!--\n";
 	echo $shell_nmap;
 	echo "-->\n";
 
 	if( strpos(strtolower($shell_nmap), 'host is up') !== false ){
-		mysql_query("
+		mysqli_query($conn, "
 			update t_host
 			set
 				check_is_online = 1
 			where
-				ip_address = '" . mysql_real_escape_string($hoststatus['ip_address']) . "'
+				ip_address = '" . mysqli_real_escape_string($conn, $hoststatus['ip_address']) . "'
 				and active = 1
 			
-			", $conn);
+			");
 	}
 }
 
 
-mysql_query("update t_host set date_last_seen = now() where check_is_online = 1", $conn);
+mysqli_query($conn, "update t_host set date_last_seen = now() where check_is_online = 1");
 
-mysql_query("
+mysqli_query($conn, "
 	insert into t_host_status
 	(
 		id_host,
@@ -208,7 +208,7 @@ mysql_query("
 	select
 		h.id_host,
 		now(),
-		'" . mysql_real_escape_string($shell_nmap) . "'
+		'" . mysqli_real_escape_string($conn, $shell_nmap) . "'
 	from 
 		t_host h
 	where
@@ -216,9 +216,9 @@ mysql_query("
 		and h.is_online = 0
 		and h.check_is_online = 1
 	
-	", $conn);
+	");
 
-mysql_query("
+mysqli_query($conn, "
 	insert into t_host_status
 	(
 		id_host,
@@ -228,7 +228,7 @@ mysql_query("
 	select
 		h.id_host,
 		now(),
-		'" . mysql_real_escape_string($shell_nmap) . "'
+		'" . mysqli_real_escape_string($conn, $shell_nmap) . "'
 	from 
 		t_host h
 	where
@@ -236,11 +236,11 @@ mysql_query("
 		and h.is_online = 1
 		and h.check_is_online = 0
 	
-	", $conn);
+	");
 
 	
 if($send_hoststatus_messages == 1){
-	$qry_hosts_status = mysql_query("
+	$qry_hosts_status = mysqli_query($conn, "
 		select
 			h.id_host,
 			h.ip_address,
@@ -259,9 +259,9 @@ if($send_hoststatus_messages == 1){
 			)
 			#and ifnull(h.date_last_seen, now() ) < date_add(now(), interval -5 minute )
 		
-		", $conn);
+		");
 		
-	while ($hoststatus = mysql_fetch_array($qry_hosts_status)) {
+	while ($hoststatus = mysqli_fetch_array($qry_hosts_status)) {
 		$msg = 'Host "' . $hoststatus['hostname_lbl'] . '" ' . ($hoststatus['went_online'] == 1 ? 'online' : 'offline') . ' (' . $hoststatus['ip_address'] . ')';
 		$channel = 'router';
 		$title = '';
@@ -276,7 +276,7 @@ if($send_hoststatus_messages == 1){
 	}
 }
 
-mysql_query("update t_host set is_online = check_is_online", $conn);
+mysqli_query($conn, "update t_host set is_online = check_is_online");
 
 echo "End IP check<br>\n";
 

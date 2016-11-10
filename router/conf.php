@@ -7,7 +7,7 @@ include 'connection.php';
 
 if (login_check($mysqli)){
 
-	$qry_hosts = mysql_query("
+	$qry_hosts = mysqli_query($conn, "
 		select
 			h.id_host,
 			h.ip_address,
@@ -22,34 +22,34 @@ if (login_check($mysqli)){
 		where
 			h.active = 1
 		
-		", $conn);
+		");
 		
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
-		while($host = mysql_fetch_array($qry_hosts)){
+		while($host = mysqli_fetch_array($qry_hosts)){
 			if(isset($_POST['authenticate' . $host['id_host']])){
 				if($_POST['authenticate' . $host['id_host']] == 1){
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							authenticate = 1
 						where
 							id_host = " . $host['id_host'] . "
-						", $conn);
+						");
 				}
 				else {
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							authenticate = 0
 						where
 							id_host = " . $host['id_host'] . "
-						", $conn);
+						");
 				}
 			}
 			if(isset($_POST['disabled' . $host['id_host']])){
 				if($_POST['disabled' . $host['id_host']] == 1){
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							disabled = 1
@@ -58,18 +58,18 @@ if (login_check($mysqli)){
 						");
 				}
 				else {
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							disabled = 0
 						where
 							id_host = " . $host['id_host'] . "
-						", $conn);
+						");
 				}
 			}
 			if(isset($_POST['is_new' . $host['id_host']])){
 				if($_POST['is_new' . $host['id_host']] == 1){
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							is_new = 1
@@ -78,20 +78,20 @@ if (login_check($mysqli)){
 						");
 				}
 				else {
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host
 						set
 							is_new = 0
 						where
 							id_host = " . $host['id_host'] . "
-						", $conn);
+						");
 				}
 			}
 		}
 	}
 
 
-	$qry_hosts = mysql_query("
+	$qry_hosts = mysqli_query($conn, "
 		select
 			h.id_host,
 			h.ip_address,
@@ -131,7 +131,7 @@ if (login_check($mysqli)){
 			h.hostname,
 			h.ip_address
 			
-		", $conn);
+		");
 		
 	/* Main info */
 
@@ -146,7 +146,7 @@ if (login_check($mysqli)){
 
 	if($id_host > 0){
 		
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_host_rule 
 			(
 				id_rule,
@@ -167,10 +167,10 @@ if (login_check($mysqli)){
 				r.active = 1
 				and hr.id_host_rule is null
 			
-			", $conn);
+			");
 			
 		
-		$qry_rules = mysql_query("
+		$qry_rules = mysqli_query($conn, "
 			select
 				hr.id_host_rule,
 				hr.active,
@@ -193,39 +193,39 @@ if (login_check($mysqli)){
 				r.description,
 				params
 				
-			", $conn);
+			");
 		
 		if($_SERVER['REQUEST_METHOD'] == 'POST') {
-			while($rule = mysql_fetch_array($qry_rules)){
+			while($rule = mysqli_fetch_array($qry_rules)){
 				$ruleparam = '';
 				if(isset($_POST['rule' . $rule['id_rule']])){
 					if(isset($_POST['ruleparam' . $rule['id_rule']])){
 						$ruleparam = $_POST['ruleparam' . $rule['id_rule']];
 					}
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host_rule
 						set
 							active = 1,
-							params = '" . mysql_real_escape_string($ruleparam) . "'
+							params = '" . mysqli_real_escape_string($conn, $ruleparam) . "'
 						where
 							id_host = " . $id_host . "
 							and id_rule = " . $rule['id_rule'] . "
-						", $conn);
+						");
 				}
 				else {
-					mysql_query("
+					mysqli_query($conn, "
 						update t_host_rule
 						set
 							active = 0
 						where
 							id_host = " . $id_host . "
 							and id_rule = " . $rule['id_rule'] . "
-						", $conn);
+						");
 				}
 			}
 		}
 		
-		$qry_rules = mysql_query("
+		$qry_rules = mysqli_query($conn, "
 			select
 				hr.id_host_rule,
 				hr.active,
@@ -248,7 +248,7 @@ if (login_check($mysqli)){
 				r.description,
 				params
 				
-			", $conn);
+			");
 		
 	}
 }
@@ -296,7 +296,7 @@ if (!login_check($mysqli)){
 				<th align="left">Date authenticated</th>
 			</tr>
 			<?php
-			while($host = mysql_fetch_array($qry_hosts)){
+			while($host = mysqli_fetch_array($qry_hosts)){
 				if($id_host == $host['id_host']){
 					$hostname = $host['hostname'];
 				}
@@ -368,7 +368,7 @@ if (!login_check($mysqli)){
 					<th align="left">Param</th>
 				</tr>
 				<?php
-				while($rule = mysql_fetch_array($qry_rules)){
+				while($rule = mysqli_fetch_array($qry_rules)){
 				?>
 					<tr>
 						<td><label for="rule<?=$rule['id_rule']?>"><?=$rule['description']?></label></td>

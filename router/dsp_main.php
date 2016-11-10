@@ -55,7 +55,7 @@
 		c.description as category
 		
 	*/
-	while($host = mysql_fetch_array($qry_hosts)){ 
+	while($host = mysqli_fetch_array($qry_hosts)){ 
 		if($host['active'] == 1 && $host['show_overview'] == 1){
 		?>
 			<tr class="tr-host<?=$host['id_host'] ?>" data-id_host="<?=$host['id_host'] ?>">

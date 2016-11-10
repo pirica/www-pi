@@ -43,26 +43,26 @@ $valid = 0;
 if($url != '' && $username != '' && $password != ''){
 	$username = str_replace('%', '', $username);
 	$password = str_replace('%', '', $password);
-	// mysql_query check user/passw
-	$qry = mysql_query("
+	// check user/passw
+	$qry = mysqli_query($conn, "
 		select
 			*
 		from t_host 
 		where 
 			id_host = " . $id_host . "
-			and username like binary '" . mysql_real_escape_string($username) . "'
-			and password like binary '" . mysql_real_escape_string($password) . "'
-		", $conn);
+			and username like binary '" . mysqli_real_escape_string($conn, $username) . "'
+			and password like binary '" . mysqli_real_escape_string($conn, $password) . "'
+		");
 	
-	while($host = mysql_fetch_array($qry)){
+	while($host = mysqli_fetch_array($conn, $qry)){
 		$valid = 1;
-		mysql_query("
+		mysqli_query($conn, "
 			update t_host 
 			set
 				date_authenticated = now()
 			where 
 				id_host = " . $id_host . "
-			", $conn);
+			");
 	}
 	
 	

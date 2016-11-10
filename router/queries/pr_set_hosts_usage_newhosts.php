@@ -6,7 +6,7 @@ $range_start_sql = date("YmdH", $date);
 
 while ($range_start_sql < date("YmdH"))
 {
-	mysql_query("
+	mysqli_query($conn, "
 		
 		insert into t_usage_today
 		(
@@ -56,7 +56,7 @@ while ($range_start_sql < date("YmdH"))
 		where
 			u.usagekey is null
 		
-	", $conn);
+	");
 	
 	$i++;
 	$date = strtotime('+' . $i . ' day', $date);
@@ -71,7 +71,7 @@ $range_start_sql = date("Ymd", $date);
 
 while ($range_start_sql < date("Ymd"))
 {
-	mysql_query("
+	mysqli_query($conn, "
 		
 		insert into t_usage_day
 		(
@@ -121,7 +121,7 @@ while ($range_start_sql < date("Ymd"))
 		where
 			u.usagekey is null
 		
-	", $conn);
+	");
 
 	$i++;
 	$date = strtotime('+' . $i . ' month', $date);
@@ -135,7 +135,7 @@ $range_start_sql = date("Ym04", $date);
 
 while ($range_start_sql < date("Ym04"))
 {
-	mysql_query("
+	mysqli_query($conn, "
 		
 		insert into t_usage_month
 		(
@@ -185,7 +185,7 @@ while ($range_start_sql < date("Ym04"))
 		where
 			u.usagekey is null
 		
-	", $conn);
+	");
 
 	$i++;
 	$date = strtotime('+' . $i . ' year', $date);

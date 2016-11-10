@@ -1,6 +1,6 @@
 <?php
 	
-$qry_categories = mysql_query("
+$qry_categories = mysqli_query($conn, "
 	
 	select
 		c.id_category,
@@ -14,6 +14,6 @@ $qry_categories = mysql_query("
 		ifnull(c.ip_range_start, 999)
 		
 		
-	", $conn);
+	");
 	
 ?>

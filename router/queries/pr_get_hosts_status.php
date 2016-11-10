@@ -1,6 +1,6 @@
 <?php
 	
-$qry_hosts = mysql_query("
+$qry_hosts = mysqli_query($conn, "
 	
 	select
 		h.id_host,
@@ -38,6 +38,6 @@ $qry_hosts = mysql_query("
 		h.ip_address
 		
 		
-	", $conn);
+	");
 	
 ?>

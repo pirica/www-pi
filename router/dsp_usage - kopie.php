@@ -27,16 +27,16 @@
 
 <?php 
 
-$maxval = mysql_fetch_array($qry_max);
+$maxval = mysqli_fetch_array($qry_max);
 
 
 // hosts overview
 
 $current_row = 0;
 $current_host = -1;
-$rows = mysql_num_rows($qry_hosts);
+$rows = mysqli_num_rows($qry_hosts);
 
-while($host = mysql_fetch_array($qry_hosts)){
+while($host = mysqli_fetch_array($qry_hosts)){
 	if($current_host != $host['id_host']){
 		$current_host = $host['id_host'];
 		if($current_row > 0){
@@ -100,12 +100,12 @@ $total_downloaded_tm = 0;
 $total_uploaded_tm = 0;
 
 $current_row = 0;
-$rows = mysql_num_rows($qry_totals);
+$rows = mysqli_num_rows($qry_totals);
 
 echo '<div class="section">' . "\n";
 echo '	<div class="section-label"><strong>Totals</strong></div>' . "\n";
 echo '	<ul class="timeline">' . "\n";
-while($host = mysql_fetch_array($qry_totals)){
+while($host = mysqli_fetch_array($qry_totals)){
 	$total_downloaded += $host['downloaded'];
 	$total_uploaded += $host['uploaded'];
 	$total_downloaded_tm += $host['downloaded_telemeter'];

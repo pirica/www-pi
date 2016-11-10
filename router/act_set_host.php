@@ -61,10 +61,10 @@ if($id_host > 0 && $field != ''){
 			break;
 	}
 	
-	mysql_query("
+	mysqli_query($conn, "
 		update t_host
 		set
-			" . $field . " = '" . mysql_real_escape_string($value) . "'
+			" . $field . " = '" . mysqli_real_escape_string($conn, $value) . "'
 			
 		where
 			id_host = " . $id_host . "

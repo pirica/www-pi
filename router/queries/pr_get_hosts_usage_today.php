@@ -18,6 +18,6 @@ $sql_hosts_usage = "
 echo $sql_hosts_usage;
 echo ";\n\n";
 
-$qry_hosts_usage = mysql_query($sql_hosts_usage, $conn);
+$qry_hosts_usage = mysqli_query($conn, $sql_hosts_usage);
 
 ?>

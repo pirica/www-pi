@@ -180,7 +180,7 @@ switch($action->getCode()){
 		break;
 }
 
-while($hosts_usage = mysql_fetch_array($qry_hosts_usage)){
+while($hosts_usage = mysqli_fetch_array($qry_hosts_usage)){
 	if($filter_macs != ''){
 		$filter_macs .= ",";
 	}
@@ -220,6 +220,6 @@ if($show == 'up' || $show == 'both' || $show == 'all'){
 if($show == 'both' || $show == 'all'){
 	$section_width += 8; // .usage-spacer
 }
-$section_width .= mysql_num_rows($qry_totals);
+$section_width .= mysqli_num_rows($qry_totals);
 
 ?>

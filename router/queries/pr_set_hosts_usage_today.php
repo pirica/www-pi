@@ -9,7 +9,7 @@ $range_end_sql = date("YmdH", strtotime('+1 hour', $date));
 $night_start_sql = '0000';
 $night_end_sql = '1000';
 
-mysql_query("
+mysqli_query($conn, "
 	
 	insert into t_usage_today
 	(
@@ -59,9 +59,9 @@ mysql_query("
 	where
 		u.usagekey is null
 	
-", $conn);
+");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	replace into t_usage_today (usagekey, mac_address, date_usage, downloaded, uploaded, downloaded_telemeter, uploaded_telemeter)
 	select
@@ -103,7 +103,7 @@ mysql_query("
 		hu.mac_address,
 		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-%d %H'), '%Y-%m-%d %H')
 	
-", $conn);
+");
 
 	
 ?>

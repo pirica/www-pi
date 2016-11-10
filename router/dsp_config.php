@@ -52,7 +52,7 @@
 		c.description as category
 		
 	*/
-	while($host = mysql_fetch_array($qry_hosts)){ 
+	while($host = mysqli_fetch_array($qry_hosts)){ 
 		if($host['active'] == 1 || $show_all == 1){
 		?>
 			<tr class="tr-host<?=$host['id_host'] ?>" data-id_host="<?=$host['id_host'] ?>">
@@ -66,10 +66,10 @@
 					<select name="id_category">
 						<option value="-1">...</option>
 						<?php
-							while($cat = mysql_fetch_array($qry_categories)){ 
+							while($cat = mysqli_fetch_array($qry_categories)){ 
 								echo '<option value="' .  $cat['id_category'] . '" ' . ($cat['id_category'] == $host['id_category'] ? 'selected="selected"' : '') . '>' . $cat['category'] . '</option>';
 							}
-							mysql_data_seek($qry_categories, 0);
+							mysqli_data_seek($qry_categories, 0);
 						?>
 					</select>
 				</td>

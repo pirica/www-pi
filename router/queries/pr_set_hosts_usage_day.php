@@ -11,7 +11,7 @@ $range_end_sql = date("Ymd", strtotime('+1 day', $date));
 $night_start_sql = '0000';
 $night_end_sql = '1000';
 
-mysql_query("
+mysqli_query($conn, "
 	
 	replace into t_usage_day (usagekey, mac_address, date_usage, downloaded, uploaded, downloaded_telemeter, uploaded_telemeter)
 	select
@@ -36,7 +36,7 @@ mysql_query("
 		hu.mac_address,
 		str_to_date(DATE_FORMAT(hu.date_usage, '%Y-%m-%d'), '%Y-%m-%d')
 	
-", $conn);
+");
 
 	
 ?>

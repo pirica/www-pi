@@ -2,7 +2,7 @@
 
 
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_host
 	set
@@ -13,9 +13,9 @@ mysql_query("
 		downloaded_month = 0,
 		uploaded_month = 0
 		
-", $conn);
+");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_host h
 	join (
@@ -39,9 +39,9 @@ mysql_query("
 	where
 		h.mac_address = hu.mac_address
 		
-", $conn);
+");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_host h
 	join (
@@ -66,10 +66,10 @@ mysql_query("
 	where
 		h.mac_address = hu.mac_address
 		
-", $conn);
+");
 	
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_host h
 	join (
@@ -94,6 +94,6 @@ mysql_query("
 	where
 		h.mac_address = hu.mac_address
 		
-", $conn);
+");
 	
 ?>

@@ -73,7 +73,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 					if($qry == ''){
 						 $emptycount++;
 					}
-					else if(mysql_query($valuesarr[$i])){
+					else if(mysqli_query($conn, $valuesarr[$i])){
 						$insertcount++;
 					}
 				}
@@ -158,7 +158,7 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 		// http://php.net/manual/en/ref.gmp.php 
 		$total_traffic = 0;
 		
-		while($host = mysql_fetch_array($qry_hosts)){
+		while($host = mysqli_fetch_array($qry_hosts)){
 			$total_traffic += ($host['downloaded_month'] + $host['uploaded_month']);
 			
 			if($host['alert_when_traffic_exceeds_daily'] > 0 && ($host['downloaded_today'] + $host['uploaded_today']) > $host['alert_when_traffic_exceeds_daily']){

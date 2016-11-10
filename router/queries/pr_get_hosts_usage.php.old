@@ -52,7 +52,7 @@ $sql_max = "
 
 echo '<!--'.$sql_max.'-->';
 
-$qry_max = mysql_query($sql_max, $conn);
+$qry_max = mysqli_query($conn, $sql_max);
 	
 $sql_totals = "
 	select
@@ -116,7 +116,7 @@ $sql_totals = "
 
 echo '<!--'.$sql_totals.'-->';
 	
-$qry_totals = mysql_query($sql_totals, $conn);
+$qry_totals = mysqli_query($conn, $sql_totals);
 	
 $sql_hosts = "
 	
@@ -211,6 +211,6 @@ $sql_hosts = "
 
 echo '<!--'.$sql_hosts.'-->';
 
-$qry_hosts = mysql_query($sql_hosts, $conn);
+$qry_hosts = mysqli_query($conn, $sql_hosts);
 
 ?>

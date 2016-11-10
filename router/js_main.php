@@ -28,7 +28,7 @@
 */
 
 $result = [];
-while($host = mysql_fetch_array($qry_hosts)){ 
+while($host = mysqli_fetch_array($qry_hosts)){ 
 	if($host['active'] == 1){
 		
 		$result[] = array(

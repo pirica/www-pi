@@ -74,7 +74,7 @@ Nmap done: 1 IP address (1 host up) scanned in 33.85 seconds
 
 
 
-$qry_hosts = mysql_query("
+$qry_hosts = mysqli_query($conn, "
 	select
 		h.id_host,
 		h.ip_address,
@@ -86,9 +86,9 @@ $qry_hosts = mysql_query("
 		and h.is_online = 1
 		and ifnull(h.date_checked, date_add(now(), interval -1 day ) ) < date_add(now(), interval 12 hour )
 		
-	", $conn);
+	");
 	
-while ($host = mysql_fetch_array($qry_hosts)) {
+while ($host = mysqli_fetch_array($qry_hosts)) {
 
 	$shell_nmap = shell_exec('nmap -O ' . $host['ip_address']);
 
@@ -146,18 +146,18 @@ while ($host = mysql_fetch_array($qry_hosts)) {
 	}
 	
 	echo "<!--\n";
-	echo "device_type = '" . mysql_real_escape_string($device_type) . "'\n";
-	echo "os = '" . mysql_real_escape_string($os) . "'\n";
-	echo "os_details = '" . mysql_real_escape_string($os_details) . "'\n";
-	echo "network_distance = '" . mysql_real_escape_string($network_distance) . "'\n";
-	echo "open_ports = '" . mysql_real_escape_string($open_ports) . "'\n";
+	echo "device_type = '" . mysqli_real_escape_string($conn, $device_type) . "'\n";
+	echo "os = '" . mysqli_real_escape_string($conn, $os) . "'\n";
+	echo "os_details = '" . mysqli_real_escape_string($conn, $os_details) . "'\n";
+	echo "network_distance = '" . mysqli_real_escape_string($conn, $network_distance) . "'\n";
+	echo "open_ports = '" . mysqli_real_escape_string($conn, $open_ports) . "'\n";
 	echo "-->\n";
 	
-	if(str_replace(' ', '', $device_type) == '') $device_type = 'null'; else $device_type = "'" . mysql_real_escape_string($device_type) . "'";
-	if(str_replace(' ', '', $os) == '') $os = 'null'; else $os = "'" . mysql_real_escape_string($os) . "'";
-	if(str_replace(' ', '', $os_details) == '') $os_details = 'null'; else $os_details = "'" . mysql_real_escape_string($os_details) . "'";
-	if(str_replace(' ', '', $network_distance) == '') $network_distance = 'null'; else $network_distance = "'" . mysql_real_escape_string($network_distance) . "'";
-	if(str_replace(' ', '', $open_ports) == '') $open_ports = 'null'; else $open_ports = "'" . mysql_real_escape_string($open_ports) . "'";
+	if(str_replace(' ', '', $device_type) == '') $device_type = 'null'; else $device_type = "'" . mysqli_real_escape_string($conn, $device_type) . "'";
+	if(str_replace(' ', '', $os) == '') $os = 'null'; else $os = "'" . mysqli_real_escape_string($conn, $os) . "'";
+	if(str_replace(' ', '', $os_details) == '') $os_details = 'null'; else $os_details = "'" . mysqli_real_escape_string($conn, $os_details) . "'";
+	if(str_replace(' ', '', $network_distance) == '') $network_distance = 'null'; else $network_distance = "'" . mysqli_real_escape_string($conn, $network_distance) . "'";
+	if(str_replace(' ', '', $open_ports) == '') $open_ports = 'null'; else $open_ports = "'" . mysqli_real_escape_string($conn, $open_ports) . "'";
 	
 	echo "<!--\n";
 	echo "update t_host
@@ -174,7 +174,7 @@ while ($host = mysql_fetch_array($qry_hosts)) {
 			id_host = " . $host['id_host'] . "\n";
 	echo "-->\n";
 	
-	mysql_query("
+	mysqli_query($conn, "
 		update t_host
 		set
 			device_type = ifnull(" . $device_type . ", device_type),
@@ -188,7 +188,7 @@ while ($host = mysql_fetch_array($qry_hosts)) {
 		where
 			id_host = " . $host['id_host'] . "
 		
-		", $conn);
+		");
 	
 }
 
