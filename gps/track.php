@@ -33,11 +33,11 @@ if(isset($_GET['heading']) && $_GET['heading'] != '' && is_numeric($_GET['headin
 	$interval = $_GET['interval'];
 }*/
 if(isset($_GET['user']) && $_GET['user'] != ''){
-	$user = mysql_real_escape_string($_GET['user']);
+	$user = mysqli_real_escape_string($conn, $_GET['user']);
 }
 
 if($lat != '' && $lon != '' && $speed != '' && $accuracy != '' && $heading != ''){
-	mysql_query("insert into t_log_track (lat, lon, speed, accuracy, heading, time, username) values (".$lat.", ".$lon.", ".$speed.", ".$accuracy.", ".$heading.", '".date('Y-m-d H:i:s', $time)."', '".$user."')");// or die("can't insert into db<br>");
+	mysqli_query($conn, "insert into t_log_track (lat, lon, speed, accuracy, heading, time, username) values (".$lat.", ".$lon.", ".$speed.", ".$accuracy.", ".$heading.", '".date('Y-m-d H:i:s', $time)."', '".$user."')");
 	
 	/*
 	$fh = fopen('position.json', 'w') or die("can't open file<br>");

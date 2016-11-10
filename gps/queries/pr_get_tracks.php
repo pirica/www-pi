@@ -1,6 +1,6 @@
 <?php
 	
-$qry_tracks = mysql_query("
+$qry_tracks = mysqli_query($conn, "
 	
 	select
 		t.id_track,

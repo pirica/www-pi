@@ -28,7 +28,7 @@ function getaddress($lat,$lng)
 }
 
 
-$qry_log = mysql_query("
+$qry_log = mysqli_query($conn, "
 	select
 		*
 		, time - interval 30 minute as date_start
@@ -38,9 +38,9 @@ $qry_log = mysql_query("
 	order by time asc
 	");
 
-while ($log = mysql_fetch_array($qry_log))
+while ($log = mysqli_fetch_array($qry_log))
 {
-	$qry_track = mysql_query("
+	$qry_track = mysqli_query($conn, "
 		select * from t_track 
 		where 
 			active = 1
@@ -49,9 +49,9 @@ while ($log = mysql_fetch_array($qry_log))
 	
 	$id_track = -1;
 	
-	if(mysql_num_rows($qry_track) == 0)
+	if(mysqli_num_rows($qry_track) == 0)
 	{
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_track
 			(
 				date_start,
@@ -72,14 +72,14 @@ while ($log = mysql_fetch_array($qry_log))
 			)
 			");
 			
-		$id_track = mysql_insert_id();
+		$id_track = mysqli_insert_id($conn);
 		
 	}
 	else
 	{
-		$id_track = mysql_fetch_array($qry_track)['id_track'];
+		$id_track = mysqli_fetch_array($qry_track)['id_track'];
 		
-		mysql_query("
+		mysqli_query($conn, "
 			update t_track
 			set
 				date_end = '" . $log['time'] . "',
@@ -91,7 +91,7 @@ while ($log = mysql_fetch_array($qry_log))
 			");
 	}
 	
-	mysql_query("
+	mysqli_query($conn, "
 		update t_log_track
 		set
 			id_track = " . $id_track . "
@@ -103,21 +103,21 @@ while ($log = mysql_fetch_array($qry_log))
 
 
 
-$qry_track = mysql_query("
+$qry_track = mysqli_query($conn, "
 	select * from t_track 
 	where 
 		active = 1
 		and start_description is null
 	");
 
-while ($track = mysql_fetch_array($qry_track))
+while ($track = mysqli_fetch_array($qry_track))
 {
 	
 	$start_description = getaddress($track['start_lat'], $track['start_lon']);
 	
 	if($start_description)
 	{
-		mysql_query("
+		mysqli_query($conn, "
 			update t_track
 			set
 				start_description = '" . $start_description . "'
@@ -129,21 +129,21 @@ while ($track = mysql_fetch_array($qry_track))
 }
 
 
-$qry_track = mysql_query("
+$qry_track = mysqli_query($conn, "
 	select * from t_track 
 	where 
 		active = 1
 		and end_description is null
 	");
 
-while ($track = mysql_fetch_array($qry_track))
+while ($track = mysqli_fetch_array($qry_track))
 {
 	
 	$end_description = getaddress($track['end_lat'], $track['end_lon']);
 	
 	if($end_description)
 	{
-		mysql_query("
+		mysqli_query($conn, "
 			update t_track
 			set
 				end_description = '" . $end_description . "'

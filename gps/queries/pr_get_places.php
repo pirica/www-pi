@@ -1,6 +1,6 @@
 <?php
 	
-$qry_places = mysql_query("
+$qry_places = mysqli_query($conn, "
 	
 	select
 		p.id_place,

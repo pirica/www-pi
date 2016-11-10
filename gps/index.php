@@ -43,7 +43,7 @@ switch($action->getCode()){
 		$place_lat_bottom = 'null';
 		$place_lon_left = 'null';
 		
-		while($place = mysql_fetch_array($qry_places)){ 
+		while($place = mysqli_fetch_array($qry_places)){ 
 			if($place['id_place'] == $id_place){
 				$place_description = $place['description'];
 				$place_pre_description = $place['pre_description'];
@@ -83,7 +83,7 @@ switch($action->getCode()){
 		
 		$place_description = '';
 		
-		while($place = mysql_fetch_array($qry_places)){ 
+		while($place = mysqli_fetch_array($qry_places)){ 
 			if($place['id_place'] == $id_place){
 				$place_description = $place['description'];
 			}
@@ -118,7 +118,7 @@ switch($action->getCode()){
 	case 'js_position':
 		$id_user = saneInput('id_user', 'int', -1);
 		
-		$qry_log = mysql_query("
+		$qry_log = mysqli_query($conn, "
 			select
 				lt.*,
 				u.id_user,

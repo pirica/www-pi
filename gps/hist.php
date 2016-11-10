@@ -9,12 +9,12 @@ if(isset($_GET['time']) && $_GET['time'] != '' && is_numeric($_GET['time'])){
 }
 
 if($time != ''){
-	$qry_log = mysql_query("select * from t_log_track where id_log_track = ".$time." or id_log_track = ".($time+1)." order by id_log_track desc");
+	$qry_log = mysqli_query($conn, "select * from t_log_track where id_log_track = ".$time." or id_log_track = ".($time+1)." order by id_log_track desc");
 	
 	$nexttime = '';
 	$json = '';
 	
-	while ($row = mysql_fetch_array($qry_log)) {
+	while ($row = mysqli_fetch_array($qry_log)) {
 		if($nexttime == ''){
 			$nexttime = $row{'id_log_track'};
 		}

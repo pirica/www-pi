@@ -30,11 +30,11 @@ if(isset($_POST['lon_left']) && $_POST['lon_left'] != '' && is_numeric($_POST['l
 
 
 if($id_place > 0){
-	mysql_query("
+	mysqli_query($conn, "
 		update t_place
 		set
-			description = '" . mysql_real_escape_string($place_description) . "',
-			pre_description = '" . mysql_real_escape_string($place_pre_description) . "',
+			description = '" . mysqli_real_escape_string($conn, $place_description) . "',
+			pre_description = '" . mysqli_real_escape_string($conn, $place_pre_description) . "',
 			
 			lat_top = " . $place_lat_top . ",
 			lon_right = " . $place_lon_right . ",
@@ -45,7 +45,7 @@ if($id_place > 0){
 		");
 }
 else {
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_place
 		(
 			description,
@@ -58,8 +58,8 @@ else {
 		)
 		values
 		(
-			'" . mysql_real_escape_string($place_description) . "',
-			'" . mysql_real_escape_string($place_pre_description) . "',
+			'" . mysqli_real_escape_string($conn, $place_description) . "',
+			'" . mysqli_real_escape_string($conn, $place_pre_description) . "',
 			
 			" . $place_lat_top . ",
 			" . $place_lon_right . ",
@@ -68,6 +68,6 @@ else {
 		)
 		");
 		
-	$id_place = mysql_insert_id();
+	$id_place = mysqli_insert_id($conn);
 }
 ?>

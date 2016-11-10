@@ -22,7 +22,7 @@
 	
 	<tbody>
 	<?php 
-	while($track = mysql_fetch_array($qry_tracks)){ 
+	while($track = mysqli_fetch_array($qry_tracks)){ 
 	?>
 		<tr>
 			<td><?= $track['id_track'] ?></td>

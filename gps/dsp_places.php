@@ -23,7 +23,7 @@
 	
 	<tbody>
 	<?php 
-	while($place = mysql_fetch_array($qry_places)){ 
+	while($place = mysqli_fetch_array($qry_places)){ 
 	?>
 		<tr>
 			<td><?= $place['id_place'] ?></td>

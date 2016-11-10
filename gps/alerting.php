@@ -4,7 +4,7 @@ include 'connection.php';
 require dirname(__FILE__).'/../messages/functions.php';
 
 /*
-$qry_log = mysql_query("
+$qry_log = mysqli_query($conn, "
 	select
 		lt.lat,
 		lt.lon,
@@ -33,10 +33,10 @@ $qry_log = mysql_query("
 	
 	limit 1, 1
 	
-	", $mysql_conn) or die(mysql_error($mysql_conn));
+	");
 */
 
-$qry_log = mysql_query("
+$qry_log = mysqli_query($conn, "
 	select
 		lt.lat,
         lt.lon,
@@ -58,25 +58,25 @@ $qry_log = mysql_query("
 	
 	limit 1, 1
 	
-	", $mysql_conn) or die(mysql_error($mysql_conn));
+	");
 	
 	
-while ($log = mysql_fetch_array($qry_log))
+while ($log = mysqli_fetch_array($qry_log))
 {
 
-	mysql_query("update gps.t_alert set check_is_present = 0", $mysql_conn);
-	mysql_query("
+	mysqli_query($conn, "update gps.t_alert set check_is_present = 0");
+	mysqli_query($conn, "
 		update gps.t_alert
 		set
 			check_is_present = 1
 		where
-			id_user = '" . mysql_real_escape_string($log['id_user']) . "'
-			and id_place = '" . mysql_real_escape_string($log['id_place']) . "'
+			id_user = '" . mysqli_real_escape_string($conn, $log['id_user']) . "'
+			and id_place = '" . mysqli_real_escape_string($conn, $log['id_place']) . "'
 			and active = 1
 		
-		", $mysql_conn);
+		");
 
-	$qry_alert_status = mysql_query("
+	$qry_alert_status = mysqli_query($conn, "
 		select
 			a.id_alert,
 			a.id_user,
@@ -97,9 +97,9 @@ while ($log = mysql_fetch_array($qry_log))
 				(a.is_present = 1 and a.check_is_present = 0 and a.when_leaving = 1)
 			)
 		
-		", $mysql_conn);
+		");
 		
-	while ($alertstatus = mysql_fetch_array($qry_alert_status)) {
+	while ($alertstatus = mysqli_fetch_array($qry_alert_status)) {
 		$msg = $alertstatus['username'] . ' ' . $alertstatus['status_msg'] . ' ' . ($alertstatus['pre_place'] == '' ? '' : $alertstatus['pre_place'] . ' ') . $alertstatus['place'] . '';
 		$channel = 'gps';
 		$title = '';
@@ -107,7 +107,7 @@ while ($log = mysql_fetch_array($qry_log))
 		send_msg($channel, $title, $msg, $priority);
 	}
 
-	mysql_query("update gps.t_alert set is_present = check_is_present", $mysql_conn);
+	mysqli_query($conn, "update gps.t_alert set is_present = check_is_present");
 
 }
 
