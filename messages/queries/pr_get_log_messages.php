@@ -1,6 +1,6 @@
 <?php
 	
-$qry_log_messages = mysql_query("
+$qry_log_messages = mysqli_query($conn, "
 	
 	select
 		lm.id_log_message,
@@ -21,6 +21,6 @@ $qry_log_messages = mysql_query("
 		lm.id_log_message desc
 		
 		
-	", $conn);
+	");
 	
 ?>

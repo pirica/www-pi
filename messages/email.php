@@ -112,29 +112,29 @@ for($i=$total-1;$i>=0;$i--) {
 	$id_email = '';
 	$id_emails = ',';
 	
-	$qry_check = mysql_query("
+	$qry_check = mysqli_query($conn, "
 		select * from t_email
 		where
-			ifnull(fromaddress,'- not set -') = '" . mysql_real_escape_string($fromaddress) . "'
-			and ifnull(subject,'- not set -') = '" . mysql_real_escape_string($subject) . "'
-			and ifnull(date,'- not set -') = '" . mysql_real_escape_string($date) . "'
-			and ifnull(message_id,'- not set -') = '" . mysql_real_escape_string($message_id) . "'
-			and ifnull(toaddress,'- not set -') = '" . mysql_real_escape_string($toaddress) . "'
+			ifnull(fromaddress,'- not set -') = '" . mysqli_real_escape_string($conn, $fromaddress) . "'
+			and ifnull(subject,'- not set -') = '" . mysqli_real_escape_string($conn, $subject) . "'
+			and ifnull(date,'- not set -') = '" . mysqli_real_escape_string($conn, $date) . "'
+			and ifnull(message_id,'- not set -') = '" . mysqli_real_escape_string($conn, $message_id) . "'
+			and ifnull(toaddress,'- not set -') = '" . mysqli_real_escape_string($conn, $toaddress) . "'
 		");
 		
-	while($check = mysql_fetch_array($qry_check)){
+	while($check = mysqli_fetch_array($qry_check)){
 		$id_emails .= $check['id_email'] . ',';
 	}
 	
-	if(mysql_num_rows($qry_check) == 0){
+	if(mysqli_num_rows($qry_check) == 0){
 		
-		$db_fromaddress	= $fromaddress	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($fromaddress) . "'";
-		$db_subject		= $subject		== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($subject) . "'";
-		$db_date		= $date			== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($date) . "'";
-		$db_message_id	= $message_id	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($message_id) . "'";
-		$db_toaddress	= $toaddress	== '- not set -' ? "NULL" : "'" . mysql_real_escape_string($toaddress) . "'";
+		$db_fromaddress	= $fromaddress	== '- not set -' ? "NULL" : "'" . mysqli_real_escape_string($conn, $fromaddress) . "'";
+		$db_subject		= $subject		== '- not set -' ? "NULL" : "'" . mysqli_real_escape_string($conn, $subject) . "'";
+		$db_date		= $date			== '- not set -' ? "NULL" : "'" . mysqli_real_escape_string($conn, $date) . "'";
+		$db_message_id	= $message_id	== '- not set -' ? "NULL" : "'" . mysqli_real_escape_string($conn, $message_id) . "'";
+		$db_toaddress	= $toaddress	== '- not set -' ? "NULL" : "'" . mysqli_real_escape_string($conn, $toaddress) . "'";
 		
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_email
 			(
 				raw,
@@ -147,23 +147,23 @@ for($i=$total-1;$i>=0;$i--) {
 			)
 			values
 			(
-				'" . mysql_real_escape_string($email_info) . "',
+				'" . mysqli_real_escape_string($conn, $email_info) . "',
 				" . $db_fromaddress . ",
 				" . $db_subject . ",
 				" . $db_date . ",
 				" . $db_message_id . ",
 				" . $db_toaddress . ",
-				'" . mysql_real_escape_string($email['body']) . "'
+				'" . mysqli_real_escape_string($conn, $email['body']) . "'
 			)
 			");
-		$id_email = mysql_insert_id($conn);
+		$id_email = mysqli_insert_id($conn);
 		$id_emails .= $id_email . ',';
 	}
 	
 	
 	// SPAM PROTECTION
 	
-	$qry = mysql_query("
+	$qry = mysqli_query($conn, "
 		select
 			id_email_spam,
 			when_subject,
@@ -175,96 +175,28 @@ for($i=$total-1;$i>=0;$i--) {
 		where
 			enabled = 1
 			and (
-				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($subject) . "' like when_subject)
+				(ifnull(when_subject,'') <> '' and '" . mysqli_real_escape_string($conn, $subject) . "' like when_subject)
 				or
-				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($fromaddress) . "' like when_from)
+				(ifnull(when_from,'') <> '' and '" . mysqli_real_escape_string($conn, $fromaddress) . "' like when_from)
 				or
-				(ifnull(when_to,'') <> '' and '" . mysql_real_escape_string($toaddress) . "' like when_to)
+				(ifnull(when_to,'') <> '' and '" . mysqli_real_escape_string($conn, $toaddress) . "' like when_to)
 				or
-				(ifnull(when_to,'') <> '' and '" . mysql_real_escape_string($toaddress) . "' like concat('%<', when_to, '>%') )
+				(ifnull(when_to,'') <> '' and '" . mysqli_real_escape_string($conn, $toaddress) . "' like concat('%<', when_to, '>%') )
 				or
-				(ifnull(when_body,'') <> '' and '" . mysql_real_escape_string(base64_decode($email['body'])) . "' like when_body)
+				(ifnull(when_body,'') <> '' and '" . mysqli_real_escape_string($conn, base64_decode($email['body'])) . "' like when_body)
 			)
 		");
 
-	while($spam = mysql_fetch_array($qry)){
+	while($spam = mysqli_fetch_array($qry)){
 		$emailhandle->markRemove($email['index']);
 		
-		mysql_query("update t_email_spam set last_hit = now() where id_email_spam = " . $spam['id_email_spam']);
+		mysqli_query($conn, "update t_email_spam set last_hit = now() where id_email_spam = " . $spam['id_email_spam']);
 		
 		if($id_emails != ','){
-			mysql_query("update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
+			mysqli_query($conn, "update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
 		}
 	}
 	
-	
-	
-	// ALERTING
-	
-	/*
-	$qry = mysql_query("
-		select
-			id_alert_email,
-			description,
-			when_from,
-			when_subject
-			
-		from t_alert_email
-		where
-			enabled = 1
-			and (
-				(ifnull(when_from,'') <> '' and '" . mysql_real_escape_string($fromaddress) . "' like when_from)
-				or
-				(ifnull(when_subject,'') <> '' and '" . mysql_real_escape_string($subject) . "' like when_subject)
-			)
-		");
-
-	while($tt = mysql_fetch_array($qry)){
-		$channel = 'Email_' . $tt['description'];
-		$title =  'Email from ' . $fromaddress;
-		$msg = 'Sub: ' . $subject;
-		$priority = $settings->val('email_alerting_priority', 2);
-		
-		$qry_result = mysql_query("
-			select 
-				result
-			from t_alert_email_result
-			where
-				id_alert_email = " . $tt['id_alert_email'] . "
-				and result = '" . mysql_real_escape_string($title . ' - ' . $msg) . "'
-				#and date_result < now() - interval 1 hour
-			order by
-				id_alert_email_result desc
-			limit 1
-			");
-			
-		$status = '';
-		while($ttresult = mysql_fetch_array($qry_result)){
-			$status = $ttresult['result'];
-		}
-		
-		if($status == ''){
-			
-			mysql_query("
-				insert into t_alert_email_result
-				(
-					id_alert_email,
-					result,
-					date_result
-				)
-				values
-				(
-					" . $tt['id_alert_email'] . ",
-					'" . mysql_real_escape_string($title . ' - ' . $msg) . "',
-					now()
-				)
-				");
-		
-			send_msg($channel, $title, $msg, $priority);
-			
-		}
-	}
-	*/
 }
 
 $emailhandle->remove();
@@ -274,7 +206,7 @@ $emailhandle->remove();
 // ALERTING
 
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		ae.id_alert_email,
 		ae.description,
@@ -296,35 +228,17 @@ $qry = mysql_query("
 		ae.enabled = 1
 	");
 
-while($tt = mysql_fetch_array($qry)){
+while($tt = mysqli_fetch_array($qry)){
 	$channel = 'Email_' . $tt['description'];
 	$title =  'Email from ' . $tt['fromaddress'];
 	$msg = 'Sub: ' . $tt['subject'];
 	$priority = $settings->val('email_alerting_priority', 2);
 	
 	$status = '';
-	/*
-	$qry_result = mysql_query("
-		select 
-			result
-		from t_alert_email_result
-		where
-			id_alert_email = " . $tt['id_alert_email'] . "
-			and result = '" . mysql_real_escape_string($title . ' - ' . $msg) . "'
-			#and date_result < now() - interval 1 hour
-		order by
-			id_alert_email_result desc
-		limit 1
-		");
-		
-	while($ttresult = mysql_fetch_array($qry_result)){
-		$status = $ttresult['result'];
-	}
-	*/
 	
 	if($status == ''){
 		
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_alert_email_result
 			(
 				id_alert_email,
@@ -334,7 +248,7 @@ while($tt = mysql_fetch_array($qry)){
 			values
 			(
 				" . $tt['id_alert_email'] . ",
-				'" . mysql_real_escape_string($title . ' - ' . $msg) . "',
+				'" . mysqli_real_escape_string($conn, $title . ' - ' . $msg) . "',
 				now()
 			)
 			");
@@ -344,14 +258,14 @@ while($tt = mysql_fetch_array($qry)){
 	}
 }
 
-mysql_query("update t_email set is_alerted = 1 where is_alerted = 0");
+mysqli_query($conn, "update t_email set is_alerted = 1 where is_alerted = 0");
 
 
 
 
 // TRACK & TRACE
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		ttt.id_tracktrace_type,
 		ttt.tracking_code,
@@ -369,7 +283,7 @@ $qry = mysql_query("
 	");
 
 	
-while($tt = mysql_fetch_array($qry)){
+while($tt = mysqli_fetch_array($qry)){
 	$tmp = $tt['body'];
 	$tmp = $tt['tracking_code'] . explode($tt['tracking_code'], $tmp, 2)[1];
 	$tmp = explode('&', $tmp, 2)[0];
@@ -386,7 +300,7 @@ while($tt = mysql_fetch_array($qry)){
 		}
 		
 		if(strpos($codes, ',' . $tmp . ',') === false){
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_tracktrace
 				(
 					id_tracktrace_type,
@@ -407,11 +321,11 @@ while($tt = mysql_fetch_array($qry)){
 		}
 	}
 	*/
-	mysql_query("update t_email set is_tracktrace = 1, tracking_code = '" . mysql_real_escape_string($tmp) . "' where id_email = " . $tt['id_email']);
+	mysqli_query($conn, "update t_email set is_tracktrace = 1, tracking_code = '" . mysqli_real_escape_string($conn, $tmp) . "' where id_email = " . $tt['id_email']);
 	
 }
 
-mysql_query("
+mysqli_query($conn, "
 	insert into t_tracktrace
 	(
 		id_tracktrace_type,

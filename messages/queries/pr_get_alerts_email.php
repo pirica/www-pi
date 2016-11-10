@@ -1,6 +1,6 @@
 <?php
 	
-$qry_alerts_email = mysql_query("
+$qry_alerts_email = mysqli_query($conn, "
 	
 	select
 		ae.id_alert_email,
@@ -24,6 +24,6 @@ $qry_alerts_email = mysql_query("
 		aer.id_alert_email_result desc
 		
 		
-	", $conn);
+	");
 	
 ?>

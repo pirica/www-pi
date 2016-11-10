@@ -27,7 +27,7 @@
 		success
 	*/
 	
-	while($log = mysql_fetch_array($qry_log_messages)){ 
+	while($log = mysqli_fetch_array($qry_log_messages)){ 
 		?>
 			<tr>
 				<td><?= $log['date_sent'] ?></td>

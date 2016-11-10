@@ -33,7 +33,7 @@ function log_message($type, $host, $channel, $title, $message, $success){
 	$qry .= "); ";
 	$qry .= "\r\n";
 	
-	if(!mysql_query($qry, $GLOBALS['conn']))
+	if(!mysqli_query($GLOBALS['conn'], $qry))
 	{
 		file_put_contents($GLOBALS['mysql_failed_inserts'], $qry, FILE_APPEND); 
 		shell_exec("chown www-data:www-data " . $GLOBALS['mysql_failed_inserts']);
@@ -42,7 +42,7 @@ function log_message($type, $host, $channel, $title, $message, $success){
 
 
 function check_msg_already_sent($channel, $title, $msg, $date){
-	$qry = mysql_query("
+	$qry = mysqli_query($GLOBALS['conn'], "
 		select * 
 		from t_log_message
 		where
@@ -50,8 +50,8 @@ function check_msg_already_sent($channel, $title, $msg, $date){
 			and channel = '" . my_escape_string($channel) . "'
 			and title = '" . my_escape_string($title) . "'
 			and message = '" . my_escape_string($msg) . "'
-		", $GLOBALS['conn']);
-	return mysql_num_rows($qry) > 0;
+		");
+	return mysqli_num_rows($qry) > 0;
 }
 
 function send_msg($channel, $title, $msg, $priority = 0, $send_by = 'include'){

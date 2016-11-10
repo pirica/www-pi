@@ -19,7 +19,7 @@
 	<tbody>
 	<?php 
 	$prev_id = -1;
-	while($alert = mysql_fetch_array($qry_alerts_email)){ 
+	while($alert = mysqli_fetch_array($qry_alerts_email)){ 
 		?>
 			<tr>
 				<?php 

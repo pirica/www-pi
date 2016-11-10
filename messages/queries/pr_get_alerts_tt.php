@@ -1,6 +1,6 @@
 <?php
 	
-$qry_alerts_tt = mysql_query("
+$qry_alerts_tt = mysqli_query($conn, "
 	
 	
 	select
@@ -33,6 +33,6 @@ $qry_alerts_tt = mysql_query("
 		
 		
 		
-	", $conn);
+	");
 	
 ?>

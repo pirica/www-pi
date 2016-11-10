@@ -4,7 +4,7 @@ require dirname(__FILE__).'/../_core/appinit.php';
 require 'connection.php';
 require 'functions.php';
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		t.id_tracktrace,
 		t.tracking_code,
@@ -23,9 +23,9 @@ $qry = mysql_query("
 		
 	");
 
-while($tt = mysql_fetch_array($qry)){
+while($tt = mysqli_fetch_array($qry)){
 	
-	$qry_result = mysql_query("
+	$qry_result = mysqli_query($conn, "
 		select 
 			result
 		from t_tracktrace_result
@@ -40,7 +40,7 @@ while($tt = mysql_fetch_array($qry)){
 	$status_changed = false;
 	$msg = '';
 	
-	while($ttresult = mysql_fetch_array($qry_result)){
+	while($ttresult = mysqli_fetch_array($qry_result)){
 		$status = $ttresult['result'];
 	}
 
@@ -52,7 +52,7 @@ while($tt = mysql_fetch_array($qry)){
 	
 	if($status_changed && $msg != ''){
 		
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_tracktrace_result
 			(
 				id_tracktrace,
@@ -62,7 +62,7 @@ while($tt = mysql_fetch_array($qry)){
 			values
 			(
 				" . $tt['id_tracktrace'] . ",
-				'" . mysql_real_escape_string($msg) . "',
+				'" . mysqli_real_escape_string($conn, $msg) . "',
 				now()
 			)
 			");
@@ -74,7 +74,7 @@ while($tt = mysql_fetch_array($qry)){
 		
 		if(stripos($msg, $tt['disable_when']) !== false){
 			// completed
-			mysql_query("
+			mysqli_query($conn, "
 				update t_tracktrace
 				set enabled = 0
 				where
