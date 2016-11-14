@@ -164,7 +164,7 @@ while ($grabs = mysqli_fetch_array($qry_grabs)) {
 			// if now completed (date = null)
 			if($grabs['date_completed'] === NULL){
 				// update when completed
-				mysqli_query("update t_grab set date_completed = now() where id_grab = " . $grabs['id_grab'], $conn);
+				mysqli_query($conn, "update t_grab set date_completed = now() where id_grab = " . $grabs['id_grab']);
 				
 				if($grabs['script_completion'] != ''){
 					// and execute any scripts on completion
