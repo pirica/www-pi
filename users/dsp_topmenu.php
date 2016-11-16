@@ -77,7 +77,7 @@ if(!isset($_GET['oldmenu'])) {
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav nav-apps">
 				<?php
-				while ($menu = mysql_fetch_array($qry_apps)) {
+				while ($menu = mysqli_fetch_array($qry_apps)) {
 					$relative_url = $menu['relative_url'];
 					$description = $menu['description'];
 					

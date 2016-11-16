@@ -8,7 +8,7 @@ if(!in_array($field, array('allowed'))){
 	$field = '';
 }
 
-mysql_query("
+mysqli_query($conn_users, "
 	insert into t_profile_app
 	(
 		id_profile,
@@ -28,21 +28,21 @@ mysql_query("
 		and p.full_access = 0
 		and pa.id_profile_app is null
 		
-	", $conn_users);
+	");
 	
 $error = 0;
 if($id_app > 0 && $id_profile > 0 && $field != ''){
 	
-	mysql_query("
+	mysqli_query($conn_users, "
 		update t_profile_app
 		set
-			" . $field . " = '" . mysql_real_escape_string($value) . "'
+			" . $field . " = '" . mysqli_real_escape_string($conn_users, $value) . "'
 			
 		where
 			id_app = " . $id_app . "
 			and id_profile = " . $id_profile . "
 			
-		", $conn_users);
+		");
 		
 }
 

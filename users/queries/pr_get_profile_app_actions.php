@@ -1,6 +1,6 @@
 <?php
 
-$qry_mng_profile_apps = mysql_query("
+$qry_mng_profile_apps = mysqli_query($conn_users, "
 	
 	select
 		p.id_profile,
@@ -31,13 +31,13 @@ $qry_mng_profile_apps = mysql_query("
 		ifnull(a.sort_order, ifnull(a.id_app, -1)),
 		aa.code
 		
-	", $conn_users);
+	");
 	
 		
 $profiledata = [];
 
 $prev_id_profile = -2;
-while ($profile_apps = mysql_fetch_array($qry_mng_profile_apps)) {
+while ($profile_apps = mysqli_fetch_array($qry_mng_profile_apps)) {
 	if($prev_id_profile != $profile_apps['id_profile']){
 		$profiledata[] = [];
 		$prev_id_profile = $profile_apps['id_profile'];

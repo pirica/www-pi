@@ -14,17 +14,17 @@ if(/*$id_app > 0 &&*/ $code != ''){
 			break;
 	}
 	
-	mysql_query("
+	mysqli_query($conn_users, "
 		update t_setting
 		set
-			value = '" . mysql_real_escape_string($value) . "'
+			value = '" . mysqli_real_escape_string($conn_users, $value) . "'
 			
 		where
 			id_app = " . $id_app . "
-			and code = '" . mysql_real_escape_string($code) . "'
+			and code = '" . mysqli_real_escape_string($conn_users, $code) . "'
 			and active = 1
 			
-		", $conn_users);
+		");
 		
 	$settings->clearCache();
 }

@@ -12,17 +12,17 @@ $error = 0;
 if(($id_app > 0 || $id_app == -1) && $code != ''){
 	
 	
-	mysql_query("
+	mysqli_query($conn_users, "
 		update t_app_action
 		set
-			" . $field . " = '" . mysql_real_escape_string($value) . "'
+			" . $field . " = '" . mysqli_real_escape_string($conn_users, $value) . "'
 			
 		where
 			ifnull(id_app,-1) = " . $id_app . "
-			and code = '" . mysql_real_escape_string($code) . "'
+			and code = '" . mysqli_real_escape_string($conn_users, $code) . "'
 			and active = 1
 			
-		", $conn_users);
+		");
 		
 }
 

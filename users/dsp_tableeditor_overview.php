@@ -38,8 +38,8 @@ if($tableeditor['enable_create'] == 1)
 		<tr>
 			<th>ID</th>
 			<?php
-			mysql_data_seek($qry_tableeditor_fields, 0);
-			while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+			mysqli_data_seek($qry_tableeditor_fields, 0);
+			while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 			{
 				if($tableeditor_field['show_in_overview'] == 1)
 				{
@@ -66,15 +66,15 @@ if($tableeditor['enable_create'] == 1)
 	
 	<tbody>
 	<?php 
-	while($item = mysql_fetch_array($qry_overview))
+	while($item = mysqli_fetch_array($qry_overview))
 	{
 	?>
 		<tr>
 			<td><?= $item[$tableeditor['tableid']] ?></td>
 			
 			<?php
-			mysql_data_seek($qry_tableeditor_fields, 0);
-			while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+			mysqli_data_seek($qry_tableeditor_fields, 0);
+			while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 			{
 				if($tableeditor_field['show_in_overview'] == 1)
 				{

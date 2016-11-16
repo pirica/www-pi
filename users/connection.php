@@ -26,7 +26,6 @@ if ($mysqli->connect_error) {
     exit();
 }
 
-$conn_users = mysql_connect(HOST, USER, PASSWORD) ;//or die("Unable to connect to MySQL");
-mysql_select_db(DATABASE, $conn_users) ;//or die("Could not select examples");
+$conn_users = mysqli_connect(HOST, USER, PASSWORD, DATABASE) ;//or die("Unable to connect to MySQL");
 
 ?>

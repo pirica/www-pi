@@ -13,7 +13,7 @@ else {
 }
 //echo '<!--u:'.$request_uri.'-->';
 
-$qry_apps = mysql_query("
+$qry_apps = mysqli_query($conn_users, "
 	
 	select
 		a.id_app,
@@ -27,7 +27,7 @@ $qry_apps = mysql_query("
 		a.fa_icon,
 		a.theme_color,
 		
-		case when '" . mysql_real_escape_string($request_uri) . "' = a.relative_url then 1 else 0 end as is_current
+		case when '" . mysqli_real_escape_string($conn_users, $request_uri) . "' = a.relative_url then 1 else 0 end as is_current
 		
 	from users.t_app a
 		join users.t_profile p on p.id_profile = " . $id_profile . "
@@ -43,7 +43,7 @@ $qry_apps = mysql_query("
 	order by
 		ifnull(a.sort_order, a.id_app)
 		
-	", $conn_users);
+	");
 	
 
 	
@@ -51,7 +51,7 @@ $array_actions = $cache->get("topmenu_actions");
 
 if($array_actions == null) {
 	
-	$qry_actions = mysql_query("
+	$qry_actions = mysqli_query($conn_users, "
 		
 		select
 			ifnull(aa.id_app, -1) as id_app,
@@ -76,10 +76,10 @@ if($array_actions == null) {
 			ifnull(aa.code,'Main')
 			
 			
-		", $conn_users);
+		");
 	
 	$array_actions = array();
-	while($menu_action = mysql_fetch_array($qry_actions))
+	while($menu_action = mysqli_fetch_array($qry_actions))
 	{
 		$array_actions[] = array(
 			'id_app' => $menu_action['id_app'],
@@ -109,7 +109,7 @@ $array_actions_data = $cache->get($cache_name);
 
 if($array_actions_data == null) {
 	
-	$qry_actions_data = mysql_query("
+	$qry_actions_data = mysqli_query($conn_users, "
 		
 		select
 			ifnull(aa.id_app, -1) as id_app,
@@ -129,10 +129,10 @@ if($array_actions_data == null) {
 			aa.description
 			
 			
-		", $conn_users);
+		");
 	
 	$array_actions_data = array();
-	while($menu_action = mysql_fetch_array($qry_actions_data))
+	while($menu_action = mysqli_fetch_array($qry_actions_data))
 	{
 		$array_actions_data[] = array(
 			'id_app' => $menu_action['id_app'],

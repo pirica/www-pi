@@ -35,8 +35,8 @@ if(
 		<input type="hidden" name="id" value="<?= $id ?>"/>
 		
 		<?php
-		mysql_data_seek($qry_tableeditor_fields, 0);
-		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+		mysqli_data_seek($qry_tableeditor_fields, 0);
+		while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
@@ -65,10 +65,10 @@ if(
 												order by " . $tableeditor_field['lookup_labelfield'] . "
 												";
 											//echo '<!--' . $sql . '-->';
-											$tableeditor_lookup_data = mysql_query($sql, $conn_users);
+											$tableeditor_lookup_data = mysqli_query($conn_users, $sql);
 											
 											$array_lookupdata = array();
-											while($lookupdata = mysql_fetch_array($tableeditor_lookup_data))
+											while($lookupdata = mysqli_fetch_array($tableeditor_lookup_data))
 											{
 												$array_lookupdata[] = array(
 													'id' => $lookupdata['id'],
