@@ -313,9 +313,9 @@ while($tt = mysqli_fetch_array($qry)){
 				(
 					" . $tt['id_tracktrace_type'] . ",
 					1,
-					'" . mysql_real_escape_string($tmp) . "',
-					'" . mysql_real_escape_string($postalcode) . "',
-					'" . mysql_real_escape_string($tt['fromaddress']) . "'
+					'" . mysqli_real_escape_string($conn, $tmp) . "',
+					'" . mysqli_real_escape_string($conn, $postalcode) . "',
+					'" . mysqli_real_escape_string($conn, $tt['fromaddress']) . "'
 				)
 				");
 		}

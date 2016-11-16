@@ -19,7 +19,7 @@ if(!isset($_GET['oldmenu'])) {
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-logo" href="#">
-				<img src="/_core/logo.php?bgcolor=222&color=<?= $app->getThemeColor() ?>&width=64" alt="" />
+				<img src="/_core/logo.php?bgcolor=222222&color=<?= $app->getThemeColor() ?>&width=64" alt="" />
 				<span>Localdome</span>
 			</a>
 			<a class="navbar-brand" href="#"><?= $app->getName() ?></a>

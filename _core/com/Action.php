@@ -93,7 +93,7 @@ class Action
 			
 			$this->_id_tableeditor = -1;
 			
-			$qry_action = mysql_query("
+			$qry_action = mysqli_query($this->_db, "
 				select
 					#aa.id_app,
 					#aa.code,
@@ -119,7 +119,7 @@ class Action
 				where " . 
 					($this->_id_app > 0 ? "aa.id_app = " . $this->_id_app : "aa.id_app is null") .
 					"
-					and aa.code = '" . mysql_real_escape_string($this->_code) . "'
+					and aa.code = '" . mysqli_real_escape_string($this->_db, $this->_code) . "'
 					and aa.active = 1
 					
 				order by
@@ -127,9 +127,9 @@ class Action
 					
 				limit 1
 				
-				", $this->_db);
+				");
 				
-            while($_action = mysql_fetch_array($qry_action)){
+            while($_action = mysqli_fetch_array($qry_action)){
 				$this->_id_app_action = $_action['id_app_action'];
 				$this->_page_title = $_action['page_title'];
 				$this->_login_required = $_action['login_required'];
@@ -143,7 +143,7 @@ class Action
 	}
 	
 	private function setData() {
-		mysql_query("
+		mysqli_query($this->_db, "
 			insert into t_app_action
 			(
 				id_app,
@@ -151,15 +151,15 @@ class Action
 			)
 			select
 				nullif(" . $this->_id_app . ", -1),
-				'" . mysql_real_escape_string($this->_code) . "'
+				'" . mysqli_real_escape_string($this->_db, $this->_code) . "'
 			from t_app_action
 			where
 				not exists (
-					select * from t_app_action where ifnull(id_app,-1) = " . $this->_id_app . " and code = '" . mysql_real_escape_string($this->_code) . "'
+					select * from t_app_action where ifnull(id_app,-1) = " . $this->_id_app . " and code = '" . mysqli_real_escape_string($this->_db, $this->_code) . "'
 				)
 			limit 1, 1
 			
-			", $this->_db);
+			");
 			
 	}
 	

@@ -63,7 +63,7 @@ for($f = 0; $f < $filecount; $f++){
 						g.id_grab,
 						ifnull(gf.id_grab_file,0) as id_grab_file
 					from t_grab g
-					left join t_grab_file gf on gf.id_grab = g.id_grab and gf.active = 1 and replace('https://', 'http://', gf.full_url) = '" . mysql_real_escape_string(str_replace('https://', 'http://', $line)) . "'
+					left join t_grab_file gf on gf.id_grab = g.id_grab and gf.active = 1 and replace('https://', 'http://', gf.full_url) = '" . mysqli_real_escape_string($conn, str_replace('https://', 'http://', $line)) . "'
 					where
 						g.active = 1
 						and g.description like '%flickr%'

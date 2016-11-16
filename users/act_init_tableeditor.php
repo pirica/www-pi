@@ -66,7 +66,7 @@ $parentid = saneInput('parentid', 'int', -1);
 $searchvalue = saneInput('searchvalue');
 
 
-$qry_tableeditor = mysql_query("
+$qry_tableeditor = mysqli_query($conn_users, "
 	
 	select
 		te.id_tableeditor,
@@ -93,9 +93,9 @@ $qry_tableeditor = mysql_query("
 		te.id_tableeditor = " . $action->getEditorId() . "
 		and te.active = 1
 		
-	", $conn_users);
+	");
 	
-$tableeditor = mysql_fetch_array($qry_tableeditor);
+$tableeditor = mysqli_fetch_array($qry_tableeditor);
 
 $tableeditor_fields_overview = ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor['tableid'];
 $tableeditor_fields_entry = $tableeditor['tableid'];
@@ -105,7 +105,7 @@ $tableeditor_sql_search = '';
 $tableeditor_sql_orderby = '';
 $tableeditor_sql_orderby_fields = array();
 
-$qry_tableeditor_fields = mysql_query("
+$qry_tableeditor_fields = mysqli_query($conn_users, "
 	
 	select
 		tef.id_tableeditor_field,
@@ -141,9 +141,9 @@ $qry_tableeditor_fields = mysql_query("
 	order by
 		tef.sort_order
 	
-	", $conn_users);
+	");
 	
-while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 {
 	$_tablename = ($tableeditor['tablename'] == '' ? '' : $tableeditor['tablename'] . ".") . $tableeditor_field['fieldname'];
 	
@@ -209,17 +209,17 @@ if($tableeditor_sql_orderby_fields_len > 0)
 
 if($mode == 'save')
 {
-	mysql_data_seek($qry_tableeditor_fields, 0);
+	mysqli_data_seek($qry_tableeditor_fields, 0);
 	
 	if($id > 0)
 	{
 		$qry_update = "";
 		
-		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+		while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
-				$_fieldvalue = "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+				$_fieldvalue = "'" . mysqli_real_escape_string($conn_users, $_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
 				
 				if($tableeditor_field['id_tableeditor_lookup'] > 0 && $_POST['tef_' . $tableeditor_field['fieldname']] == '')
 				{
@@ -231,14 +231,14 @@ if($mode == 'save')
 			}
 		}
 		
-		mysql_query("
+		mysqli_query($conn_users, "
 			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			set " .
 				$qry_update . 
 			" where	
 				" . $tableeditor['tableid'] . " = " . $id . "
 				
-			", $conn_users);
+			");
 			
 	}
 	else
@@ -246,9 +246,9 @@ if($mode == 'save')
 		$qry_insert_fields = "";
 		$qry_insert_values = "";
 		
-		while($tableeditor_field = mysql_fetch_array($qry_tableeditor_fields))
+		while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 		{
-			$_fieldvalue = "'" . mysql_real_escape_string($_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+			$_fieldvalue = "'" . mysqli_real_escape_string($conn_users, $_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
 			
 			if($tableeditor_field['id_tableeditor_lookup'] > 0 && $_POST['tef_' . $tableeditor_field['fieldname']] == '')
 			{
@@ -265,7 +265,7 @@ if($mode == 'save')
 			}
 		}
 		
-		mysql_query("
+		mysqli_query($conn_users, "
 			insert into " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			(
 				" . ($tableeditor['parentid'] == '' ? '' : $tableeditor['parentid'] . ',') . "
@@ -276,7 +276,7 @@ if($mode == 'save')
 				" . ($tableeditor['parentid'] == '' ? '' : $parentid . ',') . "
 				" .	$qry_insert_values . "
 			)
-			", $conn_users);
+			");
 			
 
 	}
@@ -288,23 +288,23 @@ if($mode == 'dodelete' && $tableeditor['enable_delete'] == 1)
 {
 	if($tableeditor['use_active_flag'] == 1)
 	{
-		mysql_query("
+		mysqli_query($conn_users, "
 			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			set active = 0
 			where	
 				" . $tableeditor['tableid'] . " = " . $id . "
 			
-			", $conn_users);
+			");
 
 	}
 	else
 	{
-		mysql_query("
+		mysqli_query($conn_users, "
 			delete from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			where	
 				" . $tableeditor['tableid'] . " = " . $id . "
 			
-			", $conn_users);
+			");
 	}
 }
 
@@ -314,7 +314,7 @@ if($mode == 'edit')
 	
 	if($id > 0)
 	{
-		$qry_tableeditor_entry = mysql_query("
+		$qry_tableeditor_entry = mysqli_query($conn_users, "
 			select
 				" . $tableeditor_fields_entry . "
 			from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
@@ -322,17 +322,17 @@ if($mode == 'edit')
 				" . $tableeditor['tableid'] . " = " . $id . "
 				" . ($tableeditor['parentid'] == '' ? '' : 'and ' . $tableeditor['parentid'] . ' = ' . $parentid) . "
 			
-			", $conn_users);
+			");
 	}
 	else 
 	{
-		$qry_tableeditor_entry = mysql_query("
+		$qry_tableeditor_entry = mysqli_query($conn_users, "
 			select
 				-1 " . str_replace(',', ", '' ", $tableeditor_fields_entry) . "
 			
-			", $conn_users);
+			");
 	}
-	$tableentry = mysql_fetch_array($qry_tableeditor_entry);
+	$tableentry = mysqli_fetch_array($qry_tableeditor_entry);
 	
 }
 else 
@@ -348,7 +348,7 @@ else
 		" . $tableeditor_sql_orderby . "
 		";
 		
-	$qry_overview = mysql_query($sql, $conn_users);
+	$qry_overview = mysqli_query($conn_users, $sql);
 	
 	if($qry_overview === false)
 	{
