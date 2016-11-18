@@ -21,10 +21,11 @@ require dirname(__FILE__).'/../users/sec-users.php';
 require_once dirname(__FILE__).'/../_core/components/phpfastcache/phpfastcache.php';
 
 
-$request_uri = '';
+$request_uri = $_SERVER['SCRIPT_FILENAME'];
 // from command line
 //if(isset($_SERVER['TERM']) && isset($_SERVER['SHELL'])){
-	$request_uri = str_replace('/var/www', '', $_SERVER['SCRIPT_FILENAME']);
+	$request_uri = str_replace('/var/www/html', '', $request_uri);
+	$request_uri = str_replace('/var/www', '', $request_uri);
 //}
 // from www
 /*else if(isset($_SERVER['REQUEST_URI'])){
