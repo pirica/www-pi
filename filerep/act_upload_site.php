@@ -13,7 +13,7 @@ echo ini_get('max_file_uploads');
 
 $server_directory = '';
 
-while($shares = mysql_fetch_array($qry_shares)){
+while($shares = mysqli_fetch_array($qry_shares)){
 	if($shares['id_share'] == $id_share){
 		$server_directory = $shares['server_directory'];
 	}
@@ -44,7 +44,7 @@ if(isset($_FILES["myfile"]))
 			$filesize = filesize($server_directory . $dir . $filename);
 			$modified = filemtime($server_directory . $dir . $filename);
 			
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_file
 				(
 					id_share,
@@ -57,14 +57,14 @@ if(isset($_FILES["myfile"]))
 				values
 				(
 					" . $id_share . ",
-					'" . mysql_real_escape_string($filename) . "',
-					'" . mysql_real_escape_string($dir) . "',
+					'" . mysqli_real_escape_string($conn, $filename) . "',
+					'" . mysqli_real_escape_string($conn, $dir) . "',
 					" . $filesize . ",
 					1,
 					'" . date('Y-m-d H:i:s', $modified) . "'
 				)
-				", $conn);
-			//$new_id_file = mysql_insert_id($conn);
+				");
+			//$new_id_file = mysqli_insert_id($conn);
 			
 		}
 		else {
@@ -117,7 +117,7 @@ if(isset($_FILES["myfile"]))
 				$filesize = filesize($server_directory . $dir . $filename);
 				$modified = filemtime($server_directory . $dir . $filename);
 				
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_file
 					(
 						id_share,
@@ -130,14 +130,14 @@ if(isset($_FILES["myfile"]))
 					values
 					(
 						" . $id_share . ",
-						'" . mysql_real_escape_string($filename) . "',
-						'" . mysql_real_escape_string($dir) . "',
+						'" . mysqli_real_escape_string($conn, $filename) . "',
+						'" . mysqli_real_escape_string($conn, $dir) . "',
 						" . $filesize . ",
 						1,
 						'" . date('Y-m-d H:i:s', $modified) . "'
 					)
-					", $conn);
-				//$new_id_file = mysql_insert_id($conn);
+					");
+				//$new_id_file = mysqli_insert_id($conn);
 				
 			}
 			else {

@@ -7,22 +7,22 @@ $sharename = saneInput('sharename');
 $date_last_replicated = saneInput('date_last_replicated', 'unixtime', 0); // seconds since epoch
 //$cached_index = saneInput('cached_index', 'int', 1);
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select * from t_share s
 	left join t_host_share hs on hs.id_share = s.id_share
 		and hs.active = 1
 		and hs.id_host = " . $id_host . " 
 	where
 		s.id_share = " . $id_share . " 
-	", $conn);
+	");
 
-while ($row = mysql_fetch_array($qry)) {
+while ($row = mysqli_fetch_array($qry)) {
 	$sharename = $row{'server_directory'};
 }
 
 $data = [];
 
-if(mysql_num_rows($qry) == 0){
+if(mysqli_num_rows($qry) == 0){
 	$returnvalue = array('type' => 'error', 'message' => 'share not linked to host');
 }
 else if($sharename == ''){
@@ -34,7 +34,7 @@ else {
 	$logging = 'dir='.$fulldir;
 	
 	/*if($cached_index == 1){
-		$qry = mysql_query("
+		$qry = mysqli_query($conn, "
 			select
 				f.filename as name,
 				f.relative_directory as nativepath,
@@ -45,7 +45,7 @@ else {
 			where
 				f.id_share = " . $id_share . " 
 				and f.active = 1
-			", $conn);
+			");
 		$data = mysql2json($qry);
 	}
 	else {*/

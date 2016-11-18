@@ -7,14 +7,14 @@ from t_file_log
 group by convert( convert(date_log, char(10)) , datetime) 
 */
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	delete from t_file_log_summary
 	where
 		date_log_flat = convert( convert(now(), char(10)) , datetime)
-	", $conn);
+	");
 	
 	
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	
 	insert into t_file_log_summary
 	(
@@ -61,7 +61,7 @@ $qry = mysql_query("
 	#	convert( convert(fl.date_log, char(10)) , datetime),
 	#	fl.id_host,
 	#	s.id_share
-	", $conn);
+	");
 	
 ?>
 

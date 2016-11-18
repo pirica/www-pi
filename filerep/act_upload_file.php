@@ -44,7 +44,7 @@ if(empty($errors)) {
 			
 			// insert into database
 			
-			$qry_shares = mysql_query("
+			$qry_shares = mysqli_query($conn, "
 				select
 					s.id_share,
 					s.name,
@@ -53,8 +53,8 @@ if(empty($errors)) {
 				from t_share s
 				where
 					s.id_share = " . $id_share . "
-				", $conn);
-			$share = mysql_fetch_array($qry_shares);
+				");
+			$share = mysqli_fetch_array($qry_shares);
 			$dir = $share['server_directory'];
 			
 			$reldir = $path;
@@ -74,18 +74,18 @@ if(empty($errors)) {
 			}
 			
 			
-			mysql_query("
+			mysqli_query($conn, "
 				update t_directory
 				set
 					date_last_checked = null
 				
 				where
 					id_share = " . $id_share . "
-					and relative_directory = '" . mysql_real_escape_string($reldir) . "'
-				", $conn);
+					and relative_directory = '" . mysqli_real_escape_string($conn, $reldir) . "'
+				");
 				
 			/*
-			$qry_files = mysql_query("
+			$qry_files = mysqli_query($conn, "
 				select
 					f.id_file,
 					f.filename,
@@ -97,10 +97,10 @@ if(empty($errors)) {
 					f.active
 				from t_file f
 				where
-					f.relative_directory = '" . mysql_real_escape_string($reldir) . "'
-					and f.filename = '" . mysql_real_escape_string($filename) . "'
+					f.relative_directory = '" . mysqli_real_escape_string($conn, $reldir) . "'
+					and f.filename = '" . mysqli_real_escape_string($conn, $filename) . "'
 					and f.active = 1
-				", $conn);
+				");
 			
 			$file_found = 0;
 			
@@ -108,7 +108,7 @@ if(empty($errors)) {
 			
 			//TODO: remove filename from relative_directory
 			
-			while ($dbfile = mysql_fetch_array($qry_files)) {
+			while ($dbfile = mysqli_fetch_array($qry_files)) {
 				if($reldir == $dbfile['relative_directory'] && $filename == $dbfile['filename']){
 					$file_found = 1;
 					
@@ -121,7 +121,7 @@ if(empty($errors)) {
 					if($date_last_modified != $modified){
 						// update file in db
 						
-						/ *mysql_query("
+						/ *mysqli_query($conn, "
 							insert into t_file_log
 							(
 								id_file,
@@ -144,9 +144,9 @@ if(empty($errors)) {
 								" . ($dbfile['version'] + 1) . ",
 								'" . date('Y-m-d H:i:s', $modified) . "'
 							)
-							", $conn);* /
+							");* /
 							
-						mysql_query("
+						mysqli_query($conn, "
 							update t_file 
 							set
 								size = " . $filesize . ",
@@ -154,11 +154,11 @@ if(empty($errors)) {
 								date_last_modified = '" . date('Y-m-d H:i:s', $modified) . "'
 							where
 								id_file = " . $dbfile['id_file'] . "
-							", $conn);
+							");
 							
 					}
 					else {
-						/ *mysql_query("
+						/ *mysqli_query($conn, "
 							insert into t_file_log
 							(
 								id_file,
@@ -181,7 +181,7 @@ if(empty($errors)) {
 								" . $dbfile['version'] . ",
 								'" . date('Y-m-d H:i:s', $dbfile['modified']) . "'
 							)
-							", $conn);* /
+							");* /
 					}
 					break;
 				}
@@ -190,7 +190,7 @@ if(empty($errors)) {
 			// not in DB yet, insert
 			if($file_found == 0){
 				
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_file
 					(
 						id_share,
@@ -203,16 +203,16 @@ if(empty($errors)) {
 					values
 					(
 						" . $id_share . ",
-						'" . mysql_real_escape_string($filename) . "',
-						'" . mysql_real_escape_string($reldir) . "',
+						'" . mysqli_real_escape_string($conn, $filename) . "',
+						'" . mysqli_real_escape_string($conn, $reldir) . "',
 						" . $filesize . ",
 						1,
 						'" . date('Y-m-d H:i:s', $modified) . "'
 					)
-					", $conn);
-				$new_id_file = mysql_insert_id($conn);
+					");
+				$new_id_file = mysqli_insert_id($conn);
 				
-				/ *mysql_query("
+				/ *mysqli_query($conn, "
 					insert into t_file_log
 					(
 						id_file,
@@ -235,7 +235,7 @@ if(empty($errors)) {
 						1,
 						'" . date('Y-m-d H:i:s', $modified) . "'
 					)
-					", $conn);* /
+					");* /
 			}
 			else {
 			

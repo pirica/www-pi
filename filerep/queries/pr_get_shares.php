@@ -1,6 +1,6 @@
 <?php
 
-$qry_shares = mysql_query("
+$qry_shares = mysqli_query($conn, "
 	select
 		s.id_share,
 		s.name,
@@ -18,6 +18,6 @@ $qry_shares = mysql_query("
 	order by
 		s.name
 		
-	", $conn);
+	");
 	
 ?>

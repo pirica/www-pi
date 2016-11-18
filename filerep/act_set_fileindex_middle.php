@@ -35,11 +35,11 @@ if($files !== null){
 		$sql .= ($sql == '' ? '' : ',');
 		$sql .= "
 			(
-				'" . mysql_real_escape_string($path) . "',
-				'" . mysql_real_escape_string($files[$i]->n) . "',
-				'" . mysql_real_escape_string($files[$i]->m) . "',
-				0" . /*mysql_real_escape_string($files[$i]->c) .*/ ",
-				" . mysql_real_escape_string($files[$i]->e) . ",
+				'" . mysqli_real_escape_string($conn, $path) . "',
+				'" . mysqli_real_escape_string($conn, $files[$i]->n) . "',
+				'" . mysqli_real_escape_string($conn, $files[$i]->m) . "',
+				0" . /*mysqli_real_escape_string($conn, $files[$i]->c) .*/ ",
+				" . mysqli_real_escape_string($conn, $files[$i]->e) . ",
 			
 				" . $id_share . ",
 				" . $id_host . " 
@@ -47,7 +47,7 @@ if($files !== null){
 			";
 		
 		if($counter == 10){
-			$query_success = $query_success && mysql_query("
+			$query_success = $query_success && mysqli_query($conn, "
 				insert into t_file_index_temp
 				(
 					relative_directory,
@@ -61,7 +61,7 @@ if($files !== null){
 				)
 				values
 				" . $sql
-				, $conn);
+				);
 			
 			$counter = 0;
 			$sql = "";
@@ -72,7 +72,7 @@ if($files !== null){
 	}
 
 	if($sql != ""){
-		$query_success = $query_success && mysql_query("
+		$query_success = $query_success && mysqli_query($conn, "
 			insert into t_file_index_temp
 			(
 				relative_directory,
@@ -86,7 +86,7 @@ if($files !== null){
 			)
 			values
 			" . $sql
-			, $conn);
+			);
 		
 	}
 

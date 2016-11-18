@@ -6,7 +6,7 @@ set_time_limit(0);
 $days = saneInput('days', 'int', '3');
 $no_initial_history = saneInput('no_initial_history', 'int', '0'); // 0 or 1
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		fl.id_file_log,
 		fl.date_log,
@@ -39,7 +39,7 @@ $qry = mysql_query("
 		fl.active = 1
 		and fl.date_log between  now() - interval " . $days . " day and now()
 		and fl.version > " . $no_initial_history . "
-	", $conn);
+	");
 	
 $returnvalue = array('data' => mysql2json($qry));
 

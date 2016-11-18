@@ -29,7 +29,7 @@
 	
 	<tbody>
 	<?php 
-	while($stat = mysql_fetch_array($qry_share_stats)){ 
+	while($stat = mysqli_fetch_array($qry_share_stats)){ 
 	?>
 		<tr>
 			<td><?= $stat['id_share'] ?></td>

@@ -40,9 +40,9 @@ switch($action->getCode()){
 		include 'queries/pr_get_files.php';
 		
 		// row 1: current directory
-		$currentdir = mysql_fetch_array($qry_files_currentdir);
+		$currentdir = mysqli_fetch_array($qry_files_currentdir);
 		// row 2: parent directory
-		$parentdir = mysql_fetch_array($qry_files_parentdir);
+		$parentdir = mysqli_fetch_array($qry_files_parentdir);
 		
 		$currentdirarr = explode('/', $currentdir['relative_directory']);
 		
@@ -182,9 +182,9 @@ switch($action->getCode()){
 		include 'queries/pr_get_files.php';
 		
 		// row 1: current directory
-		$currentdir = mysql_fetch_array($qry_files_currentdir);
+		$currentdir = mysqli_fetch_array($qry_files_currentdir);
 		// row 2: parent directory
-		$parentdir = mysql_fetch_array($qry_files_parentdir);
+		$parentdir = mysqli_fetch_array($qry_files_parentdir);
 		
 		$currentdirarr = explode('/', $currentdir['relative_directory']);
 		

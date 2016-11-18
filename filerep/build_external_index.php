@@ -26,14 +26,14 @@ function curl_get_contents($url)
 // check if script is already running - no, continue
 //if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 	// mark as running
-	//mysql_query("update t_setting set value = '1' where code = 'directoryindex_running'", $conn);
+	//mysqli_query($conn, "update t_setting set value = '1' where code = 'directoryindex_running'");
 	
 
 	// insert new (missing) directories
-	//mysql_query("truncate table t_directory_index ", $conn);
+	//mysqli_query($conn, "truncate table t_directory_index ");
 	
 	// insert base dirs (c:, d:)
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_external_index
 		(
 			id_share,
@@ -63,7 +63,7 @@ function curl_get_contents($url)
 			s.external = 1
 			and d.id_external_index is null
 			
-		", $conn);
+		");
 		
 	// insert new (missing) links between shares and server host
 	$qry_missing_str = "
@@ -76,20 +76,20 @@ function curl_get_contents($url)
 			and s.active = 1
 			and hs.id_host_share is null
 		";
-	$qry_missing = mysql_query("select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str, $conn);
-	$qry_insert_missing = mysql_query("
+	$qry_missing = mysqli_query($conn, "select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str, $conn);
+	$qry_insert_missing = mysqli_query($conn, "
 		insert into t_host_share (id_host, id_share, local_directory) 
 		select h.id_host, s.id_share, s.server_directory " .
 		$qry_missing_str
 		, $conn);
 		
-	while ($missing = mysql_fetch_array($qry_missing)) {
+	while ($missing = mysqli_fetch_array($qry_missing)) {
 		echo "New share '" . $missing{'name'} . "' (" . $missing{'server_url'} . ") added\n";
 	}
 
 	flush();
 
-	$qry_shares = mysql_query("
+	$qry_shares = mysqli_query($conn, "
 		select
 			s.id_share,
 			s.name,
@@ -108,12 +108,12 @@ function curl_get_contents($url)
 			s.active = 1
 			and s.external = 1
 		order by s.id_share
-		", $conn);
+		");
 		
 
 	$id_share = -1;
 
-	while ($share = mysql_fetch_array($qry_shares)) {
+	while ($share = mysqli_fetch_array($qry_shares)) {
 		$id_share = $share{'id_share'};
 		$server_url = $share{'server_url'};
 		$date_last_replicated = $share{'date_last_replicated'};
@@ -134,7 +134,7 @@ function curl_get_contents($url)
 		
 		if($online == 1){
 			
-			$qry_dirs = mysql_query("
+			$qry_dirs = mysqli_query($conn, "
 				select
 					ei.id_external_index,
 					ei.id_share,
@@ -155,9 +155,9 @@ function curl_get_contents($url)
 					and ei.do_check = 1
 				limit 20
 				
-				", $conn);
+				");
 			
-			while ($dirs = mysql_fetch_array($qry_dirs)) {
+			while ($dirs = mysqli_fetch_array($qry_dirs)) {
 				$relative_directory = $dirs['relative_directory'];
 				if(substr($relative_directory, 0, 1) == '/'){
 					$relative_directory = substr($relative_directory, 1);
@@ -191,7 +191,7 @@ function curl_get_contents($url)
 								$relative_directory = substr($relative_directory, 1);
 							}
 							
-							mysql_query("
+							mysqli_query($conn, "
 								insert into t_external_index
 								(
 									id_share,
@@ -205,25 +205,25 @@ function curl_get_contents($url)
 								values
 								(
 									" . $id_share . ",
-									'" . mysql_real_escape_string($tmpdirs[$i]->filename) . "',
-									'" . mysql_real_escape_string($dirs['relative_directory'] . ($tmpdirs[$i]->dir == 1 ? $tmpdirs[$i]->filename . '/' : '') ) . "',
+									'" . mysqli_real_escape_string($conn, $tmpdirs[$i]->filename) . "',
+									'" . mysqli_real_escape_string($conn, $dirs['relative_directory'] . ($tmpdirs[$i]->dir == 1 ? $tmpdirs[$i]->filename . '/' : '') ) . "',
 									" . $tmpdirs[$i]->dir . ",
 									" . $tmpdirs[$i]->size . ",
 									" . $modified . ",
 									1
 								)
 								
-								", $conn);
+								");
 						}
 					}
 					
-					mysql_query("
+					mysqli_query($conn, "
 						update t_external_index
 						set do_check = 0
 						where
 							id_external_index = " . $dirs['id_external_index'] . "
 							
-						", $conn);
+						");
 				}
 			}
 			
@@ -233,7 +233,7 @@ function curl_get_contents($url)
 	
 
 	// insert root
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_directory
 		(
 			id_share,
@@ -265,10 +265,10 @@ function curl_get_contents($url)
 			f.id_share,
 			f.relative_directory
 			
-		", $conn);
+		");
 		
 	// insert new directories
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_directory
 		(
 			id_share,
@@ -312,10 +312,10 @@ function curl_get_contents($url)
 			f.id_share,
 			f.relative_directory
 			
-		", $conn);
+		");
 	
 	// insert new files
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_file
 		(
 			id_share,
@@ -347,11 +347,11 @@ function curl_get_contents($url)
 			f.id_share,
 			f.relative_directory
 
-		", $conn);
+		");
 
 /*
 	// remove deleted dir and flag to be reindexed (to delete files)
-	mysql_query("
+	mysqli_query($conn, "
 		
 		update t_directory d
 		left join t_directory_index di on di.id_share = d.id_share
@@ -365,11 +365,11 @@ function curl_get_contents($url)
 			d.active = 1
 			and di.id_directory_index is null
 			
-		", $conn);
+		");
 	
 		
 	// update directories
-	mysql_query("
+	mysqli_query($conn, "
 		update t_directory d
 		join (
 			select
@@ -394,24 +394,24 @@ function curl_get_contents($url)
 			d.nbr_files = f.nbr_files,
 			d.nbr_files_inactive = f.nbr_files_inactive
 		
-		", $conn);
+		");
 	
 		
 	// get max directory depth
-	$qry_max_depth = mysql_query("
+	$qry_max_depth = mysqli_query($conn, "
 		select
 			max(d.depth) as max_depth
 		from t_directory d
 		where
 			d.parent_directory is not null
-		", $conn);
+		");
 	
 	
-	$max_depth = mysql_fetch_array($qry_max_depth)['max_depth'];
+	$max_depth = mysqli_fetch_array($qry_max_depth)['max_depth'];
 
 	while($max_depth > 0){
 		// update directory stats (size, dates)
-		mysql_query("
+		mysqli_query($conn, "
 			
 			update t_directory d
 			join (
@@ -447,7 +447,7 @@ function curl_get_contents($url)
 				d.nbr_files_sub = dp.nbr_files,
 				d.nbr_files_inactive_sub = dp.nbr_files_inactive
 			
-			", $conn);
+			");
 			
 		$max_depth--;
 	}
@@ -455,7 +455,7 @@ function curl_get_contents($url)
 */
 
 	// script is done, unmark as running
-	//mysql_query("update t_setting set value = '0' where code = 'directoryindex_running'", $conn);
+	//mysqli_query($conn, "update t_setting set value = '0' where code = 'directoryindex_running'");
 	
 //}
 

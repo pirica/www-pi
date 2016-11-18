@@ -7,7 +7,7 @@ $date_last_replicated = saneInput('date_last_replicated'); // seconds since epoc
 $filestr = saneInput('files', 'string', '[]');
 
 if($date_last_replicated != ''){
-	mysql_query("
+	mysqli_query($conn, "
 		update t_host_share
 		set
 			date_last_replicated = '" . $date_last_replicated . "'
@@ -15,7 +15,7 @@ if($date_last_replicated != ''){
 			id_share = " . $id_share . " 
 			and id_host = " . $id_host . " 
 			and active = 1
-		", $conn);
+		");
 }
 
 $files = json_decode($filestr);
@@ -28,7 +28,7 @@ $dpmod_nonc_count = 0;
 $dpmod_nonc_c_count = 0;
 
 // mark all files as not found first
-mysql_query("
+mysqli_query($conn, "
 	update t_file_index
 	set
 		notfound = 1
@@ -36,21 +36,21 @@ mysql_query("
 	where
 		id_share = " . $id_share . " 
 		and id_host = " . $id_host . " 
-	", $conn);
+	");
 	
 
 // clear all my actions
-mysql_query("
+mysqli_query($conn, "
 	delete from t_file_action
 	where
 		(id_share = " . $id_share . " 
 		and id_host = " . $id_host . " )
 		or date_action < now() - interval 5 day
-	", $conn);
+	");
 	
 // get indexed files
 $dbfiles = [];
-$qry_index = mysql_query("
+$qry_index = mysqli_query($conn, "
 	select
 		relative_directory,
 		filename
@@ -58,8 +58,8 @@ $qry_index = mysql_query("
 	where
 		id_share = " . $id_share . " 
 		and id_host = " . $id_host . " 
-	", $conn);
-while ($dbfile = mysql_fetch_array($qry_index)) {
+	");
+while ($dbfile = mysqli_fetch_array($qry_index)) {
 	$dbfiles[] = $dbfile;
 }
 
@@ -82,34 +82,34 @@ for ($i = 0; $i < $filelen; $i++) {
 			$file_found = 1;
 			
 			if($files[$i]->c == 1){
-				mysql_query("
+				mysqli_query($conn, "
 					update t_file_index
 					set
 						date_previous_modified = date_last_modified
 					where
 						id_share = " . $id_share . " 
 						and id_host = " . $id_host . " 
-						and relative_directory = '" . mysql_real_escape_string($path) . "'
-						and filename = '" . mysql_real_escape_string($files[$i]->n) . "'
+						and relative_directory = '" . mysqli_real_escape_string($path) . "'
+						and filename = '" . mysqli_real_escape_string($files[$i]->n) . "'
 						and conflict = 0
-					", $conn);
-				$dpmod_newc_count = $dpmod_newc_count + mysql_affected_rows($conn);
+					");
+				$dpmod_newc_count = $dpmod_newc_count + mysqli_affected_rows($conn);
 			}
 			else {
-				mysql_query("
+				mysqli_query($conn, "
 					update t_file_index
 					set
 						date_previous_modified = date_last_modified
 					where
 						id_share = " . $id_share . " 
 						and id_host = " . $id_host . " 
-						and relative_directory = '" . mysql_real_escape_string($path) . "'
-						and filename = '" . mysql_real_escape_string($files[$i]->n) . "'
+						and relative_directory = '" . mysqli_real_escape_string($path) . "'
+						and filename = '" . mysqli_real_escape_string($files[$i]->n) . "'
 						and conflict = 0
-					", $conn);
-				$dpmod_nonc_count = $dpmod_nonc_count + mysql_affected_rows($conn);
+					");
+				$dpmod_nonc_count = $dpmod_nonc_count + mysqli_affected_rows($conn);
 				
-				mysql_query("
+				mysqli_query($conn, "
 					update t_file_index
 					set
 						conflict = 0,
@@ -117,28 +117,28 @@ for ($i = 0; $i < $filelen; $i++) {
 					where
 						id_share = " . $id_share . " 
 						and id_host = " . $id_host . " 
-						and relative_directory = '" . mysql_real_escape_string($path) . "'
-						and filename = '" . mysql_real_escape_string($files[$i]->n) . "'
+						and relative_directory = '" . mysqli_real_escape_string($path) . "'
+						and filename = '" . mysqli_real_escape_string($files[$i]->n) . "'
 						and conflict = 1
-					", $conn);
-				$dpmod_nonc_c_count = $dpmod_nonc_c_count + mysql_affected_rows($conn);
+					");
+				$dpmod_nonc_c_count = $dpmod_nonc_c_count + mysqli_affected_rows($conn);
 			}
 			
-			mysql_query("
+			mysqli_query($conn, "
 				update t_file_index
 				set
-					date_last_modified = '" . mysql_real_escape_string($files[$i]->m) . "',
-					excluded = " . mysql_real_escape_string($files[$i]->e) . ",
+					date_last_modified = '" . mysqli_real_escape_string($files[$i]->m) . "',
+					excluded = " . mysqli_real_escape_string($files[$i]->e) . ",
 					notfound = 0
 				
 				where
 					id_share = " . $id_share . " 
 					and id_host = " . $id_host . " 
-					and relative_directory = '" . mysql_real_escape_string($path) . "'
-					and filename = '" . mysql_real_escape_string($files[$i]->n) . "'
-				", $conn);
+					and relative_directory = '" . mysqli_real_escape_string($path) . "'
+					and filename = '" . mysqli_real_escape_string($files[$i]->n) . "'
+				");
 			
-			$modifiedcount = $modifiedcount + mysql_affected_rows($conn);
+			$modifiedcount = $modifiedcount + mysqli_affected_rows($conn);
 			
 			// remove from dbfiles list 
 			unset($dbfiles[$j]);
@@ -151,7 +151,7 @@ for ($i = 0; $i < $filelen; $i++) {
 	// not found, insert
 	if($file_found == 0){
 		
-		mysql_query("
+		mysqli_query($conn, "
 			insert into t_file_index
 			(
 				relative_directory,
@@ -167,18 +167,18 @@ for ($i = 0; $i < $filelen; $i++) {
 			)
 			values
 			(
-				'" . mysql_real_escape_string($path) . "',
-				'" . mysql_real_escape_string($files[$i]->n) . "',
-				'" . mysql_real_escape_string($files[$i]->m) . "',
-				'" . mysql_real_escape_string($files[$i]->m) . "',
+				'" . mysqli_real_escape_string($path) . "',
+				'" . mysqli_real_escape_string($files[$i]->n) . "',
+				'" . mysqli_real_escape_string($files[$i]->m) . "',
+				'" . mysqli_real_escape_string($files[$i]->m) . "',
 				0,
 				0,
-				" . mysql_real_escape_string($files[$i]->e) . ",
+				" . mysqli_real_escape_string($files[$i]->e) . ",
 			
 				" . $id_share . ",
 				" . $id_host . " 
 			)
-			", $conn);
+			");
 			
 		$insertcount++;
 	}
@@ -187,7 +187,7 @@ for ($i = 0; $i < $filelen; $i++) {
 
 /*
 // set as conflicting where t_file date modified is already greater than current index
-mysql_query("
+mysqli_query($conn, "
 	update t_file_index fi
 	join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and f.active = 1 
 		and f.date_last_modified > fi.date_previous_modified
@@ -197,9 +197,9 @@ mysql_query("
 	where
 		fi.id_share = " . $id_share . " 
 	
-	", $conn);
+	");
 
-$conflictcount = $conflictcount + mysql_affected_rows($conn);
+$conflictcount = $conflictcount + mysqli_affected_rows($conn);
 */
 
 $logging = $logging . ' mod:' . $modifiedcount;
@@ -214,7 +214,7 @@ include 'act_server_fileindex.php';
 
 include 'act_compare_fileindex.php';
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		fa.id_file,
 		fa.id_file_action,
@@ -231,7 +231,7 @@ $qry = mysql_query("
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
 	
-	", $conn);
+	");
 $data = mysql2json($qry);
 
 /*

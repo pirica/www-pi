@@ -1,8 +1,8 @@
 <?php
 
-$hostname = mysql_real_escape_string(saneInput('hostname'));
-$username = mysql_real_escape_string(saneInput('username'));
-$os = mysql_real_escape_string(saneInput('os'));
+$hostname = mysqli_real_escape_string($conn, saneInput('hostname'));
+$username = mysqli_real_escape_string($conn, saneInput('username'));
+$os = mysqli_real_escape_string($conn, saneInput('os'));
 
 if($hostname == ''){
 	$returnvalue = array('type' => 'error', 'message' => 'host name is required');
@@ -27,20 +27,20 @@ else {
 			and h.username = '" . $username . "'
 		";
 	
-	$qry = mysql_query($sql, $conn);
+	$qry = mysqli_query($conn, $sql);
 		
-	if(mysql_num_rows($qry) == 0){
-		mysql_query("
+	if(mysqli_num_rows($qry) == 0){
+		mysqli_query($conn, "
 			insert into t_host (id_user, name, username, os)
 			values (" . $id_user . ", '" . $hostname . "', '" . $username . "', '" . $os . "')
-			", $conn);
-		$qry = mysql_query($sql, $conn);
+			");
+		$qry = mysqli_query($conn, $sql);
 		$returnvalue = array('type' => 'info', 'message' => 'host added', 'data' => mysql2json($qry));
 		
 		$script_new_host = $settings->val('script_new_host','');
 		if($script_new_host != ''){
-			mysql_data_seek($qry, 0);
-			$host = mysql_fetch_array($qry);
+			mysqli_data_seek($qry, 0);
+			$host = mysqli_fetch_array($qry);
 			// and execute any scripts on completion
 			$script_new_host = str_replace('%id_host%', $host['id_host'], $script_new_host);
 			$script_new_host = str_replace('%name%', $host['name'], $script_new_host);

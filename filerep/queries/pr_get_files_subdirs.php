@@ -1,6 +1,6 @@
 <?php
 
-$qry_files = mysql_query("
+$qry_files = mysqli_query($conn, "
 	select
 		max(f.active) as active,
 		
@@ -40,6 +40,6 @@ $qry_files = mysql_query("
 		#replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -1), '')
 		f.relative_directory
 		
-	", $conn);
+	");
 	
 ?>

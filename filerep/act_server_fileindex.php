@@ -14,7 +14,7 @@ if(!isset($id_host)){
 }
 
 // delete file on server
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file f
 	join t_file_index fi on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and fi.id_host = " . $id_host . " 
 		and fi.notfound = 1
@@ -24,9 +24,9 @@ $query_success = $query_success && mysql_query("
 		f.id_share = " . $id_share . " 
 		and f.active = 1
 	
-	", $conn);
+	");
 
-$logging = $logging . ' fdels:' . mysql_affected_rows($conn);
+$logging = $logging . ' fdels:' . mysqli_affected_rows($conn);
 
 
 	

@@ -15,11 +15,11 @@ include 'functions.php';
 // check if script is already running - no, continue
 if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 	// mark as running
-	mysql_query("update t_setting set value = '1' where code = 'directoryindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '1' where code = 'directoryindex_running'");
 	
 
 	// insert new (missing) directories
-	mysql_query("truncate table t_directory_index ", $conn);
+	mysqli_query($conn, "truncate table t_directory_index ");
 
 	// insert new (missing) links between shares and server host
 	$qry_missing_str = "
@@ -32,20 +32,20 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			and s.active = 1
 			and hs.id_host_share is null
 		";
-	$qry_missing = mysql_query("select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str, $conn);
-	$qry_insert_missing = mysql_query("
+	$qry_missing = mysqli_query($conn, "select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str, $conn);
+	$qry_insert_missing = mysqli_query($conn, "
 		insert into t_host_share (id_host, id_share, local_directory) 
 		select h.id_host, s.id_share, s.server_directory " .
 		$qry_missing_str
 		, $conn);
 		
-	while ($missing = mysql_fetch_array($qry_missing)) {
+	while ($missing = mysqli_fetch_array($qry_missing)) {
 		echo "New share '" . $missing{'name'} . "' (" . $missing{'server_directory'} . ") added\n";
 	}
 
 	flush();
 
-	$qry_shares = mysql_query("
+	$qry_shares = mysqli_query($conn, "
 		select
 			s.id_share,
 			s.name,
@@ -64,14 +64,14 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			s.active = 1
 			and s.external = 0
 		order by s.id_share
-		", $conn);
+		");
 		
 
 	$id_share = -1;
 	
 	$all_shares = '-1';
 
-	while ($share = mysql_fetch_array($qry_shares)) {
+	while ($share = mysqli_fetch_array($qry_shares)) {
 		$all_shares .= ',' . $share{'id_share'};
 		$id_share = $share{'id_share'};
 		$dir = $share{'server_directory'};
@@ -101,7 +101,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				}*/
 				$dirname .= '/';
 				
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_directory_index 
 					(
 						id_share,
@@ -110,10 +110,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					values
 					(
 						" . $id_share . ",
-						'" . mysql_real_escape_string($dirname) . "'
+						'" . mysqli_real_escape_string($conn, $dirname) . "'
 					)
 					
-					", $conn);
+					");
 			}
 		}
 		
@@ -122,7 +122,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 	}
 
 	// insert new ones
-	mysql_query("
+	mysqli_query($conn, "
 		insert into t_directory
 		(
 			id_share,
@@ -165,10 +165,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			f.id_share,
 			f.relative_directory
 			
-		", $conn);
+		");
 		
 	// remove deleted dir and flag to be reindexed (to delete files)
-	mysql_query("
+	mysqli_query($conn, "
 		
 		update t_directory d
 		left join t_directory_index di on di.id_share = d.id_share
@@ -183,10 +183,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			and di.id_directory_index is null
 			and d.id_share in (".$all_shares.")
 			
-		", $conn);
+		");
 	
-	// remove deleted dir and flag to be reindexed (to delete files)
-	mysql_query("
+	// undelete dir and flag to be reindexed (if it can be read)
+	mysqli_query($conn, "
 		
 		update t_directory d
 		join t_directory_index di on di.id_share = d.id_share
@@ -199,11 +199,11 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			d.active = 0
 			and d.id_share in (".$all_shares.")
 			
-		", $conn);
+		");
 	
 	/*
 	// update dirname (take last part of directory structure)
-	mysql_query("
+	mysqli_query($conn, "
 		update t_directory 
 		set
 			dirname = replace( SUBSTRING_INDEX(relative_directory, '/', -2), '/', '')
@@ -211,11 +211,11 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			ifnull(dirname,'') = ''
 			and relative_directory <> ''
 			and relative_directory <> '/'
-		", $conn);
+		");
 	*/
 		
 	// update directories
-	mysql_query("
+	mysqli_query($conn, "
 		update t_directory d
 		join (
 			select
@@ -240,10 +240,10 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			d.nbr_files = f.nbr_files,
 			d.nbr_files_inactive = f.nbr_files_inactive
 		
-		", $conn);
+		");
 		
 	// update parent directories 
-	/*mysql_query("
+	/*mysqli_query($conn, "
 		
 		update t_directory d
 		join t_directory td on td.id_share = d.id_share
@@ -256,19 +256,19 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			d.id_directory_parent is null
 			and ifnull(d.id_directory_parent,-1) <> td.id_directory
 			
-		", $conn);*/
+		");*/
 		
 		
 	// get max directory depth
-	$qry_max_depth = mysql_query("
+	$qry_max_depth = mysqli_query($conn, "
 		select
 			max(d.depth) as max_depth
 		from t_directory d
 		where
 			d.parent_directory is not null
-		", $conn);
+		");
 	/*
-	$qry_max_depth = mysql_query("
+	$qry_max_depth = mysqli_query($conn, "
 		select
 			max( ROUND (
 				(
@@ -279,14 +279,14 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		from t_directory d
 		where
 			d.parent_directory is not null
-		", $conn);
+		");
 	*/
 	
-	$max_depth = mysql_fetch_array($qry_max_depth)['max_depth'];
+	$max_depth = mysqli_fetch_array($qry_max_depth)['max_depth'];
 
 	while($max_depth > 0){
 		// update directory stats (size, dates)
-		mysql_query("
+		mysqli_query($conn, "
 			
 			update t_directory d
 			join (
@@ -322,13 +322,13 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				d.nbr_files_sub = dp.nbr_files,
 				d.nbr_files_inactive_sub = dp.nbr_files_inactive
 			
-			", $conn);
+			");
 			
 		$max_depth--;
 	}
 	
 	// script is done, unmark as running
-	mysql_query("update t_setting set value = '0' where code = 'directoryindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'directoryindex_running'");
 	
 }
 

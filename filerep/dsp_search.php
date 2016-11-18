@@ -61,7 +61,7 @@
 		<?php 
 		$i = 0;
 		if(isset($qry_files_subdirs)){
-			while($file = mysql_fetch_array($qry_files_subdirs)){ 
+			while($file = mysqli_fetch_array($qry_files_subdirs)){ 
 				if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 					$i++;
 					?>
@@ -116,7 +116,7 @@
 			}	
 		}
 		if(isset($qry_files)){
-			while($file = mysql_fetch_array($qry_files)){ 
+			while($file = mysqli_fetch_array($qry_files)){ 
 				if(($show_all == 0 && $file['active'] == 1) || $show_all == 1){
 					$i++;
 					?>

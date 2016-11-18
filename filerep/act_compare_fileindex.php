@@ -15,7 +15,7 @@ if(!isset($id_host)){
 }
 
 // either the file is date_last_modified on server or local: down- or upload accordingly
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -39,13 +39,13 @@ $query_success = $query_success && mysql_query("
 	and ifnull(fi.notfound,0) = 0
 	and ifnull(fi.excluded,0) = 0
 	and fi.date_last_modified > f.date_last_modified
-	", $conn);
+	");
 
-$logging = $logging . ' up:' . mysql_affected_rows($conn);
+$logging = $logging . ' up:' . mysqli_affected_rows($conn);
 
 
 // either the file is date_last_modified on server or local: down- or upload accordingly
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -68,13 +68,13 @@ $query_success = $query_success && mysql_query("
 	and ifnull(fi.conflict,0) = 0
 	and ifnull(fi.excluded,0) = 0
 	and fi.date_last_modified < f.date_last_modified
-	", $conn);
+	");
 	
-$logging = $logging . ' updown:' . mysql_affected_rows($conn);
+$logging = $logging . ' updown:' . mysqli_affected_rows($conn);
 
 
 // download conflict file's original version to compare locally
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -96,15 +96,15 @@ $query_success = $query_success && mysql_query("
 	and fi.id_host = " . $id_host . "
 	and fi.conflict = 1
 	#and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' conflictdown:' . mysql_affected_rows($conn);
+$logging = $logging . ' conflictdown:' . mysqli_affected_rows($conn);
 
 
 
 /*
 // file moved on server : move on client
-mysql_query("
+mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -128,14 +128,14 @@ mysql_query("
 	and fi.id_host = " . $id_host . "
 	and ifnull(fi.conflict,0) = 0
 	and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' clientmove:' . mysql_affected_rows($conn);
+$logging = $logging . ' clientmove:' . mysqli_affected_rows($conn);
 */
 
 /*
 // file moved on client : move on server
-mysql_query("
+mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -159,14 +159,14 @@ mysql_query("
 	and fi.id_host = " . $id_host . "
 	and ifnull(fi.conflict,0) = 0
 	and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' servermove:' . mysql_affected_rows($conn);
+$logging = $logging . ' servermove:' . mysqli_affected_rows($conn);
 */
 
 /*
 // file deleted client
-mysql_query("
+mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		null id_file,
@@ -185,13 +185,13 @@ mysql_query("
 		and ifnull(fi.conflict,0) = 0
 		and ifnull(fi.notfound,0) = 1
 		and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' delc:' . mysql_affected_rows($conn);
+$logging = $logging . ' delc:' . mysqli_affected_rows($conn);
 */
 
 // file deleted server
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -211,14 +211,14 @@ $query_success = $query_success && mysql_query("
 		and ifnull(fi.conflict,0) = 0
 		and ifnull(fi.notfound,0) = 0
 		and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' dels:' . mysql_affected_rows($conn);
+$logging = $logging . ' dels:' . mysqli_affected_rows($conn);
 
 
 /*
 // conflicts: mark as conflict
-mysql_query("
+mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -236,13 +236,13 @@ mysql_query("
 	and fi.id_host = " . $id_host . "
 	and fi.conflict = 1
 	and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' conflict:' . mysql_affected_rows($conn);
+$logging = $logging . ' conflict:' . mysqli_affected_rows($conn);
 */
 
 // new file on server: download
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		f.id_file,
@@ -259,13 +259,13 @@ $query_success = $query_success && mysql_query("
 		and fi.relative_directory is null
 		and f.active = 1
 		and f.id_share = " . $id_share . "
-	", $conn);
+	");
 
-$logging = $logging . ' downloadnew:' . mysql_affected_rows($conn);
+$logging = $logging . ' downloadnew:' . mysqli_affected_rows($conn);
 
 
 // new file on client: upload
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_action (id_file, id_share, id_host, date_action, action,source,target)
 	select
 		null id_file,
@@ -285,9 +285,9 @@ $query_success = $query_success && mysql_query("
 		and ifnull(fi.notfound,0) = 0
 		and ifnull(fi.conflict,0) = 0
 		and ifnull(fi.excluded,0) = 0
-	", $conn);
+	");
 
-$logging = $logging . ' uploadnew:' . mysql_affected_rows($conn);
+$logging = $logging . ' uploadnew:' . mysqli_affected_rows($conn);
 
 
 	

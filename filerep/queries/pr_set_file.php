@@ -1,18 +1,18 @@
 <?php
 
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_file
 	set
-		rename_to = '" . mysql_real_escape_string($rename_to) . "'
+		rename_to = '" . mysqli_real_escape_string($conn, $rename_to) . "'
 	
 	where
 		id_file = " . $id_file . "
 		and id_share = " . $id_share . "
 		
-	", $conn);
+	");
 	
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_directory
 	set
@@ -28,7 +28,7 @@ mysql_query("
 				and id_share = " . $id_share . "
 		)
 		
-	", $conn);
+	");
 	
 	
 ?>

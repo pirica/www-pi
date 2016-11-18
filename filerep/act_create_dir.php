@@ -2,7 +2,7 @@
 
 $server_directory = '';
 
-while($shares = mysql_fetch_array($qry_shares)){
+while($shares = mysqli_fetch_array($qry_shares)){
 	if($shares['id_share'] == $id_share){
 		$server_directory = $shares['server_directory'];
 	}
@@ -20,7 +20,7 @@ if($newdir != ''){
 		
 		if( mkdir($server_directory . $dir . $newdir) ){
 		
-			mysql_query("
+			mysqli_query($conn, "
 				insert into t_directory
 				(
 					id_share,
@@ -32,12 +32,12 @@ if($newdir != ''){
 				values
 				(
 					" . $id_share . ",
-					'" . mysql_real_escape_string($newdir) . "',
-					'" . mysql_real_escape_string($dir . $newdir . '/') . "',
-					'" . mysql_real_escape_string($dir) . "',
+					'" . mysqli_real_escape_string($conn, $newdir) . "',
+					'" . mysqli_real_escape_string($conn, $dir . $newdir . '/') . "',
+					'" . mysqli_real_escape_string($conn, $dir) . "',
 					'" . date('Y-m-d H:i:s', $modified) . "'
 				)
-				", $conn);
+				");
 			
 			goto_action('details', false, 'id_share=' . $id_share . '&dir=' . $dir . $newdir . '/');
 		}

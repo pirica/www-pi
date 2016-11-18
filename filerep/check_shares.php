@@ -12,10 +12,10 @@ include 'functions.php';
 //if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 if($setting_directoryindex_running == '0'){
 	// mark as running
-	mysql_query("update t_setting set value = '1' where code = 'directoryindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '1' where code = 'directoryindex_running'");
 
 
-	$qry_shares = mysql_query("
+	$qry_shares = mysqli_query($conn, "
 		select
 			s.id_share,
 			s.name,
@@ -25,12 +25,12 @@ if($setting_directoryindex_running == '0'){
 			s.active = 1
 			and s.external = 0
 		
-		", $conn);
+		");
 		
 
 	$id_share = -1;
 
-	while ($share = mysql_fetch_array($qry_shares)) {
+	while ($share = mysqli_fetch_array($qry_shares)) {
 		$id_share = $share{'id_share'};
 		$dir = $share{'server_directory'};
 		
@@ -79,18 +79,18 @@ if($setting_directoryindex_running == '0'){
 				echo "dir: " . $dbdir . "<br>\n";
 				
 				// if directory: update
-				mysql_query("
+				mysqli_query($conn, "
 					update t_directory
 					set
 						date_last_checked = null
 					where
 						id_share = " . $id_share . "
-						and relative_directory = '" . mysql_real_escape_string($dbdir) . "'
+						and relative_directory = '" . mysqli_real_escape_string($conn, $dbdir) . "'
 					
-					", $conn);
+					");
 				
 				// apparently not a directory, but a file? : update parent dir
-				if(mysql_affected_rows($conn) == 0){
+				if(mysqli_affected_rows($conn) == 0){
 					// remove filename
 					$dirparts = explode('/', $dirname);
 					array_pop($dirparts);
@@ -103,15 +103,15 @@ if($setting_directoryindex_running == '0'){
 	
 					echo "dirfixed: " . $dbdir . "<br>\n";
 					
-					mysql_query("
+					mysqli_query($conn, "
 						update t_directory
 						set
 							date_last_checked = null
 						where
 							id_share = " . $id_share . "
-							and relative_directory = '" . mysql_real_escape_string($dbdir) . "'
+							and relative_directory = '" . mysqli_real_escape_string($conn, $dbdir) . "'
 						
-						", $conn);
+						");
 					
 				}
 			}
@@ -120,7 +120,7 @@ if($setting_directoryindex_running == '0'){
 
 
 	// script is done, unmark as running
-	mysql_query("update t_setting set value = '0' where code = 'directoryindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'directoryindex_running'");
 	
 }
 

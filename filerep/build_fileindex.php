@@ -13,9 +13,9 @@ require dirname(__FILE__).'/../_core/functions.php';
 // check if script is already running - no, continue
 if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 	// mark as running
-	mysql_query("update t_setting set value = '1' where code = 'fileindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '1' where code = 'fileindex_running'");
 
-	$qry_shares = mysql_query("
+	$qry_shares = mysqli_query($conn, "
 		select
 			d.id_directory,
 			d.relative_directory,
@@ -36,14 +36,14 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			
 		limit 20
 		
-		", $conn);
+		");
 		
 
 	$id_share = -1;
 	
 	$date_start = time();
 
-	while ($share = mysql_fetch_array($qry_shares)) {
+	while ($share = mysqli_fetch_array($qry_shares)) {
 		$id_share = $share{'id_share'};
 		$dir = $share{'server_directory'} . $share{'relative_directory'};
 		
@@ -56,7 +56,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		if ($is_dir !== true || $share['active'] == 0) {
 			
 			// set directory inactive
-			mysql_query("
+			mysqli_query($conn, "
 				update t_directory
 				set
 					active = 0,
@@ -64,19 +64,19 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				where
 					id_directory = " . $share['id_directory'] . "
 					and active = 1
-				", $conn);
+				");
 			
 			// set related files inactive
-			mysql_query("
+			mysqli_query($conn, "
 				update t_file
 				set
 					active = 0,
 					date_deleted = now()
 				where
 					f.id_share = " . $id_share . "
-					and relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+					and relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 					and active = 1
-				", $conn);
+				");
 			
 		}
 		else {
@@ -84,32 +84,32 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			if($is_dir)
 			{
 				// set directory inactive
-				mysql_query("
+				mysqli_query($conn, "
 					update t_directory
 					set
 						active = 1
 					where
 						id_directory = " . $share['id_directory'] . "
 						and active = 0
-					", $conn);
+					");
 				
 			}
 			
 			// clear current index
-			mysql_query("
+			mysqli_query($conn, "
 				delete from t_file_index_temp 
 				where
 					id_share = " . $id_share . " 
 					and id_host = " . $setting_server_id_host . " 
-					and relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+					and relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 					
-				", $conn);
+				");
 			
 			
 			if($share['readonly'] != 1)
 			{
 				// get files to move|rename
-				$qry_files_tomove = mysql_query("
+				$qry_files_tomove = mysqli_query($conn, "
 					select
 						f.id_file,
 						f.filename,
@@ -124,14 +124,14 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					from t_file f
 					where
 						f.id_share = " . $id_share . "
-						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 						and f.active = 1
 						and (ifnull(f.rename_to,'') <> ''
 							or ifnull(f.move_to,'') <> '')
-					", $conn);
+					");
 				
 				// do file actions (move|rename)
-				while ($move_file = mysql_fetch_array($qry_files_tomove)) {
+				while ($move_file = mysqli_fetch_array($qry_files_tomove)) {
 					$move_filename_from = $share{'server_directory'} . $move_file['relative_directory'] . $move_file['filename'];
 					
 					$move_filename_to = $share{'server_directory'};
@@ -158,15 +158,15 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						echo 'moved: ' . $move_filename_from . ' to ' . $move_filename_to . "\n";
 						shell_exec('mv "' . $move_filename_from . '" "' . $move_filename_to . '"');
 						
-						mysql_query("
+						mysqli_query($conn, "
 							
 							delete from t_file_move
 							where
 								id_file = " . $move_file['id_file'] . "
 								
-							", $conn);
+							");
 							
-						mysql_query("
+						mysqli_query($conn, "
 							
 							insert into t_file_move
 							(
@@ -195,9 +195,9 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 								and f.id_share = " . $id_share . "
 								and f.active = 1
 								
-							", $conn);
+							");
 		
-						mysql_query("
+						mysqli_query($conn, "
 							update t_file
 							set
 								rename_to = null,
@@ -206,7 +206,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 								id_file = " . $move_file['id_file'] . " 
 								and id_share = " . $id_share . " 
 								
-							", $conn);
+							");
 							
 					}
 				}
@@ -216,7 +216,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			if($share['readonly'] != 1)
 			{
 				// get inactive files to delete
-				$qry_files_inactive = mysql_query("
+				$qry_files_inactive = mysqli_query($conn, "
 					select
 						f.id_file,
 						f.filename,
@@ -229,12 +229,12 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					from t_file f
 					where
 						f.id_share = " . $id_share . "
-						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 						and f.active = 0
-					", $conn);
+					");
 				
 				// delete inactive files
-				while ($inactive_file = mysql_fetch_array($qry_files_inactive)) {
+				while ($inactive_file = mysqli_fetch_array($qry_files_inactive)) {
 					$inactive_filename = $share{'server_directory'} . $inactive_file['relative_directory'] . $inactive_file['filename'];
 					if(file_exists($inactive_filename)){
 						echo 'removed: ' . $inactive_filename . "\n";
@@ -293,7 +293,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					}
 					else {
 						
-						mysql_query("
+						mysqli_query($conn, "
 							insert into t_file_index_temp 
 							(
 								id_share,
@@ -308,20 +308,20 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 							(
 								" . $id_share . ",
 								" . $setting_server_id_host . ",
-								'" . mysql_real_escape_string($filename) . "',
-								'" . mysql_real_escape_string($reldir) . "',
+								'" . mysqli_real_escape_string($conn, $filename) . "',
+								'" . mysqli_real_escape_string($conn, $reldir) . "',
 								" . $active . ",
 								" . $files[$i]['size'] . ",
 								'" . date('Y-m-d H:i:s', $files[$i]['modified_cest']) . "'
 							)
-							", $conn);
+							");
 						
 					}
 				}
 				
 				
 				// update existing files
-				mysql_query("
+				mysqli_query($conn, "
 					update t_file f
 					join t_file_index_temp fit
 						on fit.id_share = f.id_share
@@ -335,14 +335,14 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						f.size = fit.size
 					where
 						f.id_share = " . $id_share . " 
-						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 						
-					", $conn);
+					");
 					
 					
 					
 				// insert new files
-				mysql_query("
+				mysqli_query($conn, "
 					insert into t_file
 					(
 						id_share,
@@ -370,13 +370,13 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 					where
 						fit.id_share = " . $id_share . " 
 						and fit.id_host = " . $setting_server_id_host . " 
-						and fit.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and fit.relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 						and f.id_file is null
 						
-					", $conn);
+					");
 				
 				// remove non-found files
-				mysql_query("
+				mysqli_query($conn, "
 					update t_file f
 					left join t_file_index_temp fit
 						on fit.id_share = f.id_share
@@ -388,15 +388,15 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						f.active = 0
 					where
 						f.id_share = " . $id_share . " 
-						and f.relative_directory = '" . mysql_real_escape_string($share{'relative_directory'}) . "'
+						and f.relative_directory = '" . mysqli_real_escape_string($conn, $share{'relative_directory'}) . "'
 						and fit.id_file_index_temp is null
 						and f.active = 1
 						
-					", $conn);
+					");
 				
 					
 				// set date last replicated on share
-				mysql_query("
+				mysqli_query($conn, "
 					update t_host_share
 					set
 						date_last_replicated = '" . date('Y-m-d H:i:s', $date_start) . "'
@@ -404,7 +404,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 						active = 1
 						and id_share = " . $id_share . "
 						and id_host = " . $setting_server_id_host . " 
-					", $conn);
+					");
 				
 				//echo "Share '" . $share{'name'} . "' done\n";
 				echo " -> finished on " . date('Y-m-d H:i:s', time()) . "'\n";
@@ -420,18 +420,18 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		}
 		
 		// set date last replicated on share
-		mysql_query("
+		mysqli_query($conn, "
 			update t_directory
 			set
 				date_last_checked = '" . date('Y-m-d H:i:s', $date_start) . "'
 			where
 				id_directory = " . $share['id_directory'] . "
-			", $conn);
+			");
 		
 	}
 	
 	// script is done, unmark as running
-	mysql_query("update t_setting set value = '0' where code = 'fileindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'fileindex_running'");
 	
 }
 

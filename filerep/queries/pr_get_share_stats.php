@@ -1,6 +1,6 @@
 <?php
 
-$qry_share_stats = mysql_query("
+$qry_share_stats = mysqli_query($conn, "
 	select
 		s.id_share,
 		s.name,
@@ -34,6 +34,6 @@ $qry_share_stats = mysql_query("
 	order by
 		s.name
 		
-	", $conn);
+	");
 	
 ?>

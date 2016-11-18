@@ -15,7 +15,7 @@ $sql = "
 		and h.active = 1
 	";
 
-$qry = mysql_query($sql, $conn);
+$qry = mysqli_query($conn, $sql);
 
 $returnvalue = array('data' => mysql2json($qry));
 

@@ -330,7 +330,7 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 				}
 				
 				if( $dir == 0 && $modified_ok == 0 || ($modified_ok == 1 && $modified >= $modified_since) ){
-					mysql_query("
+					mysqli_query($conn, "
 						insert into t_file_index
 						(
 							filename,
@@ -347,11 +347,11 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 						)
 						values
 						(
-							'" . mysql_real_escape_string($file) . "',
-							'" . mysql_real_escape_string($fullfile) . "',
+							'" . mysqli_real_escape_string($conn, $file) . "',
+							'" . mysqli_real_escape_string($conn, $fullfile) . "',
 							" . $size . ",
-							'" . mysql_real_escape_string($modifiedstr) . "',
-							'" . mysql_real_escape_string($modifiedstr) . "',
+							'" . mysqli_real_escape_string($conn, $modifiedstr) . "',
+							'" . mysqli_real_escape_string($conn, $modifiedstr) . "',
 							0,
 							0,
 							0,
@@ -359,7 +359,7 @@ ls: kan geen toegang krijgen tot /media/usbdrive/index.php/: Is geen map
 							" . $id_share . ",
 							" . $id_host . " 
 						)
-						", $conn);
+						");
 					/*
 						'name' => $file,
 						'nativepath' => $fullfile,

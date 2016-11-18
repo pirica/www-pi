@@ -14,7 +14,7 @@ $query_success = true;
 
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 1
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -28,11 +28,11 @@ $query_success = $query_success && mysql_query("
 		fi.id_share = " . $id_share . " 
 		and fi.id_host = " . $id_host . " 
 		and fi.conflict = 0
-	", $conn);
-$dpmod_newc_count = $dpmod_newc_count + mysql_affected_rows($conn);
+	");
+$dpmod_newc_count = $dpmod_newc_count + mysqli_affected_rows($conn);
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 0
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -46,11 +46,11 @@ $query_success = $query_success && mysql_query("
 		fi.id_share = " . $id_share . " 
 		and fi.id_host = " . $id_host . " 
 		and fi.conflict = 0
-	", $conn);
-$dpmod_nonc_count = $dpmod_nonc_count + mysql_affected_rows($conn);
+	");
+$dpmod_nonc_count = $dpmod_nonc_count + mysqli_affected_rows($conn);
 
 // update conflict = 0,date_previous_modified = date_last_modified where conflmict=1 + temp conflict = 0
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -64,13 +64,13 @@ $query_success = $query_success && mysql_query("
 		fi.id_share = " . $id_share . " 
 		and fi.id_host = " . $id_host . " 
 		and fi.conflict = 1
-	", $conn);
-$dpmod_nonc_c_count = $dpmod_nonc_c_count + mysql_affected_rows($conn);
+	");
+$dpmod_nonc_c_count = $dpmod_nonc_c_count + mysqli_affected_rows($conn);
 
 
 
 
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file_index fi
 	join t_file_index_temp fit
 		on fit.id_share = fi.id_share
@@ -84,10 +84,10 @@ $query_success = $query_success && mysql_query("
 		fi.id_share = " . $id_share . " 
 		and fi.id_host = " . $id_host . " 
 		
-	", $conn);
+	");
 	
 	
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	insert into t_file_index
 	(
 		relative_directory,
@@ -124,11 +124,11 @@ $query_success = $query_success && mysql_query("
 		and fit.id_host = " . $id_host . " 
 		and fi.id_file_index is null
 		
-	", $conn);
+	");
 				
 /*	
 // set as conflicting where t_file date modified is already greater than current index
-$query_success = $query_success && mysql_query("
+$query_success = $query_success && mysqli_query($conn, "
 	update t_file_index fi
 	join t_file f on f.relative_directory = fi.relative_directory and f.filename = fi.filename and f.id_share = fi.id_share and f.active = 1 
 		and f.date_last_modified > fi.date_previous_modified
@@ -138,9 +138,9 @@ $query_success = $query_success && mysql_query("
 	where
 		fi.id_share = " . $id_share . " 
 	
-	", $conn);
+	");
 
-$conflictcount = $conflictcount + mysql_affected_rows($conn);
+$conflictcount = $conflictcount + mysqli_affected_rows($conn);
 */
 
 $logging = $logging . ' confl:' . $conflictcount;
@@ -153,7 +153,7 @@ include 'act_server_fileindex.php';
 
 include 'act_compare_fileindex.php';
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		fa.id_file,
 		fa.id_file_action,
@@ -170,7 +170,7 @@ $qry = mysql_query("
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
 		
-	", $conn);
+	");
 $data = mysql2json($qry);
 
 if($query_success){

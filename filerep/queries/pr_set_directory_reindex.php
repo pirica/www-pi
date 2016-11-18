@@ -1,6 +1,6 @@
 <?php
 
-mysql_query("
+mysqli_query($conn, "
 	
 	update t_directory
 	set
@@ -10,6 +10,6 @@ mysql_query("
 		id_share = " . $id_share . "
 		and relative_directory = '" . $dir . "'
 		
-	", $conn);
+	");
 	
 ?>

@@ -25,17 +25,17 @@ $check_shareindex = str_replace("\n", "", $check_shareindex);
 $check_shareindex = str_replace("\t", "", $check_shareindex);
 
 if($setting_fileindex_running != '0' && $check_fileindex == ''){
-	mysql_query("update t_setting set value = '0' where code = 'fileindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'fileindex_running'");
 	echo "[" . date('Y-m-d H:i:s', time()) . "] " . "filerep -> fileindex cleared" . "'\n";
 }
 
 if($setting_directoryindex_running != '0' && $check_directoryindex == ''){
-	mysql_query("update t_setting set value = '0' where code = 'directoryindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'directoryindex_running'");
 	echo "[" . date('Y-m-d H:i:s', time()) . "] " . "filerep -> directoryindex cleared" . "'\n";
 }
 
 if($setting_shareindex_running != '0' && $check_shareindex == ''){
-	mysql_query("update t_setting set value = '0' where code = 'shareindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'shareindex_running'");
 	echo "[" . date('Y-m-d H:i:s', time()) . "] " . "filerep -> shareindex cleared" . "'\n";
 }
 

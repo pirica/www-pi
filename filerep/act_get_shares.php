@@ -1,7 +1,7 @@
 <?php
 include 'act_settings.php';
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		s.id_share,
 		s.name,
@@ -51,7 +51,7 @@ $qry = mysql_query("
 		s.id_user = " . $id_user . "
 		and s.active = 1
 		and s.external = 0
-	", $conn);
+	");
 	
 $returnvalue = array('data' => mysql2json($qry));
 

@@ -2,7 +2,7 @@
 set_time_limit(0);
 
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		fm.action,
 		fm.source,
@@ -14,7 +14,7 @@ $qry = mysql_query("
 		fm.id_share = " . $id_share . " 
 		and fm.id_host = " . $id_host . " 
 		
-	", $conn);
+	");
 $data = mysql2json($qry);
 
 $returnvalue = array('data' => $data, 'logging' => '');

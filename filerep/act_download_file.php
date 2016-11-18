@@ -3,7 +3,7 @@ set_time_limit(0);
 
 $max_download_speed = saneInput('max_download_speed', 'int', '512');
 
-$qry_file = mysql_query("
+$qry_file = mysqli_query($conn, "
 	select
 		f.id_file,
 		f.filename,
@@ -18,9 +18,9 @@ $qry_file = mysql_query("
 	where
 		f.id_file = " . $id_file . "
 		and f.active = 1
-	", $conn);
+	");
 	
-$dbfile = mysql_fetch_array($qry_file);
+$dbfile = mysqli_fetch_array($qry_file);
 
 $file = $dbfile['server_directory'] . $dbfile['relative_directory'] . $dbfile['filename'];
 //$tmpfile = '/var/tmp/filerep_' . microtime(true) . '.tmp';
@@ -39,7 +39,8 @@ readfile_advanced($tmpfile, 1, $max_download_speed);
 
 flush();
 
-/*mysql_query("
+/*
+mysqli_query($conn, "
 	insert into t_file_log
 	(
 		id_file,
@@ -54,8 +55,6 @@ flush();
 		now(),
 		'File downloaded by host'
 	)
-	", $conn);*/
-
-//shell_exec('file.sh rm ' . $tmpfile);
-
+	");
+*/
 ?>

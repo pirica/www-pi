@@ -1,7 +1,7 @@
 <?php
 $logging = '';
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	update t_host_share 
 	set
 		active = 0,
@@ -10,14 +10,14 @@ $qry = mysql_query("
 		active = 1
 		and id_host = " . $id_host . " 
 		and id_share = " . $id_share . " 
-	", $conn);
+	");
 
 $returnvalue = array('type' => 'info', 'message' => 'share unlinked', 'logging' => $logging);
 
 
 $script_unlink_hostshare = $settings->val('script_unlink_hostshare','');
 if($script_unlink_hostshare != ''){
-	$qry_share = mysql_query("
+	$qry_share = mysqli_query($conn, "
 		select
 			s.id_share,
 			s.name,
@@ -36,10 +36,10 @@ if($script_unlink_hostshare != ''){
 		where
 			s.id_share = " . $id_share . " 
 			
-		", $conn);
-	$share = mysql_fetch_array($qry_share);
+		");
+	$share = mysqli_fetch_array($qry_share);
 
-	$qry_host = mysql_query("
+	$qry_host = mysqli_query($conn, "
 		select
 			h.id_host,
 			h.name,
@@ -51,8 +51,8 @@ if($script_unlink_hostshare != ''){
 		where
 			h.id_host = " . $id_host . " 
 			
-		", $conn);
-	$host = mysql_fetch_array($qry_host);
+		");
+	$host = mysqli_fetch_array($qry_host);
 
 	// and execute any scripts on completion
 	$script_unlink_hostshare = str_replace('%id_share%', $share['id_share'], $script_unlink_hostshare);

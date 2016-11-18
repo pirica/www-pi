@@ -1,6 +1,6 @@
 <?php
 
-$qry = mysql_query("
+$qry = mysqli_query($conn, "
 	select
 		s.code,
 		ifnull(sh.value, s.value) as value,
@@ -20,7 +20,7 @@ $qry = mysql_query("
 	order by
 		s.sort_order,
 		s.code
-	", $conn);
+	");
 	
 $returnvalue = array('data' => mysql2json($qry));
 

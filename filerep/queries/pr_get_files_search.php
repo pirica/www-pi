@@ -1,6 +1,6 @@
 <?php
 
-$qry_files_subdirs = mysql_query("
+$qry_files_subdirs = mysqli_query($conn, "
 	
 	# sub directories under current dir
 	select
@@ -34,11 +34,11 @@ $qry_files_subdirs = mysql_query("
 		d.id_share = " . $id_share . "
 		and d.relative_directory like '%" . $search . "%'
 	
-	", $conn);
+	");
 		
 	
 
-$qry_files = mysql_query("
+$qry_files = mysqli_query($conn, "
 	
 	# files under current dir
 	select
@@ -81,6 +81,6 @@ $qry_files = mysql_query("
 		is_directory desc,
 		filename asc
 		
-	", $conn);
+	");
 	
 ?>

@@ -11,10 +11,10 @@ include 'functions.php';
 // check if script is already running - no, continue
 if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 	// mark as running
-	mysql_query("update t_setting set value = '1' where code = 'shareindex_running'", $conn);
+	");update t_setting set value = '1' where code = 'shareindex_running'", $conn);
 	
 	
-	$qry_shares = mysql_query("
+	$qry_shares = ");
 		select
 			s.id_share,
 			s.name,
@@ -29,13 +29,13 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 
 	$id_share = -1;
 
-	while ($share = mysql_fetch_array($qry_shares)) {
+	while ($share = mysqli_fetch_array($qry_shares)) {
 		$id_share = $share{'id_share'};
 		$dir = $share{'server_directory'};
 		
 		
 		// update share stats
-		mysql_query("
+		");
 			update t_share
 			set
 				total_files = (select count(id_file) from t_file where id_share = " . $id_share . " and active = 1),
@@ -66,7 +66,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		}
 		
 		// set date last replicated on share
-		mysql_query("
+		");
 			update t_host_share
 			set
 				diskspace_total = " . $diskspace_total . ",
@@ -80,7 +80,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 	}
 
 	// script is done, unmark as running
-	mysql_query("update t_setting set value = '0' where code = 'shareindex_running'", $conn);
+	");update t_setting set value = '0' where code = 'shareindex_running'", $conn);
 	
 }
 
