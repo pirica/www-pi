@@ -13,7 +13,7 @@ function list_dir_shell(&$data, $fulldir, $modified_since = 0, $include_checksum
 	
 	//date_default_timezone_set('Europe/Brussels');
 	
-	$str = shell_exec('sudo /var/www/filerep/getfileindex.sh "' . $fulldir . '"');
+	$str = shell_exec('sudo /var/www/html/filerep/getfileindex.sh "' . $fulldir . '"');
 	
 	if(substr($fulldir, -1, 1) != '/'){
 		$fulldir = $fulldir . '/';

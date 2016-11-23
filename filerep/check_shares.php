@@ -37,7 +37,7 @@ if($setting_directoryindex_running == '0'){
 		echo "Share " . $share{'server_directory'} . "<br>\n";
 		flush();
 		
-		$str = shell_exec('sudo /var/www/filerep/checkdirectory.sh "' . $dir . '" ' . '-60');
+		$str = shell_exec('sudo /var/www/html/filerep/checkdirectory.sh "' . $dir . '" ' . '-60');
 		
 /*
 
