@@ -246,9 +246,9 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->path) . "',
 							'" . mysqli_real_escape_string($conn, $filename) . "',
 							'" . mysqli_real_escape_string($conn, $relative_directory) . "',
-							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
-							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->created) . "',
-							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->type) . "',
+							" . 0 /*($music_directories[$mdi]->isVideo ? 1 : 0)*/ . ",
+							" . 'NULL' /*"'".mysqli_real_escape_string($conn, $music_directories[$mdi]->created)."'"*/ . ",
+							'" . /*mysqli_real_escape_string($conn, $music_directories[$mdi]->type) .*/ "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
 							1
 						from songs s1
@@ -305,9 +305,9 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->path) . "',
 							'" . mysqli_real_escape_string($conn, $filename) . "',
 							'" . mysqli_real_escape_string($conn, $relative_directory) . "',
-							" . ($music_directories[$mdi]->isVideo ? 1 : 0) . ",
-							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->created) . "',
-							'" . mysqli_real_escape_string($conn, $music_directories[$mdi]->type) . "',
+							" . 0 /*($music_directories[$mdi]->isVideo ? 1 : 0)*/ . ",
+							" . 'NULL' /*"'".mysqli_real_escape_string($conn, $music_directories[$mdi]->created)."'"*/ . ",
+							'" . /*mysqli_real_escape_string($conn, $music_directories[$mdi]->type) .*/ "',
 							" . (property_exists($music_directories[$mdi], 'albumId') ? $music_directories[$mdi]->albumId: '-1') . ",
 							1,
 							
