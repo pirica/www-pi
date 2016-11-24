@@ -10,7 +10,8 @@ include 'connection.php';
 include 'act_init_subsonic.php';
 
 
-if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5){
+//if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)
+{
 	/*
 	$qry_entries = mysqli_query($conn, "
 		select
@@ -43,9 +44,6 @@ $playlists = $subsonic->getPlaylists();
 $c_playlists = count($playlists);
 
 if($c_playlists > 0){
-	mysqli_query($conn, "delete from playlistEntries");
-	mysqli_query($conn, "truncate table playlistEntries");
-	//mysqli_query($conn, "truncate table playlists");
 	
 	mysqli_query($conn, "update playlists set active = 2");
 	
@@ -81,22 +79,34 @@ if($c_playlists > 0){
 		$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
 		$c_playlist_entries = count($playlist_entries);
 		
+		$pei = 0;
+		
 		for($pei=0; $pei<$c_playlist_entries; $pei++){
 			mysqli_query($conn, "
-				insert into playlistEntries
+				replace into playlistEntries
 				(
+					id,
 					playlistId,
 					songId,
 					songIndex
 				)
 				values 
 				(
+					" . $playlists[$pi]->id . '-' . $pei ",
 					" . $playlists[$pi]->id . ",
 					" . $playlist_entries[$pei]->id . ",
 					" . $pei . "
 				)
 				");
 		}
+		
+		mysqli_query($conn, "
+			delete from playlistEntries
+			where
+				playlistId = " . $playlists[$pi]->id . "
+				and songIndex >= " . $pei . "
+			");
+			
 	}
 	
 	mysqli_query($conn, "update playlists set active = 0 where active = 2");
@@ -120,7 +130,8 @@ if setting "remove double entries"
 $qry_indexes = mysqli_query($conn, "select count(*) as indexcount from indexes");
 $indexes = mysqli_fetch_array($qry_indexes);
 
-if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
+//if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5))
+{
 
 	mysqli_query($conn, "truncate table indexes");
 	//mysqli_query($conn, "truncate table songs");
@@ -485,6 +496,23 @@ if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic
 			)
 			");
 			
+			/*
+			"username" : "admin",
+            "scrobblingEnabled" : false,
+            "adminRole" : true,
+            "settingsRole" : true,
+            "downloadRole" : true,
+            "uploadRole" : true,
+            "playlistRole" : true,
+            "coverArtRole" : true,
+            "commentRole" : true,
+            "podcastRole" : true,
+            "streamRole" : true,
+            "jukeboxRole" : true,
+            "shareRole" : true,
+            "videoConversionRole" : true,
+            "avatarLastChanged" : "2016-11-23T13:47:55.841Z"
+			*/
 	}
 
 	mysqli_query($conn, "update users set active = 0 where username not in (" . $usernames . ") and active = 1");
