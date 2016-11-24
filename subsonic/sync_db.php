@@ -336,7 +336,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				LEFT(filename, INSTR(replace(filename,'_', ' ')," - ")-1)
 			,'_', ' ')  
 		where 
-			type = 'music' 
+			contentType like 'audio/%' 
 			and active = 1 
 			and replace(filename,'_', ' ') like '% - %' 
 			#and ifnull(artist_custom,'') = '' 
@@ -349,7 +349,7 @@ if($indexes['indexcount'] == 0 || (date("H", $crondate) == $settings->val('subso
 				substring(artist_custom, INSTR(artist_custom,". ") + 2)
 			,'_', ' ')  
 		where 
-			type = 'music' 
+			contentType like 'audio/%' 
 			and active = 1 
 			and artist_custom like '%. %'
 			and SUBSTRING(artist_custom, 1, INSTR(artist_custom,". ")) REGEXP '[[:digit:]]'
