@@ -6,7 +6,7 @@ require dirname(__FILE__).'/../_core/components/rollbar/rollbar.php';
 Rollbar::init(array(
     'access_token' => '1c76ba313eea4f0da68747e2c660f3a4',
     'environment' => 'production',
-    'root' => '/var/www'
+    'root' => '/var/www/html'
 ));
 
 require dirname(__FILE__).'/../_core/com/App.php';
