@@ -92,7 +92,7 @@ if($c_playlists > 0){
 				)
 				values 
 				(
-					" . $playlists[$pi]->id . '-' . $pei ",
+					" . $playlists[$pi]->id . '-' . $pei . ",
 					" . $playlists[$pi]->id . ",
 					" . $playlist_entries[$pei]->id . ",
 					" . $pei . "
