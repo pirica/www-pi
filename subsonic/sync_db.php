@@ -79,8 +79,6 @@ if($c_playlists > 0){
 		$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
 		$c_playlist_entries = count($playlist_entries);
 		
-		$pei = 0;
-		
 		for($pei=0; $pei<$c_playlist_entries; $pei++){
 			mysqli_query($conn, "
 				replace into playlistEntries
@@ -92,7 +90,7 @@ if($c_playlists > 0){
 				)
 				values 
 				(
-					" . $playlists[$pi]->id . '-' . $pei . ",
+					'" . $playlists[$pi]->id . '-' . $pei . "',
 					" . $playlists[$pi]->id . ",
 					" . $playlist_entries[$pei]->id . ",
 					" . $pei . "
@@ -104,7 +102,7 @@ if($c_playlists > 0){
 			delete from playlistEntries
 			where
 				playlistId = " . $playlists[$pi]->id . "
-				and songIndex >= " . $pei . "
+				and songIndex >= " . $c_playlist_entries . "
 			");
 			
 	}
