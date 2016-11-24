@@ -144,7 +144,7 @@ class Subsonic
 		
 		if(property_exists($object, "subsonic-response"))
 		{
-			$response = (array)$object->{'subsonic-response'};
+			$response = $object->{'subsonic-response'};
 			//$data = array_shift($response);
 			$data = $response;
 			if(property_exists($data, "status"))
