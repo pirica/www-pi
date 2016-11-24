@@ -133,6 +133,7 @@ class Subsonic
 	protected function error($error, $data=null)
 	{
 		error_log($error ."\n". print_r($data, true));
+		throw new Exception($error ."\n". print_r($data, true));
 		return (object) array("success"=>false, "error"=>$error, "data"=>$data);
 	}
 	
@@ -146,21 +147,21 @@ class Subsonic
 			$response = (array)$object->{'subsonic-response'};
 			//$data = array_shift($response);
 			$data = $response;
-			//if(property_exists($data, "status"))
-			//{
-				//if($data->status == 'ok')
-				//{
+			if(property_exists($data, "status"))
+			{
+				if($data->status == 'ok')
+				{
 					return (object) array("success"=>true, "data"=>$data);
-				/*}
+				}
 				else
 				{
 					return $this->error("Invalid response from server!", $object);
-				}*/
-			/*}
+				}
+			}
 			else
 			{
 				return $this->error("Invalid response from server!", $object);
-			}*/
+			}
 		}
 		else
 		{
