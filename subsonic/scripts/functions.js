@@ -50,7 +50,7 @@ function addPlaylistEntries(event)
 		url: $(event.target).attr('href'),
 		type: 'GET',
 		cache: false,
-		dataType: 'json',
+		//dataType: 'json',
 		error: function(xhr, status, error) {
 			//location.href = ...
 		},
