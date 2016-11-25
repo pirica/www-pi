@@ -82,6 +82,7 @@ switch($action->getCode()){
 		
 	
 	case 'do_set_directory_reindex':
+		$subs = saneInput('subs', 'int', 0);
 		include 'queries/pr_set_directory_reindex.php';
 		break;
 	

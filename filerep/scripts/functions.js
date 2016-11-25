@@ -8,7 +8,7 @@ $().ready(function(){
 	$('.act-dir-reindex').click(function(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		setDirReindexing(this);
+		setDirReindexing(e, this);
 	});
 	
 	if($("#mulitplefileuploader").length > 0){
@@ -141,7 +141,7 @@ $().ready(function(){
 });
 
 
-function setDirReindexing(el, val){
+function setDirReindexing(event, el){
 	var 
 		_dir = $(el).data('dir')
 	;
@@ -149,6 +149,7 @@ function setDirReindexing(el, val){
 		url: 'index.php?action=do_set_directory_reindex' + 
 				'&id_share=' + id_share + 
 				'&dir=' + _dir + 
+				'&subs=' + (event.shiftKey ? '1' : '0') + 
 			'',
 		type: 'GET',
 		cache: false,
