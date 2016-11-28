@@ -52,13 +52,6 @@
 				?>
 			</div>
 			
-							<?php
-							if($action->getCode() == 'songs_search'){
-								while($playlist = mysqli_fetch_array($qry_playlists)){
-									
-								}
-							}
-							?>
 		</div>
 	</form>
 	

@@ -8,7 +8,7 @@ $page = saneInput('page', 'int', 1);
 
 $search = strtolower(saneInput('search'));
 $status = strtoupper(saneInput('status'));
-$playlist = strtoupper(saneInput('playlist'));
+$playlist = strtolower(saneInput('playlist'));
 
 $max_pages = $settings->val('detailgrid_max_pages', 20);
 
