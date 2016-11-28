@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-  <meta charset="UTF-8">
-
-  <title>Dashboard - Weather</title>
-
-
+<!--
   <script>
     window.console = window.console || function(t) {};
    // window.open = function(){ console.log('window.open is disabled.'); };
@@ -17,33 +8,8 @@
       window.ontouchstart = function(){};
     }
   </script>
-
+-->
   
-<link href='http://fonts.googleapis.com/css?family=Nixie+One|Yanone+Kaffeesatz:400,200,700,300' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="scripts/skycons.js"></script>
-	<script type="text/javascript" src="http://suncalc.net/scripts/suncalc.js"></script>
-
-
-  <!--<script src='http://assets.codepen.io/assets/libs/fullpage/jquery_and_jqueryui-f854fb17d00ce0affeccceb6506e478e.js'></script>-->
-  
-  <!--
-  <script src="../_assets/scripts/jquery/jquery-1.4.2.bis.min.js"></script>
-  
-  <script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>
-  -->
-  
-  <script src="../_assets/scripts/jquery/jquery-1.10.2.min.js"></script>
-  
-  <script src="../_assets/scripts/jquery-ui-1.11.3/jquery-ui.min.js"></script>
-  <link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css'>
-  
-  <!--<script src="../_assets/scripts/jquery-color/jquery.color.js"></script>-->
-  
-<link href='styles/weather.css' rel='stylesheet' type='text/css'>
-  
-  <script src='http://momentjs.com/downloads/moment.min.js'></script>
-
-  <!--script src="http://assets.codepen.io/assets/common/stopExecutionOnTimeout-6c99970ade81e43be51fa877be0f7600.js"></script-->
 
   <script>
   var showLocationInfo = false;
@@ -578,9 +544,6 @@ $().ready(function(){
 
 
   </script>
-</head>
-
-<body>
 
 
 <div id="slider-parent"><div id="slider"></div></div>
@@ -596,7 +559,3 @@ $().ready(function(){
 </div> 
 
 <div id="fullscreentoggler"></div>
-
-</body>
-
-</html>
