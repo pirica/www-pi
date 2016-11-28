@@ -113,7 +113,10 @@
 <div id="wrap">
 	
 	<?php
-	include '../users/dsp_topmenu.php';
+	if($viewmode != 'dashboard')
+	{
+		include '../users/dsp_topmenu.php';
+	}
 	?>
 	
 	<!--

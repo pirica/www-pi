@@ -68,6 +68,7 @@ $_SESSION['log'] .= '1:' . $action->getId() . '-' . $action->getCode() . '-' . $
 
 $app->setTitle( $action->getPageTitle() );
 
+$viewmode = '';
 
 if($_SESSION['shell'] == 0 && (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)){
 	if ($action->getLoginRequired() == 1 && !$loggedin){
@@ -137,5 +138,7 @@ else
 			
 	}
 }
+
+$viewmode = saneInput('viewmode');
 
 ?>

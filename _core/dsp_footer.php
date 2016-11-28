@@ -3,9 +3,16 @@
 		
 </div><!-- #wrap -->
 	
-<div class="bottombar">
-</div>
-	
+<?php
+if($viewmode != 'dashboard')
+{
+?>
+	<div class="bottombar">
+	</div>
+<?php
+}
+?>
+
 <?= $app->getFooterScripts() ?>
 
 </body>
