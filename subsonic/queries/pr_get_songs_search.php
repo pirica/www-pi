@@ -33,7 +33,7 @@ if($search != ''){
 		from songs s 
 		" . 
 		($playlist == 'n' || $playlist == 'ex' ? "left join playlistEntries pe on pe.songId = s.id " : "") .
-		($playlist == 'ex' ? "	and pe.id <> " . $playlistId : "").
+		($playlist == 'ex' ? "	and pe.id = " . $playlistId : "").
 		($playlist == 'in' ? "join playlistEntries pe on pe.songId = s.id " : "") .
 		($playlist == 'in' ? "	and pe.id = " . $playlistId : "").
 		
