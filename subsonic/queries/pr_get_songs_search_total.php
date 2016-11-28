@@ -6,7 +6,8 @@ if($search != ''){
 		select
 			count(s.id) as songcount
 			
-		from songs s " . 
+		from songs s 
+		" . 
 		($playlist == 'n' || $playlist == 'ex' ? "left join playlistEntries pe on pe.songId = s.id " : "") .
 		($playlist == 'ex' ? "	and pe.id <> " . $playlistId : "").
 		($playlist == 'in' ? "join playlistEntries pe on pe.songId = s.id " : "") .
@@ -22,7 +23,8 @@ if($search != ''){
 				or ifnull(s.path,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.filename,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.relative_directory,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
-			)".
+			)
+			".
 			($playlist == 'n' || $playlist == 'ex' ? "and pe.id is null " : "").
 			
 		"
