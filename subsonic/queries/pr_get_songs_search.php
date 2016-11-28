@@ -31,14 +31,12 @@ if($search != ''){
 			s.type,
 			s.albumId
 			
-		from songs s
-		left join playlistEntries pe on pe.songId = s.id
-		left join playlistEntriesToAdd pea on pea.songId = s.id
+		from songs s " . 
+		($playlist == 'n' || $playlist == 'ex' ? "left join playlistEntries pe on pe.songId = s.id " : "") .
+		($playlist == 'in' ? "join playlistEntries pe on pe.songId = s.id " : "") .
 		
-		where
+		"where
 			s.isVideo = 0
-			and pe.id is null
-			and pea.id is null
 			and (
 				ifnull(s.title,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.album,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
@@ -46,9 +44,12 @@ if($search != ''){
 				or ifnull(s.path,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.filename,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.relative_directory,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
-			)
+			) ".
+			($playlist == 'n' ? "and pe.id is null " : "").
+			($playlist == 'ex' ? "and pe.id <> " . $playlistId : "").
+			($playlist == 'in' ? "and pe.id = " . $playlistId : "").
 			
-		order by
+		"order by
 			s.id desc
 			
 		limit " . $perpage . " offset " . $offset . "

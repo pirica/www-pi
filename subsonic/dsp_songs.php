@@ -8,7 +8,7 @@
 		
 		
 		<div class="row">
-			<div class="col-md-7">
+			<div class="col-md-6">
 				<input id="search" name="search" placeholder="" class="form-control" type="text" value="<?=$search ?>">
 			</div>
 			
@@ -18,12 +18,52 @@
 			
 			<div class="col-md-1"></div>
 			
+			<div class="col-md-1">
+				<?php
+				if($action->getCode() == 'songs_search'){
+				?>
+					<div class="form-group">
+						<label for="playlist">In playlist</label>
+						<select id="playlist" name="playlist" class="form-control">
+							<option value="a" <?php echo strtolower($playlist) == 'a' ? 'selected="selected"' : ''; ?>>Any</option>
+							<option value="n" <?php echo strtolower($playlist) == 'n' ? 'selected="selected"' : ''; ?>>None</option>
+							<option value="in" <?php echo strtolower($playlist) == 'in' ? 'selected="selected"' : ''; ?>>In selected</option>
+							<option value="ex" <?php echo strtolower($playlist) == 'ex' ? 'selected="selected"' : ''; ?>>Not in selected</option>
+						</select>
+					</div>
+				<?php
+				}
+				?>
+			</div>
+			
 			<div class="col-md-2">
-				<!--<div class="form-group">
-					<input type="checkbox" id="filter_all" name="all" value="1" <?= ''//($show_all == 1 ? 'checked="checked"' : '') ?>/>
-					<label for="filter_all">Also show deleted files</label>
-				</div>
-			</div>-->
+				<?php
+				if($action->getCode() == 'songs_search'){
+				?>
+					<div class="form-group">
+						<label for="playlistId">&nbsp;</label>
+						<select id="playlistId" name="playlistId" class="form-control">
+							<?php
+							while($playlist = mysqli_fetch_array($qry_playlists)){
+							?>
+								<option value="<?= $playlist['id'] ?>" <?php echo $playlist['id'] == $playlistId ? 'selected="selected"' : ''; ?>><?= $playlist['name'] ?></option>
+							<?php
+							}
+							?>
+						</select>
+					</div>
+				<?php
+				}
+				?>
+			</div>
+			
+							<?php
+							if($action->getCode() == 'songs_search'){
+								while($playlist = mysqli_fetch_array($qry_playlists)){
+									
+								}
+							}
+							?>
 		</div>
 	</form>
 	

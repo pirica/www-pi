@@ -8,6 +8,7 @@ $page = saneInput('page', 'int', 1);
 
 $search = strtolower(saneInput('search'));
 $status = strtoupper(saneInput('status'));
+$playlist = strtoupper(saneInput('playlist'));
 
 $max_pages = $settings->val('detailgrid_max_pages', 20);
 
@@ -35,6 +36,7 @@ if($action->getCode() == 'songs_recent'){
 	include 'queries/pr_get_songs_recent_total.php';
 }
 else if($action->getCode() == 'songs_search'){
+	include 'queries/pr_get_playlists.php';
 	include 'queries/pr_get_songs_search_total.php';
 }
 
