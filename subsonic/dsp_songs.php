@@ -3,9 +3,6 @@
 
 	<form method="get" action="?action=<?= $action->getCode() ?>">
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>">
-		<input type="hidden" name="playlistId" value="<?= $playlistId ?>">
-		
-		
 		
 		<div class="row">
 			<div class="col-md-6">
@@ -16,9 +13,7 @@
 				<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
 			</div>
 			
-			<div class="col-md-1"></div>
-			
-			<div class="col-md-1">
+			<div class="col-md-2">
 				<?php
 				if($action->getCode() == 'songs_search'){
 				?>

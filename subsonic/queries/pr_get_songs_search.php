@@ -1,8 +1,7 @@
 <?php
 	
 if($search != ''){
-	
-	$qry_songs = mysqli_query($conn, "
+	$qry_songs_str = "
 		
 		select
 			s.id as songId,
@@ -54,7 +53,11 @@ if($search != ''){
 			
 		limit " . $perpage . " offset " . $offset . "
 			
-		");
+		";
+		
+	echo '<!--' . $qry_songs_str . '-->';
+	
+	$qry_songs = mysqli_query($conn, $qry_songs_str);
 }
 else {
 	$qry_songs = mysqli_query($conn, "
