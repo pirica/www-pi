@@ -1,13 +1,10 @@
 <?php
 $mysql_host = 'localhost';
-$mysql_dbn = 'router';
+$mysql_dbn = 'dashboard';
 $mysql_dbn_users = 'users';
 $mysql_user = 'root';
 $mysql_pw = '';
 require '/etc/mysql/conf.php';
-
-$main_dir = '/media/usbdrive2/motion/';
-$archive_dir = '/media/usbdrive2/motion_archive/';
 
 $conn = mysqli_connect($mysql_host, $mysql_user, $mysql_pw, $mysql_dbn) ;//or die("Unable to connect to MySQL");
 
