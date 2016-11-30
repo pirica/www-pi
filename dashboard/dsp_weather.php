@@ -342,17 +342,17 @@ function setCSSGradientByIndex(nInx)
     var css = toCSSGradient(data);
 
     // update the background
-    $("#grad").css("background", css);
-    $("#grad").css("background-image:", "-webkit-" + css);
-    $("#grad").css("background-image:", "-moz-" + css);
-    $("#grad").css("background-image:", "" + css);
+    $("html, body").css("background", css);
+    $("html, body").css("background-image:", "-webkit-" + css);
+    $("html, body").css("background-image:", "-moz-" + css);
+    $("html, body").css("background-image:", "" + css);
 	
 	/*$("#grad").animate({
             backgroundColor: jQuery.Color(css)
     }, 1500 );*/
 	
     // reset the slider
-    $( "#slider" ).slider( "option", "value", (inx/24)*100 );
+    $( "#slider" ).slider( "option", "value", inx /*(inx/24)*100*/ );
     updateWeatherIcon(skyconIcon);
     // possible to change the foreground color on background change
     //$("#gradInfo").css("color", "#fff");
@@ -362,7 +362,12 @@ function setCSSGradientByIndex(nInx)
   d.hours(inx);
 
   // update visible
-  $("#time").html(d.format('h:mm'));
+  if(true /*24h*/ ){
+	$("#time").html(d.format('H:mm'));
+  }
+  else {
+	$("#time").html(d.format('h:mm'));
+  }
   //$("#time").html(d.format('h:mm[<span id="timeOfDay">]a[</span>]'));
   $("#date").html(d.format('MMMM Do YYYY'));
 
@@ -513,10 +518,12 @@ $().ready(function(){
 
 	// generate the slider
 	$( "#slider" ).slider({
+		min: 0, max: 23, 
 	  slide: function( event, ui )
 	  {  
-		var per = ui.value == 0 ? 0 : ui.value/100;
-		var nInx = Math.round((grads[skyconIcon.replace(/n|d/, '')].length-1) * per);
+		//var per = ui.value == 0 ? 0 : ui.value/100;
+		//var nInx = Math.round((grads[skyconIcon.replace(/n|d/, '')].length-1) * per);
+		var nInx = ui.value;
 		if ( nInx != inx ) 
 		{ 
 		  setCSSGradientByIndex(nInx);
