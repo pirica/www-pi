@@ -42,7 +42,7 @@
 	<link rel="stylesheet" href="../_assets/styles/bootstrap-3.1.0.min.css">
 	<link rel="stylesheet" href="../_assets/styles/bootstrap_custom.css">
 	<link rel="stylesheet" type="text/css" href="styles/default.css"/>
-
+	
 	<script src="../_assets/scripts/jquery/jquery-1.10.2.min.js"></script>
 	<script src="../_assets/scripts/bootstrap/bootstrap-3.1.0.min.js"></script>
 	
@@ -108,7 +108,12 @@
 		}
 	</style>
 </head>
-<body>
+<body <?php
+	if($viewmode == 'dashboard')
+	{
+		echo 'class="dashboardmode"';
+	}
+	?>>
 	
 <div id="wrap">
 	
