@@ -14,4 +14,15 @@
 		</div>
 	</div>
 	
+	<div class="col-xs-6 col-md-3">
+		<div class="thumbnail">
+			<!--img data-src="holder.js/300x300" alt="..."-->
+			<div class="caption">
+				<h3>Traffic</h3>
+				<p>Show traffic timings and congestions</p>
+				<p><a href="?action=traffic" class="btn btn-primary" role="button">Show</a></p>
+			</div>
+		</div>
+	</div>
+	
 </div>
