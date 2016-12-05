@@ -15,8 +15,8 @@ if(is_dir($fulldir))
 	usort($comics, "arraysort_compare");
 }
 
-$src = $src . '/' . $comics[0];
-$filename = $comics[0];
+$src = $src . '/' . $comics[0]['name'];
+$filename = $comics[0]['name'];
 
 header('Content-disposition: inline; filename="' . $filename . '"'); 
 
