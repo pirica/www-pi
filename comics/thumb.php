@@ -5,7 +5,6 @@ require 'connections.php';
 require 'functions.php';
 
 $src = saneInput('src', 'string', '');
-
 $comics = array();
 
 $fulldir = $settings->val('comics_path', '') . $src;
@@ -15,7 +14,7 @@ if(is_dir($fulldir))
 	usort($comics, "arraysort_compare");
 }
 
-$src = $src . '/' . $comics[0]['name'];
+$file = $src . '/' . $comics[0]['name'];
 $filename = $comics[0]['name'];
 
 header('Content-disposition: inline; filename="' . $filename . '"'); 
@@ -25,27 +24,34 @@ header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
 $thumbWidth = 180; // setting
 
-$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src;
+if(stripos($comics[0]['name'], '.jpg') > 0 || stripos($comics[0]['name'], '.jpeg') > 0)
+{
+	$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.jpg';
+}
+else if(stripos($comics[0]['name'], '.png') > 0)
+{
+	$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.png';
+}
 
 if(
-	file_exists($settings->val('comics_path', '') . $src)
+	file_exists($settings->val('comics_path', '') . $file)
 	&&
 	(
 		!file_exists($thumbnail)
 		||
-		(filemtime($thumbnail) < filemtime($settings->val('comics_path', '') . $src))
+		(filemtime($thumbnail) < filemtime($settings->val('comics_path', '') . $file))
 	)
 )
 {
 	
 	// create directory if not exists
-	$parts = explode('/', $settings->val('thumbs_path', '') . $thumbWidth, -1);
+	$parts = explode('/', $thumbnail, -1);
 	$dir = '';
 	foreach($parts as $part){
 		if(!is_dir($dir .= "/$part")) mkdir($dir);
 	}
 	
-	if(stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0 || stripos($src, '.png') > 0)
+	if(stripos($file, '.jpg') > 0 || stripos($file, '.jpeg') > 0 || stripos($file, '.png') > 0)
 	{
 		
 		// create directory if not exists
@@ -56,13 +62,13 @@ if(
 		}
 		
 		// load image and get image size
-		if(stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0)
+		if(stripos($file, '.jpg') > 0 || stripos($file, '.jpeg') > 0)
 		{
-			$img = imagecreatefromjpeg($settings->val('comics_path', '') . $src);
+			$img = imagecreatefromjpeg($settings->val('comics_path', '') . $file);
 		}
-		else if(stripos($src, '.png') > 0)
+		else if(stripos($file, '.png') > 0)
 		{
-			$img = imagecreatefrompng($settings->val('comics_path', '') . $src);
+			$img = imagecreatefrompng($settings->val('comics_path', '') . $file);
 		}
 		
 		$width = imagesx( $img );
@@ -89,7 +95,7 @@ if(
 		imagecopyresized( $tmp_img, $img, 0, 0, $src_x, $src_y, $new_width, $new_height, $width, $height );
 		
 		
-		if(stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0)
+		if(stripos($file, '.jpg') > 0 || stripos($file, '.jpeg') > 0)
 		{
 			// save thumbnail into a file
 			imagejpeg( $tmp_img, $thumbnail);
@@ -97,7 +103,7 @@ if(
 			header("Content-Type: image/jpeg");
 			
 		}
-		else if(stripos($src, '.png') > 0)
+		else if(stripos($file, '.png') > 0)
 		{
 			// save thumbnail into a file
 			imagepng( $tmp_img, $thumbnail);
