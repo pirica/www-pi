@@ -2,7 +2,7 @@
 require '../_core/webinit.php';
 
 require 'connections.php';
-//require '../_core/functions.php';
+require 'functions.php';
 
 $src = saneInput('src', 'string', '');
 
