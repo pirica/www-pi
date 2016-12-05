@@ -31,7 +31,10 @@ for($i=0; $i<count($dirs); $i++)
 		else
 		{
 		?>
-			<a href="index.php?action=comic&amp;comic=<?= $comic . '/' . $dirs[$i]['name'] ?>"><?= $dirs[$i]['name'] ?></a><br/>
+			<a href="index.php?action=comic&amp;comic=<?= $comic . '/' . $dirs[$i]['name'] ?>">
+				<img src="thumb.php?src=<?= $comic . '/' . $dirs[$i]['name'] ?>" class="comic-img" /><br/>
+				<?= $dirs[$i]['name'] ?>
+			</a><br/>
 		<?php
 		}
 	}

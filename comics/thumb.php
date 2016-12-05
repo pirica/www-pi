@@ -5,8 +5,18 @@ require 'connections.php';
 //require '../_core/functions.php';
 
 $src = saneInput('src', 'string', '');
-$fa = explode('/',$src);
-$filename = array_pop($fa);
+
+$comics = array();
+
+$fulldir = $settings->val('comics_path', '') . $src;
+if(is_dir($fulldir))
+{
+	list_dir($comics, $fulldir, 0, 1, 0);
+	usort($comics, "arraysort_compare");
+}
+
+$src = $src . '/' . $comics[0];
+$filename = $comics[0];
 
 header('Content-disposition: inline; filename="' . $filename . '"'); 
 
@@ -14,17 +24,16 @@ header('Cache-control: max-age='.(60*60*24*30));
 header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
 $thumbWidth = 180; // setting
-$square = $settings->val('create_square_thumbs', 0);
 
-$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . ($square == 1 ? 'square' : 'prop') . '/' . $src;
+$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src;
 
 if(
-	file_exists($settings->val('photos_path', '') . $src)
+	file_exists($settings->val('comics_path', '') . $src)
 	&&
 	(
 		!file_exists($thumbnail)
 		||
-		(filemtime($thumbnail) < filemtime($settings->val('photos_path', '') . $src))
+		(filemtime($thumbnail) < filemtime($settings->val('comics_path', '') . $src))
 	)
 )
 {
@@ -49,11 +58,11 @@ if(
 		// load image and get image size
 		if(stripos($src, '.jpg') > 0 || stripos($src, '.jpeg') > 0)
 		{
-			$img = imagecreatefromjpeg($settings->val('photos_path', '') . $src);
+			$img = imagecreatefromjpeg($settings->val('comics_path', '') . $src);
 		}
 		else if(stripos($src, '.png') > 0)
 		{
-			$img = imagecreatefrompng($settings->val('photos_path', '') . $src);
+			$img = imagecreatefrompng($settings->val('comics_path', '') . $src);
 		}
 		
 		$width = imagesx( $img );
@@ -62,34 +71,15 @@ if(
 		$src_y = 0;
 		
 		// calculate thumbnail size
-		if($square == 0)
+		if($width > $height)
 		{
-			if($width > $height)
-			{
-				$new_width = $thumbWidth;
-				$new_height = floor( $height * ( $thumbWidth / $width ) );
-			}
-			else 
-			{
-				$new_height = $thumbWidth;
-				$new_width = floor( $width * ( $thumbWidth / $height ) );
-			}
+			$new_width = $thumbWidth;
+			$new_height = floor( $height * ( $thumbWidth / $width ) );
 		}
 		else 
 		{
-			$new_width = $thumbWidth;
 			$new_height = $thumbWidth;
-			
-			if($width > $height)
-			{
-				$width = $height;
-				$src_x = ($width - $height) / 2;
-			}
-			else if($width < $height)
-			{
-				$height = $width;
-				$src_y = ($height - $width) / 2;
-			}
+			$new_width = floor( $width * ( $thumbWidth / $height ) );
 		}
 		
 		// create a new temporary image
