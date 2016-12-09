@@ -39,9 +39,9 @@
 						<label for="playlistId">&nbsp;</label>
 						<select id="playlistId" name="playlistId" class="form-control">
 							<?php
-							while($playlist = mysqli_fetch_array($qry_playlists)){
+							while($playlistEntry = mysqli_fetch_array($qry_playlists)){
 							?>
-								<option value="<?= $playlist['id'] ?>" <?php echo $playlist['id'] == $playlistId ? 'selected="selected"' : ''; ?>><?= $playlist['name'] ?></option>
+								<option value="<?= $playlistEntry['id'] ?>" <?php echo $playlistEntry['id'] == $playlistId ? 'selected="selected"' : ''; ?>><?= $playlistEntry['name'] ?></option>
 							<?php
 							}
 							?>
