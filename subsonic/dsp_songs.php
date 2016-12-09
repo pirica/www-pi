@@ -56,6 +56,7 @@
 	</form>
 	
 <?php
+$bottom_pager = false;
 include 'dsp_songs_pager.php';
 ?>
 
@@ -106,6 +107,7 @@ include 'dsp_songs_pager.php';
 </form>
 
 <?php
+$bottom_pager = true;
 include 'dsp_songs_pager.php';
 ?>
 
