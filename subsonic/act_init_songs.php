@@ -37,6 +37,7 @@ if($action->getCode() == 'songs_recent'){
 }
 else if($action->getCode() == 'songs_search'){
 	include 'queries/pr_get_playlists.php';
+	include 'queries/pr_get_main_genres.php';
 	include 'queries/pr_get_songs_search_total.php';
 }
 
