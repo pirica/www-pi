@@ -32,11 +32,11 @@ if($search != ''){
 			
 		from songs s 
 		" . 
-		($playlist == 'n' || $playlist == 'ex' ? "left join playlistEntries pe on pe.songId = s.id " : "") .
+		($playlist == 'n' || $playlist == 'ex' ? " left join playlistEntries pe on pe.songId = s.id " : "") .
 		($playlist == 'ex' ? "	and pe.id = " . $playlistId : "").
-		($playlist == 'in' ? "join playlistEntries pe on pe.songId = s.id " : "") .
+		($playlist == 'in' ? " join playlistEntries pe on pe.songId = s.id " : "") .
 		($playlist == 'in' ? "	and pe.id = " . $playlistId : "").
-		($mainGenreId > 0 ? "join genres g on g.description = s.genre " : "").
+		($mainGenreId > 0 ? " join genres g on g.description = s.genre " : "").
 		
 		"
 		where
@@ -51,7 +51,7 @@ if($search != ''){
 			) 
 			".
 			($playlist == 'n' || $playlist == 'ex' ? "and pe.id is null " : "").
-			($mainGenreId > 0 ? "and ifnull(s.mainGenreId, g.mainGenreId) = " . $mainGenreId : "").
+			($mainGenreId > 0 ? "and ifnull(s.mainGenreId, g.mainGenreId) = " . $mainGenreId . " " : "").
 			
 		"
 		order by
