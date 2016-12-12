@@ -25,6 +25,10 @@ label.error {
 	margin-top: 2px;
 }
 
+.comic-ctr
+{
+	min-height: 300px;
+}
 .comic-img
 {
 	width: 100%;

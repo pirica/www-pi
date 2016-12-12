@@ -20,7 +20,7 @@ $filename = $comics[0]['name'];
 header('Cache-control: max-age='.(60*60*24*30));
 header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
-$thumbWidth = 180; // setting
+$thumbWidth = 240; // setting
 
 if(stripos($comics[0]['name'], '.jpg') > 0 || stripos($comics[0]['name'], '.jpeg') > 0)
 {
