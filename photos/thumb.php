@@ -119,6 +119,7 @@ if(
 	}
 }
 
+ob_clean();
 readfile($thumbnail);
 
 ?>

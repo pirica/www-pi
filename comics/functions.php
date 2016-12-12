@@ -7,4 +7,3 @@ function arraysort_compare($a, $b)
 }
 
 ?>
-

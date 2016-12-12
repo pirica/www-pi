@@ -17,8 +17,6 @@ if(is_dir($fulldir))
 $file = $src . '/' . $comics[0]['name'];
 $filename = $comics[0]['name'];
 
-header('Content-disposition: inline; filename="' . $filename . '"'); 
-
 header('Cache-control: max-age='.(60*60*24*30));
 header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
@@ -27,10 +25,12 @@ $thumbWidth = 180; // setting
 if(stripos($comics[0]['name'], '.jpg') > 0 || stripos($comics[0]['name'], '.jpeg') > 0)
 {
 	$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.jpg';
+	header('Content-disposition: inline; filename="' . $src . '.jpg' . '"'); 
 }
 else if(stripos($comics[0]['name'], '.png') > 0)
 {
 	$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.png';
+	header('Content-disposition: inline; filename="' . $src . '.png' . '"'); 
 }
 
 if(
@@ -115,6 +115,7 @@ if(
 	}
 }
 
+ob_clean();
 readfile($thumbnail);
 
 ?>

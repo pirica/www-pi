@@ -7,6 +7,9 @@ require 'connections.php';
 $src = saneInput('src', 'string', '');
 $fa = explode('/',$src);
 $filename = array_pop($fa);
+
+ob_clean();
+
 header("Content-Type: image/jpeg");
 header('Content-disposition: inline; filename="' . $filename . '"'); 
 
