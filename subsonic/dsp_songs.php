@@ -13,12 +13,18 @@
 				<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
 			</div>
 			
-			<div class="col-md-2">
-				<?php
-				if($action->getCode() == 'songs_search'){
-				?>
+		</div>
+		
+		<?php
+		if($action->getCode() == 'songs_search'){
+		?>
+			<div class="row">
+				<div class="col-md-2">
+					<label for="playlist">In playlist</label>
+				</div>
+				
+				<div class="col-md-2">
 					<div class="form-group">
-						<label for="playlist">In playlist</label>
 						<select id="playlist" name="playlist" class="form-control">
 							<option value="a" <?php echo strtolower($playlist) == 'a' ? 'selected="selected"' : ''; ?>>Any</option>
 							<option value="n" <?php echo strtolower($playlist) == 'n' ? 'selected="selected"' : ''; ?>>None</option>
@@ -26,18 +32,12 @@
 							<option value="ex" <?php echo strtolower($playlist) == 'ex' ? 'selected="selected"' : ''; ?>>Not in selected</option>
 						</select>
 					</div>
-				<?php
-				}
-				?>
-			</div>
-			
-			<div class="col-md-2">
-				<?php
-				if($action->getCode() == 'songs_search'){
-				?>
+				</div>
+				
+				<div class="col-md-2">
 					<div class="form-group">
-						<label for="playlistId">&nbsp;</label>
 						<select id="playlistId" name="playlistId" class="form-control">
+							<option value="-1"></option>
 							<?php
 							while($playlistEntry = mysqli_fetch_array($qry_playlists)){
 							?>
@@ -47,12 +47,50 @@
 							?>
 						</select>
 					</div>
-				<?php
-				}
-				?>
+				</div>
 			</div>
-			
-		</div>
+		<?php
+		}
+		?>
+		
+		<?php
+		if($action->getCode() == 'songs_search'){
+		?>
+			<div class="row">
+				<div class="col-md-2">
+					<label for="playlist">In genre</label>
+				</div>
+				
+				<div class="col-md-2">
+					<div class="form-group">
+						<select id="playlist" name="playlist" class="form-control">
+							<option value="a" <?php echo strtolower($playlist) == 'a' ? 'selected="selected"' : ''; ?>>Any</option>
+							<option value="n" <?php echo strtolower($playlist) == 'n' ? 'selected="selected"' : ''; ?>>None</option>
+							<option value="in" <?php echo strtolower($playlist) == 'in' ? 'selected="selected"' : ''; ?>>In selected</option>
+							<option value="ex" <?php echo strtolower($playlist) == 'ex' ? 'selected="selected"' : ''; ?>>Not in selected</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="col-md-2">
+					<div class="form-group">
+						<select id="mainGenreId" name="mainGenreId" class="form-control">
+							<option value="-1"></option>
+							<?php
+							while($main_genre = mysqli_fetch_array($qry_main_genres)){
+							?>
+								<option value="<?= $main_genre['id'] ?>" <?php echo $main_genre['id'] == $mainGenreId ? 'selected="selected"' : ''; ?>><?= $main_genre['description'] ?></option>
+							<?php
+							}
+							?>
+						</select>
+					</div>
+				</div>
+			</div>
+		<?php
+		}
+		?>
+		
 	</form>
 	
 <?php

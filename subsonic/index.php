@@ -8,8 +8,10 @@ include 'connection.php';
 $playlistId = saneInput('playlistId', 'int', -1);
 $songId = saneInput('songId', 'intlist', -1);
 $songIndex = saneInput('songIndex', 'int', -1);
+$genreId = saneInput('genreId', 'int', -1);
+$mainGenreId = saneInput('mainGenreId', 'int', -1);
 
-$app->setHeaderScripts('<script type="text/javascript">var playlistId = ' . $playlistId . ', songId = ' . $songId . ', songIndex = ' . $songIndex . ', dir = \'' . /*$dir .*/ '\';</script>' . "\n");
+$app->setHeaderScripts('<script type="text/javascript">var playlistId = ' . $playlistId . ', songId = ' . $songId . ', genreId = ' . $genreId . ', mainGenreId = ' . $mainGenreId . ', songIndex = ' . $songIndex . ', dir = \'' . /*$dir .*/ '\';</script>' . "\n");
 
 switch($action->getCode()){
 	
@@ -64,6 +66,16 @@ switch($action->getCode()){
 	
 	case 'do_add_playlist_entry':
 		include 'act_playlist_add_entry.php';
+		break;
+	
+	case 'delete_playlist_entry':
+		include 'queries/pr_get_playlists.php';
+		$for_action = true;
+		include 'dsp_playlist_delete_entry.php';
+		break;
+	
+	case 'do_delete_playlist_entry':
+		include 'act_playlist_delete_entry.php';
 		break;
 	
 	
