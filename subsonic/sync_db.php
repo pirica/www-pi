@@ -359,26 +359,26 @@ if(!$task->getIsRunning())
 			update songs s
 			join sync_songs ss on ss.id = s.id
 			set
-				parentId = ss.parentId,
-				title = ss.title,
-				album = ss.album,
-				artist = ss.artist,
-				track = ss.track,
-				year = ss.year,
-				genre = ss.genre,
-				size = ss.size,
-				contentType = ss.contentType,
-				suffix = ss.suffix,
-				duration = ss.duration,
-				bitRate = ss.bitRate,
-				path = ss.path,
-				filename = ss.filename,
-				relative_directory = ss.relative_directory,
-				isVideo = ss.isVideo,
-				created = ss.created,
-				type = ss.type,
-				albumId = ss.albumId,
-				active = 1
+				s.parentId = ss.parentId,
+				s.title = ss.title,
+				s.album = ss.album,
+				s.artist = ss.artist,
+				s.track = ss.track,
+				s.year = ss.year,
+				s.genre = ss.genre,
+				s.size = ss.size,
+				s.contentType = ss.contentType,
+				s.suffix = ss.suffix,
+				s.duration = ss.duration,
+				s.bitRate = ss.bitRate,
+				s.path = ss.path,
+				s.filename = ss.filename,
+				s.relative_directory = ss.relative_directory,
+				s.isVideo = ss.isVideo,
+				s.created = ss.created,
+				s.type = ss.type,
+				s.albumId = ss.albumId,
+				s.active = 1
 			
 		");
 		

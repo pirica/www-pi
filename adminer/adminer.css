@@ -560,6 +560,8 @@ input[name="delete"]:hover, input[name="drop"]:hover {
 .pages {
 	margin: 1em 0;
 	font-size: 90%;
+	bottom: -15px;
+	left: 260px;
 }
 
 .pages a[href*="&page="] {
