@@ -57,7 +57,7 @@ class Task
 		if($value)
 		{
 			mysqli_query($this->_db, "
-				update t_task
+				update users.t_task
 				set
 					is_running = 1,
 					date_last_run = now();
@@ -71,7 +71,7 @@ class Task
 		else
 		{
 			mysqli_query($this->_db, "
-				update t_task
+				update users.t_task
 				set
 					is_running = 0,
 					date_last_completed = now();
@@ -98,7 +98,7 @@ class Task
 					t.name,
 					t.is_running
 					
-				from t_task t
+				from users.t_task t
 					
 				where " . 
 					($this->_id_app > 0 ? "t.id_app = " . $this->_id_app : "t.id_app is null") .
@@ -122,7 +122,7 @@ class Task
 	
 	private function setData() {
 		mysqli_query($this->_db, "
-			insert into t_task
+			insert into users.t_task
 			(
 				id_app,
 				name
@@ -130,10 +130,10 @@ class Task
 			select
 				nullif(" . $this->_id_app . ", -1),
 				'" . mysqli_real_escape_string($this->_db, $this->_name) . "'
-			from t_task
+			from users.t_task
 			where
 				not exists (
-					select * from t_task where ifnull(id_app,-1) = " . $this->_id_app . " and name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
+					select * from users.t_task where ifnull(id_app,-1) = " . $this->_id_app . " and name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 				)
 			limit 1, 1
 			
