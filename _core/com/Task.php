@@ -87,7 +87,7 @@ class Task
 			$this->_data = [];
 			
 			$this->_id_task = -1;
-			$this->_name = '';
+			//$this->_name = '';
 			$this->_is_running = 0;
 			
 			$qry_task = mysqli_query($this->_db, "
@@ -108,7 +108,7 @@ class Task
 				
             while($_task = mysqli_fetch_array($qry_task)){
 				$this->_id_task = $_task['id_task'];
-				$this->_name = $_task['name'];
+				//$this->_name = $_task['name'];
 				$this->_is_running = $_task['is_running'];
 				
 			}
@@ -132,7 +132,7 @@ class Task
 				not exists (
 					select * from users.t_task where id_app = " . $this->_id_app . " and name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 				)
-			limit 1, 1
+			limit 0, 1
 			
 			");
 			

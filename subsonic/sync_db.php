@@ -9,7 +9,6 @@ include 'connection.php';
 
 if(!$task->getIsRunning())
 {
-
 	$task->setIsRunning(true);
 
 	include 'act_init_subsonic.php';
