@@ -35,6 +35,7 @@ $request_uri = $_SERVER['SCRIPT_FILENAME'];
 
 
 phpFastCache::setup("storage","files");
+phpFastCache::setup("path","/tmp/ikkeduckdnsorg/");
 $cache = phpFastCache();
 
 $app = new App($mysqli, $request_uri);
@@ -44,14 +45,18 @@ sec_session_start();
 
 $_SESSION['log'] = '';
 
-$_SESSION['shell'] = 0;
-// from command line
-if(isset($_SERVER['SHELL'])){
-	$_SESSION['shell'] = 1;
+$_SESSION['local'] = 0;
+// loaded from local network
+if (substr($_SERVER['REMOTE_ADDR'],0,8) == "192.168." || $_SERVER['REMOTE_ADDR'] == "127.0.0.1")
+{
+	$_SESSION['local'] = 1;
 }
 
-if(isset($_GET['__mode'])){
-	$app->setMode($_GET['__mode']);
+$_SESSION['shell'] = 0;
+// from command line
+if(isset($_SERVER['SHELL']))
+{
+	$_SESSION['shell'] = 1;
 }
 
 $user = new User($mysqli, $app->getId(), $_SESSION);
@@ -140,5 +145,6 @@ else
 }
 
 $viewmode = saneInput('viewmode');
+$app->setMode($viewmode);
 
 ?>

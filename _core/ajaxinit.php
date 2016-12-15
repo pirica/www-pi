@@ -35,6 +35,7 @@ $request_uri = $_SERVER['SCRIPT_FILENAME'];
 
 
 phpFastCache::setup("storage","files");
+phpFastCache::setup("path","/tmp/ikkeduckdnsorg/");
 $cache = phpFastCache();
 
 $app = new App($mysqli, $request_uri);
