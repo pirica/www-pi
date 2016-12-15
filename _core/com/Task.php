@@ -50,7 +50,7 @@ class Task
 	}
 	
 	public function getIsRunning() {
-		return $this->_is_running;
+		return ($this->_is_running == 1);
 	}
 	
 	public function setIsRunning($value) {
@@ -60,7 +60,7 @@ class Task
 				update users.t_task
 				set
 					is_running = 1,
-					date_last_run = now();
+					date_last_run = now()
 				
 				where
 					name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
@@ -73,7 +73,7 @@ class Task
 				update users.t_task
 				set
 					is_running = 0,
-					date_last_completed = now();
+					date_last_completed = now()
 				
 				where
 					name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
