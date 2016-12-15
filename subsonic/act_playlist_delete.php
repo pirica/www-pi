@@ -16,6 +16,13 @@ if($playlistId > 0){
 		");
 	
 	mysqli_query($conn, "
+		delete from playlistEntriesToRemove
+		where
+			playlistId = " . $playlistId . "
+			;
+		");
+	
+	mysqli_query($conn, "
 		delete from playlists
 		where
 			id = " . $playlistId . "

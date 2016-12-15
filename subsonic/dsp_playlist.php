@@ -25,7 +25,7 @@
 			<td><?= secondsToTimeRange($entries['duration']) ?></td>
 			
 			<td>
-				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delete_playlist_entry&amp;playlistId=<?= $entries['playlistId'] ?>&amp;songIndex=<?=$entries['songIndex'] ?>" data-toggle="modal" data-target="#myModal">
+				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=do_delete_playlist_entry&amp;playlistId=<?= $entries['playlistId'] ?>&amp;songId=<?=$entries['songId'] ?>">
 					<span class="glyphicon glyphicon-remove"></span>
 					Remove
 				</a>

@@ -16,20 +16,25 @@ if(!$task->getIsRunning())
 
 	//if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)
 	{
-		/*
+		
 		$qry_entries = mysqli_query($conn, "
 			select
-				id,
-				playlistId,
-				songId
-			from playlistEntriesToRemove
+				per.id,
+				per.playlistId,
+				per.songId,
+				pe.songIndex
+			from playlistEntriesToRemove per
+			join playlistEntries pe on pe.playlistId = per.playlistId  and pe.songId = per.songId
+			order by
+				pe.songIndex desc
 			");
 		
 		while($entry = mysqli_fetch_array($qry_entries)){
-			$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
+			$subsonic->updatePlaylistRemove($entry['playlistId'], $entry['songIndex']);
 			mysqli_query($conn, "delete from playlistEntriesToRemove where id = " . $entry['id']);
 		}
-		*/
+		
+		
 		$qry_entries = mysqli_query($conn, "
 			select
 				id,
