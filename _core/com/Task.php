@@ -31,13 +31,13 @@ class Task
 		// task not found
 		if($this->_id_task == -1){
 			$this->setData();
-			$this->getData();
+			//$this->getData();
 		}
 		
 		// task still not found or could not add
-		if($this->_id_task == -1){
+		/*if($this->_id_task == -1){
 			trigger_error('task ' . $id_app . ':"' . $name . '" not defined!', E_USER_ERROR);
-		}
+		}*/
 		
 	}
 	
@@ -63,8 +63,7 @@ class Task
 					date_last_run = now();
 				
 				where
-					id_task = " . $this->_id_task . "
-					and id_app = " . $this->_id_app . "
+					name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 					and is_running = 0
 				");
 		}
@@ -77,8 +76,7 @@ class Task
 					date_last_completed = now();
 				
 				where
-					id_task = " . $this->_id_task . "
-					and id_app = " . $this->_id_app . "
+					name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 					and is_running = 1
 				");
 		}
@@ -100,9 +98,8 @@ class Task
 					
 				from users.t_task t
 					
-				where " . 
-					($this->_id_app > 0 ? "t.id_app = " . $this->_id_app : "t.id_app is null") .
-					"
+				where 
+					t.id_app = " . $this->_id_app . "
 					and t.name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 					
 				limit 1
@@ -128,12 +125,12 @@ class Task
 				name
 			)
 			select
-				nullif(" . $this->_id_app . ", -1),
+				" . $this->_id_app . ",
 				'" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 			from users.t_task
 			where
 				not exists (
-					select * from users.t_task where ifnull(id_app,-1) = " . $this->_id_app . " and name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
+					select * from users.t_task where id_app = " . $this->_id_app . " and name = '" . mysqli_real_escape_string($this->_db, $this->_name) . "'
 				)
 			limit 1, 1
 			
