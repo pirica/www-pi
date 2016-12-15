@@ -84,6 +84,29 @@ if(!$task->getIsRunning())
 				)
 				");
 				
+			mysqli_query($conn, "
+				SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
+				
+				select
+					@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
+				from playlists
+				where
+					active = 1
+				order by
+					name
+				;
+				
+				select @o := concat(@o, ']}');
+				
+				update users.t_setting
+				set
+					extra = @o
+				where
+					code = 'intake_playlist'
+				;
+				
+				");
+			
 			
 			$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
 			$c_playlist_entries = count($playlist_entries);
@@ -300,7 +323,8 @@ if(!$task->getIsRunning())
 				created,
 				type,
 				albumId,
-				active
+				active,
+				newlyImported
 			)
 			select
 				ss.id,
@@ -323,6 +347,7 @@ if(!$task->getIsRunning())
 				ss.created,
 				ss.type,
 				ss.albumId,
+				1,
 				1
 			from sync_songs ss
 			left join songs s on s.id = ss.id
@@ -480,6 +505,19 @@ if(!$task->getIsRunning())
 					and songs = 0
 				");
 		}
+		
+		
+		// newly imported, add to 'intake' playlist
+		if($settings->val('intake_playlist', -1) > 0)
+		{
+			mysqli_query($conn, "
+				insert into playlistEntriesToAdd (playlistId, songId)
+				select " . $settings->val('intake_playlist', -1) . ", id from songs s
+				where s.active = 1 
+				and s.newlyImported = 1
+			");
+		}
+		mysqli_query($conn, "update songs set newlyImported = 0 where newlyImported = 1");
 		
 	}
 
