@@ -7,17 +7,13 @@ class Task
 	
 	private $_db;
 	private $_id_app;
-	private $_name;
 	
 	private $_id_task;
-	private $_page_title;
-	private $_login_required;
-	private $_allowed;
+	private $_name;
+	private $_is_running;
 	
 
 	public function __construct($db, $id_app, $name) {
-        $this->default_code = 'main';
-        
 		$this->_db = $db;
 		if($id_app == ''){
 			$this->_id_app = -1;
