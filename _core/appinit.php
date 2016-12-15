@@ -13,6 +13,7 @@ require dirname(__FILE__).'/../_core/com/App.php';
 require dirname(__FILE__).'/../_core/com/Settings.php';
 //require dirname(__FILE__).'/../_core/com/Action.php';
 //require dirname(__FILE__).'/../_core/com/User.php';
+require dirname(__FILE__).'/../_core/com/Task.php';
 
 require dirname(__FILE__).'/functions.php';
 
@@ -38,6 +39,7 @@ $cache = phpFastCache();
 
 $app = new App($mysqli, $request_uri);
 $settings = new Settings($mysqli, $app->getId(), $cache);
+$task = new Task($mysqli, $app->getId(), $request_uri);
 
 /*
 sec_session_start();
