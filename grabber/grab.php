@@ -234,10 +234,10 @@ while ($grabs = mysqli_fetch_array($qry_grabs)) {
 						switch($grabfile['type']){
 							case 'youtube-dl':
 								if(strpos($grabfile['full_path'], '.mp3') > 0){
-									$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part --extract-audio --audio-format mp3 --audio-quality 0 --prefer-avconv -o "' . str_replace('.mp3', '.%(ext)s', $grabfile['full_path']) . '" ' . $grabfile['full_url']);
+									$grabbedfile = shell_exec('/usr/bin/youtube-dl --no-part --extract-audio --audio-format mp3 --audio-quality 0 --prefer-avconv -o "' . str_replace('.mp3', '.%(ext)s', $grabfile['full_path']) . '" ' . $grabfile['full_url']);
 								}
 								else {
-									$grabbedfile = shell_exec('/usr/local/bin/youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
+									$grabbedfile = shell_exec('/usr/bin/youtube-dl --no-part -o "' . $grabfile['full_path'] . '" ' . $grabfile['full_url']);
 								}
 								
 								/* // error
