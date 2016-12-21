@@ -47,9 +47,14 @@ if(!$for_action){
 					<a href="index.php?action=playlist&amp;playlistId=<?= $playlist['id'] ?>"><?= $playlist['name'] ?></a>
 				<?php
 				}
-				else {
+				else if($action->getCode() == 'add_playlist_entry') {
 				?>
 					<a class="add-playlist-entry" data-playlistId="<?= $playlist['id'] ?>" href="index.php?action=do_add_playlist_entry&amp;playlistId=<?= $playlist['id'] ?>&amp;songId=<?= $songId ?>"><?= $playlist['name'] ?></a>
+				<?php
+				}
+				else if($action->getCode() == 'move_playlist_entry') {
+				?>
+					<a class="move-playlist-entry" data-playlistId="<?= $playlist['id'] ?>" href="index.php?action=do_move_playlist_entry&amp;oldPlaylistId=<?= $oldPlaylistId ?>&amp;playlistId=<?= $playlist['id'] ?>&amp;songId=<?= $songId ?>"><?= $playlist['name'] ?></a>
 				<?php
 				}
 				?>

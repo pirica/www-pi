@@ -14,7 +14,7 @@ $().ready(function(){
 		onSongsChecked();
 	});
 	
-	$('#myModal').on('click', '.add-playlist-entry', addPlaylistEntries);
+	$('#myModal').on('click', '.add-playlist-entry,.move-playlist-entry', addPlaylistEntries);
 	
 });
 

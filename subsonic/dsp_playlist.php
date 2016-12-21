@@ -9,6 +9,8 @@
 			<th>Album</th>
 			<th>Length</th>
 			
+			<th>Add</th>
+			<th>Move</th>
 			<th>Remove</th>
 		</tr>
 	</thead>
@@ -24,6 +26,18 @@
 			<td><?= $entries['album'] ?></td>
 			<td><?= secondsToTimeRange($entries['duration']) ?></td>
 			
+			<td>
+				<a class="btn btn-danger btn-xs" href="index.php?action=add_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+					<span class="glyphicon glyphicon-plus"></span>
+					Add
+				</a>
+			</td>
+			<td>
+				<a class="btn btn-danger btn-xs" href="index.php?action=move_playlist_entry&amp;oldPlaylistId=<?=$playlistId ?>&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+					<span class="glyphicon glyphicon-plus"></span>
+					Move
+				</a>
+			</td>
 			<td>
 				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=do_delete_playlist_entry&amp;playlistId=<?= $entries['playlistId'] ?>&amp;songId=<?=$entries['songId'] ?>">
 					<span class="glyphicon glyphicon-remove"></span>

@@ -6,6 +6,7 @@ include 'connection.php';
 //include 'act_settings.php';
 
 $playlistId = saneInput('playlistId', 'int', -1);
+$oldPlaylistId = saneInput('oldPlaylistId', 'int', -1);
 $songId = saneInput('songId', 'intlist', -1);
 $songIndex = saneInput('songIndex', 'int', -1);
 $genreId = saneInput('genreId', 'int', -1);
@@ -67,6 +68,18 @@ switch($action->getCode()){
 	case 'do_add_playlist_entry':
 		include 'act_playlist_add_entry.php';
 		break;
+		
+		
+	case 'move_playlist_entry':
+		include 'queries/pr_get_playlists.php';
+		$for_action = true;
+		include 'dsp_playlists.php';
+		break;
+	
+	case 'do_move_playlist_entry':
+		include 'act_playlist_move_entry.php';
+		break;
+		
 	
 	case 'delete_playlist_entry':
 		include 'queries/pr_get_playlists.php';
