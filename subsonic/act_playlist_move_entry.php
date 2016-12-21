@@ -38,7 +38,6 @@ if($playlistId > 0 && $songId != ''){
 	$songIds = explode(',', $songId);
 	
 	for($i=0; $i<count($songIds); $i++){
-		mysqli_query($conn, "delete from playlistEntries where playlistId = " . $oldPlaylistId . " and songId = " . $songIds[$i]);
 		
 		mysqli_query($conn, "
 			insert into playlistEntriesToRemove
