@@ -41,6 +41,7 @@ if(!$task->getIsRunning())
 				playlistId,
 				songId
 			from playlistEntriesToAdd
+			order by id
 			");
 		
 		while($entry = mysqli_fetch_array($qry_entries)){
