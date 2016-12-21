@@ -27,13 +27,13 @@
 			<td><?= secondsToTimeRange($entries['duration']) ?></td>
 			
 			<td>
-				<a class="btn btn-danger btn-xs" href="index.php?action=add_playlist_entry&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+				<a class="btn btn-danger btn-xs" href="index.php?action=add_playlist_entry&amp;songId=<?=$entries['songId'] ?>" data-toggle="modal" data-target="#myModal">
 					<span class="glyphicon glyphicon-plus"></span>
 					Add
 				</a>
 			</td>
 			<td>
-				<a class="btn btn-danger btn-xs" href="index.php?action=move_playlist_entry&amp;oldPlaylistId=<?=$playlistId ?>&amp;songId=<?=$song['songId'] ?>" data-toggle="modal" data-target="#myModal">
+				<a class="btn btn-danger btn-xs" href="index.php?action=move_playlist_entry&amp;oldPlaylistId=<?=$playlistId ?>&amp;songId=<?=$entries['songId'] ?>" data-toggle="modal" data-target="#myModal">
 					<span class="glyphicon glyphicon-plus"></span>
 					Move
 				</a>
