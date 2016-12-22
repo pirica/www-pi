@@ -11,10 +11,10 @@ include 'functions.php';
 // check if script is already running - no, continue
 if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
 	// mark as running
-	");update t_setting set value = '1' where code = 'shareindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '1' where code = 'shareindex_running'");
 	
 	
-	$qry_shares = ");
+	$qry_shares = mysqli_query($conn, "
 		select
 			s.id_share,
 			s.name,
@@ -24,7 +24,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 			s.active = 1
 			and s.external = 0
 		
-		", $conn);
+		");
 		
 
 	$id_share = -1;
@@ -35,7 +35,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		
 		
 		// update share stats
-		");
+		mysqli_query($conn, "
 			update t_share
 			set
 				total_files = (select count(id_file) from t_file where id_share = " . $id_share . " and active = 1),
@@ -52,7 +52,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				total_directories_inactive = (select count(id_directory) from t_directory where id_share = " . $id_share . " and active = 0)
 			where
 				id_share = " . $id_share . "
-			", $conn);
+			");
 		
 		$diskspace_total = disk_total_space($share['server_directory']);
 		$diskspace_free = disk_free_space($share['server_directory']);
@@ -66,7 +66,7 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 		}
 		
 		// set date last replicated on share
-		");
+		mysqli_query($conn, "
 			update t_host_share
 			set
 				diskspace_total = " . $diskspace_total . ",
@@ -75,12 +75,12 @@ if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' &
 				active = 1
 				and id_share = " . $id_share . "
 				and id_host = " . $setting_server_id_host . " 
-			", $conn);
+			");
 		
 	}
 
 	// script is done, unmark as running
-	");update t_setting set value = '0' where code = 'shareindex_running'", $conn);
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'shareindex_running'");
 	
 }
 
