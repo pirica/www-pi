@@ -17,6 +17,8 @@ if(is_dir($fulldir))
 $file = $src . '/' . $comics[0]['name'];
 $filename = $comics[0]['name'];
 
+ob_clean();
+
 header('Cache-control: max-age='.(60*60*24*30));
 header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
@@ -115,7 +117,6 @@ if(
 	}
 }
 
-ob_clean();
 readfile($thumbnail);
 
 ?>
