@@ -24,3 +24,12 @@ label.error {
 	padding: 2px 8px;
 	margin-top: 2px;
 }
+
+.thumb-ctr
+{
+	margin-bottom: 25px;
+}
+.thumb-ctr img
+{
+	width: 100%;
+}

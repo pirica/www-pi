@@ -36,13 +36,13 @@ for($i=0; $i<count($files); $i++)
 	if($files[$i]['dir'] == 0)
 	{
 		?>
-		<div class="col-xs-6 col-md-3"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
+		<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
 		<?php
 		
-		if($counter % 4 == 0 && $counter > 1)
+		/*if($counter % 4 == 0 && $counter > 1)
 		{
 			echo '</div><div class="row">';
-		}
+		}*/
 		
 		$counter++;
 	}
