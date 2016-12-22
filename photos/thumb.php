@@ -8,6 +8,8 @@ $src = saneInput('src', 'string', '');
 $fa = explode('/',$src);
 $filename = array_pop($fa);
 
+ob_clean();
+
 header('Content-disposition: inline; filename="' . $filename . '"'); 
 
 header('Cache-control: max-age='.(60*60*24*30));
@@ -119,7 +121,6 @@ if(
 	}
 }
 
-ob_clean();
 readfile($thumbnail);
 
 ?>
