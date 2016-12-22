@@ -35,9 +35,19 @@ for($i=0; $i<count($files); $i++)
 {
 	if($files[$i]['dir'] == 0)
 	{
-		?>
-		<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
-		<?php
+		if(stripos($files[$i]['name'], '.jpg') > 0 || stripos($files[$i]['name'], '.jpeg') > 0 || stripos($files[$i]['name'], '.png') > 0)
+		{
+			?>
+			<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
+			<?php
+		}
+		else
+		{
+			?>
+			<div class="thumb-ctr col-md-2 col-sm-6"><?= $files[$i]['name'] ?></div>
+			<?php
+
+		}
 		
 		/*if($counter % 4 == 0 && $counter > 1)
 		{
