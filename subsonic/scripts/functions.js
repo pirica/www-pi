@@ -16,6 +16,11 @@ $().ready(function(){
 	
 	$('#myModal').on('click', '.add-playlist-entry,.move-playlist-entry', addPlaylistEntries);
 	
+	$('body').on('hidden.bs.modal', '.modal', function ()
+	{
+		$(this).removeData('bs.modal');
+	});
+	
 });
 
 function onSongsChecked()
