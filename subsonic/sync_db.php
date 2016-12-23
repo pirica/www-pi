@@ -598,40 +598,33 @@ if(!$task->getIsRunning())
 		
 	}
 
-	/*
-
-	if setting "remove double entries"
+	// remove double playlist entries
+	if($settings->val('remove_double_playlistentries', 'no') == 'first' || $settings->val('remove_double_playlistentries', 'no') == 'last')
+	{
+		$which_selection = $settings->val('remove_double_playlistentries', 'no') == 'first' ? 'max' : 'min';
 		
-		query "get double entries"
-		ordered by first or last, by index desc
-			
-			$subsonic->updatePlaylistRemove($playlistId, $playlistSongIndex);
-			mysqli_query($conn, "delete from playlistEntries where id = " . $entry['id']);
-			
-
-	*/
+		$qry_entries = mysqli_query($conn, "
+			select
+				pe.playlistId,
+				pe.songId,
+				count(pe.id) as doubles,
+				" . $which_selection . "(pe.songIndex) as songIndex
+			from playlistEntries pe
+			group by
+				pe.playlistId,
+				pe.songId
+			having
+				count(pe.id) > 1
+			order by
+				songIndex desc
+			");
+		
+		while($entry = mysqli_fetch_array($qry_entries)){
+			$subsonic->updatePlaylistRemove($entry['playlistId'], $entry['songIndex']);
+		}
+	}
 
 	
-	
-	/*
-	// update filerep
-	mysqli_query($conn, "
-		update filerep.t_file
-		set
-			ss_on_playlist = 0
-		where
-			ss_on_playlist = 1
-		;
-			
-		update filerep.t_file f
-		join songs s on f.relative_directory = s.relative_directory and f.filename = s.filename
-		join playlistEntries p on p.songid = s.id
-		set
-			f.ss_on_playlist = 1
-		;
-		");
-	*/
-
 
 	$export_dir = $settings->val('export_directory', '');
 	$songs_dir = $settings->val('songs_directory', '');
