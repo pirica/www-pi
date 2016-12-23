@@ -506,7 +506,21 @@ if(!$task->getIsRunning())
 					and songs = 0
 				");
 		}
+		
+		if($settings->val('update_moved_playlistentries', 0) == 1)
+		{
+			// update songs from playlists which were moved
+			mysqli_query($conn, "
+				insert into playlistEntriesToAdd (playlistId, songId)
+				select pe.playlistId, s2.id
+				from playlistEntries pe
+				join songs s on s.id = pe.songId and s.active = 0
+				join songs s2 on s2.filename = s.filename and s2.size = s.size and s2.active = 1
+			");
 			
+		}
+		
+		
 		if($settings->val('auto_delete_inactive_playlistentries', 0) == 1)
 		{
 			// delete songs from playlists which are inactive
