@@ -506,6 +506,17 @@ if(!$task->getIsRunning())
 					and songs = 0
 				");
 		}
+			
+		if($settings->val('auto_delete_inactive_playlistentries', 0) == 1)
+		{
+			// delete songs from playlists which are inactive
+			mysqli_query($conn, "
+				insert into playlistEntriesToRemove (playlistId, songId)
+				select pe.playlistId, pe.songId
+				from playlistEntries pe
+				join songs s on s.id = pe.songId and s.active = 0
+			");
+		}
 		
 		
 		// newly imported, add to 'intake' playlist
