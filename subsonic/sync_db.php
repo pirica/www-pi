@@ -436,7 +436,7 @@ if(!$task->getIsRunning())
 				insert into playlistEntriesToAdd (playlistId, songId)
 				select " . $settings->val('intake_playlist', -1) . ", s.id from songs s
 				left join songs s2 on s2.filename = s.filename and s2.size = s.size and s2.active = 0
-				left join playlistEntriesToAdd pea on pea.playlistId = pe.playlistId and pea.songId = s2.id
+				left join playlistEntriesToAdd pea on pea.playlistId = " . $settings->val('intake_playlist', -1) . " and pea.songId = s2.id
 				where s.active = 1 
 				and s.newlyImported = 1
 				and s2.id is null
