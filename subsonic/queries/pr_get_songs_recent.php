@@ -35,6 +35,7 @@ $qry_songs = mysqli_query($conn, "
 	
 	where
 		s.isVideo = 0
+		and s.active > 0
 		and pe.id is null
 		and pea.id is null
 		

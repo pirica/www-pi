@@ -16,6 +16,7 @@ if($search != ''){
 		"
 		where
 			s.isVideo = 0
+			and s.active > 0
 			and (
 				ifnull(s.title,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'
 				or ifnull(s.album,'') like '%" . mysqli_real_escape_string($conn, $search) . "%'

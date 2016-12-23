@@ -8,6 +8,7 @@ $qry_songs_recent_total = mysqli_query($conn, "
 	from songs s
 	where
 		s.isVideo = 0
+		and s.active > 0
 	
 	");
 

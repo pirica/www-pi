@@ -60,7 +60,7 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "truncate table indexes");
 		mysqli_query($conn, "truncate table sync_songs");
 		
-		mysqli_query($conn, "update songs set active = 2");
+		mysqli_query($conn, "update songs set active = 2 where active = 1");
 		
 		
 		$indexes = $subsonic->getIndexes();

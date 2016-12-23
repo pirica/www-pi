@@ -34,6 +34,7 @@ $qry_playlist_entries = mysqli_query($conn, "
 		
 	from playlistEntries pe
 	join songs s on s.id = pe.songId
+		and s.active > 0
 	
 	where
 		pe.playlistId = " . $playlistId . "
@@ -72,6 +73,7 @@ $qry_playlist_entries = mysqli_query($conn, "
 		
 	from playlistEntriesToAdd pea
 	join songs s on s.id = pea.songId
+		and s.active > 0
 	
 	where
 		pea.playlistId = " . $playlistId . "
