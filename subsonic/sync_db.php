@@ -50,113 +50,6 @@ if(!$task->getIsRunning())
 		}
 	}
 
-	$playlists = $subsonic->getPlaylists();
-	$c_playlists = count($playlists);
-
-	if($c_playlists > 0){
-		
-		mysqli_query($conn, "update playlists set active = 2");
-		
-		for($pi=0; $pi<$c_playlists; $pi++){
-			mysqli_query($conn, "
-				replace into playlists
-				(
-					id,
-					name,
-					comment,
-					owner,
-					public,
-					songcount,
-					duration,
-					created,
-					active
-				)
-				values 
-				(
-					" . $playlists[$pi]->id . ",
-					'" . mysqli_real_escape_string($conn, $playlists[$pi]->name) . "',
-					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
-					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
-					" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
-					" . $playlists[$pi]->songCount . ",
-					" . $playlists[$pi]->duration . ",
-					'" . mysqli_real_escape_string($conn, $playlists[$pi]->created) . "',
-					1
-				)
-				");
-				
-			mysqli_query($conn, "
-				SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
-				
-				select
-					@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
-				from playlists
-				where
-					active = 1
-				order by
-					name
-				;
-				
-				select @o := concat(@o, ']}');
-				
-				update users.t_setting
-				set
-					extra = @o
-				where
-					code = 'intake_playlist'
-				;
-				
-				");
-			
-			
-			$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
-			$c_playlist_entries = count($playlist_entries);
-			
-			for($pei=0; $pei<$c_playlist_entries; $pei++){
-				mysqli_query($conn, "
-					replace into playlistEntries
-					(
-						id,
-						playlistId,
-						songId,
-						songIndex
-					)
-					values 
-					(
-						'" . $playlists[$pi]->id . '-' . $pei . "',
-						" . $playlists[$pi]->id . ",
-						" . $playlist_entries[$pei]->id . ",
-						" . $pei . "
-					)
-					");
-			}
-			
-			mysqli_query($conn, "
-				delete from playlistEntries
-				where
-					playlistId = " . $playlists[$pi]->id . "
-					and songIndex >= " . $c_playlist_entries . "
-				");
-				
-		}
-		
-		mysqli_query($conn, "update playlists set active = 0 where active = 2");
-		
-	}
-
-	/*
-
-	if setting "remove double entries"
-		
-		query "get double entries"
-		ordered by first or last, by index desc
-			
-			$subsonic->updatePlaylistRemove($playlistId, $playlistSongIndex);
-			mysqli_query($conn, "delete from playlistEntries where id = " . $entry['id']);
-			
-
-	*/
-
 
 	$qry_indexes = mysqli_query($conn, "select count(*) as indexcount from indexes");
 	$indexes = mysqli_fetch_array($qry_indexes);
@@ -604,7 +497,117 @@ if(!$task->getIsRunning())
 
 	//}
 
+	
+	
+	$playlists = $subsonic->getPlaylists();
+	$c_playlists = count($playlists);
 
+	if($c_playlists > 0){
+		
+		mysqli_query($conn, "update playlists set active = 2");
+		
+		for($pi=0; $pi<$c_playlists; $pi++){
+			mysqli_query($conn, "
+				replace into playlists
+				(
+					id,
+					name,
+					comment,
+					owner,
+					public,
+					songcount,
+					duration,
+					created,
+					active
+				)
+				values 
+				(
+					" . $playlists[$pi]->id . ",
+					'" . mysqli_real_escape_string($conn, $playlists[$pi]->name) . "',
+					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
+					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
+					" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
+					" . $playlists[$pi]->songCount . ",
+					" . $playlists[$pi]->duration . ",
+					'" . mysqli_real_escape_string($conn, $playlists[$pi]->created) . "',
+					1
+				)
+				");
+				
+			mysqli_query($conn, "
+				SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
+				
+				select
+					@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
+				from playlists
+				where
+					active = 1
+				order by
+					name
+				;
+				
+				select @o := concat(@o, ']}');
+				
+				update users.t_setting
+				set
+					extra = @o
+				where
+					code = 'intake_playlist'
+				;
+				
+				");
+			
+			
+			$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
+			$c_playlist_entries = count($playlist_entries);
+			
+			for($pei=0; $pei<$c_playlist_entries; $pei++){
+				mysqli_query($conn, "
+					replace into playlistEntries
+					(
+						id,
+						playlistId,
+						songId,
+						songIndex
+					)
+					values 
+					(
+						'" . $playlists[$pi]->id . '-' . $pei . "',
+						" . $playlists[$pi]->id . ",
+						" . $playlist_entries[$pei]->id . ",
+						" . $pei . "
+					)
+					");
+			}
+			
+			mysqli_query($conn, "
+				delete from playlistEntries
+				where
+					playlistId = " . $playlists[$pi]->id . "
+					and songIndex >= " . $c_playlist_entries . "
+				");
+				
+		}
+		
+		mysqli_query($conn, "update playlists set active = 0 where active = 2");
+		
+	}
+
+	/*
+
+	if setting "remove double entries"
+		
+		query "get double entries"
+		ordered by first or last, by index desc
+			
+			$subsonic->updatePlaylistRemove($playlistId, $playlistSongIndex);
+			mysqli_query($conn, "delete from playlistEntries where id = " . $entry['id']);
+			
+
+	*/
+
+	
+	
 	/*
 	// update filerep
 	mysqli_query($conn, "
