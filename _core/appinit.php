@@ -33,13 +33,14 @@ $request_uri = $_SERVER['SCRIPT_FILENAME'];
 	$request_uri = $_SERVER['REQUEST_URI'];
 }*/
 
-
+/*
 phpFastCache::setup("storage","files");
 phpFastCache::setup("path","/tmp/rudy/");
 $cache = phpFastCache();
+*/
 
 $app = new App($mysqli, $request_uri);
-$settings = new Settings($mysqli, $app->getId(), $cache);
+$settings = new Settings($mysqli, $app->getId()/*, $cache*/);
 $task = new Task($mysqli, $app->getId(), $request_uri);
 
 /*

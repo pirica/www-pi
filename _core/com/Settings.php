@@ -25,8 +25,12 @@ class Settings
 	
 	public function getData() {
 		
-		$data = $this->_cache->get("settings");
-
+		$data = null;
+		if($this->_cache)
+		{
+			$data = $this->_cache->get("settings");
+		}
+		
 		if($data == null) {
 			
 			$this->_count = 0;
@@ -90,9 +94,10 @@ class Settings
 				);
 				
 			}
-			
-			$this->_cache->set("settings", $data, 3600 * 8);
-			
+			if($this->_cache)
+			{
+				$this->_cache->set("settings", $data, 3600 * 8);
+			}
 			$this->_data = $data;
 			
 		}
@@ -162,7 +167,10 @@ class Settings
 	
 	public function clearCache()
 	{
-		$this->_cache->delete("settings");
+		if($this->_cache)
+		{
+			$this->_cache->delete("settings");
+		}
 	}
 	
 	/*
