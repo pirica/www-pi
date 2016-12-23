@@ -539,8 +539,10 @@ if(!$task->getIsRunning())
 			mysqli_query($conn, "
 				insert into playlistEntriesToAdd (playlistId, songId)
 				select " . $settings->val('intake_playlist', -1) . ", id from songs s
+				left join songs s2 on s2.filename = s.filename and s2.size = s.size and s2.active = 0
 				where s.active = 1 
 				and s.newlyImported = 1
+				and s2.id is null
 			");
 		}
 		mysqli_query($conn, "update songs set newlyImported = 0 where newlyImported = 1");
