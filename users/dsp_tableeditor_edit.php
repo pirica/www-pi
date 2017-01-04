@@ -129,6 +129,34 @@ if(
 							<?php
 							break;
 							
+						case 'text':
+						case 'textarea':
+							?>
+							
+							<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">
+								<label class="col-sm-3 control-label" for="tef_<?= $tableeditor_field['fieldname'] ?>"><?= $tableeditor_field['fielddescription'] ?></label>
+								<?php
+									if($tableeditor_field['fieldtype'] == 'int' || $tableeditor_field['fieldtype'] == 'integer'){
+										$colsize = 3;
+									}
+									else {
+										$colsize = 9;
+									}
+								?>
+								<div class="col-sm-<?= $colsize ?>">
+									<textarea id="tef_<?= $tableeditor_field['fieldname'] ?>" name="tef_<?= $tableeditor_field['fieldname'] ?>" class="form-control" 
+										<?= $tableeditor_field['required'] == 1 ? 'required="required"' : '' ?>
+									><?= $tableentry[$tableeditor_field['fieldname']] ?></textarea>
+								</div>
+								<?php
+									if($tableeditor_field['tooltip'] != ''){
+										echo '<p class="help-block col-sm-11 col-sm-offset-1">' . $tableeditor_field['tooltip'] . '</p>';
+									}
+								?>
+							</div>
+							<?php
+							break;
+							
 						case 'int':
 						case 'integer':
 							$input_type = 'number';
