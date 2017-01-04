@@ -139,6 +139,12 @@ function login($email, $password_plain, $mysqli, $rememberme = false, $url_after
 						setcookie('sessiontimeout', '', 0, $cookieParams["path"], $cookieParams["domain"], SECURE, /*$httponly =*/ true);
 					}
 					
+					
+					if(isset($_SESSION['default_app']) && $_SESSION['default_app'] != '')
+					{
+						$url_after_login = get_root_url() . $_SESSION['default_app'];
+					}
+					
 					if($url_after_login != ''){
 						header("Location: " . $url_after_login);
 						exit();
@@ -302,7 +308,7 @@ function esc_url($url) {
     }
 }
 
-function get_url_after_login(){
+function get_root_url(){
 	// from: http://stackoverflow.com/questions/6768793/get-the-full-url-in-php 
 	$ssl = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true:false;
 	$sp = isset($_SERVER['SERVER_PROTOCOL']) ? strtolower($_SERVER['SERVER_PROTOCOL']) : 'http/';
@@ -312,15 +318,11 @@ function get_url_after_login(){
 	$host = /*($use_forwarded_host && isset($_SERVER['HTTP_X_FORWARDED_HOST'])) ? $_SERVER['HTTP_X_FORWARDED_HOST'] :*/ (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null);
 	$host = isset($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] . $port : 'localhost');
 	
-	if(isset($_SESSION['default_app']) && $_SESSION['default_app'] != '')
-	{
-		return $protocol . '://' . $host . $_SESSION['default_app'];
-	}
-	else
-	{
-		return $protocol . '://' . $host . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
-	}
-	
+	return $protocol . '://' . $host;
+}
+
+function get_url_after_login(){
+	return get_root_url() . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 }
 
 ?>
