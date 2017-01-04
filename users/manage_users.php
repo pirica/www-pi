@@ -3,8 +3,9 @@ set_time_limit(0);
 
 require dirname(__FILE__).'/../_core/appinit.php';
 
-require 'connection.php';
-require 'functions.php';
+//require 'connection.php';
+//require 'functions.php';
+$conn = $conn_users;
 
 
 if(!$task->getIsRunning())
@@ -40,12 +41,12 @@ if(!$task->getIsRunning())
 		select
 			id_user,
 			username,
-			salt
+			salt,
+			new_password
 		from t_user
 		where
-			ifnull(password,'') = ''
+			ifnull(new_password,'') <> ''
 			and ifnull(salt,'') <> ''
-			and ifnull(new_password,'') <> ''
 		");
 		
 	while($user = mysqli_fetch_array($qry_users_new)){
@@ -53,11 +54,11 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "
 			update t_user
 			set
-				password = '" . hash('sha512', $password . $user['salt']) . "',
+				password = '" . hash('sha512', hash('sha512', $password) . $user['salt']) . "',
 				new_password = ''
 			where
 				id_user = " . $user['id_user'] . "
-				and ifnull(password,'') = ''
+				and ifnull(new_password,'') <> ''
 			");
 		echo 'Password for user "' . $user['username'] . '" set to "' . $password . '"';
 	}
