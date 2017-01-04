@@ -10,7 +10,7 @@ class Settings
 	private $_count = 0;
 	private $_cache;
 
-	public function __construct($db, $id_app, $cache) {
+	public function __construct($db, $id_app, $cache=null) {
 		$this->_db = $db;
 		$this->_id_app = $id_app;
 		$this->_cache = $cache;
