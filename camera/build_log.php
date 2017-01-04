@@ -6,9 +6,9 @@ require dirname(__FILE__).'/../_core/appinit.php';
 require 'connection.php';
 require 'functions.php';
 
-shell_exec('if [ ! -d /var/www/camera/captures ]; then ln -s ' . $main_dir . ' /var/www/camera/captures > /dev/null 2>&1; fi');
-shell_exec('if [ ! -d /var/www/camera/captures_archive ]; then ln -s ' . $archive_dir . ' /var/www/camera/captures_archive > /dev/null 2>&1; fi');
-shell_exec('if [ ! -d /var/www/camera/captures_thumbs ]; then ln -s ' . $thumbs_dir . ' /var/www/camera/captures_thumbs > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d /var/www/html/camera/captures ]; then ln -s ' . $main_dir . ' /var/www/html/camera/captures > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d /var/www/html/camera/captures_archive ]; then ln -s ' . $archive_dir . ' /var/www/html/camera/captures_archive > /dev/null 2>&1; fi');
+shell_exec('if [ ! -d /var/www/html/camera/captures_thumbs ]; then ln -s ' . $thumbs_dir . ' /var/www/html/camera/captures_thumbs > /dev/null 2>&1; fi');
 //shell_exec('unlink /var/www/camera/captures');
 
 $crondate = time();
@@ -117,7 +117,7 @@ for ($d = 0; $d < $dircount; $d++) {
 			$querydata = '';
 			
 			for ($i = 0; $i < $tmpfilecount; $i++) {
-				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false && strpos($tmpfiles[$i], 'x0-y0-w0-h0') === false){
+				if($tmpfiles[$i] != '' && strpos($tmpfiles[$i], '_') !== false && strpos($tmpfiles[$i], 'x0-y0-w0-h0') === false && filesize($main_dir . $dirs[$d] . '/' . $tmpfiles[$i]) > 0){
 					$current_image++;
 					
 					// name = 20150911_150439_picam1_00_x572-y286-w8-h40.jpg
