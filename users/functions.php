@@ -68,12 +68,14 @@ function login($email, $password_plain, $mysqli, $rememberme = false, $url_after
 				u.username,
 				u.password,
 				u.salt,
+				a.relative_url as default_app,
 				u.id_profile,
 				p.description as profile,
 				p.full_access
 			FROM t_user u
 			join t_profile p on p.id_profile = u.id_profile
 				and p.active = 1
+			left join t_app a on a.id_app = u.id_app_default
 			WHERE
 				u.email = ?
 				and u.active = 1
@@ -84,7 +86,7 @@ function login($email, $password_plain, $mysqli, $rememberme = false, $url_after
         $stmt->store_result();
 
         // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password, $salt, $id_profile, $profile, $full_access);
+        $stmt->bind_result($user_id, $username, $db_password, $salt, $default_app, $id_profile, $profile, $full_access);
         $stmt->fetch();
 
         // hash the password with the unique salt.
@@ -114,8 +116,10 @@ function login($email, $password_plain, $mysqli, $rememberme = false, $url_after
 
                     $_SESSION['username'] = $username;
                     $_SESSION['username_safe'] = htmlentities(preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username));
+                    $_SESSION['default_app'] = $default_app;
                     $_SESSION['id_profile'] = $id_profile;
                     $_SESSION['profile'] = $profile;
+                    $_SESSION['full_access'] = $full_access;
                     $_SESSION['full_access'] = $full_access;
 					
                     $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
@@ -308,7 +312,15 @@ function get_url_after_login(){
 	$host = /*($use_forwarded_host && isset($_SERVER['HTTP_X_FORWARDED_HOST'])) ? $_SERVER['HTTP_X_FORWARDED_HOST'] :*/ (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null);
 	$host = isset($host) ? $host : (isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] . $port : 'localhost');
 	
-	return $protocol . '://' . $host . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
+	if(isset($_SESSION['default_app']) && $_SESSION['default_app'] != '')
+	{
+		return $protocol . '://' . $host . $_SESSION['default_app'];
+	}
+	else
+	{
+		return $protocol . '://' . $host . (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
+	}
+	
 }
 
 ?>
