@@ -81,7 +81,10 @@ label.error {
 	width: 100px;
 	float: left;
     height: 100px;
-    padding: 60px 0 0;
+    /*padding: 60px 0 0;*/
+}
+.section-label  p{
+	font-size: 9px;
 }
 
 .timeline { 

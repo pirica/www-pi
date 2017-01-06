@@ -44,7 +44,15 @@ while($host = mysqli_fetch_array($qry_hosts)){
 			echo '</div>' . "\n";
 		}
 		echo '<div class="section" style="width:' . $section_width . 'px;">' . "\n";
-		echo '	<div class="section-label"><a id="host' . $host['id_host'] . '"></a>' . $host['hostname'] . '</div>' . "\n";
+		echo '	<div class="section-label"><a id="host' . $host['id_host'] . '"></a>' . $host['hostname'] . '';
+		echo ' <p>' . "\n";
+		echo '	 Total:	' . formatFileSize($host['total'], 1) . '<br/>' . "\n";
+		echo '	 (D: ' . formatFileSize($host['downloaded'], 1) . ', U: ' . formatFileSize($host['uploaded'], 1) . ')<br/>' . "\n";
+		echo ' 	------<br/>' . "\n";
+		echo ' 	Telemeter:	' . formatFileSize($host['total_telemeter'], 1) . '<br/>' . "\n";
+		echo '	 (D: ' . formatFileSize($host['downloaded_telemeter'], 1) . ', U: ' . formatFileSize($host['uploaded_telemeter'], 1) . ')<br/>' . "\n";
+		echo ' </p>' . "\n";
+		echo '</div>' . "\n";
 		echo '	<ul class="timeline">' . "\n";
 	}
 	
