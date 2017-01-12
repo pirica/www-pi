@@ -120,6 +120,8 @@ $qry_tableeditor_fields = mysqli_query($conn_users, "
 		tef.show_in_editor,
 		tef.sorting_sortorder,
 		tef.is_searchfield,
+		tef.url,
+		tef.label,
 		
 		ifnull(nullif(tel.description, ''), ifnull(nullif(tef.description, ''), replace(tef.fieldname, '_', ' '))) as fielddescription,
 		

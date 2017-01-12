@@ -78,7 +78,21 @@ if($tableeditor['enable_create'] == 1)
 			{
 				if($tableeditor_field['show_in_overview'] == 1)
 				{
-					echo '<td>' . $item[$tableeditor_field['fielddescription']] . '</td>';
+					echo '<td>';
+					switch($item[$tableeditor_field['fieldtype']])
+					{
+						case 'button':
+							echo '<button href="' . $item[$tableeditor_field['url']] . '">' . ($item[$tableeditor_field['label']] == '' ? $item[$tableeditor_field['fielddescription']] : $item[$tableeditor_field['label']]) . '</button>';
+							break;
+						
+						case 'url':
+							echo '<a href="' . $item[$tableeditor_field['url']] . '">' . ($item[$tableeditor_field['label']] == '' ? $item[$tableeditor_field['url']] : $item[$tableeditor_field['label']]) . '</a>';
+							break;
+						
+						default:
+							echo $item[$tableeditor_field['fielddescription']];
+					}
+					echo '</td>';
 				}
 			}
 			?>
