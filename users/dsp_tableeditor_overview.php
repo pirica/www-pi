@@ -79,7 +79,7 @@ if($tableeditor['enable_create'] == 1)
 				if($tableeditor_field['show_in_overview'] == 1)
 				{
 					echo '<td>';
-					switch($item[$tableeditor_field['fieldtype']])
+					switch($tableeditor_field['fieldtype'])
 					{
 						case 'button':
 							echo '<button href="' . $item[$tableeditor_field['url']] . '">' . ($item[$tableeditor_field['label']] == '' ? $item[$tableeditor_field['fielddescription']] : $item[$tableeditor_field['label']]) . '</button>';
