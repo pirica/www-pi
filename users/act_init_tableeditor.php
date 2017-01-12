@@ -345,6 +345,7 @@ else
 		from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 		" . $tableeditor_sql_lookups . "
 		where 1 = 1
+		" . ($tableeditor['parentid'] == '' ? '' : 'and ' . $tableeditor['tablename'] . '.' . $tableeditor['parentid'] . ' = ' . $parentid) . "
 		" . ($tableeditor['use_active_flag'] == 1 ? 'and ' . $tableeditor['tablename'] . '.active = 1' : '') . "
 		" . $tableeditor_sql_search . "
 		" . $tableeditor_sql_orderby . "
