@@ -82,11 +82,11 @@ if($tableeditor['enable_create'] == 1)
 					switch($tableeditor_field['fieldtype'])
 					{
 						case 'button':
-							echo '<a class="btn btn-primary" href="' . $tableeditor_field['url'] . '&parentId=' . $item[$tableeditor_field['fieldname'] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['fielddescription']] : $tableeditor_field['label']) . '</a>';
+							echo '<a class="btn btn-primary" href="' . $tableeditor_field['url'] . '&amp;parentId=' . $item[$tableeditor_field['fieldname']] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['fielddescription']] : $tableeditor_field['label']) . '</a>';
 							break;
 						
 						case 'url':
-							echo '<a href="' . $tableeditor_field['url'] . '&parentId=' . $item[$tableeditor_field['fieldname'] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['url']] : $tableeditor_field['label']) . '</a>';
+							echo '<a href="' . $tableeditor_field['url'] . '&amp;parentId=' . $item[$tableeditor_field['fieldname']] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['url']] : $tableeditor_field['label']) . '</a>';
 							break;
 						
 						default:
