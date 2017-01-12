@@ -102,7 +102,7 @@ if($tableeditor['enable_create'] == 1)
 			{
 			?>
 				<td>
-					<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=<?= $item[$tableeditor['tableid']] ?>">
+					<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=<?= $item[$tableeditor['tableid']] ?>&amp;parentid=<?= ($tableeditor['parentid'] == '' ? -1 : $item[$tableeditor['parentid']]) ?>">
 						<span class="glyphicon glyphicon-edit"></span>
 						Edit
 					</a>
@@ -113,7 +113,7 @@ if($tableeditor['enable_create'] == 1)
 			{
 			?>
 				<td>
-					<a class="btn btn-danger btn-delete-grab" href="index.php?action=<?= $action->getCode() ?>&amp;mode=delete&amp;id=<?= $item[$tableeditor['tableid']] ?>" data-toggle="modal" data-target="#myModal">
+					<a class="btn btn-danger btn-delete-grab" href="index.php?action=<?= $action->getCode() ?>&amp;mode=delete&amp;id=<?= $item[$tableeditor['tableid']] ?>&amp;parentid=<?= ($tableeditor['parentid'] == '' ? -1 : $item[$tableeditor['parentid']]) ?>" data-toggle="modal" data-target="#myModal">
 						<span class="glyphicon glyphicon-remove"></span>
 						Delete
 					</a>
