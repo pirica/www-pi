@@ -164,6 +164,10 @@ while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 			$tableeditor_fields_overview .= ',' . $_tablename . " as `" . $tableeditor_field['fielddescription'] . "`";
 		}
 	}
+	if($tableeditor['parentid'] != '')
+	{
+		$tableeditor_fields_overview .= ',' . $tableeditor['parentid'] . "";
+	}
 	
 	
 	$non_searchable_fields = ',bool,boolean,bit,checkbox,check,int,integer,';
