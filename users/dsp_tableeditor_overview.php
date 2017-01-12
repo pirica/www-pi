@@ -82,7 +82,7 @@ if($tableeditor['enable_create'] == 1)
 					switch($tableeditor_field['fieldtype'])
 					{
 						case 'button':
-							echo '<button href="' . $tableeditor_field['url'] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['fielddescription']] : $tableeditor_field['label']) . '</button>';
+							echo '<button class="btn btn-primary" href="' . $tableeditor_field['url'] . '">' . ($tableeditor_field['label'] == '' ? $item[$tableeditor_field['fielddescription']] : $tableeditor_field['label']) . '</button>';
 							break;
 						
 						case 'url':
