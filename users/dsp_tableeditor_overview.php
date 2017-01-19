@@ -24,7 +24,7 @@ if($tableeditor['enable_create'] == 1)
 {
 ?>
 	<p>
-		<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=-1">
+		<a class="btn btn-primary" href="index.php?action=<?= $action->getCode() ?>&amp;mode=edit&amp;id=-1&amp;parentid=<?= ($tableeditor['parentid'] == '' ? -1 : $item[$tableeditor['parentid']]) ?>">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add new entry
 		</a>
