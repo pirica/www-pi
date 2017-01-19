@@ -108,11 +108,11 @@ if($action->getEditorId() > 0)
 	}
 	else if($mode == 'save')
 	{
-		goto_action($action->getCode(), false);
+		goto_action($action->getCode(), false, 'parentid=' . $parentid);
 	}
 	else if($mode == 'dodelete')
 	{
-		goto_action($action->getCode(), false);
+		goto_action($action->getCode(), false, 'parentid=' . $parentid);
 	}
 	else 
 	{
