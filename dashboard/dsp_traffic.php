@@ -2,6 +2,11 @@
 
 <h1>Traffic</h1>
 
+<?php
+//if(date("Y/m/d H:i", time()) != $timings_max['latest'])
+echo $timings_max['latest'];
+?>
+
 <div class="row">
 	
 	<div class="col-xs-12 col-md-6">
