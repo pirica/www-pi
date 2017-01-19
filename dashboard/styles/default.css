@@ -19,3 +19,14 @@ background-color: -webkit-linear-gradient(#2876b2, #549ad0);
 .dashboard-mode:hover {
 	background-position: 100%; 
 }
+
+.timings .from
+{
+	color: blue;
+	font-weight: bold;
+}
+.timings .to
+{
+	color: red;
+	font-weight: bold;
+}
