@@ -22,6 +22,7 @@ switch($action->getCode()){
 		break;
 	
 	case 'traffic':
+		include 'queries/pr_get_traffic_current.php';
 		
 		include '../_core/dsp_header.php';
 		include 'dsp_traffic.php';
