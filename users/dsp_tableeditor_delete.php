@@ -10,6 +10,7 @@ echo '<h1>Delete entry</h1>';
 	<input type="hidden" name="mode" value="dodelete"/>
 	<input type="hidden" name="id" value="<?= $id ?>"/>
 	<input type="hidden" name="parentid" value="<?= $parentid ?>"/>
+	<input type="hidden" name="firstletter" value="<?= $firstletter ?>"/>
 
 		Delete entry?
 		

@@ -108,11 +108,11 @@ if($action->getEditorId() > 0)
 	}
 	else if($mode == 'save')
 	{
-		goto_action($action->getCode(), false, 'parentid=' . $parentid);
+		goto_action($action->getCode(), false, 'parentid=' . $parentid . '&firstletter=' . $firstletter);
 	}
 	else if($mode == 'dodelete')
 	{
-		goto_action($action->getCode(), false, 'parentid=' . $parentid);
+		goto_action($action->getCode(), false, 'parentid=' . $parentid . '&firstletter=' . $firstletter);
 	}
 	else 
 	{

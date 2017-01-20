@@ -34,6 +34,7 @@ if(
 		<input type="hidden" name="mode" value="save"/>
 		<input type="hidden" name="id" value="<?= $id ?>"/>
 		<input type="hidden" name="parentid" value="<?= $parentid ?>"/>
+		<input type="hidden" name="firstletter" value="<?= $firstletter ?>"/>
 		
 		<?php
 		mysqli_data_seek($qry_tableeditor_fields, 0);

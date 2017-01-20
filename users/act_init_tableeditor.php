@@ -64,6 +64,7 @@ $mode = saneInput('mode');
 $id = saneInput('id', 'int', -1);
 $parentid = saneInput('parentid', 'int', -1);
 $searchvalue = saneInput('searchvalue');
+$firstletter = saneInput('firstletter');
 
 
 $qry_tableeditor = mysqli_query($conn_users, "
@@ -105,6 +106,9 @@ $tableeditor_sql_search = '';
 $tableeditor_sql_orderby = '';
 $tableeditor_sql_orderby_fields = array();
 
+$tableeditor_sql_firstletters = '';
+
+
 $qry_tableeditor_fields = mysqli_query($conn_users, "
 	
 	select
@@ -117,6 +121,7 @@ $qry_tableeditor_fields = mysqli_query($conn_users, "
 		tef.tooltip,
 		tef.required,
 		tef.show_in_overview,
+		tef.use_first_letter_filtering,
 		tef.show_in_editor,
 		tef.sorting_sortorder,
 		tef.is_searchfield,
@@ -169,6 +174,10 @@ while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 		$tableeditor_fields_overview .= ',' . $tableeditor['parentid'] . "";
 	}
 	
+	if($tableeditor['use_first_letter_filtering'] == 1)
+	{
+		$tableeditor_sql_firstletters = $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'];
+	}
 	
 	$non_searchable_fields = ',bool,boolean,bit,checkbox,check,int,integer,';
 	
@@ -343,6 +352,49 @@ if($mode == 'edit')
 }
 else 
 {
+	
+	$tableeditor_sql_search_firstletter = '';
+	
+	if($tableeditor_sql_firstletters != '')
+	{
+		$sql = "
+			select
+				left(upper(" . $tableeditor_sql_firstletters . "),1) as first_letter,
+				count(left(upper(" . $tableeditor_sql_firstletters . "),1)) as total_letters
+			from " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
+			where 1 = 1
+			" . ($tableeditor['parentid'] == '' ? '' : 'and ' . $tableeditor['tablename'] . '.' . $tableeditor['parentid'] . ' = ' . $parentid) . "
+			" . ($tableeditor['use_active_flag'] == 1 ? 'and ' . $tableeditor['tablename'] . '.active = 1' : '') . "
+			group by
+				first_letter
+			order by
+				first_letter
+			";
+			
+		$qry_letters = mysqli_query($conn_users, $sql);
+		
+		if($qry_letters === false)
+		{
+			echo '<!--' . $sql . '-->';
+		}
+		
+		while($firstletters = mysqli_fetch_array($qry_letters))
+		{
+			if($firstletter == '')
+			{
+				$firstletter = $firstletters['first_letter'];
+			}
+			
+			if($firstletter == $firstletters['first_letter'])
+			{
+				$tableeditor_sql_search_firstletter = "and left(upper(" . $tableeditor_sql_firstletters . "),1) = '" . $firstletters['first_letter'] . "'";
+				break;
+			}
+		}
+		mysqli_data_seek($qry_letters, 0);
+		
+	}
+	
 	$sql = "
 		select
 			" . $tableeditor_fields_overview . "
@@ -352,6 +404,7 @@ else
 		" . ($tableeditor['parentid'] == '' ? '' : 'and ' . $tableeditor['tablename'] . '.' . $tableeditor['parentid'] . ' = ' . $parentid) . "
 		" . ($tableeditor['use_active_flag'] == 1 ? 'and ' . $tableeditor['tablename'] . '.active = 1' : '') . "
 		" . $tableeditor_sql_search . "
+		" . $tableeditor_sql_search_firstletter . "
 		" . $tableeditor_sql_orderby . "
 		";
 		

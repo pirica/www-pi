@@ -13,7 +13,21 @@ html,body {
 	/*width:auto;*/
 }
 
+.spacer
+{
+	margin-top: 20px;
+}
 
+
+.te_firstletters a
+{
+	
+}
+
+.te_firstletters a.selected
+{
+	
+}
 
 
 /*
