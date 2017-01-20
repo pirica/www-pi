@@ -19,14 +19,17 @@ foreach($tables as $table)
 		$data = '';
 		foreach($result as $column=>$value)
 		{
-			if($column == 'active')
-			{
-				$column = 'actief';
-			}
 			if(!is_numeric($column))
 			{
-				$columns .= ($columns == '' ? '' : ',') . $column;
-				$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
+				if($column == 'active')
+				{
+					$column = 'actief';
+				}
+				if(strpos(','.$columns.',', ','.$column.',') === false)
+				{
+					$columns .= ($columns == '' ? '' : ',') . $column;
+					$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
+				}
 			}
 		}
 		echo "replace into " . $table . " (" . $columns . ") values (" . $data . ");\r\n";
