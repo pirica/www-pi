@@ -296,6 +296,11 @@ if($mode == 'save')
 
 	}
 	
+	if($tableeditor['database'] == 'dezon')
+	{
+		file_get_contents('http://thuisverplegingdezon.be/updatedb.php');
+	}
+	
 }
 
 
@@ -321,6 +326,12 @@ if($mode == 'dodelete' && $tableeditor['enable_delete'] == 1)
 			
 			");
 	}
+	
+	if($tableeditor['database'] == 'dezon')
+	{
+		file_get_contents('http://thuisverplegingdezon.be/updatedb.php');
+	}
+	
 }
 
 
