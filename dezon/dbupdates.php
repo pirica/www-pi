@@ -23,7 +23,10 @@ foreach($tables as $table)
 			{
 				$column = 'actief';
 			}
-			$columns .= ($columns == '' ? '' : ',') . $column;
+			if(!is_numeric($column))
+			{
+				$columns .= ($columns == '' ? '' : ',') . $column;
+			}
 			$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
 		}
 		echo "replace into " . $table . " (" . $columns . ") values (" . $data . ");\r\n";
