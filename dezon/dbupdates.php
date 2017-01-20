@@ -26,8 +26,8 @@ foreach($tables as $table)
 			if(!is_numeric($column))
 			{
 				$columns .= ($columns == '' ? '' : ',') . $column;
+				$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
 			}
-			$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
 		}
 		echo "replace into " . $table . " (" . $columns . ") values (" . $data . ");\r\n";
 	}
