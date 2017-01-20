@@ -5,12 +5,12 @@ require dirname(__FILE__).'/../_core/appinit.php';
 include 'connections.php';
 include 'functions.php';
 
-$tables = ['t_team', 't_bijscholing', 't_pagina'];
+$tables = array('t_team', 't_bijscholing', 't_pagina');
 
-for($i=0; $i<count($tables); $i++)
+foreach($tables as $table)
 {
 	$qry = mysqli_query($conn, "
-		select * from " . $tables[$i] . "
+		select * from " . $table . "
 	");
 
 	while($result = mysqli_fetch_array($qry))
@@ -26,7 +26,7 @@ for($i=0; $i<count($tables); $i++)
 			$columns .= ($columns == '' ? '' : ',') . $column;
 			$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $data) . "'";
 		}
-		echo "replace into " . $tables[$i] . " (" . $columns . ") values (" . $data . ");\r\n";
+		echo "replace into " . $table . " (" . $columns . ") values (" . $data . ");\r\n";
 	}
 }
 
