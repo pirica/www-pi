@@ -2,7 +2,7 @@
 set_time_limit(3600);
 require dirname(__FILE__).'/../_core/appinit.php';
 
-include 'connection.php';
+include 'connections.php';
 include 'functions.php';
 
 $tables = ['t_team', 't_bijscholing', 't_pagina'];
