@@ -24,7 +24,7 @@ foreach($tables as $table)
 				$column = 'actief';
 			}
 			$columns .= ($columns == '' ? '' : ',') . $column;
-			$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $data) . "'";
+			$data .= ($data == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $value) . "'";
 		}
 		echo "replace into " . $table . " (" . $columns . ") values (" . $data . ");\r\n";
 	}
