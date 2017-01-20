@@ -1,6 +1,6 @@
 <?php
 $mysql_host = 'localhost';
-$mysql_dbn = 'filerep';
+$mysql_dbn = 'dezon';
 $mysql_dbn_users = 'users';
 $mysql_user = 'root';
 $mysql_pw = '';
