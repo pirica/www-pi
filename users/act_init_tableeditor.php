@@ -174,7 +174,7 @@ while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
 		$tableeditor_fields_overview .= ',' . $tableeditor['parentid'] . "";
 	}
 	
-	if($tableeditor['use_first_letter_filtering'] == 1)
+	if($tableeditor_field['use_first_letter_filtering'] == 1)
 	{
 		$tableeditor_sql_firstletters = $tableeditor_field['lookup_tablename'] . "." . $tableeditor_field['lookup_labelfield'];
 	}
