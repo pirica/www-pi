@@ -14,7 +14,7 @@ if($tableeditor_sql_firstletters != '')
 	while($firstletters = mysqli_fetch_array($qry_letters))
 	{
 		if($letter_counter  > 0) echo ' | ';
-		echo '<a href="index.php?action=' . $action->getCode() . '&amp;parentid=' . $parentid . '&amp;firstletter=' . $firstletter . '" ' . ($firstletters['first_letter'] == $firstletter ? 'class="selected"' : '') . '>' . $firstletters['first_letter'] . "</a>";
+		echo '<a href="index.php?action=' . $action->getCode() . '&amp;parentid=' . $parentid . '&amp;firstletter=' . $firstletters['first_letter'] . '" ' . ($firstletters['first_letter'] == $firstletter ? 'class="selected"' : '') . '>' . $firstletters['first_letter'] . "</a>";
 		$letter_counter++;
 	}
 	echo '</div>';
