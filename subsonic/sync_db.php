@@ -308,12 +308,28 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "
 			insert into artists (description, songs)
 			select artist_custom, count(s.id) from songs s
-			left join artists a on a.description = s.artist_custom
+			left join artists a on concat(ifnull(concat(nullif(a.prefix, ''), ' '), ''), a.description) = s.artist_custom
 			where s.active = 1 
 			and s.artist_custom <> ''
 			and a.id is null
 			group by s.artist_custom
 		");
+		
+		$articles = 'The El La Los Las Le Les De Het Dj';
+		$a_articles = explode(' ', $articles);
+		for($i=0; $i<count($a_articles); $i++)
+		{
+			// fix artist prefixes
+			mysqli_query($conn, "
+				update artists
+				set
+					prefix = '" . $a_articles[$i] . "',
+					description = replace(description, '" . $a_articles[$i] . " ', '')
+				where 
+					prefix = ''
+					and description like '" . $a_articles[$i] . " %'
+			");
+		}
 		
 		// update nbr of songs per artist
 		mysqli_query($conn, "update artists set songs = 0");
@@ -323,7 +339,7 @@ if(!$task->getIsRunning())
 				songs = (
 					select count(id) 
 					from songs
-					where songs.artist_custom = artists.description
+					where songs.artist_custom = concat(ifnull(concat(nullif(artists.prefix, ''), ' '), ''), artists.description)
 					group by songs.artist_custom
 				)
 			");
