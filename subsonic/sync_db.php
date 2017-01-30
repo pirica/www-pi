@@ -294,7 +294,7 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "
 			update songs 
 			set
-				artist_custom = replace(
+				  = replace(
 					substring(artist_custom, INSTR(artist_custom,". ") + 2)
 				,'_', ' ')  
 			where 
@@ -302,6 +302,37 @@ if(!$task->getIsRunning())
 				and active = 1 
 				and artist_custom like '%. %'
 				and SUBSTRING(artist_custom, 1, INSTR(artist_custom,". ")) REGEXP '[[:digit:]]'
+		");
+		
+		mysqli_query($conn, "
+			UPDATE songs SET artist_custom = LOWER(artist_custom);
+			UPDATE songs SET artist_custom = CONCAT(UPPER(SUBSTR(artist_custom,1,1)),LOWER(SUBSTR(artist_custom,2)));
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' a',' A');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' b',' B');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' c',' C');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' d',' D');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' e',' E');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' f',' F');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' g',' G');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' h',' H');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' i',' I');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' j',' J');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' k',' K');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' l',' L');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' m',' M');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' n',' N');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' o',' O');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' p',' P');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' q',' Q');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' r',' R');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' s',' S');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' t',' T');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' u',' U');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' v',' V');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' w',' W');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' x',' X');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' y',' Y');
+			UPDATE songs SET artist_custom = REPLACE(artist_custom,' z',' Z');
 		");
 		
 		// insert/update artists
@@ -316,8 +347,8 @@ if(!$task->getIsRunning())
 		");
 		
 		$articles = 'The El La Los Las Le Les De Het Dj';
-		$articles .= ' ' . strtoupper($articles);
-		$articles .= ' ' . strtolower($articles);
+		//$articles .= ' ' . strtoupper($articles);
+		//$articles .= ' ' . strtolower($articles);
 		$a_articles = explode(' ', $articles);
 		for($i=0; $i<count($a_articles); $i++)
 		{
