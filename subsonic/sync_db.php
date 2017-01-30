@@ -316,6 +316,8 @@ if(!$task->getIsRunning())
 		");
 		
 		$articles = 'The El La Los Las Le Les De Het Dj';
+		$articles .= ' ' . strtoupper($articles);
+		$articles .= ' ' . strtolower($articles);
 		$a_articles = explode(' ', $articles);
 		for($i=0; $i<count($a_articles); $i++)
 		{
