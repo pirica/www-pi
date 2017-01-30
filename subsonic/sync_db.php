@@ -329,7 +329,7 @@ if(!$task->getIsRunning())
 					description = replace(description, '" . $a_articles[$i] . " ', '')
 				where 
 					prefix = ''
-					and description like '" . $a_articles[$i] . " %'
+					and left(description, " . (strlen($a_articles[$i]) + 1) . ") = '" . $a_articles[$i] . " '
 			");
 		}
 		
