@@ -294,7 +294,7 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "
 			update songs 
 			set
-				  = replace(
+				artist_custom = replace(
 					substring(artist_custom, INSTR(artist_custom,". ") + 2)
 				,'_', ' ')  
 			where 
