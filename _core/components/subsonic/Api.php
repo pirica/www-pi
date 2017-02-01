@@ -86,7 +86,7 @@ class Subsonic
 			}
 			else
 			{
-				return $this->parseResponse($answer);
+				return $this->parseResponse($action, $answer);
 			}
 		}
 		else
@@ -137,7 +137,7 @@ class Subsonic
 		return (object) array("success"=>false, "error"=>$error, "data"=>$data);
 	}
 	
-	protected function parseResponse($response)
+	protected function parseResponse($action, $response)
 	{
 		$object = json_decode($response);
 		$object = is_object($object) ? $object : new stdClass();
@@ -155,17 +155,17 @@ class Subsonic
 				}
 				else
 				{
-					return $this->error("Invalid response from server!", $object);
+					return $this->error("Invalid response for " . $action . " from server!", $object);
 				}
 			}
 			else
 			{
-				return $this->error("Invalid response from server!", $object);
+				return $this->error("Invalid response for " . $action . " from server!", $object);
 			}
 		}
 		else
 		{
-			return $this->error("Invalid response from server!", $object);
+			return $this->error("Invalid response for " . $action . " from server!", $object);
 		}	
 	}
 	
