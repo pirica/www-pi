@@ -33,7 +33,7 @@ $maxval = mysqli_fetch_array($qry_max);
 $host_totals = array();
 
 while($host = mysqli_fetch_array($qry_hosts)){
-	if(!isset($host_totals[$host['id_host']])
+	if(!isset($host_totals[$host['id_host']]))
 	{
 		$host_totals[$host['id_host']] = array(
 			'total' => 0,
