@@ -8,7 +8,7 @@ include 'connection.php';
 include 'functions.php';
 
 
-$tijden_end = date("Ymd", strtotime('-1 week', time()));
+$tijden_end = date("Ymd", strtotime('-2 day', time()));
 
 mysqli_query($conn, "
 	delete from reistijden
