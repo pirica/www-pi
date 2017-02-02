@@ -30,6 +30,31 @@
 $maxval = mysqli_fetch_array($qry_max);
 
 
+$host_totals = array();
+
+while($host = mysqli_fetch_array($qry_hosts)){
+	if(!isset($host_totals[$host['id_host']])
+	{
+		$host_totals[$host['id_host']] = array(
+			'total' => 0,
+			'downloaded' => 0,
+			'uploaded' => 0,
+			'total_telemeter' => 0,
+			'downloaded_telemeter' => 0,
+			'uploaded_telemeter' => 0
+		);
+	}
+	$host_totals[$host['id_host']]['total'] += $host['total'];
+	$host_totals[$host['id_host']]['downloaded'] += $host['downloaded'];
+	$host_totals[$host['id_host']]['uploaded'] += $host['uploaded'];
+	$host_totals[$host['id_host']]['total_telemeter'] += $host['total_telemeter'];
+	$host_totals[$host['id_host']]['downloaded_telemeter'] += $host['downloaded_telemeter'];
+	$host_totals[$host['id_host']]['uploaded_telemeter'] += $host['uploaded_telemeter'];
+}
+
+mysqli_data_seek($qry_hosts, 0);
+
+
 // hosts overview
 
 $current_row = 0;
@@ -46,11 +71,11 @@ while($host = mysqli_fetch_array($qry_hosts)){
 		echo '<div class="section" style="width:' . $section_width . 'px;">' . "\n";
 		echo '	<div class="section-label"><a id="host' . $host['id_host'] . '"></a>' . $host['hostname'] . '';
 		echo ' <p>' . "\n";
-		echo '	 Total:	' . formatFileSize($host['total'], 1) . '<br/>' . "\n";
-		echo '	 (D: ' . formatFileSize($host['downloaded'], 1) . ', U: ' . formatFileSize($host['uploaded'], 1) . ')<br/>' . "\n";
+		echo '	 Total:	' . formatFileSize($host_totals[$host['id_host']]['total'], 1) . '<br/>' . "\n";
+		echo '	 (D: ' . formatFileSize($host_totals[$host['id_host']]['downloaded'], 1) . ', U: ' . formatFileSize($host_totals[$host['id_host']]['uploaded'], 1) . ')<br/>' . "\n";
 		echo ' 	------<br/>' . "\n";
-		echo ' 	Telemeter:	' . formatFileSize($host['total_telemeter'], 1) . '<br/>' . "\n";
-		echo '	 (D: ' . formatFileSize($host['downloaded_telemeter'], 1) . ', U: ' . formatFileSize($host['uploaded_telemeter'], 1) . ')<br/>' . "\n";
+		echo ' 	Telemeter:	' . formatFileSize($host_totals[$host['id_host']]['total_telemeter'], 1) . '<br/>' . "\n";
+		echo '	 (D: ' . formatFileSize($host_totals[$host['id_host']]['downloaded_telemeter'], 1) . ', U: ' . formatFileSize($host_totals[$host['id_host']]['uploaded_telemeter'], 1) . ')<br/>' . "\n";
 		echo ' </p>' . "\n";
 		echo '</div>' . "\n";
 		echo '	<ul class="timeline">' . "\n";
