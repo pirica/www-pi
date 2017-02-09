@@ -5,6 +5,9 @@ require dirname(__FILE__).'/../_core/appinit.php';
 include 'connections.php';
 include 'functions.php';
 
+
+shell_exec('if [ ! -d /var/www/html/dezon/data ]; then ln -s /var/docs/dezon /var/www/html/dezon/data > /dev/null 2>&1; fi');
+
 $tables = array('t_team', 't_bijscholing', 't_pagina');
 
 foreach($tables as $table)
