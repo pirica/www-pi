@@ -159,10 +159,17 @@ if(
 							<?php
 							break;
 							
-						case 'int':
-						case 'integer':
-							$input_type = 'number';
 						default:
+							switch($tableeditor_field['fieldtype'])
+							{
+								case 'int':
+								case 'integer':
+									$input_type = 'number';
+									break;
+								case 'image':
+									$input_type = 'file';
+									break;
+							}
 							?>
 							
 							<div class="form-group <?= $tableeditor_field['required'] == 1 ? 'required' : '' ?>">

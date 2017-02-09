@@ -128,6 +128,7 @@ $qry_tableeditor_fields = mysqli_query($conn_users, "
 		tef.is_searchfield,
 		tef.url,
 		tef.label,
+		tef.file_location,
 		
 		ifnull(nullif(tel.description, ''), ifnull(nullif(tef.description, ''), replace(tef.fieldname, '_', ' '))) as fielddescription,
 		
@@ -235,7 +236,26 @@ if($mode == 'save')
 		{
 			if($tableeditor_field['show_in_editor'] == 1)
 			{
-				$_fieldvalue = "'" . mysqli_real_escape_string($conn_users, $_POST['tef_' . $tableeditor_field['fieldname']]) . "'";
+				if($tableeditor_field['fieldtype'] == 'image' && $tableeditor_field['file_location'] != '' && isset($_FILES['tef_' . $tableeditor_field['fieldname']]))
+				{
+					
+					// create directory if not exists
+					$parts = explode('/', $tableeditor_field['file_location'], -1);
+					$dir = '';
+					foreach($parts as $part){
+						if($part != '' && !is_dir($dir .= "/$part")) mkdir($dir);
+					}
+					
+					$_fieldvalue = $_FILES['tef_' . $tableeditor_field['fieldname']]["name"];
+					
+					move_uploaded_file($_FILES['tef_' . $tableeditor_field['fieldname']]["tmp_name"], $tableeditor_field['file_location'] . $_fieldvalue);
+					
+				}
+				else
+				{
+					$_fieldvalue = $_POST['tef_' . $tableeditor_field['fieldname']];
+				}
+				$_fieldvalue = "'" . mysqli_real_escape_string($conn_users, $_fieldvalue) . "'";
 				
 				if($tableeditor_field['id_tableeditor_lookup'] > 0 && $_POST['tef_' . $tableeditor_field['fieldname']] == '')
 				{
@@ -244,7 +264,9 @@ if($mode == 'save')
 				
 				$qry_update .= ($qry_update == '' ? '' : ',');
 				$qry_update .= $tableeditor_field['fieldname'] . " = " . $_fieldvalue;
+				
 			}
+			
 		}
 		
 		mysqli_query($conn_users, "
