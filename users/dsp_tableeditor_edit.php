@@ -29,7 +29,19 @@ if(
 	
 	<div class="alertContainer"></div>
 	
-	<form id="frmTableeditor" class="form-horizontal" method="post" action="index.php?action=<?= $action->getCode() ?>&amp;mode=save&amp;id=<?= $id ?>">
+	<?php
+		$form_enctype = '';
+		
+		mysqli_data_seek($qry_tableeditor_fields, 0);
+		while($tableeditor_field = mysqli_fetch_array($qry_tableeditor_fields))
+		{
+			if($tableeditor_field['show_in_editor'] == 1 && $tableeditor_field['fieldtype'] == 'image')
+			{
+				$form_enctype = 'enctype="multipart/form-data"';
+			}
+		}
+	?>
+	<form id="frmTableeditor" class="form-horizontal" method="post" action="index.php?action=<?= $action->getCode() ?>&amp;mode=save&amp;id=<?= $id ?>" <?= $form_enctype ?>>
 		<input type="hidden" name="action" value="<?= $action->getCode() ?>"/>
 		<input type="hidden" name="mode" value="save"/>
 		<input type="hidden" name="id" value="<?= $id ?>"/>
