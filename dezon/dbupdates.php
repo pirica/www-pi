@@ -11,15 +11,21 @@ foreach($tables as $table)
 {
 	$qry = mysqli_query($conn, "
 		select * from " . $table . "
+		where 
+			date_inserted > now() - interval 10 minute
+			or date_modified > now() - interval 10 minute
+			or date_deleted > now() - interval 10 minute
 	");
-
+	
+	$disabled_columns = 'date_inserted,date_modified,date_deleted';
+	
 	while($result = mysqli_fetch_array($qry))
 	{
 		$columns = '';
 		$data = '';
 		foreach($result as $column=>$value)
 		{
-			if(!is_numeric($column))
+			if(!is_numeric($column) && strpos(','.$disabled_columns.',', ','.$column.',') === false)
 			{
 				if($column == 'active')
 				{
