@@ -78,6 +78,7 @@ $qry_tableeditor = mysqli_query($conn_users, "
 		te.parentid,
 		
 		te.use_active_flag,
+		te.set_dates,
 		te.enable_create,
 		te.enable_edit,
 		te.enable_delete,
@@ -250,6 +251,7 @@ if($mode == 'save')
 			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			set " .
 				$qry_update . 
+				($tableeditor['set_dates'] == 1 ? ',date_modified = now()' : '') .
 			" where	
 				" . $tableeditor['tableid'] . " = " . $id . "
 				
@@ -285,11 +287,13 @@ if($mode == 'save')
 			(
 				" . ($tableeditor['parentid'] == '' ? '' : $tableeditor['parentid'] . ',') . "
 				" .	$qry_insert_fields . "
+				" . ($tableeditor['set_dates'] == 1 ? ',date_inserted' : '') . "
 			)
 			values
 			(
 				" . ($tableeditor['parentid'] == '' ? '' : $parentid . ',') . "
 				" .	$qry_insert_values . "
+				" . ($tableeditor['set_dates'] == 1 ? ',now()' : '') . "
 			)
 			");
 			
@@ -311,6 +315,9 @@ if($mode == 'dodelete' && $tableeditor['enable_delete'] == 1)
 		mysqli_query($conn_users, "
 			update " . ($tableeditor['database'] == '' ? '' : $tableeditor['database'] . ".") . $tableeditor['tablename'] . "
 			set active = 0
+			" .
+			($tableeditor['set_dates'] == 1 ? ',date_deleted = now()' : '')
+			. "
 			where	
 				" . $tableeditor['tableid'] . " = " . $id . "
 			
