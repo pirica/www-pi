@@ -337,9 +337,9 @@ if(!$task->getIsRunning())
 		
 		// insert/update artists
 		mysqli_query($conn, "
-			insert into artists (description, songs)
-			select artist_custom, count(s.id) from songs s
-			left join artists a on concat(ifnull(concat(nullif(a.prefix, ''), ' '), ''), a.description) = s.artist_custom
+			insert into artists (description_orig, description, songs)
+			select artist_custom, artist_custom, count(s.id) from songs s
+			left join artists a on a.description_orig = s.artist_custom
 			where s.active = 1 
 			and s.artist_custom <> ''
 			and a.id is null
@@ -357,10 +357,10 @@ if(!$task->getIsRunning())
 				update artists
 				set
 					prefix = '" . $a_articles[$i] . "',
-					description = replace(description, '" . $a_articles[$i] . " ', '')
+					description = replace(description_orig, '" . $a_articles[$i] . " ', '')
 				where 
 					prefix = ''
-					and left(description, " . (strlen($a_articles[$i]) + 1) . ") = '" . $a_articles[$i] . " '
+					and left(description_orig, " . (strlen($a_articles[$i]) + 1) . ") = '" . $a_articles[$i] . " '
 			");
 		}
 		
@@ -372,7 +372,7 @@ if(!$task->getIsRunning())
 				songs = (
 					select count(id) 
 					from songs
-					where songs.artist_custom = concat(ifnull(concat(nullif(artists.prefix, ''), ' '), ''), artists.description)
+					where songs.artist_custom = artists.description_orig
 					group by songs.artist_custom
 				)
 			");
