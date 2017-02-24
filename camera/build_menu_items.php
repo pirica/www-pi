@@ -46,7 +46,7 @@ mysqli_query($conn, "
 		
 	");
 	
-mysqli_query($conn, "
+mysqli_multi_query($conn, "
 	SET @rank=0;
 
 	replace into users.t_app_action_data
