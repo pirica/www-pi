@@ -9,6 +9,10 @@ $().ready(function(){
 		formatInputs();
 	}
 
+	// lazy load images: <img class="lazy-img" src="assets/0.png" data-src="assets/img1.jpg" />
+	$('.lazy-img').imageloader({
+		background: true
+	});
 	
 	$('#btnSaveTableeditor').click(validateTableEditorForm);
 	
