@@ -1,5 +1,11 @@
 <?php
 
+include 'connection.php';
+include 'act_settings.php';
+include 'functions.php';
+require dirname(__FILE__).'/../_core/functions.php';
+
+
 mysqli_query($conn, "
 	update t_app_action_data
 	set

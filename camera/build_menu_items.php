@@ -1,5 +1,10 @@
 <?php
 
+require dirname(__FILE__).'/../_core/appinit.php';
+
+require 'connection.php';
+require 'functions.php';
+
 mysqli_query($conn, "
 	update t_app_action_data
 	set
