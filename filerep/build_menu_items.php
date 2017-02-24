@@ -1,13 +1,14 @@
 <?php
 
+require dirname(__FILE__).'/../_core/appinit.php';
+
 include 'connection.php';
-include 'act_settings.php';
+//include 'act_settings.php';
 include 'functions.php';
-require dirname(__FILE__).'/../_core/functions.php';
 
 
 mysqli_query($conn, "
-	update t_app_action_data
+	update users.t_app_action_data
 	set
 		active = 2
 	where 
@@ -17,7 +18,7 @@ mysqli_query($conn, "
 
 mysqli_query($conn, "
 
-	replace into t_app_action_data
+	replace into users.t_app_action_data
 	(
 		id_app_action_data,
 		id_app,
@@ -56,7 +57,7 @@ mysqli_query($conn, "
 	");
 	
 mysqli_query($conn, "
-	update t_app_action_data
+	update users.t_app_action_data
 	set
 		active = 0
 	where 

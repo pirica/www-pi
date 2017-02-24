@@ -6,7 +6,7 @@ require 'connection.php';
 require 'functions.php';
 
 mysqli_query($conn, "
-	update t_app_action_data
+	update users.t_app_action_data
 	set
 		active = 2
 	where 
@@ -17,7 +17,7 @@ mysqli_query($conn, "
 mysqli_query($conn, "
 	SET @rank=0;
 
-	replace into t_app_action_data
+	replace into users.t_app_action_data
 	(
 		id_app_action_data,
 		id_app,
@@ -71,7 +71,7 @@ mysqli_query($conn, "
 	");
 	
 mysqli_query($conn, "
-	update t_app_action_data
+	update users.t_app_action_data
 	set
 		active = 0
 	where 
