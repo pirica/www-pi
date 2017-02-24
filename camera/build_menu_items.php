@@ -15,8 +15,7 @@ mysqli_query($conn, "
 	");
 
 mysqli_query($conn, "
-	SET @rank=0;
-
+	
 	replace into users.t_app_action_data
 	(
 		id_app_action_data,
@@ -34,7 +33,7 @@ mysqli_query($conn, "
 		a.id_app,
 		1 as active,
 		aa.code,
-		@rank:=@rank+1 as sort_order,
+		-1 as sort_order,
 		'id_camera=-1' as url,
 		'All cameras' as description
 		
@@ -45,8 +44,22 @@ mysqli_query($conn, "
 	where
 		a.relative_url = '/camera'
 		
-	union
+	");
 	
+mysqli_query($conn, "
+	SET @rank=0;
+
+	replace into users.t_app_action_data
+	(
+		id_app_action_data,
+		id_app,
+		active,
+		code,
+		sort_order,
+		url,
+		description
+	)
+
 	select
 		concat(a.id_app, '-', aa.code, '-', c.id_camera)as id_app_action_data,
 		a.id_app,
