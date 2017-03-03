@@ -6,7 +6,7 @@
 
 for($i=0; $i<count($comics); $i++)
 {
-	if($comics[$i]['dir'] == 0)
+	if($comics[$i]['dir'] == 0 && $comics[$i]['name'] != '')
 	{
 	?>
 		<img src="image.php?src=<?= $comic . '/' . $comics[$i]['name'] ?>" class="comic-img" /><br/>
