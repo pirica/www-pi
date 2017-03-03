@@ -16,23 +16,34 @@ if(is_dir($fulldir))
 	list_dir($comics, $fulldir, 0, 1, 0);
 	usort($comics, "arraysort_compare");
 	
-	if(count($comics) > 0)
+	$c_comics = count($comics);
+	
+	if($c_comics > 0)
 	{
+		$comics_name = '';
 		
-		$file = $src . '/' . $comics[0]['name'];
-		$filename = $comics[0]['name'];
+		for($i=0; $i<$c_comics; $i++)
+		{
+			if(stripos($comics[$i]['name'], '.jpg') > 0 || stripos($comics[$i]['name'], '.jpeg') > 0 || stripos($comics[$i]['name'], '.png') > 0)
+			{
+				$comics_name = $comics[$i]['name'];
+				break;
+			}
+		}
+		$file = $src . '/' . $comics_name;
+		$filename = $comics_name;
 
 		ob_clean();
 
 		header('Cache-control: max-age='.(60*60*24*30));
 		header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*30));
 
-		if(stripos($comics[0]['name'], '.jpg') > 0 || stripos($comics[0]['name'], '.jpeg') > 0)
+		if(stripos($comics_name, '.jpg') > 0 || stripos($comics_name, '.jpeg') > 0)
 		{
 			$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.jpg';
 			header('Content-disposition: inline; filename="' . $src . '.jpg' . '"'); 
 		}
-		else if(stripos($comics[0]['name'], '.png') > 0)
+		else if(stripos($comics_name, '.png') > 0)
 		{
 			$thumbnail = $settings->val('thumbs_path', '') . $thumbWidth . '/' . $src . '.png';
 			header('Content-disposition: inline; filename="' . $src . '.png' . '"'); 
