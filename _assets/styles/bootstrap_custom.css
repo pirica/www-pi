@@ -118,6 +118,11 @@ html,body {
     color: #666;
 }
 
+.navbar-nav {
+	margin: 7.5px -2px;
+}
+	
+
 .topmenu1 .navbar .navbar-nav .active a,
 .topmenu1 .navbar .navbar-nav .active a:hover,
 .topmenu1 .navbar .navbar-nav .active a:focus  {
@@ -229,6 +234,10 @@ html,body {
 
 @media (max-width:767px) {
 	
+	.topmenu1 .navbar-logo {
+		width: auto;
+	}
+
 	.topmenu .navbar-collapse .navbar-nav > li {padding-left:15px!important;}
 
 	.topmenu .user-dropdown > .dropdown-menu > li {padding-left:5px!important;}
@@ -247,6 +256,10 @@ html,body {
 	.navbar-collapse.in
 	{
 		overflow-y: visible;
+	}
+	
+	.navbar-nav {
+		margin: 0 -2px;
 	}
 	
 }
