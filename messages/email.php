@@ -361,18 +361,18 @@ if(!$task->getIsRunning())
 		)
 		select
 			case
-				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"<") ), '>', '')
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
 				else e.fromaddress
 			end as email,
 					
 			case
-				when e.fromaddress like '%@%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"@") ), '>', '')
+				when e.fromaddress like '%@%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'@') ), '>', '')
 				else ''
 			end as domain,
 			
 			case
-				when e.fromaddress like '% <%' then left( e.fromaddress , INSTR( e.fromaddress ," <") - 1)
-				when e.fromaddress like '%<%' then left( e.fromaddress , INSTR( e.fromaddress ,"<") - 1)
+				when e.fromaddress like '% <%' then left( e.fromaddress , INSTR( e.fromaddress ,' <') - 1)
+				when e.fromaddress like '%<%' then left( e.fromaddress , INSTR( e.fromaddress ,'<') - 1)
 				else e.fromaddress
 			end as name,
 			
@@ -380,7 +380,7 @@ if(!$task->getIsRunning())
 		
 		from t_email e
 		left join t_emailaddress ea on ea.email = case
-				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"<") ), '>', '')
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
 				else e.fromaddress
 			end
 		
