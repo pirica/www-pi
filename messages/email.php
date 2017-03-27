@@ -165,7 +165,7 @@ if(!$task->getIsRunning())
 		}
 		
 		
-		// SPAM PROTECTION
+		// SPAM PROTECTION -- BY RULES
 		
 		$qry = mysqli_query($conn, "
 			select
@@ -195,6 +195,29 @@ if(!$task->getIsRunning())
 			$emailhandle->markRemove($email['index']);
 			
 			mysqli_query($conn, "update t_email_spam set last_hit = now() where id_email_spam = " . $spam['id_email_spam']);
+			
+			if($id_emails != ','){
+				mysqli_query($conn, "update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
+			}
+		}
+		
+		
+		// SPAM PROTECTION -- BY EMAIL FROM
+		
+		$qry = mysqli_query($conn, "
+			select
+				id_emailaddress
+				
+			from t_emailaddress
+			where
+				is_spammer = 1
+				and '" . mysqli_real_escape_string($conn, $subject) . "' like concat('%', email, '%')
+			");
+
+		while($spam = mysqli_fetch_array($qry)){
+			$emailhandle->markRemove($email['index']);
+			
+			mysqli_query($conn, "update t_emailaddress set last_hit = now() where id_emailaddress = " . $spam['id_emailaddress']);
 			
 			if($id_emails != ','){
 				mysqli_query($conn, "update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
