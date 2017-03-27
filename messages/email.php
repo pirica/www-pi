@@ -296,37 +296,7 @@ if(!$task->getIsRunning())
 		$tmp = explode('.', $tmp, 2)[0];
 		$tmp = explode(',', $tmp, 2)[0];
 		$tmp = explode('"', $tmp, 2)[0];
-		/*
-		if($tmp != ''){
-			
-			
-			$postalcode = '2440';
-			if(strpos($tt['body'], '2630') > 0){
-				$postalcode = '2630';
-			}
-			
-			if(strpos($codes, ',' . $tmp . ',') === false){
-				mysqli_query($conn, "
-					insert into t_tracktrace
-					(
-						id_tracktrace_type,
-						enabled,
-						tracking_code,
-						postal_code,
-						title
-					)
-					values
-					(
-						" . $tt['id_tracktrace_type'] . ",
-						1,
-						'" . mysqli_real_escape_string($conn, $tmp) . "',
-						'" . mysqli_real_escape_string($conn, $postalcode) . "',
-						'" . mysqli_real_escape_string($conn, $tt['fromaddress']) . "'
-					)
-					");
-			}
-		}
-		*/
+		
 		mysqli_query($conn, "update t_email set is_tracktrace = 1, tracking_code = '" . mysqli_real_escape_string($conn, $tmp) . "' where id_email = " . $tt['id_email']);
 		
 	}
@@ -355,6 +325,51 @@ if(!$task->getIsRunning())
 		limit 1
 		");
 
+		
+		
+	// update address book
+	mysqli_query($conn, "
+		insert into t_emailaddress
+		(
+			email,
+			domain,
+			name,
+			is_spammer
+		)
+		select
+			case
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"<") ), '>', '')
+				else e.fromaddress
+			end as email,
+					
+			case
+				when e.fromaddress like '%@%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"@") ), '>', '')
+				else ''
+			end as domain,
+			
+			case
+				when e.fromaddress like '% <%' then left( e.fromaddress , INSTR( e.fromaddress ," <") - 1)
+				when e.fromaddress like '%<%' then left( e.fromaddress , INSTR( e.fromaddress ,"<") - 1)
+				else e.fromaddress
+			end as name,
+			
+			max(e.is_spam) as is_spammer
+		
+		from t_email e
+		left join t_emailaddress ea on ea.email = case
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,"<") ), '>', '')
+				else e.fromaddress
+			end
+		
+		where
+			e.fromaddress is not null
+			and ea.id_emailaddress is null
+			
+		group by e.fromaddress  
+		
+		");
+
+		
 	$task->setIsRunning(false);
 	
 }
