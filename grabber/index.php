@@ -215,6 +215,9 @@ switch($action->getCode()){
 		break;
 	
 	
+	case 'add_queue':
+		include 'act_add_queue.php';
+		break;
 	
 	// main: overview
 	default:
