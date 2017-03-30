@@ -1,9 +1,9 @@
 <?
 set_time_limit(3600);
-require dirname(__FILE__).'/../_core/appinit.php';
+require dirname(__FILE__).'/../../_core/appinit.php';
 
-include 'connections.php';
-include 'functions.php';
+include '../connections.php';
+include '../functions.php';
 
 
 
@@ -365,7 +365,7 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 		}
 		
 		// update grab stats
-		include 'queries/pr_set_grab_stats.php';
+		include '../queries/pr_set_grab_stats.php';
 		
 	}
 	

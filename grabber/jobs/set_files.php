@@ -1,7 +1,7 @@
 <?php
 set_time_limit(3600);
-include 'connections.php';
-include 'functions.php';
+include '../connections.php';
+include '../functions.php';
 
 mysqli_query($conn, "
 	
