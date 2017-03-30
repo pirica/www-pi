@@ -2,7 +2,7 @@
 
 $url = saneInput('url');
 
-if($url != '' && stripos($url, 'http') == 0){
+if($url != '' && stripos($url, 'http') === 0){
 	mysqli_query($conn, "
 		insert into t_queue
 		(
