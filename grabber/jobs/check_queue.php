@@ -4,6 +4,15 @@ require dirname(__FILE__).'/../connections.php';
 require dirname(__FILE__).'/../functions.php';
 require dirname(__FILE__).'/../../_core/appinit.php';
 
+/*
+Queue statuses:
+	N: new
+	Y: is youtube-dl downloadable
+	F: download as regular file
+	V: download with youtube-dl
+	D: download normally
+	A: added to downloads
+*/
 
 if(!$task->getIsRunning())
 {
@@ -98,6 +107,40 @@ if(!$task->getIsRunning())
 		
 		
 	}
+	
+	
+	$id_grab = $settings->val('custom_downloads_id_grab',0);
+	
+	mysqli_query($conn, "
+		
+		insert into t_grab_file (id_grab, full_url, full_path, type) 
+		select 
+			" . $id_grab . ", 
+			q.url,  
+			concat(q.directory, q.filename),
+			case when q.status = 'V' then 'youtube-dl' else '' end
+		from t_queue q
+			left join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
+		where  
+			q.status in ('V', 'D')
+			and q.directory <> ''
+			and q.filename <> ''
+			and gf.id_grab_file is null 
+		
+		");
+		
+	mysqli_query($conn, "
+		update t_queue q
+			join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
+		set	
+			q.status = 'A'
+		where
+			q.status in ('V', 'D')
+			and q.directory <> ''
+			and q.filename <> ''
+			
+		");
+	
 
 	$task->setIsRunning(false);
 	
