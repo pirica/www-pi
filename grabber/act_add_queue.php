@@ -1,8 +1,8 @@
 <?php
 
-$grab_url = saneInput('url');
+$url = saneInput('url');
 
-if($grab_url != ''){
+if($url != '' && stripos($url, 'http') == 0){
 	mysqli_query($conn, "
 		insert into t_queue
 		(
@@ -10,7 +10,7 @@ if($grab_url != ''){
 		)
 		values
 		(
-			'" . mysqli_real_escape_string($conn, $grab_url) . "'
+			'" . mysqli_real_escape_string($conn, $url) . "'
 		)
 		");
 		
