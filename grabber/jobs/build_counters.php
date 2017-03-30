@@ -1,7 +1,7 @@
 <?php
 set_time_limit(3600);
-include "../connections.php";
-include "../functions.php";
+require dirname(__FILE__).'/../connections.php';
+require dirname(__FILE__).'/../functions.php';
 
 //$site = file_get_contents('http://www.electrosluts.com/site/shoots.jsp');
 //$site = file_get_contents('http://www.kink.com/channel/electrosluts');
