@@ -12,6 +12,7 @@ Queue statuses:
 	V: download with youtube-dl
 	D: download normally
 	A: added to downloads
+	X: ignored/excluded/deleted
 */
 
 if(!$task->getIsRunning())

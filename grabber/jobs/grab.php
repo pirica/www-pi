@@ -269,7 +269,17 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 						
 						if(isset($grabbedfile)){
 							
-							$filesize = filesize($grabfile['full_path']);
+							try {
+								$filesize = filesize($grabfile['full_path']);
+							}
+							catch(Exception $e)
+							{
+								$filesize = -2;
+							}
+							
+							if($filesize === false){
+								$filesize = -1;
+							}
 							
 							if($filesize == 0){
 								$status = 'FE';
@@ -277,7 +287,7 @@ WARNING: Your copy of avconv is outdated and unable to properly mux separate vid
 								echo "File empty: " . $grabbedfile . "<br>\n";
 								unlink($grabfile['full_path']); // delete
 							}
-							else if($grabs['excluded_size'] * 1024 > $filesize){
+							else if($filesize > 0 && $grabs['excluded_size'] * 1024 > $filesize){
 								$status = 'X';
 								$status_info = $status_info . $grabbedfile;
 								$status_info = $status_info . '<br>' . "File excluded by size: " . $grabs['excluded_size'];
