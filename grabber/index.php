@@ -219,6 +219,16 @@ switch($action->getCode()){
 		include 'act_add_queue.php';
 		break;
 	
+	
+	case 'edit_queue':
+		include 'queries/pr_queue.php';
+		
+		include '../_core/dsp_header.php';
+		include 'dsp_edit_queue.php';
+		include '../_core/dsp_footer.php';
+		break;
+	
+	
 	// main: overview
 	default:
 		include 'queries/pr_grabs.php';
