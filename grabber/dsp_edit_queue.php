@@ -26,7 +26,7 @@
 			<td><?=$queue['url'] ?></td>
 			<td>
 				<?php
-				switch($queue['status']{
+				switch($queue['status']){
 					case 'Y': echo 'Youtube-dl'; break;
 					case 'F': echo 'Regular'; break;
 				}
@@ -41,13 +41,13 @@
 			</td>
 			
 			<td>
-				<a class="btn btn-primary btn-xs" href="index.php?action=setgrab&amp;id_queue=<?=$queue['id_queue'] ?>">
+				<a class="btn btn-primary btn-xs" href="index.php?action=edit_queue&sub=confirm&amp;id_queue=<?=$queue['id_queue'] ?>">
 					<span class="fa fa-check"></span>
 					Confirm
 				</a>
 			</td>
 			<td>
-				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=delgrab&amp;id_queue=<?=$queue['id_queue'] ?>">
+				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=edit_queue&sub=decline&amp;id_queue=<?=$queue['id_queue'] ?>">
 					<span class="fa fa-ban"></span>
 					Decline
 				</a>

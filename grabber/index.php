@@ -221,6 +221,16 @@ switch($action->getCode()){
 	
 	
 	case 'edit_queue':
+		$id_queue = saneInput('id_queue', 'int', -1);
+		$sub = saneInput('sub');
+		if($sub == 'confirm')
+		{
+			include 'queries/pr_set_queue_confirmed.php';
+		}
+		if($sub == 'decline')
+		{
+			include 'queries/pr_set_queue_declined.php';
+		}
 		include 'queries/pr_queue.php';
 		
 		include '../_core/dsp_header.php';
