@@ -238,6 +238,14 @@ switch($action->getCode()){
 		include '../_core/dsp_footer.php';
 		break;
 	
+	case 'do_edit_queue':
+		$id_queue = saneInput('id_queue', 'int', -1);
+		$filename = saneInput('filename');
+		$directory = saneInput('directory');
+		
+		include 'queries/pr_set_queue.php';
+		break;
+	
 	
 	// main: overview
 	default:

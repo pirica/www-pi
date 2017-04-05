@@ -233,19 +233,33 @@ $().ready(function(){
 		}
 	});
 	
+	$('.queue_filename').focusout(function() {
+		updateQueueFilename(this, $(this).val());
+	});
+	$('.queue_directory').focusout(function() {
+		updateQueueDirectory(this, $(this).val());
+	});
+	
+	
 });
 
 function fixFileName(val){
-	val = val.replace(/\r|\n|\/|:|\*|\?|\"|\<|\>|\||\\|\~|\[|\]|\(|\)|\^|!|\=|\{|\}|\'/g, '');
-	val = val.replace(/\t|\+/g, ' ');
+	val = val.replace(/\/|:|\*|\?|\"|\<|\>|\||\\|\~|\[|\]|\(|\)|\^|!|\=|\{|\}|\'/g, '-');
+	val = val.replace(/\r|\n|\t|\+/g, ' ');
 	
 	val = val.replace(/#/g, '-hash-');
 	val = val.replace(/%/g, '-pct-');
 	val = val.replace(/\&/g, '-and-');
 	val = val.replace(/@/g, '-at-');
+	val = val.replace(/=/g, '-eq-');
 	
 	val = val.replace(/  /g, ' ');
 	val = val.replace(/  /g, ' ');
+	val = val.replace(/  /g, ' ');
+	
+	val = val.replace(/--/g, '-');
+	val = val.replace(/--/g, '-');
+	val = val.replace(/--/g, '-');
 	
 	return val;
 }
@@ -403,3 +417,46 @@ function setHashValues(hash){
 	location.hash = h;
 }
 */
+
+
+function updateQueueFilename(el, val){
+	var 
+		id_queue = $(el).data('id_queue')
+	;
+	$.ajax({
+		url: 'index.php?action=do_editqueue' + 
+				'&id_queue=' + id_queue + 
+				'&filename=' + val + 
+			'',
+		type: 'GET',
+		cache: false,
+		dataType: 'json',
+		error: function(xhr, status, error) {
+			//location.href = ...
+		},
+		success: function(data, textStatus, jqXHR){
+			
+		}
+	});
+}
+
+function updateQueueDirectory(el, val){
+	var 
+		id_queue = $(el).data('id_queue')
+	;
+	$.ajax({
+		url: 'index.php?action=do_editqueue' + 
+				'&id_queue=' + id_queue + 
+				'&directory=' + val + 
+			'',
+		type: 'GET',
+		cache: false,
+		dataType: 'json',
+		error: function(xhr, status, error) {
+			//location.href = ...
+		},
+		success: function(data, textStatus, jqXHR){
+			
+		}
+	});
+}

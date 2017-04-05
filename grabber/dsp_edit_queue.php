@@ -27,6 +27,7 @@
 			<td>
 				<?php
 				switch($queue['status']){
+					case 'N': echo 'New'; break;
 					case 'Y': echo 'Youtube-dl'; break;
 					case 'F': echo 'Regular'; break;
 				}
@@ -34,17 +35,24 @@
 			</td>
 			
 			<td>
-				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" class="queue_filename" value="<?=$queue['filename'] ?>" />
+				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
 			</td>
 			<td>
-				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" class="queue_directory" value="<?=$queue['directory'] ?>" />
+				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
 			</td>
 			
 			<td>
-				<a class="btn btn-primary btn-xs" href="index.php?action=edit_queue&sub=confirm&amp;id_queue=<?=$queue['id_queue'] ?>">
-					<span class="fa fa-check"></span>
-					Confirm
-				</a>
+				<?php
+				if($queue['status'] != 'N')
+				{
+				?>
+					<a class="btn btn-primary btn-xs" href="index.php?action=edit_queue&sub=confirm&amp;id_queue=<?=$queue['id_queue'] ?>">
+						<span class="fa fa-check"></span>
+						Confirm
+					</a>
+				<?php
+				}
+				?>
 			</td>
 			<td>
 				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=edit_queue&sub=decline&amp;id_queue=<?=$queue['id_queue'] ?>">
