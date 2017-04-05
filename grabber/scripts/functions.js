@@ -424,7 +424,7 @@ function updateQueueFilename(el, val){
 		id_queue = $(el).data('id_queue')
 	;
 	$.ajax({
-		url: 'index.php?action=do_editqueue' + 
+		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
 				'&filename=' + val + 
 			'',
@@ -445,7 +445,7 @@ function updateQueueDirectory(el, val){
 		id_queue = $(el).data('id_queue')
 	;
 	$.ajax({
-		url: 'index.php?action=do_editqueue' + 
+		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
 				'&directory=' + val + 
 			'',

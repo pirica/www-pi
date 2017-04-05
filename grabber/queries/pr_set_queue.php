@@ -1,6 +1,7 @@
 <?php
 
 if($id_queue > 0 && $filename != '')
+{
 	mysqli_query($conn, "
 		
 		update t_queue
@@ -13,6 +14,7 @@ if($id_queue > 0 && $filename != '')
 }
 
 if($id_queue > 0 && $directory != '')
+{
 	mysqli_query($conn, "
 		
 		update t_queue
