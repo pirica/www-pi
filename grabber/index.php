@@ -200,7 +200,7 @@ switch($action->getCode()){
 		$filename = '';
 		
 		//$ytdl = shell_exec('/usr/bin/youtube-dl --get-title ' . $url);
-		$ytdl = shell_exec('/usr/bin/youtube-dl --get-filename ' . $url);
+		$ytdl = shell_exec('/usr/bin/youtube-dl --get-filename -o "%(title)s.%(ext)s" ' . $url);
 		
 		if(isset($ytdl) && $ytdl != ''){
 			$type = 'youtube-dl';

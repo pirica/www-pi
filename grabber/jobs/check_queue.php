@@ -34,7 +34,7 @@ if(!$task->getIsRunning())
 
 	while ($queue = mysqli_fetch_array($qry_queue)) {
 		
-		$ytdl = shell_exec('/usr/bin/youtube-dl --get-filename ' . $queue['url']);
+		$ytdl = shell_exec('/usr/bin/youtube-dl --get-filename -o "%(title)s.%(ext)s" ' . $queue['url']);
 		$filename = '';
 		
 		// youtube-dl found a file, update
