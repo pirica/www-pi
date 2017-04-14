@@ -217,7 +217,7 @@ if(!$task->getIsRunning())
 		while($spam = mysqli_fetch_array($qry)){
 			$emailhandle->markRemove($email['index']);
 			
-			mysqli_query($conn, "update t_emailaddress set last_hit = now() where id_emailaddress = " . $spam['id_emailaddress']);
+			//mysqli_query($conn, "update t_emailaddress set last_hit = now() where id_emailaddress = " . $spam['id_emailaddress']);
 			
 			if($id_emails != ','){
 				mysqli_query($conn, "update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
@@ -357,7 +357,8 @@ if(!$task->getIsRunning())
 			email,
 			domain,
 			name,
-			is_spammer
+			is_spammer,
+			to_verify
 		)
 		select
 			case
@@ -376,7 +377,8 @@ if(!$task->getIsRunning())
 				else e.fromaddress
 			end as name,
 			
-			max(e.is_spam) as is_spammer
+			max(e.is_spam) as is_spammer,
+			min(e.is_spam) as to_verify
 		
 		from t_email e
 		left join t_emailaddress ea on ea.email = case
@@ -392,6 +394,7 @@ if(!$task->getIsRunning())
 		
 		");
 
+	mysqli_query($conn, "update t_emailaddress set active = 0 where is_spammer = 1");
 		
 	$task->setIsRunning(false);
 	
