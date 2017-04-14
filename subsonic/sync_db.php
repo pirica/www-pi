@@ -558,11 +558,11 @@ if(!$task->getIsRunning())
 
 	if($c_playlists > 0){
 		
-		mysqli_query($conn, "update playlists set active = 2");
+		mysqli_query($conn, "truncate table sync_playlists");
 		
 		for($pi=0; $pi<$c_playlists; $pi++){
 			mysqli_query($conn, "
-				replace into playlists
+				insert into sync_playlists
 				(
 					id,
 					name,
@@ -588,29 +588,6 @@ if(!$task->getIsRunning())
 				)
 				");
 				
-			mysqli_query($conn, "
-				SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
-				
-				select
-					@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
-				from playlists
-				where
-					active = 1
-				order by
-					name
-				;
-				
-				select @o := concat(@o, ']}');
-				
-				update users.t_setting
-				set
-					extra = @o
-				where
-					code = 'intake_playlist'
-				;
-				
-				");
-			
 			
 			$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
 			$c_playlist_entries = count($playlist_entries);
@@ -642,6 +619,75 @@ if(!$task->getIsRunning())
 				");
 				
 		}
+		
+		mysqli_query($conn, "update playlists set active = 2");
+		
+		mysqli_query($conn, "
+			insert into playlists
+			(
+				id,
+				name,
+				comment,
+				owner,
+				public,
+				songcount,
+				duration,
+				created,
+				active
+			)
+			select
+				sp.id,
+				sp.name,
+				sp.comment,
+				sp.owner,
+				sp.public,
+				sp.songcount,
+				sp.duration,
+				sp.created,
+				sp.active
+			from sync_playlists sp
+			left join playlists p on p.id = sp.id
+			where
+				p.id is null
+		");
+		
+		mysqli_query($conn, "
+			update playlists p
+			join sync_playlists sp on sp.id = p.id
+			set
+				p.name = p.name,
+				p.comment = p.comment,
+				p.owner = p.owner,
+				p.public = p.public,
+				p.songcount = p.songcount,
+				p.duration = p.duration,
+				p.created = p.created,
+				p.active = 1
+			
+		");
+		
+		mysqli_query($conn, "
+			SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
+			
+			select
+				@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
+			from playlists
+			where
+				active = 1
+			order by
+				name
+			;
+			
+			select @o := concat(@o, ']}');
+			
+			update users.t_setting
+			set
+				extra = @o
+			where
+				code = 'intake_playlist'
+			;
+			
+			");
 		
 		mysqli_query($conn, "update playlists set active = 0 where active = 2");
 		
@@ -695,7 +741,7 @@ if(!$task->getIsRunning())
 	{
 		
 		// check and create genre dirs
-		$qry_genres = mysqli_query($conn, "
+		/*$qry_genres = mysqli_query($conn, "
 			select distinct
 				mg.description as genre
 			
@@ -706,6 +752,19 @@ if(!$task->getIsRunning())
 			where
 				ifnull(s.export,0) <> 0
 				or s.active = 0
+			");*/
+			
+		// check and create genre dirs
+		$qry_genres = mysqli_query($conn, "
+			select distinct
+				p.name as genre
+			
+			from songs s
+				join playlistEntries pe on pe.songid = s.id
+				join playlists p on p.id = pe.playlistId
+			where
+				ifnull(p.export,0) <> 0
+				
 			");
 			
 		while($genre = mysqli_fetch_array($qry_genres)){
@@ -738,7 +797,7 @@ if(!$task->getIsRunning())
 		}
 			
 		// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
-		$qry_songs = mysqli_query($conn, "
+		/*$qry_songs = mysqli_query($conn, "
 			select
 				s.id,
 				s.path,
@@ -754,6 +813,24 @@ if(!$task->getIsRunning())
 			
 			where
 				ifnull(s.export,0) <> 0
+				or s.active = 0
+			");*/
+		
+		$qry_songs = mysqli_query($conn, "
+			select
+				s.id,
+				s.path,
+				s.filename,
+				s.relative_directory,
+				p.export,
+				s.active,
+				p.name as genre
+			
+			from songs s
+				join playlistEntries pe on pe.songid = s.id
+				join playlists p on p.id = pe.playlistId
+			where
+				ifnull(p.export,0) <> 0
 				or s.active = 0
 			");
 			
