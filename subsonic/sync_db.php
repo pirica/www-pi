@@ -852,7 +852,7 @@ if(!$task->getIsRunning())
 			
 			if($song['active'] == 1 && $song['export'] == 1)
 			{
-				if(!file_exists($genre_dir . '/' . $song['filename']))
+				if(!file_exists($genre_dir . '/' . $song['filename']) && file_exists($songs_dir . $song['path']))
 				{
 					if(file_exists($genre_dir. '/' . $song['filename'] . '.deleted'))
 					{
