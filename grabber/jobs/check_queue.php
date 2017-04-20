@@ -131,6 +131,23 @@ if(!$task->getIsRunning())
 		");
 		
 	mysqli_query($conn, "
+		
+		insert into subsonic.playlistEntriesToAdd (playlistId, songFilename) 
+		select 
+			q.playlistId,  
+			q.filename
+		from t_queue q
+			left join subsonic.playlistEntriesToAdd pea on pea.playlistId = q.playlistId and pea.songFilename = q.filename
+		where  
+			q.status in ('V', 'D')
+			and q.directory <> ''
+			and q.filename <> ''
+			and ifnull(q.playlistId,0) > 0
+			and pea.id is null 
+		
+		");
+		
+	mysqli_query($conn, "
 		update t_queue q
 			join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
 		set	
