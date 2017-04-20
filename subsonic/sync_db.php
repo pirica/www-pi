@@ -37,11 +37,13 @@ if(!$task->getIsRunning())
 		
 		$qry_entries = mysqli_query($conn, "
 			select
-				id,
-				playlistId,
-				songId
-			from playlistEntriesToAdd
-			order by id
+				pea.id,
+				pea.playlistId,
+				ifnull(pea.songId, s.id) as songId
+			from playlistEntriesToAdd pea
+			left join songs s on s.filename = pea.songFilename and s.active > 0
+			where ifnull(pea.songId, s.id) is not null
+			order by pea.id
 			");
 		
 		while($entry = mysqli_fetch_array($qry_entries)){
@@ -483,7 +485,7 @@ if(!$task->getIsRunning())
 		{
 			mysqli_query($conn, "
 				insert into playlistEntriesToAdd (playlistId, songId)
-				select " . $settings->val('intake_playlist', -1) . ", s.id from songs s
+				select distinct " . $settings->val('intake_playlist', -1) . ", s.id from songs s
 				left join songs s2 on s2.filename = s.filename and s2.active = 0
 				left join playlistEntriesToAdd pea on pea.playlistId = " . $settings->val('intake_playlist', -1) . " and pea.songId = s2.id
 				where s.active = 1 
