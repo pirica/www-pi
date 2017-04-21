@@ -8,7 +8,8 @@ $qry_queue = mysqli_query($conn, "
 		q.date_added,
 		q.filename,
 		q.directory,
-		q.status
+		q.status,
+		q.playlistId
 		
 	from t_queue q
 	where

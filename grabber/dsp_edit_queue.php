@@ -11,6 +11,8 @@
 			
 			<th>Filename</th>
 			<th>Directory</th>
+			<th>Playlist</th>
+			
 			<th>Confirm</th>
 			<th>Decline</th>
 		</tr>
@@ -39,6 +41,18 @@
 			</td>
 			<td>
 				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+			</td>
+			<td>
+				<select id="queue_playlist_<?=$queue['id_queue'] ?>" class="queue_playlist" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>">
+					<option value="-1"></option>
+					<?php 
+					while($playlist = mysqli_fetch_array($qry_playlists)){
+						?>
+						<option value="<?= $playlist['id'] ?>" <?= ($playlist['id'] == $queue['playlistId'] ? 'selected="selected"' : '') ?>><?= $playlist['name'] ?></option>
+						<?php 
+					}
+					?>
+				</select>
 			</td>
 			
 			<td>

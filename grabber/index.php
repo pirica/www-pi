@@ -223,6 +223,7 @@ switch($action->getCode()){
 	case 'edit_queue':
 		$id_queue = saneInput('id_queue', 'int', -1);
 		$sub = saneInput('sub');
+		include 'queries/pr_get_playlists.php';
 		if($sub == 'confirm')
 		{
 			include 'queries/pr_set_queue_confirmed.php';
