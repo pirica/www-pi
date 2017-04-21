@@ -42,10 +42,12 @@ if(!$task->getIsRunning())
 			$type = 'youtube-dl';
 			$filename = $ytdl;
 			
+			$filename = str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", ' ', $filename)));
+			
 			mysqli_query($conn, "
 				update t_queue
 				set
-					filename = '" . mysqli_real_escape_string($conn, $filename) . "',
+					filename = trim('" . mysqli_real_escape_string($conn, $filename) . "'),
 					status = 'Y'
 				where
 					id_queue = " . $queue['id_queue'] . "

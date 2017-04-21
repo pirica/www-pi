@@ -51,6 +51,7 @@
 						<option value="<?= $playlist['id'] ?>" <?= ($playlist['id'] == $queue['playlistId'] ? 'selected="selected"' : '') ?>><?= $playlist['name'] ?></option>
 						<?php 
 					}
+					mysqli_data_seek($qry_playlists, 0);
 					?>
 				</select>
 			</td>
