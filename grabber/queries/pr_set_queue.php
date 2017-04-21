@@ -25,5 +25,18 @@ if($id_queue > 0 && $directory != '')
 			
 		");
 }
+
+if($id_queue > 0 && $playlistId >= 0)
+{
+	mysqli_query($conn, "
+		
+		update t_queue
+		set
+			playlistId = " . ($playlistId > 0 ? $playlistId : 'NULL') . "
+		where
+			id_queue = " . $id_queue . "
+			
+		");
+}
 	
 ?>

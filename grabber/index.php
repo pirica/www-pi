@@ -243,6 +243,7 @@ switch($action->getCode()){
 		$id_queue = saneInput('id_queue', 'int', -1);
 		$filename = saneInput('filename');
 		$directory = saneInput('directory');
+		$playlistId = saneInput('playlistId', 'int', -1);
 		
 		include 'queries/pr_set_queue.php';
 		break;

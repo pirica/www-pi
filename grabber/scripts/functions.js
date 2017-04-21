@@ -239,6 +239,9 @@ $().ready(function(){
 	$('.queue_directory').focusout(function() {
 		updateQueueDirectory(this, $(this).val());
 	});
+	$('.queue_playlist').focusout(function() {
+		updateQueuePlaylist(this, $(this).val());
+	});
 	
 	
 });
@@ -448,6 +451,27 @@ function updateQueueDirectory(el, val){
 		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
 				'&directory=' + val + 
+			'',
+		type: 'GET',
+		cache: false,
+		dataType: 'json',
+		error: function(xhr, status, error) {
+			//location.href = ...
+		},
+		success: function(data, textStatus, jqXHR){
+			
+		}
+	});
+}
+
+function updateQueuePlaylist(el, val){
+	var 
+		id_queue = $(el).data('id_queue')
+	;
+	$.ajax({
+		url: 'index.php?action=do_edit_queue' + 
+				'&id_queue=' + id_queue + 
+				'&playlistId=' + val + 
 			'',
 		type: 'GET',
 		cache: false,

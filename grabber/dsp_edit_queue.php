@@ -44,7 +44,7 @@
 			</td>
 			<td>
 				<select id="queue_playlist_<?=$queue['id_queue'] ?>" class="queue_playlist" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>">
-					<option value="-1"></option>
+					<option value="0"></option>
 					<?php 
 					while($playlist = mysqli_fetch_array($qry_playlists)){
 						?>
