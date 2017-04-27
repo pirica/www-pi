@@ -11,24 +11,33 @@ if(!$task->getIsRunning())
 {
 	$task->setIsRunning(true);
 	
-	
-	$str = file_get_contents('http://lego.brickinstructions.com/en/showallyears');
-
-	$doc = phpQuery::newDocumentHTML($str);
-
-	$links = $doc->find('.yearTable a');
-	foreach ($links as $link)
+	if($settings->val('reindex_all', 0) == 1)
 	{
-		mysqli_query($conn, "
-			replace into indexYear
-			(
-				year
-			)
-			values
-			(
-				'" . mysqli_real_escape_string($conn, pq($link)->html()) . "'
-			)
-		");
+		
+		$str = file_get_contents('http://lego.brickinstructions.com/en/showallyears');
+
+		$doc = phpQuery::newDocumentHTML($str);
+
+		$links = $doc->find('.yearTable a');
+		foreach ($links as $link)
+		{
+			mysqli_query($conn, "
+				insert into indexYear
+				(
+					year
+				)
+				select
+					year
+				from (select '" . mysqli_real_escape_string($conn, pq($link)->html()) . "' as year) tmp
+				where not exists(
+					select * from indexYear where year = '" . mysqli_real_escape_string($conn, pq($link)->html()) . "'
+				)
+			");
+		}
+		
+		mysqli_query($conn, "update indexYear set indexed = 0");
+		mysqli_query($conn, "update indexByYear set indexed = 0");
+		mysqli_query($conn, "update indexByPage set indexed = 0");
 	}
 	
 	/*
@@ -38,100 +47,49 @@ if(!$task->getIsRunning())
 */
 	
 	
-	/*
-	$qry_queue = mysqli_query($conn, "
-		
+	$qry = mysqli_query($conn, "
 		select
-			q.id_queue,
-			q.url
-			
-		from t_queue q
+			year
+		from indexYear
 		where
-			q.status = 'N'
-			and q.filename = ''
-			
+			indexed = 0
+		#limit 1, 1
 		");
 
-	while ($queue = mysqli_fetch_array($qry_queue)) {
+	while ($years = mysqli_fetch_array($qry)) {
 		
-		$ytdl = shell_exec('/usr/bin/youtube-dl --get-filename -o "%(title)s.%(ext)s" ' . $queue['url']);
-		$filename = '';
-		
-		// youtube-dl found a file, update
-		if(isset($ytdl) && $ytdl != ''){
-			$type = 'youtube-dl';
-			$filename = $ytdl;
-			
-			$filename = str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", ' ', $filename)));
-			
-			mysqli_query($conn, "
-				update t_queue
-				set
-					filename = trim('" . mysqli_real_escape_string($conn, $filename) . "'),
-					status = 'Y'
-				where
-					id_queue = " . $queue['id_queue'] . "
-				");
-			
-		}
-		// youtube-dl couldn't load, check mime type of url
-		else
+		$str = file_get_contents('http://lego.brickinstructions.com/search/year/' & $years['year']);
+
+		$doc = phpQuery::newDocumentHTML($str);
+
+		$links = $doc->find('.paginateGroup a');
+		foreach ($links as $link)
 		{
-			$filename_a = explode('/', $queue['url']);
-			$filename = $filename_a[count($filename_a) - 1];
-			
-			$filename = str_replace("\r", ' ', str_replace("\n", ' ', str_replace("\t", ' ', $filename)));
-			$filename = str_replace("+", ' ', $filename);
-			
-			$filename = str_replace("/", '-', $filename);
-			$filename = str_replace(":", '-', $filename);
-			$filename = str_replace("*", '-', $filename);
-			$filename = str_replace("?", '-', $filename);
-			$filename = str_replace('"', '-', $filename);
-			$filename = str_replace("<", '-', $filename);
-			$filename = str_replace(">", '-', $filename);
-			$filename = str_replace("|", '-', $filename);
-			$filename = str_replace("\\", -'', $filename);
-			$filename = str_replace("~", '-', $filename);
-			$filename = str_replace("[", '-', $filename);
-			$filename = str_replace("]", '-', $filename);
-			$filename = str_replace("(", '-', $filename);
-			$filename = str_replace(")", '-', $filename);
-			$filename = str_replace("^", '-', $filename);
-			$filename = str_replace("!", '-', $filename);
-			$filename = str_replace("{", '-', $filename);
-			$filename = str_replace("}", '-', $filename);
-			$filename = str_replace("'", '-', $filename);
-			
-			$filename = str_replace('#', '-hash-', $filename);
-			$filename = str_replace('%', '-pct-', $filename);
-			$filename = str_replace('&', '-and-', $filename);
-			$filename = str_replace('@', '-at-', $filename);
-			$filename = str_replace("=", '-eq-', $filename);
-			
-			$filename = str_replace("  ", ' ', $filename);
-			$filename = str_replace("  ", ' ', $filename);
-			$filename = str_replace("  ", ' ', $filename);
-			
-			$filename = str_replace("--", '-', $filename);
-			$filename = str_replace("--", '-', $filename);
-			$filename = str_replace("--", '-', $filename);
-			
 			mysqli_query($conn, "
-				update t_queue
-				set
-					filename = '" . mysqli_real_escape_string($conn, $filename) . "',
-					status = 'F'
-				where
-					id_queue = " . $queue['id_queue'] . "
-				");
-			
+				insert into indexByYear
+				(
+					year,
+					page
+				)
+				select
+					year,
+					page
+				from (select 
+					'" . mysqli_real_escape_string($conn, $years['year']) . "' as year,
+					'" . mysqli_real_escape_string($conn, pq($link)->html()) . "' as page
+				) tmp
+				where not exists(
+					select * from indexByYear
+					where year = '" . mysqli_real_escape_string($conn, $years['year']) . "'
+						and page = '" . mysqli_real_escape_string($conn, pq($link)->html()) . "'
+				)
+			");
 		}
 		
-		
+		mysqli_query($conn, "update indexYear set indexed = 1 where year = '" . mysqli_real_escape_string($conn, $years['year']) . "' ");
 	}
 	
-	
+	/*
 	$id_grab = $settings->val('custom_downloads_id_grab',0);
 	
 	mysqli_query($conn, "
@@ -151,35 +109,7 @@ if(!$task->getIsRunning())
 			and gf.id_grab_file is null 
 		
 		");
-		
-	mysqli_query($conn, "
-		
-		insert into subsonic.playlistEntriesToAdd (playlistId, songFilename) 
-		select 
-			q.playlistId,  
-			q.filename
-		from t_queue q
-			left join subsonic.playlistEntriesToAdd pea on pea.playlistId = q.playlistId and pea.songFilename = q.filename
-		where  
-			q.status in ('V', 'D')
-			and q.directory <> ''
-			and q.filename <> ''
-			and ifnull(q.playlistId,0) > 0
-			and pea.id is null 
-		
-		");
-		
-	mysqli_query($conn, "
-		update t_queue q
-			join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
-		set	
-			q.status = 'A'
-		where
-			q.status in ('V', 'D')
-			and q.directory <> ''
-			and q.filename <> ''
-			
-		");
+	
 	*/
 	
 
