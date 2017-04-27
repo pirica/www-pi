@@ -192,18 +192,27 @@ if(!$task->getIsRunning())
 		$images = $doc->find('#instructionContainer a');
 		foreach ($images as $image)
 		{
+			$linkparts = explode('/', pq($image)->attr('href'));
+			$filename = '';
+			if(count($linkparts) > 3)
+			{
+				$filename = $linkparts[count($linkparts) - 1];
+			}
 			mysqli_query($conn, "
 				insert into indexPage
 				(
 					`set`,
-					image_url
+					image_url,
+					filename
 				)
 				select
 					`set`,
-					image_url
+					image_url,
+					filename
 				from (select 
 					'" . mysqli_real_escape_string($conn, $pages['set']) . "' as `set`,
-					'" . mysqli_real_escape_string($conn, pq($image)->attr('href')) . "' as image_url
+					'" . mysqli_real_escape_string($conn, pq($image)->attr('href')) . "' as image_url,
+					'" . mysqli_real_escape_string($conn, $filename) . "' as filename
 				) tmp
 				where not exists(
 					select * from indexPage
@@ -224,29 +233,44 @@ if(!$task->getIsRunning())
 	
 	
 	
-	/*
-	$id_grab = $settings->val('custom_downloads_id_grab',0);
+	$id_grab = $settings->val('manual_downloads_id_grab',0);
+	$dir = $settings->val('manuals_directory','');
 	
-	mysqli_query($conn, "
-		
-		insert into t_grab_file (id_grab, full_url, full_path, type) 
-		select 
-			" . $id_grab . ", 
-			q.url,  
-			concat(q.directory, q.filename),
-			case when q.status = 'V' then 'youtube-dl' else '' end
-		from t_queue q
-			left join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
-		where  
-			q.status in ('V', 'D')
-			and q.directory <> ''
-			and q.filename <> ''
-			and gf.id_grab_file is null 
-		
-		");
-	
-	*/
-	
+	if($manuals_directory != '')
+	{
+		// images
+		mysqli_query($conn, "
+			
+			insert into t_grab_file (id_grab, full_url, full_path) 
+			select 
+				" . $id_grab . ", 
+				concat('http://lego.brickinstructions.com', p.image_url),  
+				concat('" . $manuals_directory . "', p.`set`, '/', p.filename)
+			from indexPage p
+				left join t_grab_file gf on gf.full_url = concat('http://lego.brickinstructions.com', p.image_url) and gf.id_grab = " . $id_grab . "
+			where  
+				p.image_url like '/%'
+				and gf.id_grab_file is null 
+			
+			");
+			
+		// PDF's
+		mysqli_query($conn, "
+			
+			insert into t_grab_file (id_grab, full_url, full_path) 
+			select 
+				" . $id_grab . ", 
+				p.image_url,  
+				concat('" . $manuals_directory . "', p.`set`, '/', p.filename)
+			from indexPage p
+				left join t_grab_file gf on gf.full_url = p.image_url and gf.id_grab = " . $id_grab . "
+			where  
+				p.image_url not like '/%'
+				and p.filename like '%.pdf'
+				and gf.id_grab_file is null 
+			
+			");
+	}
 
 	$task->setIsRunning(false);
 	
