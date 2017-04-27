@@ -109,6 +109,68 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "update indexYear set indexed = 1 where year = '" . mysqli_real_escape_string($conn, $years['year']) . "' ");
 	}
 	
+	
+	
+	$qry = mysqli_query($conn, "
+		select
+			year,
+			page
+		from indexByYear
+		where
+			indexed = 0
+		#limit 1, 1
+		");
+
+	while ($pages = mysqli_fetch_array($qry)) {
+		
+		$str = file_get_contents('http://lego.brickinstructions.com/search/year/' . $pages['year'] . ($pages['page'] == 1 ? '' : '/' . $pages['page']));
+
+		$doc = phpQuery::newDocumentHTML($str);
+
+		$sets = $doc->find('.setBox a');
+		foreach ($sets as $set)
+		{
+			if(stripos(pq($set)->html(), '<img') === false)
+			{
+				$linkparts = explode('/', pq($set)->attr('href'));
+				$setnr = '';
+				if(count($linkparts) > 3)
+				{
+					$setnr = $linkparts[count($linkparts) - 2];
+					mysqli_query($conn, "
+						insert into indexByPage
+						(
+							year,
+							set,
+							name
+						)
+						select
+							year,
+							set
+						from (select 
+							'" . mysqli_real_escape_string($conn, $pages['year']) . "' as year,
+							'" . mysqli_real_escape_string($conn, $setnr) . "' as set,
+							'" . mysqli_real_escape_string($conn, pq($set)->html()) . "' as name
+						) tmp
+						where not exists(
+							select * from indexByPage
+							where set = '" . mysqli_real_escape_string($conn, $setnr) . "'
+						)
+					");
+				}
+			}
+		}
+		
+		mysqli_query($conn, "
+			update indexByYear 
+			set indexed = 1 
+			where year = '" . mysqli_real_escape_string($conn, $pages['year']) . "' 
+			and page = '" . mysqli_real_escape_string($conn, $pages['page']) . "' 
+			
+			");
+	}
+	
+	
 	/*
 	$id_grab = $settings->val('custom_downloads_id_grab',0);
 	
