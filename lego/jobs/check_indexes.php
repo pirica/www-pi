@@ -134,22 +134,28 @@ if(!$task->getIsRunning())
 			{
 				$linkparts = explode('/', pq($set)->attr('href'));
 				$setnr = '';
+				$setcode = '';
 				if(count($linkparts) > 3)
 				{
 					$setnr = $linkparts[count($linkparts) - 2];
+					$setcode = $linkparts[count($linkparts) - 1];
 					mysqli_query($conn, "
 						insert into indexByPage
 						(
 							year,
 							set,
+							code,
 							name
 						)
 						select
 							year,
-							set
+							set,
+							code,
+							name
 						from (select 
 							'" . mysqli_real_escape_string($conn, $pages['year']) . "' as year,
 							'" . mysqli_real_escape_string($conn, $setnr) . "' as set,
+							'" . mysqli_real_escape_string($conn, $setcode) . "' as code,
 							'" . mysqli_real_escape_string($conn, pq($set)->html()) . "' as name
 						) tmp
 						where not exists(
