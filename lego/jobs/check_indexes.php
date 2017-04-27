@@ -33,6 +33,26 @@ if(!$task->getIsRunning())
 					select * from indexYear where year = '" . mysqli_real_escape_string($conn, pq($link)->html()) . "'
 				)
 			");
+			
+			mysqli_query($conn, "
+				insert into indexByYear
+				(
+					year,
+					page
+				)
+				select
+					year,
+					page
+				from (select 
+					'" . mysqli_real_escape_string($conn, pq($link)->html()) . "' as year,
+					1 as page
+				) tmp
+				where not exists(
+					select * from indexByYear
+					where year = '" . mysqli_real_escape_string($conn, pq($link)->html()) . "'
+						and page = 1
+				)
+			");
 		}
 		
 		mysqli_query($conn, "update indexYear set indexed = 0");
@@ -58,7 +78,7 @@ if(!$task->getIsRunning())
 
 	while ($years = mysqli_fetch_array($qry)) {
 		
-		$str = file_get_contents('http://lego.brickinstructions.com/search/year/' & $years['year']);
+		$str = file_get_contents('http://lego.brickinstructions.com/search/year/' . $years['year']);
 
 		$doc = phpQuery::newDocumentHTML($str);
 
