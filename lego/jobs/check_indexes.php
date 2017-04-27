@@ -142,25 +142,25 @@ if(!$task->getIsRunning())
 					mysqli_query($conn, "
 						insert into indexByPage
 						(
-							year,
-							set,
+							`year`,
+							`set`,
 							code,
 							name
 						)
 						select
-							year,
-							set,
+							`year`,
+							`set`,
 							code,
 							name
 						from (select 
-							'" . mysqli_real_escape_string($conn, $pages['year']) . "' as year,
-							'" . mysqli_real_escape_string($conn, $setnr) . "' as set,
+							'" . mysqli_real_escape_string($conn, $pages['year']) . "' as `year`,
+							'" . mysqli_real_escape_string($conn, $setnr) . "' as `set`,
 							'" . mysqli_real_escape_string($conn, $setcode) . "' as code,
 							'" . mysqli_real_escape_string($conn, pq($set)->html()) . "' as name
 						) tmp
 						where not exists(
 							select * from indexByPage
-							where set = '" . mysqli_real_escape_string($conn, $setnr) . "'
+							where `set` = '" . mysqli_real_escape_string($conn, $setnr) . "'
 						)
 					");
 				}
