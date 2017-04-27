@@ -207,7 +207,7 @@ if(!$task->getIsRunning())
 				) tmp
 				where not exists(
 					select * from indexPage
-					where `set` = '" . mysqli_real_escape_string($conn, $setnr) . "'
+					where `set` = '" . mysqli_real_escape_string($conn, $pages['set']) . "'
 						and image_url = '" . mysqli_real_escape_string($conn, pq($image)->attr('href')) . "'
 				)
 			");
