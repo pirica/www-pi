@@ -60,12 +60,6 @@ if(!$task->getIsRunning())
 		mysqli_query($conn, "update indexByPage set indexed = 0");
 	}
 	
-	/*
-	->attr('alt');
-	$description = $doc->find('.kadercomic')->html();
-	$description = str_replace('src="', 'src="http://www.niconarsinferno.be/', $description);
-*/
-	
 	
 	$qry = mysqli_query($conn, "
 		select
@@ -175,6 +169,59 @@ if(!$task->getIsRunning())
 			
 			");
 	}
+	
+	
+	$qry = mysqli_query($conn, "
+		select
+			`year`,
+			`set`,
+			code,
+			name
+		from indexByPage
+		where
+			indexed = 0
+		#limit 1, 1
+		");
+
+	while ($pages = mysqli_fetch_array($qry)) {
+		
+		$str = file_get_contents('http://lego.brickinstructions.com/en/lego_instructions/set/' . $pages['set'] . '/' . $pages['code']);
+
+		$doc = phpQuery::newDocumentHTML($str);
+
+		$images = $doc->find('#instructionContainer a');
+		foreach ($images as $image)
+		{
+			mysqli_query($conn, "
+				insert into indexPage
+				(
+					`set`,
+					image_url
+				)
+				select
+					`set`,
+					image_url
+				from (select 
+					'" . mysqli_real_escape_string($conn, $pages['set']) . "' as `set`,
+					'" . mysqli_real_escape_string($conn, pq($image)->attr('href')) . "' as image_url
+				) tmp
+				where not exists(
+					select * from indexPage
+					where `set` = '" . mysqli_real_escape_string($conn, $setnr) . "'
+						and image_url = '" . mysqli_real_escape_string($conn, pq($image)->attr('href')) . "'
+				)
+			");
+			
+		}
+		
+		mysqli_query($conn, "
+			update indexByPage 
+			set indexed = 1 
+			where `set` = '" . mysqli_real_escape_string($conn, $pages['set']) . "' 
+			
+			");
+	}
+	
 	
 	
 	/*
