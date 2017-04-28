@@ -32,7 +32,7 @@ if(
 {
 	
 	// create directory if not exists
-	$parts = explode('/', $settings->val('manuals_directory_thumbs', '') . $thumbWidth, -1);
+	$parts = explode('/', $settings->val('manuals_directory_thumbs', '') . $thumbWidth . ($square == 1 ? 'square' : 'prop'), -1);
 	$dir = '';
 	foreach($parts as $part){
 		if(!is_dir($dir .= "/$part")) mkdir($dir);
