@@ -224,6 +224,33 @@ if(!$task->getIsRunning())
 			}
 		}
 		
+		
+		// SPAM PROTECTION -- BY DOMAIN FROM
+		
+		$qry = mysqli_query($conn, "
+			select
+				id_emailaddress
+				
+			from t_emailaddress
+			where
+				domain_is_spammer = 1
+				and (
+					'" . mysqli_real_escape_string($conn, $subject) . "' like concat('%@', domain, '>')
+					or
+					'" . mysqli_real_escape_string($conn, $subject) . "' like concat('%@', domain)
+				)
+			");
+
+		while($spam = mysqli_fetch_array($qry)){
+			$emailhandle->markRemove($email['index']);
+			
+			//mysqli_query($conn, "update t_emailaddress set last_hit = now() where id_emailaddress = " . $spam['id_emailaddress']);
+			
+			if($id_emails != ','){
+				mysqli_query($conn, "update t_email set is_spam = 1 where id_email in (0" . $id_emails . "0) and is_spam = 0");
+			}
+		}
+		
 	}
 
 	$emailhandle->remove();
