@@ -5,6 +5,11 @@ include 'connections.php';
 include 'functions.php';
 
 $map = saneInput('map', 'string', '');
+$themeId = saneInput('themeId', 'string', '');
+$setId = saneInput('setId', 'string', '');
+
+include 'queries/qry_themes.php';
+include 'queries/qry_sets.php';
 
 switch($action->getCode()){
 	

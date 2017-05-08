@@ -10,11 +10,10 @@
 		<?php
 	}*/
 	
-	if($action->getCode() == 'map')
+	while($theme = mysqli_fetch_array($qry_theme))
 	{
-		$map_part = explode('/',$map)[0];
 		?>
-		- <a href="?action=main&amp;map=<?= $map_part ?>"><?= $map_part ?></a>
+		- <a href="?action=main&amp;themeId=<?= $theme['id'] ?>"><?= $theme['name'] ?></a>
 		<?php
 	}
 	
