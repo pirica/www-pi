@@ -429,7 +429,7 @@ function updateQueueFilename(el, val){
 	$.ajax({
 		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
-				'&filename=' + val + 
+				'&filename=' + encodeURIComponent(val) + 
 			'',
 		type: 'GET',
 		cache: false,
@@ -450,7 +450,7 @@ function updateQueueDirectory(el, val){
 	$.ajax({
 		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
-				'&directory=' + val + 
+				'&directory=' + encodeURIComponent(val) + 
 			'',
 		type: 'GET',
 		cache: false,
