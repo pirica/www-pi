@@ -1,6 +1,7 @@
 
 
 <div>
+
 <?php
 
 /*
@@ -17,30 +18,35 @@ for($i=0; $i<count($files); $i++)
 
 
 
-echo '<div class="row">';
 $counter = 1;
 
 while($themes = mysqli_fetch_array($qry_themes))
 {
+	if($counter == 1) echo '<h3>Themes</h3>';
+	
 	?>
-	<div class="thumb-ctr col-md-12">
-		<a href="?action=main&amp;themeId=<?= $themes['id'] ?>">
-			<?php
-			$sets = explode(',', $themes['sets']);
-			$setcount = count($sets);
-			for($i=0; $i<$setcount; $i++)
-			{
-			?>
-				<div class="col-md-2">
-					<img src="thumb.php?src=<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
-				</div>
-			<?php
-			}
-			?>
-			<?= $themes['name'] ?>
-		</a>
+	<div class="row">
+		<div class="thumb-ctr col-md-12">
+			<a href="?action=main&amp;themeId=<?= $themes['id'] ?>">
+				<?php
+				$sets = explode(',', $themes['sets']);
+				$setcount = count($sets);
+				for($i=0; $i<$setcount; $i++)
+				{
+				?>
+					<div class="col-md-2">
+						<img src="thumb.php?src=<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
+					</div>
+				<?php
+				}
+				?>
+				<?= $themes['name'] ?>
+			</a>
+		</div>
 	</div>
 	<?php
+	
+	$counter++;
 }
 
 /*
@@ -73,9 +79,9 @@ for($i=0; $i<count($files); $i++)
 		$counter++;
 	}
 }*/
-echo '</div>';
 
 
+if(mysqli_num_rows($qry_sets) > 0) echo '<h3>Sets</h3>';
 
 echo '<div class="row">';
 
