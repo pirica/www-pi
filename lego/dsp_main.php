@@ -32,7 +32,7 @@ while($themes = mysqli_fetch_array($qry_themes))
 			{
 			?>
 				<div class="col-md-2">
-					<img src="thumb.php?src=<?= $themes['id'] . '/' . $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
+					<img src="thumb.php?src=<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
 				</div>
 			<?php
 			}
@@ -52,7 +52,7 @@ for($i=0; $i<count($files); $i++)
 		{
 			/*?>
 			<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
-			<?php*/
+			<?php* /
 			?>
 			<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
 			<?php
@@ -84,7 +84,7 @@ while($sets = mysqli_fetch_array($qry_sets))
 	?>
 	<div class="thumb-ctr col-md-2 col-sm-6">
 		<a href="?action=view&amp;setId=<?= $sets['set_num'] ?>">
-			<img src="thumb.php?src=<?= $sets['theme_id'] . '/' . $sets['set_num'] . '/001.jpg' ?>" alt="<?= $sets['name'] ?>" title="<?= $sets['name'] ?>"/><br/>
+			<img src="thumb.php?src=<?= $sets['set_num'] . '/001.jpg' ?>" alt="<?= $sets['name'] ?>" title="<?= $sets['name'] ?>"/><br/>
 			<?= $sets['name'] ?>
 		</a>
 	</div>
