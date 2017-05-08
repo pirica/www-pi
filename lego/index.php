@@ -13,21 +13,29 @@ include 'queries/qry_sets.php';
 
 switch($action->getCode()){
 	
+	case 'view':
+		$app->setTitle($set['name'] . ' (' . $set['set_num'] . ')');
+		
+		$files = array();
+		if($setId != '')
+		{
+			$fulldir = $settings->val('manuals_directory', '') . $setId;
+			if(is_dir($fulldir))
+			{
+				list_dir($files, $fulldir, 0, 1, 0);
+				usort($files, "arraysort_compare");
+			}
+		}
+		
+		require '../_core/dsp_header.php';
+		require 'dsp_submenu.php';
+		include 'dsp_view.php';
+		require '../_core/dsp_footer.php';
+		break;
+	
 	// main: overview
 	default:
 		$app->setTitle($map);
-		
-		$fulldir = $settings->val('manuals_directory', '');
-		if($map != '')
-		{
-			$fulldir .= $map;
-		}
-		$files = array();
-		if(is_dir($fulldir))
-		{
-			list_dir($files, $fulldir, 0, 1, 0);
-			usort($files, "arraysort_compare");
-		}
 		
 		require '../_core/dsp_header.php';
 		require 'dsp_submenu.php';

@@ -29,7 +29,7 @@ label.error {
 {
 	margin-bottom: 25px;
 }
-.thumb-ctr img
+.thumb-ctr img, .set-img
 {
 	width: 100%;
 }
