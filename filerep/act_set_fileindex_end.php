@@ -3,6 +3,8 @@ set_time_limit(0);
 
 $logging = '';
 
+$download_only = 0;
+
 $modifiedcount = 0;
 $insertcount = 0;
 $conflictcount = 0;
@@ -11,6 +13,20 @@ $dpmod_nonc_count = 0;
 $dpmod_nonc_c_count = 0;
 
 $query_success = true;
+
+
+$qry = mysqli_query($conn, "
+	select * from t_share s
+	left join t_host_share hs on hs.id_share = s.id_share
+		and hs.active = 1
+		and hs.id_host = " . $id_host . " 
+	where
+		s.id_share = " . $id_share . " 
+	");
+
+while ($row = mysqli_fetch_array($qry)) {
+	$download_only = $row{'download_only'};
+}
 
 
 // update date_previous_modified = date_last_modified where conflmict=0 + temp conflict = 1
@@ -169,6 +185,7 @@ $qry = mysqli_query($conn, "
 	where
 		fa.id_share = " . $id_share . " 
 		and fa.id_host = " . $id_host . " 
+		" . ($download_only == 1 ? "and fa.action in ('download', 'download_new', 'delete')" : "") . "
 		
 	");
 $data = mysql2json($qry);
