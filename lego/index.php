@@ -13,6 +13,10 @@ include 'queries/qry_sets.php';
 
 switch($action->getCode()){
 	
+	case 'setup':
+		shell_exec('if [ ! -d /var/www/html/lego/thumbs ]; then ln -s ' . $settings->val('manuals_directory_thumbs', '') . ' /var/www/html/lego/thumbs > /dev/null 2>&1; fi');
+		break;
+	
 	case 'view':
 		$app->setTitle($set['name'] . ' (' . $set['set_num'] . ')');
 		

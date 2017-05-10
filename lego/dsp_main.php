@@ -35,7 +35,8 @@ while($themes = mysqli_fetch_array($qry_themes))
 				{
 				?>
 					<div class="col-md-2">
-						<img src="thumb.php?src=<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
+						<!--<img src="thumb.php?src=<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>-->
+						<img src="thumbs/180prop/<?= $sets[$i] . '/001.jpg' ?>" alt="<?= $themes['name'] ?>" title="<?= $themes['name'] ?>"/>
 					</div>
 				<?php
 				}
@@ -90,7 +91,8 @@ while($sets = mysqli_fetch_array($qry_sets))
 	?>
 	<div class="thumb-ctr col-md-2 col-sm-6">
 		<a href="?action=view&amp;setId=<?= $sets['set_num'] ?>">
-			<img src="thumb.php?src=<?= $sets['set_num'] . '/001.jpg' ?>" alt="<?= $sets['name'] ?>" title="<?= $sets['name'] ?>"/><br/>
+			<!--<img src="thumb.php?src=<?= $sets['set_num'] . '/001.jpg' ?>" alt="<?= $sets['name'] ?>" title="<?= $sets['name'] ?>"/><br/>-->
+			<img src="thumbs/180prop/<?= $sets['set_num'] . '/001.jpg' ?>" alt="<?= $sets['name'] ?>" title="<?= $sets['name'] ?>"/><br/>
 			<?= $sets['name'] ?>
 		</a>
 	</div>
