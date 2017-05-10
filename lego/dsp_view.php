@@ -1,5 +1,5 @@
 
-<h1>Set "<?= $set['name'] ?>" (<?= $set['set_num'] ?>)</h1>
+<h1>Set <?= $set['set_num'] ?> - <?= $set['name'] ?> (<?= $set['year'] ?>)</h1>
 	
 <div>
 <?php
