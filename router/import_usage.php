@@ -25,14 +25,14 @@ rm /var/docs/router/usage_2015-01-01*
 */
 
 $fulldir = '/var/docs/router';
-$lockfile = 'import_usage.lock';
 
 $crondate = time();
 
-if (!file_exists( $fulldir . '/' . $lockfile)) {
-	file_put_contents($fulldir . '/' . $lockfile, date('Y-m-d H:i:s', time()) );
+
+if(!$task->getIsRunning())
+{
+	$task->setIsRunning(true);
 	
-//if(countProcesses($scriptName) <= 2){
 	
 	echo "Reading dir " . $fulldir . "<br>\r\n<br>\r\n";
 
@@ -214,7 +214,8 @@ if (!file_exists( $fulldir . '/' . $lockfile)) {
 	}
 	
 	
-	unlink($fulldir . '/' . $lockfile);
+	
+	$task->setIsRunning(false);
 	
 }
 

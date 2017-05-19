@@ -10,6 +10,7 @@ include "class.myatomparser.php";
 
 $date_start = time();
 
+$task->setIsRunning(true);
 
 // clean up entries for inactive feeds
 mysqli_query($conn, "
@@ -536,5 +537,7 @@ while ($feeds = mysqli_fetch_array($qry_feeds))
 	flush();
 	
 }
+
+$task->setIsRunning(false);
 
 ?>
