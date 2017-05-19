@@ -233,16 +233,9 @@ $().ready(function(){
 		}
 	});
 	
-	$('.queue_filename').focusout(function() {
-		updateQueueFilename(this, $(this).val());
+	$('.queue_status, .queue_filename, .queue_directory, .queue_playlist').focusout(function() {
+		updateQueueField(this, $(this).attr('name'), $(this).val());
 	});
-	$('.queue_directory').focusout(function() {
-		updateQueueDirectory(this, $(this).val());
-	});
-	$('.queue_playlist').focusout(function() {
-		updateQueuePlaylist(this, $(this).val());
-	});
-	
 	
 });
 
@@ -422,56 +415,15 @@ function setHashValues(hash){
 */
 
 
-function updateQueueFilename(el, val){
+function updateQueueField(el, field, val){
 	var 
 		id_queue = $(el).data('id_queue')
 	;
 	$.ajax({
 		url: 'index.php?action=do_edit_queue' + 
 				'&id_queue=' + id_queue + 
-				'&filename=' + encodeURIComponent(val) + 
-			'',
-		type: 'GET',
-		cache: false,
-		dataType: 'json',
-		error: function(xhr, status, error) {
-			//location.href = ...
-		},
-		success: function(data, textStatus, jqXHR){
-			
-		}
-	});
-}
-
-function updateQueueDirectory(el, val){
-	var 
-		id_queue = $(el).data('id_queue')
-	;
-	$.ajax({
-		url: 'index.php?action=do_edit_queue' + 
-				'&id_queue=' + id_queue + 
-				'&directory=' + encodeURIComponent(val) + 
-			'',
-		type: 'GET',
-		cache: false,
-		dataType: 'json',
-		error: function(xhr, status, error) {
-			//location.href = ...
-		},
-		success: function(data, textStatus, jqXHR){
-			
-		}
-	});
-}
-
-function updateQueuePlaylist(el, val){
-	var 
-		id_queue = $(el).data('id_queue')
-	;
-	$.ajax({
-		url: 'index.php?action=do_edit_queue' + 
-				'&id_queue=' + id_queue + 
-				'&playlistId=' + val + 
+				'&field=' + encodeURIComponent(field) + 
+				'&value=' + encodeURIComponent(val) + 
 			'',
 		type: 'GET',
 		cache: false,

@@ -27,23 +27,20 @@
 			<td><?=$queue['date_added'] ?></td>
 			<td><?=$queue['url'] ?></td>
 			<td>
-				<?php
-				switch($queue['status']){
-					case 'N': echo 'New'; break;
-					case 'Y': echo 'Youtube-dl'; break;
-					case 'F': echo 'Regular'; break;
-				}
-				?>
+				<select id="queue_status_<?=$queue['id_queue'] ?>" name="status" class="queue_status" data-id_queue="<?=$queue['id_queue'] ?>">
+					<option value="Y" <?= ($queue['status'] == 'Y' ? 'selected="selected"' : '') ?>>Youtube-dl</option>
+					<option value="F" <?= ($queue['status'] == 'F' ? 'selected="selected"' : '') ?>>Regular</option>
+				</select>
 			</td>
 			
 			<td>
-				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" name="filename" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
 			</td>
 			<td>
-				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" name="directory" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
 			</td>
 			<td>
-				<select id="queue_playlist_<?=$queue['id_queue'] ?>" class="queue_playlist" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>">
+				<select id="queue_playlist_<?=$queue['id_queue'] ?>" name="playlistId" class="queue_playlist" data-id_queue="<?=$queue['id_queue'] ?>">
 					<option value="0"></option>
 					<?php 
 					while($playlist = mysqli_fetch_array($qry_playlists)){

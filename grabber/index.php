@@ -241,9 +241,8 @@ switch($action->getCode()){
 	
 	case 'do_edit_queue':
 		$id_queue = saneInput('id_queue', 'int', -1);
-		$filename = saneInput('filename');
-		$directory = saneInput('directory');
-		$playlistId = saneInput('playlistId', 'int', -1);
+		$field = saneInput('field');
+		$value = saneInput('value');
 		
 		include 'queries/pr_set_queue.php';
 		break;
