@@ -299,14 +299,14 @@
 							echo '<span class="fa"></span>';
 						}
 						
-						//if($file['active'] == 1){
+						if($file['can_delete'] == 1){
 							echo '<a href="?action=deletefile&amp;id_file=' . $file['id_file'] . '&amp;active=' . $file['active'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory']) . '"><span class="fa fa-trash-o" title="Delete"></span></a>';
-						/*}
+						}
 						else {
 							echo '<span class="fa"></span>';
-						}*/
+						}
 						
-						if($file['active'] == 0){
+						if($file['can_delete'] == 1 && $file['active'] == 0){
 							echo '<a href="?action=undeletefile&amp;id_file=' . $file['id_file'] . '&amp;id_share=' . $id_share . '&amp;all=' . $show_all . '&amp;dir=' . urlencode($file['relative_directory']) . '"><span class="fa-stack fa-stack-small" title="Undelete"><i class="fa fa-trash-o fa-stack-1x"></i><i class="fa fa-ban fa-stack-1x"></i></span></a>';
 						}
 						else {
