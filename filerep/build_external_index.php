@@ -121,7 +121,7 @@ if($setting_externalindex_running == '0'){
 		$check = 'checking...';
 		try {
 			$check = curl_get_contents($server_url . '/get.php');
-			echo $check;
+			//echo $check;
 			if(strpos($check, '====') !== false){
 				$online = 1;
 			}
@@ -129,7 +129,7 @@ if($setting_externalindex_running == '0'){
 		catch(Exception $e){
 		}
 		
-		echo 'Share '. $share{'name'} . ": " . ($online == 1 ? 'online' : 'offline') . "" . "<br>\r\n";
+		//echo 'Share '. $share{'name'} . ": " . ($online == 1 ? 'online' : 'offline') . "" . "<br>\r\n";
 		
 		if($online == 1){
 			
@@ -164,7 +164,7 @@ if($setting_externalindex_running == '0'){
 					
 				$raw = file_get_contents($server_url . '/dir.php?d=' . urlencode($relative_directory));
 				
-				echo $raw . "<br>\r\n";
+				//echo $raw . "<br>\r\n";
 				
 				$raw = json_decode($raw);
 				
@@ -223,127 +223,157 @@ if($setting_externalindex_running == '0'){
 			
 			//echo '======================<br>'. "\r\n\r\n";
 		}
+		
+
+		// insert root
+		mysqli_query($conn, "
+			insert into t_directory
+			(
+				id_share,
+				relative_directory,
+				parent_directory,
+				dirname,
+				active,
+				depth
+			) 
+			select
+				f.id_share,
+				'/' as relative_directory,
+				null as parent_directory,
+				'' as dirname,
+				1 as active,
+				0 as depth
+
+			from 
+				t_share f
+				left join t_directory d on d.relative_directory = '/'
+					and d.id_share = f.id_share 
+					#and d.active = 1
+					
+			where
+				f.id_share = " . $id_share . "
+				and d.id_directory is null
+				
+			group by
+				f.id_share,
+				f.relative_directory
+				
+			");
+			
+		// insert new directories
+		mysqli_query($conn, "
+			insert into t_directory
+			(
+				id_share,
+				relative_directory,
+				parent_directory,
+				dirname,
+				active,
+				depth
+			) 
+			select
+				f.id_share,
+				f.relative_directory as relative_directory,
+				#case 
+				#	when f.relative_directory = '/c:/' then '/'
+				#	else replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/')
+				#end as parent_directory,
+				replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/') as parent_directory,
+				#case 
+				#	when f.relative_directory = '/c:/' then 'c:'
+				#	else replace( SUBSTRING_INDEX(f.relative_directory, '/', -2), '/', '')
+				#end as dirname,
+				f.filename,
+				1 as active,
+				( ROUND (
+					(
+						LENGTH(f.relative_directory)
+						- LENGTH( REPLACE ( f.relative_directory, '/', '') )
+					) / LENGTH('/')
+				) - 1 ) as depth
+
+			from 
+				t_external_index f
+				left join t_directory d on d.relative_directory = f.relative_directory
+					and d.id_share = f.id_share 
+					#and d.active = 1
+					
+			where
+				f.is_dir = 1
+				and d.id_directory is null
+				
+			group by
+				f.id_share,
+				f.relative_directory
+				
+			");
+		
+		// insert new files
+		mysqli_query($conn, "
+			insert into t_file
+			(
+				id_share,
+				filename,
+				relative_directory,
+				size,
+				date_last_modified,
+				active
+			) 
+			select
+				f.id_share,
+				f.filename,
+				f.relative_directory,
+				f.size,
+				f.modified,
+				1 as active
+
+			from 
+				t_external_index f
+				left join t_file d on d.relative_directory = f.relative_directory
+					and d.filename = f.filename
+					and d.id_share = f.id_share 
+					#and d.active = 1
+			where
+				f.is_dir = 0
+				and d.id_file is null
+				
+			group by
+				f.id_share,
+				f.relative_directory
+
+			");
+
+		// remove non-found files
+		mysqli_query($conn, "
+			update t_file f
+			left join t_external_index fit
+				on fit.id_share = f.id_share
+				and fit.relative_directory = f.relative_directory
+				and fit.filename = f.filename
+			set
+				f.date_deleted = now(),
+				f.active = 0
+			where
+				f.id_share = " . $id_share . " 
+				and fit.id_external_index is null
+				and f.active = 1
+				
+			");
+		
+		// set date last replicated on share
+		mysqli_query($conn, "
+			update t_directory d
+			join t_external_index fit
+				on fit.id_share = d.id_share
+				and fit.relative_directory = d.relative_directory
+			set
+				date_last_checked = fit.modified
+			where
+				d.id_share = " . $id_share . " 
+			");
+		
 	}
 	
-
-	// insert root
-	/*mysqli_query($conn, "
-		insert into t_directory
-		(
-			id_share,
-			relative_directory,
-			parent_directory,
-			dirname,
-			active,
-			depth
-		) 
-		select
-			f.id_share,
-			'/' as relative_directory,
-			null as parent_directory,
-			'' as dirname,
-			1 as active,
-			0 as depth
-
-		from 
-			t_share f
-			left join t_directory d on d.relative_directory = '/'
-				and d.id_share = f.id_share 
-				#and d.active = 1
-				
-		where
-			f.id_share = " . $id_share . "
-			and d.id_directory is null
-			
-		group by
-			f.id_share,
-			f.relative_directory
-			
-		");*/
-		
-	// insert new directories
-	mysqli_query($conn, "
-		insert into t_directory
-		(
-			id_share,
-			relative_directory,
-			parent_directory,
-			dirname,
-			active,
-			depth
-		) 
-		select
-			f.id_share,
-			f.relative_directory as relative_directory,
-			#case 
-			#	when f.relative_directory = '/c:/' then '/'
-			#	else replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/')
-			#end as parent_directory,
-			replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/') as parent_directory,
-			#case 
-			#	when f.relative_directory = '/c:/' then 'c:'
-			#	else replace( SUBSTRING_INDEX(f.relative_directory, '/', -2), '/', '')
-			#end as dirname,
-			f.filename,
-			1 as active,
-			( ROUND (
-				(
-					LENGTH(f.relative_directory)
-					- LENGTH( REPLACE ( f.relative_directory, '/', '') )
-				) / LENGTH('/')
-			) - 1 ) as depth
-
-		from 
-			t_external_index f
-			left join t_directory d on d.relative_directory = f.relative_directory
-				and d.id_share = f.id_share 
-				#and d.active = 1
-				
-		where
-			f.is_dir = 1
-			and d.id_directory is null
-			
-		group by
-			f.id_share,
-			f.relative_directory
-			
-		");
-	
-	// insert new files
-	mysqli_query($conn, "
-		insert into t_file
-		(
-			id_share,
-			filename,
-			relative_directory,
-			size,
-			date_last_modified,
-			active
-		) 
-		select
-			f.id_share,
-			f.filename,
-			f.relative_directory,
-			f.size,
-			f.modified,
-			1 as active
-
-		from 
-			t_external_index f
-			left join t_file d on d.relative_directory = f.relative_directory
-				and d.filename = f.filename
-				and d.id_share = f.id_share 
-				#and d.active = 1
-		where
-			f.is_dir = 0
-			and d.id_file is null
-			
-		group by
-			f.id_share,
-			f.relative_directory
-
-		");
-
 /*
 	// remove deleted dir and flag to be reindexed (to delete files)
 	mysqli_query($conn, "
