@@ -4,8 +4,8 @@
  *	
  */
  
-set_time_limit(0);
-ini_set('max_input_time', 99999);
+set_time_limit(600);
+ini_set('max_input_time', 600);
 
 include 'connection.php';
 include 'act_settings.php';
@@ -24,9 +24,9 @@ function curl_get_contents($url)
 }
 
 // check if script is already running - no, continue
-//if($setting_fileindex_running == '0' && $setting_directoryindex_running == '0' && $setting_shareindex_running == '0'){
+if($setting_externalindex_running == '0'){
 	// mark as running
-	//mysqli_query($conn, "update t_setting set value = '1' where code = 'directoryindex_running'");
+	mysqli_query($conn, "update t_setting set value = '1' where code = 'externalindex_running'");
 	
 
 	// insert new (missing) directories
@@ -46,8 +46,8 @@ function curl_get_contents($url)
 		) 
 		select
 			s.id_share,
-			'c:' as filename,
-			'/c:/' as relative_directory,
+			replace(s.server_basedir, '/', '') as filename,
+			s.server_basedir as relative_directory,
 			1 as is_dir,
 			-1 as size,
 			null as modified,
@@ -55,7 +55,7 @@ function curl_get_contents($url)
 
 		from 
 			t_share s
-			left join t_external_index d on d.relative_directory = '/c:/'
+			left join t_external_index d on d.relative_directory = s.server_basedir
 				and d.id_share = s.id_share 
 				#and d.active = 1
 				
@@ -455,8 +455,8 @@ function curl_get_contents($url)
 */
 
 	// script is done, unmark as running
-	//mysqli_query($conn, "update t_setting set value = '0' where code = 'directoryindex_running'");
+	mysqli_query($conn, "update t_setting set value = '0' where code = 'externalindex_running'");
 	
-//}
+}
 
 ?>
