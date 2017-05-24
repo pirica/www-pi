@@ -128,6 +128,7 @@ $qry_files = mysqli_query($conn, "
 		0 as can_reindex,
 		1 as can_download,
 		1 as can_view,
+		case when s.readonly = 1 then 0 else 1 end as can_delete,
 		
 		f.filename,
 		f.relative_directory,
@@ -143,10 +144,14 @@ $qry_files = mysqli_query($conn, "
 		ifnull(fi.fontawesome, '') as fontawesome,
 		
 		f.rename_to,
-		f.move_to
+		f.move_to,
+		
+		fi.use_image_preview,
+		fi.use_video_preview
 	
 	from t_file f
 	left join t_file_icon fi on fi.extension = SUBSTRING_INDEX(f.filename, '.', -1)
+	join t_share s on s.id_share = f.id_share
 	
 	where
 		f.id_share = " . $id_share . "
