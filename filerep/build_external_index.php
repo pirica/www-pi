@@ -76,12 +76,11 @@ if($setting_externalindex_running == '0'){
 			and s.active = 1
 			and hs.id_host_share is null
 		";
-	$qry_missing = mysqli_query($conn, "select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str, $conn);
+	$qry_missing = mysqli_query($conn, "select h.id_host, s.id_share, s.server_directory, s.name " . $qry_missing_str);
 	$qry_insert_missing = mysqli_query($conn, "
 		insert into t_host_share (id_host, id_share, local_directory) 
 		select h.id_host, s.id_share, s.server_directory " .
-		$qry_missing_str
-		, $conn);
+		$qry_missing_str);
 		
 	while ($missing = mysqli_fetch_array($qry_missing)) {
 		echo "New share '" . $missing{'name'} . "' (" . $missing{'server_url'} . ") added\n";
