@@ -158,9 +158,9 @@ if($setting_externalindex_running == '0'){
 			
 			while ($dirs = mysqli_fetch_array($qry_dirs)) {
 				$relative_directory = $dirs['relative_directory'];
-				if(substr($relative_directory, 0, 1) == '/'){
+				/*if(substr($relative_directory, 0, 1) == '/'){
 					$relative_directory = substr($relative_directory, 1);
-				}
+				}*/
 					
 				$raw = file_get_contents($server_url . '/dir.php?d=' . urlencode($relative_directory));
 				
@@ -183,11 +183,6 @@ if($setting_externalindex_running == '0'){
 							}
 							else {
 								$modified = "NULL";
-							}
-							
-							$relative_directory = $dirs['relative_directory'];
-							if(substr($relative_directory, 0, 1) == '/'){
-								$relative_directory = substr($relative_directory, 1);
 							}
 							
 							mysqli_query($conn, "
@@ -232,7 +227,7 @@ if($setting_externalindex_running == '0'){
 	
 
 	// insert root
-	mysqli_query($conn, "
+	/*mysqli_query($conn, "
 		insert into t_directory
 		(
 			id_share,
@@ -264,7 +259,7 @@ if($setting_externalindex_running == '0'){
 			f.id_share,
 			f.relative_directory
 			
-		");
+		");*/
 		
 	// insert new directories
 	mysqli_query($conn, "
@@ -280,10 +275,11 @@ if($setting_externalindex_running == '0'){
 		select
 			f.id_share,
 			f.relative_directory as relative_directory,
-			case 
-				when f.relative_directory = '/c:/' then '/'
-				else replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/')
-			end as parent_directory,
+			#case 
+			#	when f.relative_directory = '/c:/' then '/'
+			#	else replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/')
+			#end as parent_directory,
+			replace(replace(f.relative_directory, SUBSTRING_INDEX(f.relative_directory, '/', -2), ''), '//', '/') as parent_directory,
 			#case 
 			#	when f.relative_directory = '/c:/' then 'c:'
 			#	else replace( SUBSTRING_INDEX(f.relative_directory, '/', -2), '/', '')
