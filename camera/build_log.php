@@ -111,7 +111,6 @@ if(!$task->getIsRunning())
 			$prev_time_lbl = '';
 			$prev_timeval = -9999;
 			$prev_timeval_gif = -9999;
-			$timeval_gif = -9999;
 			
 			$current_image = 0;
 			
@@ -142,6 +141,11 @@ if(!$task->getIsRunning())
 						$timeval += $minutes * 60;
 						$timeval += $hours * 3600;
 						
+						$timeval_gif = 0;
+						$timeval_gif += $seconds;
+						$timeval_gif += $minutes * 60;
+						$timeval_gif += $hours * 3600;
+						
 						//if($settings->val('images_grouping_interval', 300) < 60){
 							$hour_lbl = $hours . ':' . $minutes . ':' . $seconds;
 						/*}
@@ -155,10 +159,10 @@ if(!$task->getIsRunning())
 						}
 						$prev_timeval = $timeval;
 						
-						if($prev_timeval_gif + 1 < $timeval){
-							$timeval_gif = $timeval;
+						
+						if($prev_timeval_gif < $timeval_gif - $settings->val('gifs_grouping_interval', 10)){
+							$prev_timeval_gif = $timeval_gif;
 						}
-						$prev_timeval_gif = $timeval;
 						
 						
 						$querydata .= ($querydata == '' ? '' : ',');
@@ -168,7 +172,7 @@ if(!$task->getIsRunning())
 								'".mysqli_real_escape_string($conn, $hour_lbl)."',
 								'".mysqli_real_escape_string($conn, $prev_time_lbl)."',
 								".$timeval.",
-								".$timeval_gif.",
+								".$prev_timeval_gif.",
 								'".mysqli_real_escape_string($conn, $tmpfiles[$i])."',
 								1,
 								'".mysqli_real_escape_string($conn, $camera)."'
