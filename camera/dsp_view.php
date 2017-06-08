@@ -60,34 +60,34 @@
 				if($thumbs == 0 || ($thumbs == 1 && $prev_image != $thumb_image)){
 					$prev_image = $thumb_image;
 					
-					if($settings->val('captures_show_gifs', 0) == 0 && strtolower($extension) == '.jpg')
+					if($gifs /*$settings->val('captures_show_gifs', 0)*/ == 0 && strtolower($extension) == '.jpg')
 					{
 						if($archived == 1)
 						{
-							echo '<p><img class="lazy-img" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p><img class="lazy-img_no" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 							echo $camera_log['name'] . '</p>';
 						}
 						else if($thumbs == 1)
 						{
-							echo '<p class="thumb"><img class="lazy-img" data-src="captures_thumbs/' . $date . '/' . $thumb_image . '" src="captures_thumbs/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
+							echo '<p class="thumb"><img class="lazy-img_no" data-src="captures_thumbs/' . $date . '/' . $thumb_image . '" src="captures_thumbs/' . $date . '/' . $thumb_image . '" title="' . $thumb_image . '" /><br/>';
 							echo $thumb_image . '</p>';
 						}
 						else 
 						{
-							echo '<p><img class="lazy-img" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p><img class="lazy-img_no" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 							echo $camera_log['name'] . '</p>';
 						}
 					}
 					
-					if($settings->val('captures_show_gifs', 0) == 1 && strtolower($extension) == '.gif')
+					if($gifs /*$settings->val('captures_show_gifs', 0)*/ == 1 && strtolower($extension) == '.gif')
 					{
 						if($archived == 1)
 						{
-							echo '<p><img class="lazy-img" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p><img class="lazy-img_no" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 						}
 						else 
 						{
-							echo '<p><img class="lazy-img" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p><img class="lazy-img_no" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 						}
 						echo $camera_log['name'] . '</p>';
 					}

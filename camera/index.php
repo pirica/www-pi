@@ -11,6 +11,7 @@ $time = saneInput('time', 'string', '');
 
 $archived = 0;
 $thumbs = 0;
+$gifs = 0;
 
 switch($action->getCode()){
 	/*
@@ -37,10 +38,12 @@ switch($action->getCode()){
 		
 	case 'archive':
 	case 'thumbs':
+	case 'gifs':
 	case 'view':
 		
 		if($action->getCode() == 'archive') $archived = 1;
 		if($action->getCode() == 'thumbs') $thumbs = 1;
+		if($action->getCode() == 'gifs') $gifs = 1;
 		
 		include 'queries/pr_get_cameras.php';
 		include 'queries/pr_get_camera_log_menu'.($archived == 1 ? '_archived' : '').'.php';
