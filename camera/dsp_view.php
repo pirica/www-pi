@@ -83,11 +83,11 @@
 					{
 						if($archived == 1)
 						{
-							echo '<p><img class="lazy-img_no" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p class="thumb"><img class="lazy-img_no" data-src="captures_archive/' . $date . '/' . $camera_log['name'] . '" src="captures_archive/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 						}
 						else 
 						{
-							echo '<p><img class="lazy-img_no" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
+							echo '<p class="thumb"><img class="lazy-img_no" data-src="captures/' . $date . '/' . $camera_log['name'] . '" src="captures/' . $date . '/' . $camera_log['name'] . '" title="' . $camera_log['name'] . '" /><br/>';
 						}
 						echo $camera_log['name'] . '</p>';
 					}
