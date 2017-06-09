@@ -35,19 +35,19 @@
 	<div class="col-xs-12 col-md-10">
 		
 		<?php
-		//if(mysqli_num_rows($qry_cameras) > 1)
+		//if(mysqli_num_rows($qry_cameras_logged) > 1)
 		{
 		?>
 			<form method="get" action="?action=<?= $action->getCode() ?>&date=<?= $date ?>&time=<?= $time ?>">
 				<select id="camera" name="camera">
 					<option value="">All</option>
 					<?php
-					while($cameras = mysqli_fetch_array($qry_cameras))
+					while($cameras_logged = mysqli_fetch_array($qry_cameras_logged))
 					{
 						echo '<option value=""';
-						if($cameras['camera'] == $camera) echo ' selected="selected"';
+						if($cameras_logged['camera'] == $camera) echo ' selected="selected"';
 						echo '>';
-						echo $cameras['camera'];
+						echo $cameras_logged['camera'];
 						echo '</option>';
 					}
 					?>

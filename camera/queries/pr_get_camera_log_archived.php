@@ -26,7 +26,7 @@ $qry_camera_log = mysqli_query($conn, "
 		
 	");
 	
-	$qry_cameras = mysqli_query($conn, "
+	$qry_cameras_logged = mysqli_query($conn, "
 		
 		select distinct
 			cl.camera

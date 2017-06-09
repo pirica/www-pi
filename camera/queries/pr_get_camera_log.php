@@ -27,7 +27,7 @@ if($time == 'all')
 			
 		");
 		
-	$qry_cameras = mysqli_query($conn, "
+	$qry_cameras_logged = mysqli_query($conn, "
 		
 		select distinct
 			cl.camera
@@ -69,7 +69,7 @@ else {
 			
 		");
 		
-	$qry_cameras = mysqli_query($conn, "
+	$qry_cameras_logged = mysqli_query($conn, "
 		
 		select distinct
 			cl.camera
