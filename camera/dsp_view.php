@@ -38,7 +38,10 @@
 		//if(mysqli_num_rows($qry_cameras_logged) > 1)
 		{
 		?>
-			<form method="get" action="?action=<?= $action->getCode() ?>&date=<?= $date ?>&time=<?= $time ?>">
+			<form method="get" action="">
+				<input type="hidden" name="action" value="<?= $action->getCode() ?>" />
+				<input type="hidden" name="date" value="<?= $date ?>" />
+				<input type="hidden" name="time" value="<?= $time ?>" />
 				<select id="camera" name="camera">
 					<option value="">All</option>
 					<?php
