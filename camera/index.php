@@ -45,7 +45,7 @@ switch($action->getCode()){
 		if($action->getCode() == 'thumbs') $thumbs = 1;
 		if($action->getCode() == 'gifs') $gifs = 1;
 		
-		//include 'queries/pr_get_cameras.php';
+		include 'queries/pr_get_cameras.php';
 		include 'queries/pr_get_camera_log_menu'.($archived == 1 ? '_archived' : '').'.php';
 		if($date != ''){
 			include 'queries/pr_get_camera_log'.($archived == 1 ? '_archived' : '').'.php';
