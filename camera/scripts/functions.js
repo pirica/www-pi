@@ -22,6 +22,10 @@ $().ready(function(){
 		var src = 'http://' + $(this).data('address') + "/cam_pic.php?time=" + (new Date().getTime());
 		$(this).attr('src', src);
 	});
+	
+	$('#camera').change(function(){
+		$(this).parents('form').submit();
+	});
 });
 
 function reload_img (e) {

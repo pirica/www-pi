@@ -16,6 +16,7 @@ $qry_camera_log = mysqli_query($conn, "
 		cl.date = '" . $date . "'
 		and cl.hour_lbl = ifnull(" . ($time == 'all' ? 'null' : "'".$time."'") . ", cl.hour_lbl)
 		and ifnull(status,0) = 0
+		" . ($camera == '' ? '' : "and cl.camera = '" . mysqli_real_escape_string($conn, $camera) . "'") . "
 	
 	order by
 		cl.hour_lbl,
@@ -25,4 +26,19 @@ $qry_camera_log = mysqli_query($conn, "
 		
 	");
 	
+	$qry_cameras = mysqli_query($conn, "
+		
+		select distinct
+			cl.camera
+			
+		from t_camera_log_archive cl
+		where
+			cl.date = '" . $date . "'
+			and cl.hour_lbl = ifnull(" . ($time == 'all' ? 'null' : "'".$time."'") . ", cl.hour_lbl)
+			and ifnull(status,0) = 0
+		
+		order by
+			cl.camera
+			
+		");
 ?>

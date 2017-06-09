@@ -33,7 +33,30 @@
 	</div><!--.col-->
 
 	<div class="col-xs-12 col-md-10">
-
+		
+		<?php
+		//if(mysqli_num_rows($qry_cameras) > 1)
+		{
+		?>
+			<form method="get" action="?action=<?= $action->getCode() ?>&date=<?= $date ?>&time=<?= $time ?>">
+				<select id="camera" name="camera">
+					<option value="">All</option>
+					<?php
+					while($cameras = mysqli_fetch_array($qry_cameras))
+					{
+						echo '<option value=""';
+						if($cameras['camera'] == $camera) echo ' selected="selected"';
+						echo '>';
+						echo $cameras['camera'];
+						echo '</option>';
+					}
+					?>
+				</select>
+			</form>
+		<?php
+		}
+		?>
+		
 		<?php 
 		if($date != ''){
 			$prev_hour_lbl = '';
