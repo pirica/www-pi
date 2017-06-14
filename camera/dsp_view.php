@@ -42,19 +42,25 @@
 				<input type="hidden" name="action" value="<?= $action->getCode() ?>" />
 				<input type="hidden" name="date" value="<?= $date ?>" />
 				<input type="hidden" name="time" value="<?= $time ?>" />
-				<select id="camera" name="camera">
-					<option value="">All</option>
-					<?php
-					while($cameras_logged = mysqli_fetch_array($qry_cameras_logged))
-					{
-						echo '<option value=""';
-						if($cameras_logged['camera'] == $camera) echo ' selected="selected"';
-						echo '>';
-						echo $cameras_logged['camera'];
-						echo '</option>';
-					}
-					?>
-				</select>
+				
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="camera">Filter by camera</label>
+					<div class="col-sm-2">
+						<select id="camera" name="filter_camera" class="form-control">
+							<option value="">All</option>
+							<?php
+							while($cameras_logged = mysqli_fetch_array($qry_cameras_logged))
+							{
+								echo '<option value=""';
+								if($cameras_logged['camera'] == $filter_camera) echo ' selected="selected"';
+								echo '>';
+								echo $cameras_logged['camera'];
+								echo '</option>';
+							}
+							?>
+						</select>
+					</div>
+				</div>
 			</form>
 		<?php
 		}

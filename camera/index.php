@@ -6,6 +6,7 @@ require 'functions.php';
 
 $id_camera = saneInput('id_camera', 'int', -1);
 $camera = saneInput('camera');
+$filter_camera = saneInput('filter_camera');
 $date = saneInput('date', 'string', '');
 $time = saneInput('time', 'string', '');
 

@@ -17,7 +17,7 @@ if($time == 'all')
 		where
 			cl.date = '" . $date . "'
 			and status in (0, 2)
-			" . ($camera == '' ? '' : "and cl.camera = '" . mysqli_real_escape_string($conn, $camera) . "'") . "
+			" . ($filter_camera == '' ? '' : "and cl.camera = '" . mysqli_real_escape_string($conn, $filter_camera) . "'") . "
 		
 		order by
 			cl.hour_lbl,
@@ -59,7 +59,7 @@ else {
 			cl.date = '" . $date . "'
 			and cl.hour_lbl = '".$time."'
 			and status in (0, 2)
-			" . ($camera == '' ? '' : "and cl.camera = '" . mysqli_real_escape_string($conn, $camera) . "'") . "
+			" . ($filter_camera == '' ? '' : "and cl.camera = '" . mysqli_real_escape_string($conn, $filter_camera) . "'") . "
 		
 		order by
 			cl.hour_lbl,
