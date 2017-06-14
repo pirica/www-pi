@@ -51,7 +51,7 @@
 							<?php
 							while($cameras_logged = mysqli_fetch_array($qry_cameras_logged))
 							{
-								echo '<option value=""';
+								echo '<option value="' . $cameras_logged['camera'] . '"';
 								if($cameras_logged['camera'] == $filter_camera) echo ' selected="selected"';
 								echo '>';
 								echo $cameras_logged['camera'];
@@ -62,6 +62,7 @@
 					</div>
 				</div>
 			</form>
+			<div class="clearfix"></div>
 		<?php
 		}
 		?>
