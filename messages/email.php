@@ -203,70 +203,6 @@ if(!$task->getIsRunning())
 		
 		
 		
-		// update address book
-		mysqli_query($conn, "
-			insert into t_emailaddress
-			(
-				email,
-				domain,
-				name,
-				is_spammer,
-				to_verify
-			)
-			select
-				case
-					when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
-					else e.fromaddress
-				end as email,
-						
-				case
-					when e.fromaddress like '%@%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'@') ), '>', '')
-					else ''
-				end as domain,
-				
-				case
-					when e.fromaddress like '% <%' then left( e.fromaddress , INSTR( e.fromaddress ,' <') - 1)
-					when e.fromaddress like '%<%' then left( e.fromaddress , INSTR( e.fromaddress ,'<') - 1)
-					else e.fromaddress
-				end as name,
-				
-				max(e.is_spam) as is_spammer,
-				min(e.is_spam) as to_verify
-			
-			from t_email e
-			left join t_emailaddress ea on ea.email = case
-					when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
-					else e.fromaddress
-				end
-			
-			where
-				e.fromaddress is not null
-				and ea.id_emailaddress is null
-				
-			group by e.fromaddress  
-			
-			");
-
-		mysqli_query($conn, "update t_emailaddress set active = 0 where is_spammer = 1");
-		
-		mysqli_query($conn, "
-			update t_emailaddress
-			set
-				to_verify = 0,
-				active = 0,
-				is_spammer = 1,
-				domain_is_spammer = 1
-			where
-				to_verify = 1
-				and domain_is_spammer = 0
-				and domain in (
-					select domain from (
-						select domain from t_emailaddress where domain_is_spammer = 1
-					) tmp 
-				)
-			");
-		
-		
 		// SPAM PROTECTION -- BY EMAIL FROM
 		
 		$qry = mysqli_query($conn, "
@@ -319,7 +255,72 @@ if(!$task->getIsRunning())
 	}
 
 	$emailhandle->remove();
+	
+	
+	
+	// update address book
+	mysqli_query($conn, "
+		insert into t_emailaddress
+		(
+			email,
+			domain,
+			name,
+			is_spammer,
+			to_verify
+		)
+		select
+			case
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
+				else e.fromaddress
+			end as email,
+					
+			case
+				when e.fromaddress like '%@%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'@') ), '>', '')
+				else ''
+			end as domain,
+			
+			case
+				when e.fromaddress like '% <%' then left( e.fromaddress , INSTR( e.fromaddress ,' <') - 1)
+				when e.fromaddress like '%<%' then left( e.fromaddress , INSTR( e.fromaddress ,'<') - 1)
+				else e.fromaddress
+			end as name,
+			
+			max(e.is_spam) as is_spammer,
+			min(e.is_spam) as to_verify
+		
+		from t_email e
+		left join t_emailaddress ea on ea.email = case
+				when e.fromaddress like '%<%' then replace(right( e.fromaddress , length( e.fromaddress) - INSTR( e.fromaddress ,'<') ), '>', '')
+				else e.fromaddress
+			end
+		
+		where
+			e.fromaddress is not null
+			and ea.id_emailaddress is null
+			
+		group by e.fromaddress  
+		
+		");
 
+	mysqli_query($conn, "update t_emailaddress set active = 0 where is_spammer = 1");
+	
+	mysqli_query($conn, "
+		update t_emailaddress
+		set
+			to_verify = 0,
+			active = 0,
+			is_spammer = 1,
+			domain_is_spammer = 1
+		where
+			to_verify = 1
+			and domain_is_spammer = 0
+			and domain in (
+				select domain from (
+					select domain from t_emailaddress where domain_is_spammer = 1
+				) tmp 
+			)
+		");
+	
 
 
 	// ALERTING
