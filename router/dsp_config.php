@@ -1,4 +1,4 @@
-
+<div class="wide">
 
 <h1>Configure hosts</h1>
 <p>
@@ -135,4 +135,7 @@
       </div>
     </div>
   </div>
+</div>
+
+
 </div>

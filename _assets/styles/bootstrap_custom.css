@@ -12,6 +12,10 @@ html,body {
 	padding-bottom: 50px; /* this needs to be bigger than footer height*/
 	/*width:auto;*/
 }
+.container.wide, .container .wide
+{
+	width: auto;
+}
 
 .spacer
 {
@@ -236,6 +240,9 @@ html,body {
 	
 	.topmenu1 .navbar-logo {
 		width: auto;
+	}
+	.topmenu1 .navbar-logo span {
+		display: none;
 	}
 
 	.topmenu .navbar-collapse .navbar-nav > li {padding-left:15px!important;}

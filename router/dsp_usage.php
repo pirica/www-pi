@@ -1,4 +1,6 @@
 
+<div class="wide">
+
 <h1>Data usage (per <?= $date_period ?>)</h1>
 <h2>Period from <?= $range_start ?> to <?= $range_end ?></h2>
 <p>
@@ -316,3 +318,5 @@ Telemeter Down:	<?= formatFileSize($total_downloaded_tm) ?><br/>
 Telemeter Up:	<?= formatFileSize($total_uploaded_tm) ?><br/>
 Telemeter total:	<?= formatFileSize($total_downloaded_tm+$total_uploaded_tm) ?><br/>
 </p>
+
+</div>
