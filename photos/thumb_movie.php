@@ -50,16 +50,19 @@ if(
 		// create directory if not exists
 		$parts = explode('/', $thumbnail, -1);
 		$dir = '';
+		$filename = '';
 		foreach($parts as $part){
+			$filename = $part;
 			if(!is_dir($dir .= "/$part")) mkdir($dir);
 		}
 		
-		shell_exec('ffmpeg -y -i ' . $settings->val('photos_path', '') . $src . ' -vf fps=1,scale='.$thumbWidth.':-1:flags=lanczos,palettegen /dev/shm/palette/pallete_'.$src.'.png');
-		shell_exec('ffmpeg -i ' . $settings->val('photos_path', '') . $src . ' -i /dev/shm/palette/pallete_'.$src.'.png'.' -filter_complex "fps=1,scale='.$thumbWidth.':-1:flags=lanczos[x];[x][1:v]paletteuse" ' . $thumbnail);
+		shell_exec('ffmpeg -y -i ' . $settings->val('photos_path', '') . $src . ' -vf fps=1,scale='.$thumbWidth.':-1:flags=lanczos,palettegen /dev/shm/palette/pallete_'.$filename.'.png');
+		shell_exec('ffmpeg -i ' . $settings->val('photos_path', '') . $src . ' -i /dev/shm/palette/pallete_'.$filename.'.png'.' -filter_complex "fps=1,scale='.$thumbWidth.':-1:flags=lanczos[x];[x][1:v]paletteuse" ' . $thumbnail);
 		
 	}
 }
 
+header("Content-Type: image/gif");
 readfile($thumbnail);
 
 ?>
