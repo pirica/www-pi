@@ -41,6 +41,12 @@ for($i=0; $i<count($files); $i++)
 			<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
 			<?php
 		}
+		else if(stripos($files[$i]['name'], '.mp4') > 0)
+		{
+			?>
+			<div class="thumb-ctr col-md-2 col-sm-6"><img src="thumb_movie.php?src=<?= $map . '/' . $files[$i]['name'] ?>" alt="<?= $files[$i]['name'] ?>" title="<?= $files[$i]['name'] ?>"/></div>
+			<?php
+		}
 		else
 		{
 			?>
