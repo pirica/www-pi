@@ -1,6 +1,6 @@
 <?php
 
-require dirname(__FILE__).'/../_core/appinit.php';
+require dirname(__FILE__).'/../../_core/appinit.php';
 
 require 'connection.php';
 require 'functions.php';

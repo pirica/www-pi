@@ -1,7 +1,7 @@
 <?php
 set_time_limit(0);
 
-require dirname(__FILE__).'/../_core/appinit.php';
+require dirname(__FILE__).'/../../_core/appinit.php';
 
 require 'connection.php';
 require 'functions.php';
