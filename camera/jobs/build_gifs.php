@@ -30,6 +30,7 @@ if(!$task->getIsRunning())
 			from t_camera_log cl
 			where
 				cl.name like '%.avi'
+				and date >= date_format(now() - interval 1 day, '%Y%m%d')
 			
 			order by
 				cl.date,
