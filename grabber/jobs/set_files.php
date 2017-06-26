@@ -1,7 +1,7 @@
 <?php
 set_time_limit(3600);
-include '../connections.php';
-include '../functions.php';
+require dirname(__FILE__).'/../connections.php';
+require dirname(__FILE__).'/../functions.php';
 require dirname(__FILE__).'/../../_core/appinit.php';
 
 if(!$task->getIsRunning())

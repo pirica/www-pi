@@ -13,7 +13,7 @@ $qry_queue = mysqli_query($conn, "
 		
 	from t_queue q
 	where
-		q.status in ('Y', 'F')
+		q.status in ('Y', 'F', 'E')
 		and q.filename <> ''
 		
 	");

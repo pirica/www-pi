@@ -58,9 +58,11 @@ while($queue = mysqli_fetch_array($qry_queue)){
 				Decline
 			</a>
 		</div>
+		
+		<hr class="col-sm-12"/>
+		
 	</div>
 	
-	<hr class="col-sm-12"/>
 	
 <?php 
 }

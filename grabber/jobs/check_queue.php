@@ -13,6 +13,7 @@ Queue statuses:
 	D: download normally
 	A: added to downloads
 	X: ignored/excluded/deleted
+	E: error while downloading
 */
 
 if(!$task->getIsRunning())
@@ -124,6 +125,7 @@ if(!$task->getIsRunning())
 			case when q.status = 'V' then 'youtube-dl' else '' end
 		from t_queue q
 			left join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
+				and gf.status not in ('NF', 'TO', 'FE', 'E')
 		where  
 			q.status in ('V', 'D')
 			and q.directory <> ''
@@ -161,6 +163,19 @@ if(!$task->getIsRunning())
 			
 		");
 	
+	
+	mysqli_query($conn, "
+		update t_queue q
+			join t_grab_file gf on gf.full_url = q.url and gf.id_grab = " . $id_grab . "
+				and gf.status in ('NF', 'TO', 'FE', 'E')
+		set	
+			q.status = 'E'
+		where
+			q.status in ('A')
+			and q.directory <> ''
+			and q.filename <> ''
+			
+		");
 
 	$task->setIsRunning(false);
 	
