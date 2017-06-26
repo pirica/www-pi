@@ -240,7 +240,7 @@ $().ready(function(){
 	$('.btn-queue-action').click(function(e){
 		e.preventDefault();
 		$.ajax({
-			url: $(this).attr('url'),
+			url: $(this).attr('href'),
 			type: 'GET',
 			cache: false,
 			dataType: 'json',
