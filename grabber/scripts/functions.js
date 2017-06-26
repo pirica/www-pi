@@ -237,6 +237,23 @@ $().ready(function(){
 		updateQueueField(this, $(this).attr('name'), $(this).val());
 	});
 	
+	$('.btn-queue-action').click(function(e){
+		e.preventDefault();
+		$.ajax({
+			url: $(this).attr('url'),
+			type: 'GET',
+			cache: false,
+			dataType: 'json',
+			error: function(xhr, status, error) {
+				//location.href = ...
+			},
+			success: function(data, textStatus, jqXHR){
+				$(this).parents('.row').hide(200);
+			}
+		});
+		return false;
+	});
+	
 });
 
 function fixFileName(val){

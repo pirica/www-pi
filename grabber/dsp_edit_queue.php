@@ -46,14 +46,14 @@ while($queue = mysqli_fetch_array($qry_queue)){
 			if($queue['status'] != 'N')
 			{
 			?>
-				<a class="btn btn-primary btn-xs" href="index.php?action=edit_queue&sub=confirm&amp;id_queue=<?=$queue['id_queue'] ?>">
+				<a class="btn btn-primary btn-xs btn-queue-action" href="index.php?action=edit_queue&sub=confirm&amp;id_queue=<?=$queue['id_queue'] ?>">
 					<span class="fa fa-check"></span>
 					Confirm
 				</a>
 			<?php
 			}
 			?>
-			<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=edit_queue&sub=decline&amp;id_queue=<?=$queue['id_queue'] ?>">
+			<a class="btn btn-danger btn-xs btn-queue-action" href="index.php?action=edit_queue&sub=decline&amp;id_queue=<?=$queue['id_queue'] ?>">
 				<span class="fa fa-ban"></span>
 				Decline
 			</a>
