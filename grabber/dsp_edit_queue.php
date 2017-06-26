@@ -1,46 +1,32 @@
 
 <h1>Queue</h1>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>ID</th>
-			<th>Date added</th>
-			<th>Url</th>
-			<th>Status</th>
-			
-			<th>Filename</th>
-			<th>Directory</th>
-			<th>Playlist</th>
-			
-			<th>Confirm</th>
-			<th>Decline</th>
-		</tr>
-	</thead>
+<div class="row">
 	
-	<tbody>
 	<?php 
 	while($queue = mysqli_fetch_array($qry_queue)){ 
 		?>
-		<tr>
-			<td><?=$queue['id_queue'] ?></td>
-			<td><?=$queue['date_added'] ?></td>
-			<td><?=$queue['url'] ?></td>
-			<td>
-				<select id="queue_status_<?=$queue['id_queue'] ?>" name="status" class="queue_status" data-id_queue="<?=$queue['id_queue'] ?>">
-					<option value="Y" <?= ($queue['status'] == 'Y' ? 'selected="selected"' : '') ?>>Youtube-dl</option>
-					<option value="F" <?= ($queue['status'] == 'F' ? 'selected="selected"' : '') ?>>Regular</option>
-				</select>
-			</td>
+		<div class="col-md-12">
+			<p>
+				ID: <?=$queue['id_queue'] ?>, <?=$queue['date_added'] ?><br>
+				URL: <?=$queue['url'] ?>
+			</p>
 			
-			<td>
-				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" name="filename" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
-			</td>
-			<td>
+			<p>
+				Status: <select id="queue_status_<?=$queue['id_queue'] ?>" name="status" class="queue_status" data-id_queue="<?=$queue['id_queue'] ?>">
+					<option value="E" <?= ($queue['status'] == 'E' ? 'selected="selected"' : '') ?>></option>
+					<option value="F" <?= ($queue['status'] == 'F' ? 'selected="selected"' : '') ?>>Regular</option>
+					<option value="Y" <?= ($queue['status'] == 'Y' ? 'selected="selected"' : '') ?>>Youtube-dl</option>
+				</select>
+			</p>
+			
+			<p>
 				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" name="directory" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
-			</td>
-			<td>
-				<select id="queue_playlist_<?=$queue['id_queue'] ?>" name="playlistId" class="queue_playlist" data-id_queue="<?=$queue['id_queue'] ?>">
+				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" name="filename" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+			</p>
+			
+			<p>
+				Playlist: <select id="queue_playlist_<?=$queue['id_queue'] ?>" name="playlistId" class="queue_playlist" data-id_queue="<?=$queue['id_queue'] ?>">
 					<option value="0"></option>
 					<?php 
 					while($playlist = mysqli_fetch_array($qry_playlists)){
@@ -51,9 +37,9 @@
 					mysqli_data_seek($qry_playlists, 0);
 					?>
 				</select>
-			</td>
+			</p>
 			
-			<td>
+			<p>
 				<?php
 				if($queue['status'] != 'N')
 				{
@@ -65,20 +51,17 @@
 				<?php
 				}
 				?>
-			</td>
-			<td>
 				<a class="btn btn-danger btn-xs btn-delete-grab" href="index.php?action=edit_queue&sub=decline&amp;id_queue=<?=$queue['id_queue'] ?>">
 					<span class="fa fa-ban"></span>
 					Decline
 				</a>
-			</td>
-		</tr>
+			</p>
+		</div>
 	<?php 
 	}
 	?>
-	</tbody>
 	
-</table>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
