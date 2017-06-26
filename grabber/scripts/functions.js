@@ -239,6 +239,7 @@ $().ready(function(){
 	
 	$('.btn-queue-action').click(function(e){
 		e.preventDefault();
+		$(this).parents('.row').hide(200);
 		$.ajax({
 			url: $(this).attr('href'),
 			type: 'GET',
@@ -248,7 +249,7 @@ $().ready(function(){
 				//location.href = ...
 			},
 			success: function(data, textStatus, jqXHR){
-				$(this).parents('.row').hide(200);
+				
 			}
 		});
 		return false;
