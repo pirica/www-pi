@@ -12,21 +12,24 @@
 				URL: <?=$queue['url'] ?>
 			</p>
 			
-			<p>
-				Status: <select id="queue_status_<?=$queue['id_queue'] ?>" name="status" class="queue_status" data-id_queue="<?=$queue['id_queue'] ?>">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="queue_status_<?=$queue['id_queue'] ?>">Status: </label>
+				<select id="queue_status_<?=$queue['id_queue'] ?>" name="status" class="form-control col-sm-3 queue_status" data-id_queue="<?=$queue['id_queue'] ?>">
 					<option value="E" <?= ($queue['status'] == 'E' ? 'selected="selected"' : '') ?>></option>
 					<option value="F" <?= ($queue['status'] == 'F' ? 'selected="selected"' : '') ?>>Regular</option>
 					<option value="Y" <?= ($queue['status'] == 'Y' ? 'selected="selected"' : '') ?>>Youtube-dl</option>
 				</select>
-			</p>
+			</div>
 			
-			<p>
-				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" name="directory" class="queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
-				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" name="filename" class="queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
-			</p>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="queue_directory_<?=$queue['id_queue'] ?>">File: </label>
+				<input type="text" id="queue_directory_<?=$queue['id_queue'] ?>" name="directory" class="form-control col-sm-5 queue_directory" value="<?=$queue['directory'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+				<input type="text" id="queue_filename_<?=$queue['id_queue'] ?>" name="filename" class="form-control col-sm-4 queue_filename" value="<?=$queue['filename'] ?>" data-id_queue="<?=$queue['id_queue'] ?>" />
+			</div>
 			
-			<p>
-				Playlist: <select id="queue_playlist_<?=$queue['id_queue'] ?>" name="playlistId" class="queue_playlist" data-id_queue="<?=$queue['id_queue'] ?>">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="queue_playlist_<?=$queue['id_queue'] ?>">Playlist: </label>
+				<select id="queue_playlist_<?=$queue['id_queue'] ?>" name="playlistId" class="form-control col-sm-3 queue_playlist" data-id_queue="<?=$queue['id_queue'] ?>">
 					<option value="0"></option>
 					<?php 
 					while($playlist = mysqli_fetch_array($qry_playlists)){
@@ -37,7 +40,7 @@
 					mysqli_data_seek($qry_playlists, 0);
 					?>
 				</select>
-			</p>
+			</div>
 			
 			<p>
 				<?php
@@ -57,6 +60,9 @@
 				</a>
 			</p>
 		</div>
+		
+		<hr />
+		
 	<?php 
 	}
 	?>
