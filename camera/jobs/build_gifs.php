@@ -3,8 +3,8 @@ set_time_limit(0);
 
 require dirname(__FILE__).'/../../_core/appinit.php';
 
-require 'connection.php';
-require 'functions.php';
+require dirname(__FILE__).'/../connection.php';
+require dirname(__FILE__).'/../functions.php';
 
 require dirname(__FILE__).'/../../_core/components/images/GIFEncoder.class.php';
 

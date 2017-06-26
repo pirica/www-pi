@@ -2,8 +2,8 @@
 
 require dirname(__FILE__).'/../../_core/appinit.php';
 
-require 'connection.php';
-require 'functions.php';
+require dirname(__FILE__).'/../connection.php';
+require dirname(__FILE__).'/../functions.php';
 
 
 if(!$task->getIsRunning())
