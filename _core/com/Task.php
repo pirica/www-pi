@@ -94,7 +94,7 @@ class Task
 				select
 					t.id_task,
 					t.name,
-					t.is_running
+					case when t.is_running = 1 or t.is_paused = 1 then 1 else 0 end as is_running
 					
 				from users.t_task t
 					
