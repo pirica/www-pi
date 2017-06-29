@@ -50,13 +50,13 @@ if(!$task->getIsRunning())
 		$extension = '.' . $extarr[count($extarr) - 1];
 		
 		$gifname = $main_dir . $camera_log['date'] . '/' . str_replace('.avi', '.gif', $camera_log['name']);
-		$pallete = $camera_log['name'] . '.png';
+		$pallete = str_replace('.avi', '.png', $camera_log['name']);
 		
 		if(strtolower($extension) == '.avi'){
 			if(!file_exists($gifname)){
 				
-				shell_exec('ffmpeg -y -i ' . $main_dir . $camera_log['date'] . '/' . $camera_log['name'] . ' -vf fps=5,scale='.$thumbWidth.':-1:flags=lanczos,palettegen /dev/shm/palette/pallete_'.$pallete.'.png');
-				shell_exec('ffmpeg -i ' . $main_dir . $camera_log['date'] . '/' . $camera_log['name'] . ' -i /dev/shm/palette/pallete_'.$pallete.'.png'.' -filter_complex "fps=5,scale='.$thumbWidth.':-1:flags=lanczos[x];[x][1:v]paletteuse" ' . $thumbnail);
+				shell_exec('ffmpeg -y -i ' . $main_dir . $camera_log['date'] . '/' . $camera_log['name'] . ' -vf fps=5,scale='.$thumbWidth.':-1:flags=lanczos,palettegen /dev/shm/palette/pal_'.$pallete);
+				shell_exec('ffmpeg -i ' . $main_dir . $camera_log['date'] . '/' . $camera_log['name'] . ' -i /dev/shm/palette/pal_'.$pallete.' -filter_complex "fps=5,scale='.$thumbWidth.':-1:flags=lanczos[x];[x][1:v]paletteuse" ' . $gifname);
 				
 				
 			}
