@@ -4,13 +4,13 @@ $crondate = time();
 
 set_time_limit(3600);
 require dirname(__FILE__).'/../../_core/appinit.php';
-require dirname(__FILE__).'../connection.php';
+require dirname(__FILE__).'/../connection.php';
 
 if(!$task->getIsRunning())
 {
 	$task->setIsRunning(true);
 
-	require dirname(__FILE__).'../act_init_subsonic.php';
+	require dirname(__FILE__).'/../act_init_subsonic.php';
 
 
 
