@@ -443,8 +443,12 @@ if(!$task->getIsRunning())
 				join songs s on s.id = pe.songId and s.active = 0
 				join songs s2 on s2.filename = s.filename and s2.active = 1
 				left join playlistEntriesToAdd pea on pea.playlistId = pe.playlistId and pea.songId = s2.id
+				left join playlistEntries pe2 on pe2.playlistId = pe.playlistId and pe2.songId = s2.id
 				where
 					pea.id is null
+					and pe2.id is null
+				group by
+					pe.playlistId, s2.id
 			");
 			
 		}
