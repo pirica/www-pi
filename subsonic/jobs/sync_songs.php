@@ -3,54 +3,14 @@
 $crondate = time();
 
 set_time_limit(3600);
-require dirname(__FILE__).'/../_core/appinit.php';
-
-include 'connection.php';
+require dirname(__FILE__).'/../../_core/appinit.php';
+require dirname(__FILE__).'../connection.php';
 
 if(!$task->getIsRunning())
 {
 	$task->setIsRunning(true);
 
-	include 'act_init_subsonic.php';
-
-
-	//if(date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)
-	{
-		
-		$qry_entries = mysqli_query($conn, "
-			select
-				per.id,
-				per.playlistId,
-				per.songId,
-				pe.songIndex
-			from playlistEntriesToRemove per
-			join playlistEntries pe on pe.playlistId = per.playlistId  and pe.songId = per.songId
-			order by
-				pe.songIndex desc
-			");
-		
-		while($entry = mysqli_fetch_array($qry_entries)){
-			$subsonic->updatePlaylistRemove($entry['playlistId'], $entry['songIndex']);
-			mysqli_query($conn, "delete from playlistEntriesToRemove where id = " . $entry['id']);
-		}
-		
-		
-		$qry_entries = mysqli_query($conn, "
-			select
-				pea.id,
-				pea.playlistId,
-				ifnull(pea.songId, s.id) as songId
-			from playlistEntriesToAdd pea
-			left join songs s on s.filename = pea.songFilename and s.active > 0
-			where ifnull(pea.songId, s.id) is not null
-			order by pea.id
-			");
-		
-		while($entry = mysqli_fetch_array($qry_entries)){
-			$subsonic->updatePlaylistAdd($entry['playlistId'], $entry['songId']);
-			mysqli_query($conn, "delete from playlistEntriesToAdd where id = " . $entry['id']);
-		}
-	}
+	require dirname(__FILE__).'../act_init_subsonic.php';
 
 
 	$qry_indexes = mysqli_query($conn, "select count(*) as indexcount from indexes");
@@ -280,6 +240,28 @@ if(!$task->getIsRunning())
 		
 		mysqli_query($conn, "update songs set active = 0 where active = 2");
 		
+		// custom titles
+		mysqli_query($conn, "
+			update songs 
+			set
+				title_custom = replace(
+					substring(replace(filename,'_', ' '), INSTR(replace(filename,'_', ' ')," - ") + 3)
+				,'_', ' ')
+			where 
+				contentType like 'audio/%' 
+				#and active = 1 
+		");
+		mysqli_query($conn, "
+			update songs 
+			set
+				title_custom = TRIM(TRAILING concat('.', suffix) FROM title_custom)
+			where 
+				contentType like 'audio/%' 
+				#and active = 1 
+		");
+		
+		
+		// custom artist descriptions
 		mysqli_query($conn, "
 			update songs 
 			set
@@ -288,7 +270,7 @@ if(!$task->getIsRunning())
 				,'_', ' ')  
 			where 
 				contentType like 'audio/%' 
-				and active = 1 
+				#and active = 1 
 				and replace(filename,'_', ' ') like '% - %' 
 				#and ifnull(artist_custom,'') = '' 
 		");
@@ -301,7 +283,7 @@ if(!$task->getIsRunning())
 				,'_', ' ')  
 			where 
 				contentType like 'audio/%' 
-				and active = 1 
+				#and active = 1 
 				and artist_custom like '%. %'
 				and SUBSTRING(artist_custom, 1, INSTR(artist_custom,". ")) REGEXP '[[:digit:]]'
 		");
@@ -499,398 +481,6 @@ if(!$task->getIsRunning())
 	}
 
 
-
-	/*
-	$qry_users = mysqli_query($conn, "select count(*) as usercount from users where active = 1");
-	$users = mysqli_fetch_array($qry_users);
-
-	if($users['usercount'] == 0 || (date("H", $crondate) == $settings->val('subsonic_fullsync_hour', 3) && date("i", $crondate) < 5)){
-	*/
-		$users = $subsonic->getUsers();
-		$c_users = count($users);
-		$usernames = '';
-
-		for($ui=0; $ui<$c_users; $ui++){
-			$usernames .= ($usernames == '' ? '' : ',') . "'" . mysqli_real_escape_string($conn, $users[$ui]->username) . "'"; 
-			
-			mysqli_query($conn, "
-				replace into users
-				(
-					username,
-					active,
-					
-					email
-				)
-				values 
-				(
-					'" . mysqli_real_escape_string($conn, $users[$ui]->username) . "',
-					1,
-					
-					'" . (property_exists($users[$ui], 'email') ? mysqli_real_escape_string($conn, $users[$ui]->email) : '') . "'
-				)
-				");
-				
-				/*
-				"username" : "admin",
-				"scrobblingEnabled" : false,
-				"adminRole" : true,
-				"settingsRole" : true,
-				"downloadRole" : true,
-				"uploadRole" : true,
-				"playlistRole" : true,
-				"coverArtRole" : true,
-				"commentRole" : true,
-				"podcastRole" : true,
-				"streamRole" : true,
-				"jukeboxRole" : true,
-				"shareRole" : true,
-				"videoConversionRole" : true,
-				"avatarLastChanged" : "2016-11-23T13:47:55.841Z"
-				*/
-		}
-
-		mysqli_query($conn, "update users set active = 0 where username not in (" . $usernames . ") and active = 1");
-
-	//}
-
-	
-	
-	$playlists = $subsonic->getPlaylists();
-	$c_playlists = count($playlists);
-
-	if($c_playlists > 0){
-		
-		mysqli_query($conn, "truncate table sync_playlists");
-		
-		for($pi=0; $pi<$c_playlists; $pi++){
-			mysqli_query($conn, "
-				insert into sync_playlists
-				(
-					id,
-					name,
-					comment,
-					owner,
-					public,
-					songcount,
-					duration,
-					created,
-					active
-				)
-				values 
-				(
-					" . $playlists[$pi]->id . ",
-					'" . mysqli_real_escape_string($conn, $playlists[$pi]->name) . "',
-					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'comment') ? $playlists[$pi]->comment : '') . "',
-					'" . mysqli_real_escape_string($conn, property_exists($playlists[$pi], 'owner') ? $playlists[$pi]->owner : '') . "',
-					" . ($playlists[$pi]->public == '' ? 0 : $playlists[$pi]->public) . ",
-					" . $playlists[$pi]->songCount . ",
-					" . $playlists[$pi]->duration . ",
-					'" . mysqli_real_escape_string($conn, $playlists[$pi]->created) . "',
-					1
-				)
-				");
-				
-			
-			$playlist_entries = $subsonic->getPlaylist( $playlists[$pi]->id );
-			$c_playlist_entries = count($playlist_entries);
-			
-			for($pei=0; $pei<$c_playlist_entries; $pei++){
-				mysqli_query($conn, "
-					replace into playlistEntries
-					(
-						id,
-						playlistId,
-						songId,
-						songIndex
-					)
-					values 
-					(
-						'" . $playlists[$pi]->id . '-' . $pei . "',
-						" . $playlists[$pi]->id . ",
-						" . $playlist_entries[$pei]->id . ",
-						" . $pei . "
-					)
-					");
-			}
-			
-			mysqli_query($conn, "
-				delete from playlistEntries
-				where
-					playlistId = " . $playlists[$pi]->id . "
-					and songIndex >= " . $c_playlist_entries . "
-				");
-				
-		}
-		
-		mysqli_query($conn, "update playlists set active = 2");
-		
-		mysqli_query($conn, "
-			insert into playlists
-			(
-				id,
-				name,
-				comment,
-				owner,
-				public,
-				songcount,
-				duration,
-				created,
-				active
-			)
-			select
-				sp.id,
-				sp.name,
-				sp.comment,
-				sp.owner,
-				sp.public,
-				sp.songcount,
-				sp.duration,
-				sp.created,
-				sp.active
-			from sync_playlists sp
-			left join playlists p on p.id = sp.id
-			where
-				p.id is null
-		");
-		
-		mysqli_query($conn, "
-			update playlists p
-			join sync_playlists sp on sp.id = p.id
-			set
-				p.name = p.name,
-				p.comment = p.comment,
-				p.owner = p.owner,
-				p.public = p.public,
-				p.songcount = p.songcount,
-				p.duration = p.duration,
-				p.created = p.created,
-				p.active = 1
-			
-		");
-		
-		mysqli_query($conn, "
-			SET @o='{\"options\": [{\"code\": \"-1\", \"value\": \"\"}';
-			
-			select
-				@o := concat(@o, ',{\"code\": \"', id, '\", \"value\": \"', name, '\"}')
-			from playlists
-			where
-				active = 1
-			order by
-				name
-			;
-			
-			select @o := concat(@o, ']}');
-			
-			update users.t_setting
-			set
-				extra = @o
-			where
-				code = 'intake_playlist'
-			;
-			
-			");
-		
-		mysqli_query($conn, "update playlists set active = 0 where active = 2");
-		
-	}
-
-	// remove double playlist entries
-	if($settings->val('remove_double_playlistentries', 'no') == 'first' || $settings->val('remove_double_playlistentries', 'no') == 'last')
-	{
-		$which_selection = $settings->val('remove_double_playlistentries', 'no') == 'first' ? 'max' : 'min';
-		
-		$qry_entries = mysqli_query($conn, "
-			select
-				pe.playlistId,
-				pe.songId,
-				count(pe.id) as doubles,
-				" . $which_selection . "(pe.songIndex) as songIndex
-			from playlistEntries pe
-			group by
-				pe.playlistId,
-				pe.songId
-			having
-				count(pe.id) > 1
-			order by
-				songIndex desc
-			");
-		
-		while($entry = mysqli_fetch_array($qry_entries)){
-			$subsonic->updatePlaylistRemove($entry['playlistId'], $entry['songIndex']);
-		}
-	}
-
-	
-
-	$export_dir = $settings->val('export_directory', '');
-	$songs_dir = $settings->val('songs_directory', '');
-
-	$is_dir = $export_dir != '';
-	try {
-		$is_dir = is_dir($export_dir);
-	}
-	catch(Exception $e){}
-
-	if($is_dir && substr($export_dir, -1, 1) != '/'){
-		$export_dir = $export_dir . '/';
-	}
-	if($songs_dir != '' && substr($songs_dir, -1, 1) != '/'){
-		$songs_dir = $songs_dir . '/';
-	}
-
-	if($settings->val('export_songs', 0) == 1 && $is_dir)
-	{
-		
-		// check and create genre dirs
-		/*$qry_genres = mysqli_query($conn, "
-			select distinct
-				mg.description as genre
-			
-			from songs s
-				left join genres g on g.description = s.genre and s.genre <> ''
-				join mainGenres mg on mg.id = ifnull(s.maingenreid, g.maingenreid)
-			
-			where
-				ifnull(s.export,0) <> 0
-				or s.active = 0
-			");*/
-			
-		// check and create genre dirs
-		$qry_genres = mysqli_query($conn, "
-			select distinct
-				p.name as genre
-			
-			from songs s
-				join playlistEntries pe on pe.songid = s.id
-				join playlists p on p.id = pe.playlistId
-			where
-				ifnull(p.export,0) <> 0
-				
-			");
-			
-		while($genre = mysqli_fetch_array($qry_genres)){
-			/*
-			if active = 1 and export = 1
-				if file not exists
-					if file.deleted exists
-						delete? + unflag
-					else
-						copy
-			
-			else
-				if file exists
-					delete + unflag
-			*/
-			
-			$genre_dir = $export_dir . $genre['genre'];
-			$is_genre_dir = false;
-			try {
-				$is_genre_dir = is_dir($genre_dir);
-			}
-			catch(Exception $e){}
-			
-			if($is_genre_dir !== true)
-			{
-				mkdir($genre_dir);
-			}
-			shell_exec ('sudo chown nobody:nogroup -R "' . $genre_dir . '"');
-			shell_exec ('sudo chmod 777 -R "' . $genre_dir . '"');
-		}
-			
-		// get songs to export (export = 1) and to remove from export (export = -1 or active = 0)
-		/*$qry_songs = mysqli_query($conn, "
-			select
-				s.id,
-				s.path,
-				s.filename,
-				s.relative_directory,
-				s.export,
-				s.active,
-				mg.description as genre
-			
-			from songs s
-				left join genres g on g.description = s.genre and s.genre <> ''
-				join mainGenres mg on mg.id = ifnull(s.maingenreid, g.maingenreid)
-			
-			where
-				ifnull(s.export,0) <> 0
-				or s.active = 0
-			");*/
-		
-		$qry_songs = mysqli_query($conn, "
-			select
-				s.id,
-				s.path,
-				s.filename,
-				s.relative_directory,
-				p.export,
-				s.active,
-				p.name as genre
-			
-			from songs s
-				join playlistEntries pe on pe.songid = s.id
-				join playlists p on p.id = pe.playlistId
-			where
-				ifnull(p.export,0) <> 0
-				or s.active = 0
-			");
-			
-		while($song = mysqli_fetch_array($qry_songs)){
-			/*
-			if active = 1 and export = 1
-				if file not exists
-					if file.deleted exists
-						delete? + unflag
-					else
-						copy
-			
-			else
-				if file exists
-					delete + unflag
-			*/
-			
-			$genre_dir = $export_dir . $song['genre'];
-			
-			if($song['active'] == 1 && $song['export'] == 1)
-			{
-				if(!file_exists($genre_dir . '/' . $song['filename']) && file_exists($songs_dir . $song['path']))
-				{
-					if(file_exists($genre_dir. '/' . $song['filename'] . '.deleted'))
-					{
-						unlink($genre_dir . '/' . $song['filename'] . '.deleted');
-					}
-					else
-					{
-						copy($songs_dir . $song['path'], $genre_dir . '/' . $song['filename']);
-					}
-				}
-			}
-			else 
-			{
-				if(file_exists($genre_dir . '/' . $song['filename']))
-				{
-					unlink($genre_dir . '/' . $song['filename']);
-				}
-				else if(file_exists($genre_dir. '/' . $song['filename'] . '.deleted'))
-				{
-					unlink($genre_dir . '/' . $song['filename'] . '.deleted');
-				}
-			}
-			
-		}
-		
-		// unflag deleted
-		mysqli_query($conn, "
-			update songs
-			set
-				export = 0
-			where
-				export = -1
-				or active = 0
-			");
-		
-	}
 	
 	$task->setIsRunning(false);
 	
